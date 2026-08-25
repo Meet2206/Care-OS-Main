@@ -1,0 +1,1 @@
+PHARMACY_ORDERS_COLLECTION = "pharmacy_orders"

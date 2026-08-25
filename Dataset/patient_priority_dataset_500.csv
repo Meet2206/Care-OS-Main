@@ -1,0 +1,501 @@
+Patient_ID,Disease,Severity,Visit_Date,Gender,Age,Number_of_Visits,Abnormal_Result,Diagnosis,Symptoms,Days_Since_Last_Visit,Priority_Score
+P0362,Gastroenteritis,2,2026-01-03,Female,56,4,Slightly Abnormal,Needs Follow-up,Fever,14,2
+P0074,Arthritis,2,2025-06-07,Male,26,2,Normal,Stable,Headache,198,2
+P0375,Gastroenteritis,2,2026-06-07,Male,25,5,Normal,Stable,Nausea,139,3
+P0156,Stroke,4,2024-11-29,Male,16,3,Moderately Abnormal,Acute,Cough,166,5
+P0105,Gastroenteritis,3,2024-05-15,Female,45,5,Moderately Abnormal,Needs Follow-up,Nausea,357,4
+P0395,Cancer,4,2024-01-07,Male,12,3,Moderately Abnormal,Needs Follow-up,Confusion,237,5
+P0378,Kidney Disease,5,2024-09-10,Male,46,4,Moderately Abnormal,Chronic Uncontrolled,Dizziness,2,5
+P0125,Pneumonia,4,2026-04-02,Female,58,3,Severely Abnormal,Chronic Controlled,Confusion,9,5
+P0069,Fracture,3,2024-01-22,Female,54,5,Normal,Acute,Weakness,346,3
+P0451,Migraine,2,2026-04-03,Female,33,7,Slightly Abnormal,Needs Follow-up,Shortness of Breath,212,3
+P0010,Hypertension,1,2026-01-29,Male,36,7,Normal,Needs Follow-up,Vomiting,121,2
+P0195,Pneumonia,5,2026-04-28,Female,70,2,Severely Abnormal,Chronic Uncontrolled,Headache,305,5
+P0407,Hypertension,1,2024-12-22,Male,56,1,Normal,Stable,Cough,66,1
+P0085,COPD,5,2024-07-14,Female,40,4,Moderately Abnormal,Chronic Uncontrolled,Nausea,197,5
+P0372,Gastroenteritis,1,2025-06-29,Male,21,5,Slightly Abnormal,Stable,Dizziness,244,2
+P0389,Arthritis,2,2025-02-13,Male,48,4,Normal,Needs Follow-up,Dizziness,187,3
+P0496,Heart Disease,4,2023-10-04,Male,53,3,Slightly Abnormal,Acute,Vomiting,179,5
+P0031,Arthritis,4,2023-10-30,Male,52,6,Normal,Critical,Abdominal Pain,12,5
+P0317,COPD,3,2026-06-01,Male,72,2,Slightly Abnormal,Needs Follow-up,Abdominal Pain,20,3
+P0409,Hypertension,3,2025-08-25,Male,27,6,Moderately Abnormal,Acute,Cough,153,4
+P0491,Diabetes,1,2024-07-27,Male,68,6,Normal,Stable,Dizziness,205,2
+P0492,Pneumonia,4,2024-07-31,Female,3,4,Moderately Abnormal,Chronic Uncontrolled,Chest Pain,73,5
+P0281,Pneumonia,4,2025-06-19,Male,66,3,Slightly Abnormal,Critical,Dizziness,157,5
+P0357,Gastroenteritis,2,2026-04-28,Male,51,6,Normal,Needs Follow-up,Abdominal Pain,168,2
+P0077,Cancer,5,2025-11-24,Male,10,6,Severely Abnormal,Chronic Uncontrolled,Shortness of Breath,131,5
+P0462,UTI,3,2025-08-21,Female,41,3,Moderately Abnormal,Needs Follow-up,Weakness,128,4
+P0498,Arthritis,2,2023-10-15,Female,47,4,Normal,Chronic Controlled,Confusion,176,2
+P0212,Kidney Disease,5,2026-08-18,Other,73,6,Severely Abnormal,Chronic Uncontrolled,Confusion,242,5
+P0102,UTI,1,2024-04-02,Male,29,6,Normal,Stable,Chest Pain,213,2
+P0335,Migraine,2,2026-02-01,Female,35,3,Moderately Abnormal,Needs Follow-up,None/Mild,301,2
+P0476,Common Cold,1,2024-10-20,Male,66,4,Normal,Needs Follow-up,Chest Pain,123,3
+P0337,Stroke,4,2024-04-15,Male,76,4,Severely Abnormal,Chronic Controlled,None/Mild,100,5
+P0441,Gastroenteritis,3,2026-08-22,Male,26,5,Moderately Abnormal,Chronic Controlled,Abdominal Pain,324,4
+P0174,Stroke,5,2026-07-01,Female,52,2,Severely Abnormal,Chronic Uncontrolled,Cough,321,5
+P0003,Gastroenteritis,2,2026-01-22,Male,58,1,Moderately Abnormal,Needs Follow-up,Dizziness,150,3
+P0334,Hypertension,2,2026-06-12,Female,73,4,Normal,Stable,Cough,164,3
+P0410,Asthma,3,2025-11-22,Female,32,4,Normal,Chronic Controlled,Weakness,46,3
+P0071,Stroke,5,2025-09-07,Female,90,6,Severely Abnormal,Chronic Uncontrolled,Nausea,113,5
+P0210,Pneumonia,5,2023-11-28,Female,6,4,Severely Abnormal,Chronic Uncontrolled,Severe Pain,350,5
+P0064,Pneumonia,5,2024-07-13,Female,60,4,Slightly Abnormal,Chronic Uncontrolled,None/Mild,61,5
+P0385,Common Cold,1,2025-09-26,Female,54,4,Normal,Stable,Severe Pain,48,2
+P0094,UTI,3,2025-01-08,Male,34,2,Slightly Abnormal,Acute,Cough,274,5
+P0486,Pneumonia,3,2025-12-06,Male,43,3,Slightly Abnormal,Needs Follow-up,Severe Pain,357,4
+P0186,Arthritis,3,2025-06-19,Male,1,4,Normal,Needs Follow-up,Confusion,141,4
+P0034,Fracture,2,2024-08-18,Female,45,2,Normal,Stable,Cough,292,2
+P0078,Migraine,1,2026-08-22,Male,80,3,Slightly Abnormal,Stable,None/Mild,118,2
+P0001,Migraine,1,2024-04-25,Female,27,5,Normal,Needs Follow-up,Headache,67,2
+P0012,Kidney Disease,4,2026-08-13,Female,28,3,Moderately Abnormal,Chronic Uncontrolled,Vomiting,327,5
+P0416,Migraine,1,2026-01-10,Female,68,2,Normal,Stable,Cough,148,1
+P0023,COPD,3,2026-07-07,Female,46,4,Moderately Abnormal,Acute,Severe Pain,251,5
+P0073,Migraine,1,2023-10-04,Female,49,3,Normal,Stable,Weakness,39,1
+P0183,Cancer,5,2024-05-20,Male,46,8,Severely Abnormal,Chronic Uncontrolled,Cough,178,5
+P0132,Gastroenteritis,2,2024-11-01,Male,19,3,Normal,Needs Follow-up,Confusion,100,3
+P0411,UTI,2,2024-10-05,Female,68,1,Normal,Needs Follow-up,None/Mild,7,2
+P0194,Migraine,2,2025-02-21,Male,60,6,Moderately Abnormal,Stable,Confusion,152,4
+P0056,Arthritis,1,2024-01-27,Male,41,5,Normal,Stable,Shortness of Breath,88,2
+P0149,Arthritis,2,2025-02-20,Female,48,5,Slightly Abnormal,Acute,Shortness of Breath,40,3
+P0019,Cancer,5,2026-03-22,Female,52,7,Moderately Abnormal,Acute,Severe Pain,122,5
+P0205,Common Cold,1,2023-09-23,Male,33,4,Normal,Needs Follow-up,Bleeding,362,2
+P0079,Arthritis,2,2025-06-09,Female,40,6,Normal,Acute,Nausea,21,4
+P0495,Pneumonia,5,2025-06-30,Female,57,2,Moderately Abnormal,Chronic Controlled,Dizziness,148,5
+P0263,Cancer,5,2024-07-04,Female,39,5,Severely Abnormal,Critical,None/Mild,59,5
+P0324,Cancer,5,2026-06-20,Male,54,3,Severely Abnormal,Chronic Controlled,Vomiting,57,5
+P0484,Common Cold,1,2024-08-27,Female,43,3,Normal,Needs Follow-up,Fever,31,1
+P0080,Gastroenteritis,1,2024-03-30,Female,56,5,Normal,Needs Follow-up,Fatigue,47,1
+P0040,COPD,4,2024-12-18,Female,42,5,Moderately Abnormal,Chronic Uncontrolled,Nausea,323,5
+P0452,Diabetes,3,2023-09-30,Female,81,4,Moderately Abnormal,Needs Follow-up,None/Mild,281,4
+P0047,Pneumonia,3,2025-02-15,Male,41,5,Moderately Abnormal,Acute,Nausea,143,5
+P0239,UTI,3,2025-10-16,Female,19,4,Normal,Chronic Controlled,Chest Pain,248,4
+P0392,Pneumonia,3,2026-07-01,Female,59,2,Slightly Abnormal,Chronic Controlled,Bleeding,217,4
+P0353,Cancer,4,2025-06-30,Male,38,2,Moderately Abnormal,Chronic Uncontrolled,Bleeding,120,5
+P0342,Common Cold,2,2024-05-15,Female,70,7,Slightly Abnormal,Chronic Controlled,Bleeding,145,5
+P0278,Arthritis,2,2025-06-25,Female,42,1,Normal,Needs Follow-up,Vomiting,105,2
+P0291,Migraine,2,2025-12-28,Male,66,3,Slightly Abnormal,Needs Follow-up,Fever,102,3
+P0318,COPD,5,2024-08-19,Male,26,6,Moderately Abnormal,Chronic Uncontrolled,Fatigue,35,5
+P0305,Stroke,5,2024-05-01,Male,49,2,Moderately Abnormal,Acute,Shortness of Breath,293,5
+P0269,Asthma,4,2025-06-18,Female,40,2,Slightly Abnormal,Chronic Controlled,Chest Pain,341,5
+P0070,COPD,5,2024-03-22,Male,32,3,Severely Abnormal,Chronic Uncontrolled,None/Mild,262,5
+P0456,UTI,2,2023-09-30,Male,66,5,Moderately Abnormal,Acute,Fever,244,4
+P0466,Hypertension,2,2024-11-24,Female,57,4,Normal,Stable,Abdominal Pain,121,2
+P0155,Gastroenteritis,3,2025-07-24,Female,15,1,Slightly Abnormal,Stable,Dizziness,198,3
+P0083,Diabetes,3,2024-09-11,Male,33,3,Slightly Abnormal,Chronic Controlled,Dizziness,112,3
+P0478,Pneumonia,4,2024-10-14,Female,71,3,Moderately Abnormal,Needs Follow-up,Fever,239,5
+P0173,Cancer,4,2024-03-20,Male,65,5,Moderately Abnormal,Acute,None/Mild,293,5
+P0322,UTI,2,2025-04-26,Female,8,4,Slightly Abnormal,Stable,Cough,346,3
+P0091,Common Cold,1,2025-02-02,Male,79,5,Normal,Needs Follow-up,Dizziness,248,2
+P0181,Kidney Disease,3,2025-10-01,Female,29,3,Slightly Abnormal,Acute,Cough,89,4
+P0415,Gastroenteritis,2,2023-11-26,Male,57,3,Severely Abnormal,Stable,Headache,319,3
+P0313,UTI,2,2024-01-14,Female,90,5,Slightly Abnormal,Stable,Confusion,86,4
+P0279,Migraine,2,2024-10-11,Female,37,5,Normal,Stable,Shortness of Breath,157,3
+P0382,COPD,5,2025-07-26,Female,53,5,Severely Abnormal,Chronic Uncontrolled,Chest Pain,261,5
+P0473,Stroke,5,2024-11-08,Male,41,2,Moderately Abnormal,Critical,None/Mild,281,5
+P0363,Kidney Disease,4,2025-09-24,Female,47,4,Severely Abnormal,Acute,Headache,248,5
+P0325,Pneumonia,3,2025-10-26,Male,71,6,Slightly Abnormal,Needs Follow-up,Headache,159,4
+P0432,Stroke,5,2026-07-04,Male,67,5,Moderately Abnormal,Chronic Controlled,Headache,344,5
+P0348,Hypertension,4,2025-11-06,Male,63,2,Moderately Abnormal,Chronic Controlled,Shortness of Breath,189,5
+P0087,Arthritis,2,2024-05-05,Female,50,4,Slightly Abnormal,Needs Follow-up,Cough,105,3
+P0076,Arthritis,2,2026-03-29,Female,22,3,Normal,Acute,Vomiting,310,3
+P0439,Pneumonia,4,2026-04-24,Female,22,2,Slightly Abnormal,Needs Follow-up,Shortness of Breath,165,5
+P0016,Hypertension,2,2025-05-04,Male,44,4,Normal,Needs Follow-up,Weakness,53,3
+P0250,Stroke,5,2026-06-16,Female,30,3,Severely Abnormal,Critical,Fatigue,70,5
+P0434,Diabetes,3,2025-10-03,Female,55,3,Moderately Abnormal,Chronic Controlled,Headache,21,4
+P0020,Kidney Disease,3,2023-08-26,Male,90,4,Severely Abnormal,Needs Follow-up,Vomiting,272,5
+P0323,Kidney Disease,3,2025-04-17,Male,74,8,Moderately Abnormal,Acute,Headache,269,5
+P0333,Arthritis,2,2025-02-27,Male,59,5,Normal,Chronic Controlled,Confusion,249,3
+P0057,Pneumonia,4,2024-01-06,Female,55,7,Severely Abnormal,Chronic Uncontrolled,Fever,156,5
+P0302,Migraine,1,2024-02-27,Female,34,5,Normal,Stable,Cough,56,2
+P0230,UTI,2,2024-02-18,Female,32,5,Normal,Needs Follow-up,Fatigue,46,3
+P0332,Cancer,4,2024-09-06,Male,40,7,Moderately Abnormal,Chronic Uncontrolled,Chest Pain,38,5
+P0133,Common Cold,1,2023-10-21,Female,58,4,Slightly Abnormal,Needs Follow-up,Abdominal Pain,143,2
+P0138,Arthritis,1,2025-03-20,Female,43,5,Normal,Needs Follow-up,Dizziness,21,2
+P0424,Stroke,4,2025-04-19,Female,43,4,Slightly Abnormal,Acute,Weakness,59,4
+P0336,Hypertension,3,2025-03-07,Female,32,4,Slightly Abnormal,Acute,Weakness,140,5
+P0026,Asthma,3,2024-11-05,Female,82,6,Moderately Abnormal,Needs Follow-up,Fatigue,253,4
+P0465,Diabetes,3,2025-04-02,Female,51,3,Normal,Acute,Bleeding,350,4
+P0282,UTI,2,2024-02-10,Female,85,7,Normal,Chronic Controlled,Weakness,40,3
+P0248,Gastroenteritis,1,2025-12-23,Female,35,8,Normal,Needs Follow-up,Nausea,72,1
+P0238,Gastroenteritis,1,2026-04-21,Male,41,3,Normal,Needs Follow-up,Bleeding,94,1
+P0118,Gastroenteritis,3,2024-03-03,Female,76,4,Slightly Abnormal,Needs Follow-up,Fever,40,3
+P0043,Kidney Disease,4,2023-10-05,Female,90,5,Severely Abnormal,Chronic Controlled,None/Mild,170,5
+P0221,Arthritis,2,2026-07-18,Female,73,3,Moderately Abnormal,Acute,Weakness,192,4
+P0177,Hypertension,2,2026-06-20,Male,29,3,Normal,Stable,Abdominal Pain,96,3
+P0321,Arthritis,2,2026-01-23,Female,26,9,Normal,Acute,Shortness of Breath,299,4
+P0154,Common Cold,1,2024-01-09,Male,40,2,Normal,Stable,Dizziness,180,2
+P0232,Kidney Disease,4,2026-01-23,Female,18,4,Slightly Abnormal,Chronic Controlled,Bleeding,54,5
+P0228,Hypertension,2,2025-07-01,Male,83,6,Slightly Abnormal,Needs Follow-up,Nausea,158,3
+P0418,Hypertension,3,2026-07-11,Female,46,2,Moderately Abnormal,Acute,Chest Pain,293,5
+P0204,Stroke,5,2024-02-23,Male,42,5,Severely Abnormal,Critical,Chest Pain,91,5
+P0127,Arthritis,3,2026-04-26,Male,28,8,Normal,Needs Follow-up,Bleeding,224,4
+P0330,Cancer,5,2024-08-23,Female,65,3,Moderately Abnormal,Chronic Controlled,Headache,191,5
+P0032,Cancer,5,2026-07-06,Female,15,4,Moderately Abnormal,Acute,Weakness,321,5
+P0114,UTI,2,2025-04-09,Male,15,4,Moderately Abnormal,Stable,Bleeding,167,3
+P0471,Fracture,5,2024-04-21,Female,17,3,Moderately Abnormal,Chronic Controlled,Fatigue,183,5
+P0272,UTI,2,2025-11-25,Male,62,5,Slightly Abnormal,Needs Follow-up,Dizziness,270,3
+P0141,Common Cold,1,2024-09-19,Male,68,5,Normal,Stable,Confusion,302,2
+P0058,Stroke,3,2024-12-03,Female,43,1,Slightly Abnormal,Stable,Headache,24,3
+P0193,UTI,3,2024-11-11,Female,44,2,Slightly Abnormal,Needs Follow-up,Bleeding,184,4
+P0025,Common Cold,2,2026-03-23,Female,12,3,Slightly Abnormal,Stable,Fatigue,86,3
+P0018,Gastroenteritis,3,2024-11-05,Male,57,4,Slightly Abnormal,Acute,Fatigue,203,4
+P0266,Common Cold,1,2025-08-29,Female,26,6,Normal,Stable,Headache,5,2
+P0067,Common Cold,1,2024-11-07,Female,69,5,Slightly Abnormal,Stable,Dizziness,262,2
+P0209,Arthritis,2,2023-10-23,Female,57,5,Normal,Needs Follow-up,Abdominal Pain,19,3
+P0480,UTI,4,2026-07-01,Other,70,6,Moderately Abnormal,Chronic Uncontrolled,Confusion,166,5
+P0095,Heart Disease,4,2025-12-26,Female,37,3,Severely Abnormal,Chronic Controlled,Fever,255,5
+P0254,Asthma,2,2024-08-30,Other,51,4,Normal,Acute,Headache,245,4
+P0267,Diabetes,3,2024-03-26,Female,21,5,Moderately Abnormal,Needs Follow-up,Fatigue,165,4
+P0024,Migraine,1,2024-04-14,Male,25,5,Slightly Abnormal,Stable,Chest Pain,141,2
+P0223,Asthma,3,2024-03-28,Male,46,1,Slightly Abnormal,Acute,Nausea,37,4
+P0262,Common Cold,1,2023-10-27,Female,33,3,Normal,Stable,Weakness,350,1
+P0427,Hypertension,5,2025-05-10,Male,63,3,Severely Abnormal,Chronic Controlled,Shortness of Breath,109,5
+P0006,Heart Disease,5,2023-09-08,Female,77,6,Severely Abnormal,Chronic Uncontrolled,Fatigue,79,5
+P0117,Gastroenteritis,4,2026-01-14,Male,39,5,Severely Abnormal,Chronic Controlled,Vomiting,119,5
+P0046,UTI,1,2025-08-25,Female,42,2,Slightly Abnormal,Stable,Shortness of Breath,176,2
+P0017,Asthma,2,2026-04-01,Male,60,3,Normal,Acute,Fever,31,3
+P0463,Asthma,2,2024-02-06,Male,13,3,Normal,Needs Follow-up,Cough,143,3
+P0358,Pneumonia,5,2024-10-14,Male,46,5,Severely Abnormal,Chronic Controlled,Fatigue,278,5
+P0004,Asthma,3,2025-05-02,Male,70,3,Moderately Abnormal,Needs Follow-up,Vomiting,293,4
+P0219,UTI,2,2024-04-13,Female,50,3,Moderately Abnormal,Needs Follow-up,Shortness of Breath,216,3
+P0406,Asthma,4,2024-07-19,Male,64,5,Severely Abnormal,Chronic Controlled,Weakness,227,5
+P0061,Hypertension,3,2025-09-03,Male,2,4,Slightly Abnormal,Acute,None/Mild,70,4
+P0111,Hypertension,2,2026-05-27,Female,61,5,Severely Abnormal,Needs Follow-up,Bleeding,75,4
+P0319,Migraine,1,2026-02-06,Male,27,4,Normal,Stable,Chest Pain,89,2
+P0429,Heart Disease,5,2025-06-23,Male,17,4,Severely Abnormal,Chronic Controlled,Dizziness,95,5
+P0030,Cancer,5,2024-06-04,Female,52,3,Severely Abnormal,Chronic Controlled,Fever,140,5
+P0438,Hypertension,2,2024-08-22,Male,65,4,Moderately Abnormal,Stable,Weakness,196,4
+P0472,UTI,2,2024-09-24,Female,39,4,Normal,Needs Follow-up,Shortness of Breath,239,2
+P0027,Stroke,4,2026-05-11,Male,84,3,Severely Abnormal,Chronic Uncontrolled,Severe Pain,363,5
+P0008,Diabetes,3,2025-12-04,Male,24,3,Moderately Abnormal,Acute,Dizziness,110,4
+P0454,Migraine,2,2023-09-29,Male,51,4,Slightly Abnormal,Needs Follow-up,Weakness,250,3
+P0109,Migraine,2,2025-05-22,Female,24,6,Moderately Abnormal,Stable,Vomiting,229,3
+P0038,COPD,5,2026-05-13,Female,70,3,Severely Abnormal,Chronic Uncontrolled,Headache,111,5
+P0158,Arthritis,1,2024-08-25,Female,58,3,Slightly Abnormal,Stable,Vomiting,270,1
+P0490,Migraine,1,2025-02-08,Female,52,7,Normal,Needs Follow-up,Vomiting,16,2
+P0119,Common Cold,1,2025-02-11,Female,39,5,Normal,Stable,Cough,218,2
+P0115,Diabetes,2,2025-06-19,Male,72,3,Normal,Needs Follow-up,Abdominal Pain,314,4
+P0176,UTI,2,2023-10-25,Female,40,5,Slightly Abnormal,Needs Follow-up,Shortness of Breath,42,3
+P0374,Pneumonia,5,2026-01-31,Female,65,4,Severely Abnormal,Critical,Chest Pain,198,5
+P0182,Pneumonia,4,2026-08-03,Male,49,6,Severely Abnormal,Chronic Uncontrolled,Dizziness,34,5
+P0145,Asthma,2,2024-10-09,Male,90,4,Normal,Needs Follow-up,Headache,159,3
+P0370,COPD,4,2025-06-19,Male,55,2,Severely Abnormal,Acute,Vomiting,319,5
+P0391,Diabetes,2,2025-08-13,Female,21,5,Slightly Abnormal,Needs Follow-up,Cough,285,4
+P0196,Migraine,2,2025-05-27,Other,58,7,Normal,Acute,Bleeding,160,3
+P0405,Stroke,4,2024-02-26,Female,70,3,Slightly Abnormal,Chronic Controlled,Severe Pain,300,5
+P0276,UTI,2,2024-11-08,Male,1,2,Slightly Abnormal,Needs Follow-up,Fatigue,218,3
+P0455,Kidney Disease,4,2024-02-27,Female,78,2,Severely Abnormal,Chronic Controlled,None/Mild,363,5
+P0142,Diabetes,3,2026-07-14,Female,20,3,Slightly Abnormal,Acute,Severe Pain,230,4
+P0366,Cancer,5,2023-11-15,Female,42,3,Severely Abnormal,Chronic Uncontrolled,Cough,328,5
+P0068,Arthritis,2,2025-07-24,Male,43,4,Slightly Abnormal,Needs Follow-up,Nausea,351,3
+P0211,Fracture,4,2024-12-04,Male,52,4,Moderately Abnormal,Chronic Controlled,Chest Pain,255,5
+P0169,Hypertension,1,2025-12-31,Female,50,2,Moderately Abnormal,Stable,Headache,108,2
+P0494,Diabetes,2,2026-03-16,Female,46,4,Moderately Abnormal,Stable,Nausea,308,3
+P0376,Gastroenteritis,2,2025-01-23,Female,47,3,Slightly Abnormal,Stable,Fatigue,162,2
+P0401,Arthritis,2,2026-03-02,Male,77,4,Normal,Needs Follow-up,Fatigue,357,3
+P0273,Cancer,5,2026-04-24,Male,41,2,Severely Abnormal,Chronic Uncontrolled,Chest Pain,298,5
+P0110,Cancer,5,2026-01-17,Female,52,4,Moderately Abnormal,Critical,Nausea,148,5
+P0249,Asthma,3,2024-09-18,Female,59,3,Slightly Abnormal,Needs Follow-up,Fatigue,217,4
+P0146,Migraine,3,2023-10-05,Female,90,5,Moderately Abnormal,Needs Follow-up,Abdominal Pain,193,4
+P0093,Migraine,1,2025-05-01,Female,43,1,Normal,Stable,Severe Pain,24,1
+P0153,UTI,1,2026-07-31,Female,68,3,Slightly Abnormal,Stable,Headache,46,2
+P0368,Common Cold,1,2024-12-04,Male,53,2,Normal,Stable,Chest Pain,363,2
+P0468,Diabetes,2,2026-04-16,Female,61,5,Slightly Abnormal,Acute,Fever,352,3
+P0084,Common Cold,1,2023-11-23,Female,37,4,Normal,Stable,Fever,332,2
+P0246,Stroke,5,2024-09-07,Male,79,4,Moderately Abnormal,Chronic Controlled,Nausea,67,5
+P0166,Arthritis,2,2026-08-14,Female,71,5,Normal,Acute,Chest Pain,339,3
+P0164,Pneumonia,4,2025-11-25,Female,42,4,Moderately Abnormal,Chronic Uncontrolled,Bleeding,279,5
+P0200,Pneumonia,3,2024-12-01,Female,84,2,Slightly Abnormal,Needs Follow-up,Nausea,41,3
+P0229,Gastroenteritis,2,2026-01-05,Female,58,2,Slightly Abnormal,Stable,Nausea,114,3
+P0075,Heart Disease,5,2026-02-28,Female,68,4,Severely Abnormal,Critical,Weakness,220,5
+P0479,Migraine,2,2024-01-24,Female,51,2,Moderately Abnormal,Stable,Headache,163,3
+P0359,COPD,5,2025-05-26,Male,55,6,Moderately Abnormal,Chronic Uncontrolled,Weakness,313,5
+P0251,Hypertension,2,2026-04-04,Male,38,4,Slightly Abnormal,Chronic Controlled,Dizziness,205,3
+P0120,Arthritis,2,2026-01-23,Male,36,2,Moderately Abnormal,Needs Follow-up,Weakness,312,3
+P0311,Cancer,5,2025-01-26,Female,67,4,Severely Abnormal,Chronic Controlled,Fever,86,5
+P0300,Kidney Disease,5,2025-06-06,Male,25,3,Slightly Abnormal,Chronic Controlled,Fever,33,5
+P0256,Diabetes,2,2025-12-29,Female,80,3,Normal,Stable,None/Mild,236,3
+P0355,COPD,5,2026-02-23,Female,36,5,Moderately Abnormal,Chronic Controlled,Chest Pain,328,5
+P0400,Kidney Disease,4,2026-03-11,Female,50,4,Moderately Abnormal,Acute,Fatigue,364,5
+P0226,Asthma,3,2025-01-28,Male,38,1,Slightly Abnormal,Stable,None/Mild,103,4
+P0354,Kidney Disease,4,2026-01-04,Male,18,1,Moderately Abnormal,Chronic Controlled,Vomiting,353,5
+P0235,Hypertension,2,2024-01-28,Male,52,3,Normal,Stable,Dizziness,93,2
+P0383,Pneumonia,4,2024-07-11,Male,56,3,Severely Abnormal,Acute,Confusion,15,5
+P0275,Common Cold,1,2024-02-01,Female,63,4,Normal,Stable,Headache,156,1
+P0037,Heart Disease,5,2026-02-14,Female,35,5,Severely Abnormal,Chronic Uncontrolled,Fever,153,5
+P0197,Kidney Disease,4,2026-02-28,Female,14,4,Severely Abnormal,Chronic Controlled,Shortness of Breath,227,5
+P0140,Kidney Disease,3,2023-11-08,Male,13,1,Moderately Abnormal,Stable,Dizziness,194,5
+P0365,Fracture,4,2025-08-24,Male,54,8,Severely Abnormal,Chronic Uncontrolled,Bleeding,27,5
+P0245,COPD,4,2024-09-24,Male,47,9,Moderately Abnormal,Chronic Controlled,Headache,222,5
+P0440,Cancer,5,2025-04-12,Male,56,5,Moderately Abnormal,Chronic Uncontrolled,Nausea,109,5
+P0287,Diabetes,2,2026-06-03,Male,43,7,Slightly Abnormal,Stable,Fatigue,84,2
+P0060,Pneumonia,4,2024-12-26,Male,62,2,Slightly Abnormal,Chronic Uncontrolled,Chest Pain,285,5
+P0112,Cancer,5,2024-01-09,Male,42,4,Moderately Abnormal,Chronic Controlled,Fever,207,5
+P0090,Gastroenteritis,2,2024-03-31,Other,39,3,Slightly Abnormal,Acute,Shortness of Breath,238,3
+P0437,Stroke,5,2024-05-26,Female,41,4,Severely Abnormal,Chronic Uncontrolled,Bleeding,202,5
+P0007,Common Cold,1,2025-12-09,Male,29,4,Normal,Stable,Abdominal Pain,117,0
+P0361,Hypertension,3,2025-11-19,Female,27,2,Severely Abnormal,Acute,None/Mild,57,4
+P0347,Migraine,1,2026-02-22,Female,26,3,Normal,Stable,None/Mild,109,2
+P0339,Fracture,4,2024-07-31,Male,46,9,Normal,Acute,Vomiting,214,5
+P0159,Diabetes,3,2024-02-02,Female,70,5,Slightly Abnormal,Needs Follow-up,Cough,190,3
+P0151,Stroke,5,2024-12-30,Female,59,5,Severely Abnormal,Chronic Controlled,Headache,359,5
+P0178,Fracture,2,2025-11-14,Male,31,3,Slightly Abnormal,Acute,Bleeding,176,4
+P0394,Cancer,5,2024-12-01,Male,27,3,Severely Abnormal,Chronic Controlled,Fatigue,229,5
+P0185,Hypertension,1,2025-09-19,Male,57,1,Normal,Needs Follow-up,None/Mild,360,1
+P0450,Diabetes,2,2024-05-30,Female,64,3,Slightly Abnormal,Stable,Weakness,153,3
+P0011,Diabetes,1,2024-11-16,Female,35,5,Normal,Needs Follow-up,Chest Pain,101,3
+P0381,Cancer,4,2024-02-09,Female,50,3,Slightly Abnormal,Chronic Controlled,Severe Pain,266,5
+P0104,Asthma,3,2023-09-24,Female,32,4,Slightly Abnormal,Chronic Controlled,Headache,142,4
+P0082,Cancer,5,2024-11-14,Male,19,8,Severely Abnormal,Critical,Vomiting,186,5
+P0039,Heart Disease,4,2024-09-25,Female,54,4,Severely Abnormal,Chronic Uncontrolled,Vomiting,35,5
+P0315,Gastroenteritis,1,2026-05-15,Male,48,6,Normal,Acute,Bleeding,22,3
+P0168,Common Cold,2,2024-09-05,Female,38,3,Moderately Abnormal,Stable,Nausea,132,3
+P0470,Gastroenteritis,3,2024-10-04,Female,50,3,Moderately Abnormal,Acute,Headache,97,5
+P0297,Diabetes,1,2024-05-12,Female,88,9,Slightly Abnormal,Stable,Vomiting,312,2
+P0475,Migraine,1,2026-03-06,Other,10,4,Normal,Stable,Abdominal Pain,142,1
+P0199,Fracture,4,2024-02-26,Female,75,6,Moderately Abnormal,Chronic Uncontrolled,None/Mild,59,5
+P0298,Arthritis,3,2024-04-03,Male,46,5,Severely Abnormal,Acute,Cough,161,5
+P0417,COPD,5,2024-10-04,Female,63,2,Moderately Abnormal,Critical,Fever,329,5
+P0147,Migraine,2,2026-06-06,Female,49,6,Normal,Needs Follow-up,Cough,236,2
+P0393,Stroke,4,2024-07-25,Male,10,4,Normal,Acute,Severe Pain,245,5
+P0148,Heart Disease,5,2025-10-09,Female,41,4,Severely Abnormal,Chronic Uncontrolled,Fatigue,277,5
+P0448,Common Cold,2,2024-01-24,Male,55,2,Normal,Stable,Fever,42,2
+P0288,UTI,2,2025-02-19,Male,69,6,Normal,Needs Follow-up,Cough,53,2
+P0124,Cancer,5,2023-11-28,Male,54,6,Severely Abnormal,Acute,Chest Pain,274,5
+P0369,Gastroenteritis,2,2025-09-17,Female,10,4,Slightly Abnormal,Stable,Confusion,362,3
+P0097,Heart Disease,5,2026-07-25,Male,40,4,Moderately Abnormal,Chronic Uncontrolled,Severe Pain,275,5
+P0144,UTI,3,2023-09-06,Female,32,3,Slightly Abnormal,Needs Follow-up,Dizziness,208,4
+P0240,Cancer,5,2023-09-30,Female,3,2,Moderately Abnormal,Critical,None/Mild,200,5
+P0443,Stroke,5,2024-08-26,Female,34,3,Moderately Abnormal,Critical,Chest Pain,2,5
+P0098,Asthma,3,2024-04-20,Male,65,2,Slightly Abnormal,Acute,Cough,63,4
+P0408,Asthma,2,2026-07-12,Female,19,3,Normal,Stable,Cough,205,2
+P0123,Diabetes,3,2024-07-06,Male,31,3,Slightly Abnormal,Needs Follow-up,Fatigue,302,3
+P0184,Heart Disease,5,2026-01-22,Female,79,2,Moderately Abnormal,Chronic Uncontrolled,Weakness,354,5
+P0203,Pneumonia,4,2026-02-25,Female,74,4,Slightly Abnormal,Chronic Controlled,Confusion,196,5
+P0247,Asthma,3,2026-08-06,Male,72,8,Slightly Abnormal,Acute,Headache,299,5
+P0306,Arthritis,3,2025-07-27,Female,90,4,Slightly Abnormal,Acute,None/Mild,249,4
+P0299,Common Cold,1,2024-01-25,Female,43,3,Normal,Stable,Fatigue,271,1
+P0352,Fracture,3,2024-08-11,Male,84,4,Slightly Abnormal,Acute,None/Mild,332,3
+P0387,Pneumonia,4,2025-05-04,Male,19,5,Severely Abnormal,Chronic Controlled,Nausea,338,5
+P0396,Asthma,3,2024-08-26,Male,30,4,Moderately Abnormal,Needs Follow-up,Severe Pain,217,4
+P0285,Stroke,5,2024-12-24,Female,17,6,Severely Abnormal,Chronic Uncontrolled,Dizziness,324,5
+P0126,Fracture,3,2025-04-14,Female,43,4,Moderately Abnormal,Chronic Controlled,Chest Pain,207,5
+P0303,COPD,3,2024-09-09,Female,57,3,Moderately Abnormal,Acute,Fatigue,19,4
+P0224,Hypertension,2,2025-04-12,Male,26,3,Normal,Stable,Dizziness,141,3
+P0419,Arthritis,2,2024-10-31,Female,37,4,Normal,Needs Follow-up,Confusion,267,2
+P0220,Heart Disease,5,2026-02-10,Female,79,3,Severely Abnormal,Chronic Controlled,Weakness,76,5
+P0130,UTI,3,2026-03-22,Male,68,2,Moderately Abnormal,Needs Follow-up,Chest Pain,144,4
+P0421,Diabetes,4,2024-04-13,Male,29,4,Moderately Abnormal,Chronic Controlled,Dizziness,103,5
+P0290,Asthma,4,2025-03-22,Female,51,5,Slightly Abnormal,Chronic Uncontrolled,Bleeding,215,5
+P0445,Stroke,4,2024-04-06,Female,59,1,Slightly Abnormal,Chronic Controlled,Abdominal Pain,66,5
+P0377,Fracture,3,2026-04-24,Female,24,5,Slightly Abnormal,Chronic Controlled,Bleeding,118,4
+P0292,Pneumonia,5,2023-12-21,Male,81,3,Severely Abnormal,Chronic Uncontrolled,Fatigue,152,5
+P0356,Hypertension,3,2023-08-23,Other,17,5,Moderately Abnormal,Acute,Headache,192,5
+P0295,COPD,3,2025-08-06,Male,20,3,Moderately Abnormal,Acute,Headache,361,4
+P0397,Arthritis,2,2025-03-24,Male,59,5,Normal,Needs Follow-up,Vomiting,307,2
+P0341,Gastroenteritis,1,2024-11-13,Female,31,5,Moderately Abnormal,Needs Follow-up,Dizziness,265,2
+P0113,Arthritis,1,2026-06-15,Female,13,3,Slightly Abnormal,Needs Follow-up,Headache,197,2
+P0180,Cancer,4,2024-02-01,Female,40,3,Moderately Abnormal,Chronic Controlled,Weakness,117,5
+P0308,Stroke,5,2024-12-22,Male,66,3,Severely Abnormal,Chronic Controlled,Dizziness,118,5
+P0433,Pneumonia,3,2024-03-14,Female,63,6,Severely Abnormal,Chronic Uncontrolled,None/Mild,326,5
+P0488,Common Cold,2,2026-07-12,Female,36,2,Slightly Abnormal,Acute,Cough,43,3
+P0482,Pneumonia,4,2025-12-06,Female,49,4,Moderately Abnormal,Chronic Uncontrolled,None/Mild,295,5
+P0423,Arthritis,2,2025-08-07,Male,50,3,Moderately Abnormal,Acute,Vomiting,290,3
+P0234,Diabetes,2,2026-04-16,Male,44,4,Normal,Acute,Fever,167,3
+P0312,Kidney Disease,4,2025-06-24,Male,46,6,Moderately Abnormal,Chronic Uncontrolled,Fatigue,241,5
+P0165,Kidney Disease,4,2024-09-28,Male,37,2,Moderately Abnormal,Acute,Shortness of Breath,34,5
+P0137,Stroke,5,2025-03-21,Male,71,2,Moderately Abnormal,Chronic Uncontrolled,Fatigue,223,5
+P0198,Cancer,5,2025-06-11,Female,30,2,Moderately Abnormal,Chronic Controlled,Confusion,216,5
+P0259,Gastroenteritis,4,2024-03-19,Male,29,4,Slightly Abnormal,Acute,Chest Pain,6,5
+P0233,Stroke,4,2024-10-22,Male,90,3,Moderately Abnormal,Chronic Uncontrolled,Vomiting,112,5
+P0116,Hypertension,2,2025-07-19,Female,44,4,Normal,Acute,None/Mild,333,3
+P0121,Heart Disease,4,2024-08-25,Female,67,6,Slightly Abnormal,Chronic Controlled,Cough,141,5
+P0350,Pneumonia,4,2025-10-09,Male,89,2,Moderately Abnormal,Chronic Controlled,Cough,1,5
+P0225,Heart Disease,4,2024-06-01,Male,21,8,Slightly Abnormal,Needs Follow-up,Shortness of Breath,233,5
+P0403,Heart Disease,3,2025-08-11,Female,31,5,Slightly Abnormal,Needs Follow-up,Dizziness,159,4
+P0398,Cancer,4,2023-10-05,Female,59,3,Severely Abnormal,Chronic Uncontrolled,Chest Pain,160,5
+P0128,Asthma,3,2024-04-30,Female,33,5,Slightly Abnormal,Acute,Severe Pain,51,4
+P0286,Diabetes,2,2026-03-22,Female,65,5,Normal,Needs Follow-up,Vomiting,299,3
+P0412,Kidney Disease,3,2024-06-14,Female,49,1,Slightly Abnormal,Acute,None/Mild,194,4
+P0108,Arthritis,2,2024-06-13,Male,28,3,Normal,Stable,Chest Pain,222,3
+P0371,Heart Disease,2,2025-09-21,Other,54,3,Slightly Abnormal,Needs Follow-up,Headache,125,3
+P0326,Diabetes,3,2026-06-29,Female,53,6,Moderately Abnormal,Chronic Controlled,Confusion,265,5
+P0134,Fracture,2,2026-04-12,Female,79,2,Slightly Abnormal,Needs Follow-up,Abdominal Pain,285,3
+P0453,Migraine,2,2026-04-29,Female,36,4,Normal,Acute,Severe Pain,17,2
+P0045,Hypertension,3,2023-12-01,Female,57,3,Slightly Abnormal,Stable,Chest Pain,306,4
+P0461,Stroke,5,2025-01-30,Female,55,5,Moderately Abnormal,Critical,Chest Pain,282,5
+P0066,Common Cold,1,2025-08-11,Male,65,5,Normal,Needs Follow-up,None/Mild,242,1
+P0284,Gastroenteritis,1,2026-02-27,Female,52,5,Normal,Acute,Chest Pain,42,1
+P0086,Heart Disease,4,2025-09-10,Female,36,6,Moderately Abnormal,Chronic Uncontrolled,Cough,307,5
+P0243,Kidney Disease,4,2025-10-21,Male,62,3,Normal,Acute,Weakness,64,5
+P0187,Diabetes,2,2025-10-12,Male,60,4,Slightly Abnormal,Needs Follow-up,Vomiting,145,2
+P0384,Cancer,3,2024-09-12,Male,40,2,Slightly Abnormal,Acute,Fever,101,4
+P0160,Gastroenteritis,1,2024-08-16,Male,47,5,Normal,Stable,Bleeding,246,2
+P0013,Asthma,2,2026-04-26,Female,38,5,Normal,Stable,Cough,200,2
+P0036,Stroke,5,2026-08-19,Female,18,3,Severely Abnormal,Chronic Controlled,Abdominal Pain,16,5
+P0029,Hypertension,3,2024-11-03,Female,36,2,Moderately Abnormal,Needs Follow-up,Abdominal Pain,76,4
+P0171,Hypertension,2,2026-07-11,Male,19,3,Slightly Abnormal,Needs Follow-up,Fever,357,2
+P0143,Heart Disease,4,2025-01-27,Female,19,4,Moderately Abnormal,Chronic Uncontrolled,Cough,292,5
+P0399,COPD,4,2023-12-31,Male,48,5,Slightly Abnormal,Chronic Uncontrolled,None/Mild,285,4
+P0343,Common Cold,3,2024-10-13,Male,24,3,Moderately Abnormal,Chronic Controlled,Severe Pain,236,4
+P0222,Cancer,5,2026-06-24,Male,30,2,Severely Abnormal,Chronic Uncontrolled,Bleeding,307,5
+P0096,Arthritis,2,2024-05-26,Female,61,6,Normal,Stable,Fatigue,201,4
+P0052,Cancer,4,2023-10-13,Male,22,2,Moderately Abnormal,Chronic Controlled,Abdominal Pain,188,5
+P0241,Stroke,5,2024-04-06,Male,34,4,Severely Abnormal,Critical,Cough,226,5
+P0485,Kidney Disease,5,2025-03-01,Female,72,3,Slightly Abnormal,Critical,Abdominal Pain,265,5
+P0379,Gastroenteritis,2,2026-06-02,Female,29,2,Severely Abnormal,Acute,Fatigue,80,4
+P0179,Fracture,3,2026-04-20,Male,13,4,Moderately Abnormal,Acute,Fever,174,5
+P0042,Pneumonia,2,2025-12-03,Male,11,1,Moderately Abnormal,Acute,Severe Pain,219,3
+P0499,Heart Disease,4,2026-03-24,Male,50,4,Moderately Abnormal,Critical,None/Mild,25,5
+P0422,Arthritis,2,2023-10-06,Male,90,5,Slightly Abnormal,Stable,Bleeding,103,4
+P0207,Kidney Disease,5,2024-02-27,Male,59,4,Slightly Abnormal,Critical,None/Mild,263,5
+P0283,Arthritis,2,2025-05-05,Female,70,4,Slightly Abnormal,Chronic Controlled,Chest Pain,109,4
+P0255,Kidney Disease,4,2024-08-08,Male,37,3,Moderately Abnormal,Acute,Bleeding,301,5
+P0413,Gastroenteritis,3,2024-10-24,Male,34,5,Moderately Abnormal,Acute,Weakness,253,4
+P0005,Hypertension,3,2024-08-03,Male,52,2,Normal,Acute,Abdominal Pain,203,3
+P0257,COPD,4,2026-05-12,Female,52,8,Slightly Abnormal,Chronic Uncontrolled,Headache,64,5
+P0449,Migraine,3,2024-07-03,Male,37,6,Slightly Abnormal,Acute,Shortness of Breath,102,5
+P0101,Common Cold,1,2023-11-06,Other,1,2,Slightly Abnormal,Stable,Headache,38,2
+P0227,Migraine,1,2023-11-13,Female,54,2,Normal,Needs Follow-up,Bleeding,90,1
+P0430,Hypertension,2,2024-07-29,Female,39,3,Slightly Abnormal,Needs Follow-up,Severe Pain,121,3
+P0214,Hypertension,1,2025-02-22,Female,44,2,Normal,Stable,Abdominal Pain,172,1
+P0172,Pneumonia,3,2025-03-15,Female,55,6,Moderately Abnormal,Chronic Controlled,Weakness,326,5
+P0099,UTI,4,2025-03-18,Male,42,2,Slightly Abnormal,Chronic Uncontrolled,Fever,325,4
+P0293,Hypertension,2,2026-01-02,Male,54,5,Slightly Abnormal,Chronic Controlled,Nausea,308,3
+P0216,Cancer,5,2024-01-31,Male,28,5,Severely Abnormal,Critical,None/Mild,251,5
+P0062,Diabetes,3,2025-03-19,Female,53,1,Normal,Stable,None/Mild,88,3
+P0048,Diabetes,3,2024-03-24,Female,44,5,Moderately Abnormal,Needs Follow-up,Dizziness,226,5
+P0033,Common Cold,1,2026-04-29,Male,50,3,Normal,Needs Follow-up,Fever,6,2
+P0268,Pneumonia,4,2024-02-25,Female,50,4,Moderately Abnormal,Chronic Controlled,Headache,290,5
+P0328,Gastroenteritis,1,2026-06-29,Female,23,3,Moderately Abnormal,Stable,Confusion,156,2
+P0201,Diabetes,5,2025-06-08,Male,67,6,Moderately Abnormal,Critical,None/Mild,182,5
+P0447,Heart Disease,4,2024-10-03,Female,76,4,Moderately Abnormal,Needs Follow-up,Fatigue,338,5
+P0028,Gastroenteritis,3,2024-06-15,Female,23,3,Normal,Acute,Shortness of Breath,279,4
+P0425,Asthma,4,2024-07-21,Female,37,4,Severely Abnormal,Chronic Uncontrolled,Shortness of Breath,255,5
+P0231,Asthma,2,2023-11-05,Male,50,3,Normal,Needs Follow-up,Cough,121,2
+P0261,Kidney Disease,3,2024-12-24,Female,51,2,Slightly Abnormal,Chronic Controlled,Headache,71,3
+P0289,Hypertension,3,2025-12-18,Female,55,6,Normal,Chronic Controlled,Fatigue,90,4
+P0163,Cancer,5,2024-10-17,Female,21,3,Severely Abnormal,Chronic Controlled,Vomiting,3,5
+P0426,Cancer,4,2024-04-01,Female,68,9,Slightly Abnormal,Chronic Controlled,Abdominal Pain,328,5
+P0139,Gastroenteritis,1,2026-07-21,Male,45,2,Normal,Stable,Severe Pain,200,1
+P0063,Cancer,5,2024-02-02,Male,49,6,Severely Abnormal,Critical,Vomiting,29,5
+P0136,Pneumonia,4,2026-03-04,Female,73,4,Severely Abnormal,Chronic Controlled,Bleeding,359,5
+P0129,Heart Disease,5,2025-12-08,Male,35,4,Severely Abnormal,Chronic Uncontrolled,Weakness,269,5
+P0477,COPD,3,2026-07-08,Female,47,3,Slightly Abnormal,Chronic Controlled,Bleeding,34,4
+P0009,Arthritis,2,2026-05-19,Female,21,8,Normal,Acute,Headache,257,3
+P0327,Asthma,2,2025-09-04,Male,67,5,Normal,Stable,Fatigue,200,3
+P0464,Cancer,5,2023-10-26,Female,52,3,Severely Abnormal,Chronic Uncontrolled,Chest Pain,122,5
+P0065,Asthma,2,2024-06-03,Other,75,4,Slightly Abnormal,Stable,Fever,97,3
+P0301,Heart Disease,5,2024-04-07,Female,49,9,Severely Abnormal,Acute,Headache,241,5
+P0015,UTI,3,2023-12-19,Female,45,5,Moderately Abnormal,Needs Follow-up,Weakness,345,5
+P0157,Diabetes,3,2024-02-29,Female,36,3,Slightly Abnormal,Acute,Bleeding,261,5
+P0041,Gastroenteritis,3,2025-01-29,Male,32,4,Moderately Abnormal,Acute,Severe Pain,206,5
+P0380,COPD,4,2025-12-10,Male,32,4,Severely Abnormal,Chronic Controlled,Fatigue,67,5
+P0469,COPD,4,2024-02-04,Female,44,4,Moderately Abnormal,Chronic Controlled,Severe Pain,285,5
+P0404,Heart Disease,5,2026-07-30,Female,35,5,Severely Abnormal,Needs Follow-up,Nausea,203,5
+P0217,Cancer,5,2024-03-14,Female,28,4,Moderately Abnormal,Acute,Bleeding,11,5
+P0280,Fracture,3,2024-12-03,Female,33,8,Normal,Acute,Severe Pain,298,4
+P0435,Heart Disease,4,2026-03-21,Female,50,3,Severely Abnormal,Chronic Controlled,Cough,336,5
+P0431,Asthma,4,2025-03-27,Female,57,4,Moderately Abnormal,Chronic Uncontrolled,Weakness,49,5
+P0338,Pneumonia,3,2024-06-13,Female,55,3,Moderately Abnormal,Needs Follow-up,Bleeding,324,4
+P0237,Migraine,2,2024-03-11,Female,31,3,Slightly Abnormal,Needs Follow-up,Bleeding,35,3
+P0208,Diabetes,3,2024-06-09,Male,69,3,Slightly Abnormal,Chronic Controlled,Confusion,333,4
+P0213,Diabetes,2,2025-05-19,Female,62,6,Slightly Abnormal,Needs Follow-up,Severe Pain,206,3
+P0296,Heart Disease,4,2024-03-10,Female,38,5,Moderately Abnormal,Chronic Controlled,Fever,160,5
+P0458,Common Cold,2,2025-11-25,Male,48,3,Normal,Acute,Cough,332,1
+P0252,Common Cold,2,2026-03-14,Male,53,3,Normal,Acute,Abdominal Pain,313,2
+P0489,Asthma,3,2024-06-18,Female,51,4,Normal,Acute,Vomiting,285,4
+P0487,Arthritis,2,2024-11-02,Male,32,4,Slightly Abnormal,Acute,Nausea,169,3
+P0304,Diabetes,3,2026-05-29,Female,61,4,Moderately Abnormal,Acute,Vomiting,102,5
+P0351,Stroke,5,2026-02-06,Male,29,4,Moderately Abnormal,Critical,Cough,293,5
+P0270,Kidney Disease,4,2025-07-10,Male,74,4,Moderately Abnormal,Chronic Controlled,Dizziness,161,5
+P0202,UTI,1,2026-07-31,Male,58,6,Normal,Stable,Cough,83,1
+P0162,Migraine,2,2025-01-05,Male,42,3,Normal,Acute,Fever,190,3
+P0044,Diabetes,2,2025-03-14,Male,80,5,Slightly Abnormal,Needs Follow-up,Headache,171,3
+P0218,UTI,1,2024-08-20,Female,36,1,Normal,Stable,Chest Pain,150,1
+P0402,Stroke,4,2025-06-24,Male,55,2,Severely Abnormal,Chronic Uncontrolled,Chest Pain,101,5
+P0191,UTI,2,2025-05-20,Female,90,4,Slightly Abnormal,Stable,Nausea,78,3
+P0310,Arthritis,1,2025-02-07,Female,78,5,Slightly Abnormal,Stable,Severe Pain,52,2
+P0260,Migraine,1,2024-10-19,Female,61,5,Slightly Abnormal,Needs Follow-up,Shortness of Breath,321,3
+P0106,Common Cold,2,2025-04-14,Male,55,1,Normal,Acute,Severe Pain,2,3
+P0054,Asthma,3,2025-02-25,Male,59,6,Normal,Acute,Shortness of Breath,334,5
+P0390,Migraine,2,2024-06-14,Male,1,5,Normal,Needs Follow-up,Confusion,101,3
+P0002,Fracture,4,2026-06-10,Female,57,3,Moderately Abnormal,Acute,Abdominal Pain,354,5
+P0442,Asthma,3,2025-11-01,Male,24,5,Severely Abnormal,Stable,Confusion,64,4
+P0483,Fracture,2,2025-06-06,Female,42,5,Slightly Abnormal,Acute,Fever,155,3
+P0050,Asthma,2,2025-08-31,Female,39,2,Slightly Abnormal,Needs Follow-up,Chest Pain,356,3
+P0420,Asthma,2,2026-02-07,Male,79,9,Normal,Stable,Bleeding,138,3
+P0081,Kidney Disease,5,2025-06-18,Male,60,5,Moderately Abnormal,Chronic Uncontrolled,Bleeding,34,5
+P0206,Common Cold,1,2025-07-05,Female,57,6,Normal,Needs Follow-up,Headache,6,2
+P0035,UTI,2,2024-07-17,Male,74,1,Slightly Abnormal,Acute,Headache,200,3
+P0264,Diabetes,3,2025-12-05,Female,62,2,Moderately Abnormal,Chronic Uncontrolled,Dizziness,178,5
+P0428,Hypertension,1,2025-06-07,Female,77,4,Normal,Needs Follow-up,Weakness,166,2
+P0367,Asthma,4,2024-02-02,Female,26,3,Moderately Abnormal,Chronic Controlled,Fatigue,350,5
+P0092,UTI,2,2025-10-19,Male,64,5,Normal,Needs Follow-up,Headache,25,3
+P0340,Cancer,5,2026-01-19,Male,90,3,Severely Abnormal,Critical,Cough,31,5
+P0474,Stroke,5,2025-05-17,Male,63,1,Severely Abnormal,Chronic Uncontrolled,Abdominal Pain,244,5
+P0053,Gastroenteritis,4,2025-06-08,Male,39,4,Slightly Abnormal,Chronic Controlled,Fatigue,42,4
+P0346,Arthritis,3,2026-07-15,Female,70,6,Slightly Abnormal,Needs Follow-up,Shortness of Breath,104,5
+P0265,Arthritis,2,2025-02-23,Female,11,1,Slightly Abnormal,Acute,Fatigue,336,3
+P0242,UTI,4,2025-09-09,Female,12,3,Moderately Abnormal,Chronic Controlled,Headache,324,5
+P0014,Pneumonia,3,2023-09-23,Female,29,4,Slightly Abnormal,Needs Follow-up,Fever,362,4
+P0316,Pneumonia,4,2024-12-02,Male,27,3,Moderately Abnormal,Acute,Vomiting,53,5
+P0089,Heart Disease,4,2023-08-22,Female,29,3,Moderately Abnormal,Chronic Controlled,Bleeding,215,5
+P0388,COPD,2,2024-08-07,Male,28,4,Slightly Abnormal,Needs Follow-up,Fatigue,252,2
+P0274,UTI,2,2025-05-02,Male,47,3,Slightly Abnormal,Stable,None/Mild,226,2
+P0167,Arthritis,2,2025-11-12,Male,46,5,Normal,Acute,Bleeding,73,3
+P0329,Pneumonia,4,2026-08-01,Male,47,6,Moderately Abnormal,Chronic Controlled,Chest Pain,36,5
+P0493,Migraine,1,2025-11-08,Other,21,4,Normal,Stable,None/Mild,221,1
+P0135,Arthritis,1,2025-04-26,Female,48,6,Normal,Needs Follow-up,Chest Pain,313,2
+P0307,Migraine,2,2024-10-24,Female,45,4,Slightly Abnormal,Needs Follow-up,Fatigue,162,3
+P0481,Pneumonia,4,2024-01-03,Male,43,3,Moderately Abnormal,Chronic Controlled,None/Mild,302,5
+P0320,Stroke,4,2023-09-30,Male,54,1,Moderately Abnormal,Chronic Uncontrolled,Shortness of Breath,32,5
+P0244,Asthma,3,2024-06-26,Male,87,4,Severely Abnormal,Needs Follow-up,Cough,225,5
+P0055,Migraine,1,2025-07-18,Female,25,2,Slightly Abnormal,Stable,Abdominal Pain,324,2
+P0364,Cancer,5,2026-03-31,Male,63,7,Severely Abnormal,Chronic Uncontrolled,Dizziness,357,5
+P0051,Stroke,4,2026-05-22,Female,35,4,Slightly Abnormal,Chronic Controlled,None/Mild,278,5
+P0457,Hypertension,2,2024-06-24,Female,43,4,Moderately Abnormal,Acute,Bleeding,85,4
+P0175,Fracture,3,2025-05-12,Female,59,4,Slightly Abnormal,Acute,Nausea,176,4
+P0446,COPD,3,2025-04-13,Female,66,5,Moderately Abnormal,Chronic Controlled,Vomiting,259,5
+P0190,Common Cold,2,2026-04-22,Male,39,6,Moderately Abnormal,Needs Follow-up,None/Mild,243,3
+P0497,Heart Disease,4,2025-08-02,Female,20,6,Moderately Abnormal,Chronic Uncontrolled,Weakness,94,5
+P0188,Arthritis,2,2024-12-21,Male,37,5,Slightly Abnormal,Chronic Controlled,Dizziness,207,2
+P0170,UTI,3,2025-08-06,Male,35,4,Slightly Abnormal,Chronic Controlled,Chest Pain,6,4
+P0059,Gastroenteritis,3,2025-09-14,Male,43,2,Slightly Abnormal,Chronic Controlled,Dizziness,179,4
+P0049,Stroke,4,2023-12-05,Female,1,6,Severely Abnormal,Acute,Abdominal Pain,57,5
+P0345,COPD,4,2024-06-12,Male,32,6,Moderately Abnormal,Needs Follow-up,None/Mild,313,5
+P0236,Cancer,3,2024-09-01,Male,26,5,Slightly Abnormal,Stable,Fatigue,5,3
+P0253,Diabetes,2,2024-11-04,Female,22,2,Normal,Needs Follow-up,Headache,170,2
+P0022,Diabetes,3,2023-09-07,Female,42,2,Moderately Abnormal,Acute,Dizziness,184,4
+P0314,Kidney Disease,4,2024-02-22,Male,49,4,Moderately Abnormal,Acute,Fever,65,5
+P0460,COPD,5,2026-02-17,Female,82,8,Moderately Abnormal,Chronic Uncontrolled,Severe Pain,42,5
+P0161,Heart Disease,4,2025-03-19,Male,49,4,Slightly Abnormal,Chronic Controlled,Vomiting,70,5
+P0277,Common Cold,1,2026-07-10,Female,22,6,Normal,Stable,Shortness of Breath,58,2
+P0444,Migraine,3,2024-11-30,Male,15,5,Slightly Abnormal,Chronic Controlled,Bleeding,179,5
+P0192,Stroke,5,2025-10-31,Male,29,2,Severely Abnormal,Critical,None/Mild,17,5
+P0386,Arthritis,2,2025-06-12,Female,42,4,Normal,Stable,Abdominal Pain,87,3
+P0294,Stroke,5,2024-06-15,Male,37,4,Moderately Abnormal,Chronic Controlled,Weakness,178,5
+P0414,Diabetes,2,2023-12-09,Female,35,1,Moderately Abnormal,Stable,Confusion,165,3
+P0344,Arthritis,2,2026-08-04,Male,72,2,Slightly Abnormal,Needs Follow-up,Chest Pain,46,3
+P0258,Cancer,5,2026-07-17,Male,44,3,Severely Abnormal,Critical,Fatigue,277,5
+P0309,Diabetes,4,2024-10-11,Male,55,3,Moderately Abnormal,Chronic Controlled,Bleeding,57,5
+P0150,Kidney Disease,5,2024-11-22,Male,63,4,Moderately Abnormal,Chronic Uncontrolled,Bleeding,291,5
+P0131,Hypertension,3,2026-01-28,Male,28,7,Severely Abnormal,Needs Follow-up,Confusion,32,5
+P0152,Heart Disease,5,2024-07-29,Female,25,1,Severely Abnormal,Chronic Uncontrolled,Fever,24,5
+P0360,Kidney Disease,5,2026-03-18,Other,58,3,Severely Abnormal,Chronic Controlled,None/Mild,130,5
+P0100,Migraine,1,2023-11-06,Female,56,3,Moderately Abnormal,Stable,None/Mild,223,2
+P0373,Hypertension,3,2025-01-24,Male,57,5,Moderately Abnormal,Acute,Headache,27,5
+P0088,Hypertension,1,2024-07-15,Male,35,1,Slightly Abnormal,Stable,Weakness,282,1
+P0459,Arthritis,2,2025-07-26,Male,8,5,Slightly Abnormal,Acute,Cough,244,2
+P0331,Asthma,3,2025-06-14,Male,46,2,Severely Abnormal,Needs Follow-up,Shortness of Breath,73,3
+P0215,Migraine,1,2025-03-23,Female,32,5,Slightly Abnormal,Needs Follow-up,Fatigue,271,2
+P0467,Migraine,2,2026-04-05,Male,75,3,Normal,Acute,Fever,161,3
+P0122,Diabetes,1,2025-08-28,Female,44,2,Slightly Abnormal,Stable,Fever,193,2
+P0500,Hypertension,2,2023-08-24,Female,42,5,Slightly Abnormal,Acute,Fatigue,306,3
+P0021,Fracture,3,2026-06-11,Male,40,3,Moderately Abnormal,Acute,Confusion,211,4
+P0189,Cancer,5,2026-06-09,Male,72,3,Moderately Abnormal,Chronic Uncontrolled,Severe Pain,324,5
+P0072,Cancer,5,2025-04-11,Male,28,4,Moderately Abnormal,Chronic Controlled,Fever,95,5
+P0107,Fracture,3,2024-01-01,Male,88,3,Moderately Abnormal,Chronic Controlled,Chest Pain,28,4
+P0271,Fracture,4,2024-01-27,Female,56,3,Severely Abnormal,Chronic Uncontrolled,Vomiting,51,5
+P0349,COPD,4,2025-04-28,Male,73,6,Moderately Abnormal,Acute,Chest Pain,173,5
+P0436,Hypertension,3,2024-04-24,Male,31,1,Slightly Abnormal,Acute,Nausea,321,3
+P0103,Hypertension,2,2026-01-23,Female,79,5,Normal,Needs Follow-up,Confusion,282,4

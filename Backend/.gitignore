@@ -1,0 +1,25 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment variables
+.env
+
+# User-uploaded content
+uploads/
+
+# Testing
+.pytest_cache/
+
+# VS Code
+.vscode/
+
+# JetBrains IDEs
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

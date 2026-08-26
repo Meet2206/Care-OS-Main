@@ -1,3 +1,4 @@
+from __future__ import annotations
 from app.schemas.dashboard import DashboardAppointmentResponse, DashboardDepartmentResponse, DashboardDoctorResponse, DashboardOverviewResponse, DashboardPatientResponse, DashboardRecentResponse, DashboardRevenueResponse
 from app.services.dashboard_service import get_appointment_analytics, get_department_analytics, get_doctor_analytics, get_overview, get_patient_analytics, get_recent_activity, get_revenue
 

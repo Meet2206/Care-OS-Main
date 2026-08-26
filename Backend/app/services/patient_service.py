@@ -1,3 +1,4 @@
+from __future__ import annotations
 import logging
 import re
 from datetime import date, datetime, time, timezone
@@ -13,6 +14,7 @@ from app.models.patient import (
     patient_document_to_response,
 )
 from app.schemas.patient import PatientCreate, PatientListResponse, PatientResponse, PatientUpdate
+from app.services.auth_service import ensure_user_indexes, hash_password
 
 logger = logging.getLogger(__name__)
 
@@ -68,6 +70,12 @@ def create_patient(request: PatientCreate) -> PatientResponse:
     ensure_patient_indexes()
     now = datetime.now(timezone.utc)
     patient = request.model_dump(mode="python")
+    # Keep registration useful for the clinical dashboard when the deployment
+    # has a single active doctor and the form has no doctor ID yet.
+    if not patient.get("assigned_doctor_id"):
+        active_doctors = list(db.doctors.find({"is_deleted": {"$ne": True}}, {"doctor_id": 1}).limit(2))
+        if len(active_doctors) == 1:
+            patient["assigned_doctor_id"] = active_doctors[0]["doctor_id"]
     _serialize_date_of_birth(patient)
     patient.update(
         patient_id=_next_patient_id(),
@@ -83,8 +91,43 @@ def create_patient(request: PatientCreate) -> PatientResponse:
         logger.warning("Patient creation rejected due to a duplicate patient identifier")
         raise PatientConflictError from exc
 
-    logger.info("Patient created", extra={"patient_id": patient["patient_id"]})
-    return patient_document_to_response(patient)
+    ensure_user_indexes()
+    name_token = re.sub(r"[^A-Za-z0-9]", "", patient["full_name"])
+    name_token = name_token or "Patient"
+    name_token = name_token[0].upper() + name_token[1:]
+    date_token = patient["date_of_birth"].strftime("%d")
+    base_login = f"{name_token}@CareOS"
+    login_id = base_login
+    suffix = 2
+    while db.users.find_one({"login_id": login_id}):
+        login_id = f"{name_token}{suffix}@CareOS"
+        suffix += 1
+    temporary_password = f"{name_token}{date_token}"
+    account = {
+        "login_id": login_id,
+        "full_name": patient["full_name"],
+        "first_name": patient["full_name"].split(maxsplit=1)[0],
+        "last_name": patient["full_name"].partition(" ")[2] or None,
+        "user_id": f"PATIENT-{patient['patient_id']}",
+        "password_hash": hash_password(temporary_password),
+        "role": "patient",
+        "patient_id": patient["patient_id"],
+        "created_at": now,
+        "updated_at": now,
+        "status": "Active",
+        "is_deleted": False,
+        "deleted_at": None,
+    }
+    try:
+        db.users.insert_one(account)
+    except DuplicateKeyError as exc:
+        _patients_collection().delete_one({"patient_id": patient["patient_id"]})
+        raise PatientConflictError from exc
+    logger.info("Patient created", extra={"patient_id": patient["patient_id"], "account_login_id": login_id})
+    response = patient_document_to_response(patient).model_dump()
+    response["account_login_id"] = login_id
+    response["temporary_password"] = temporary_password
+    return PatientResponse.model_validate(response)
 
 
 def get_patient(patient_id: str) -> PatientResponse:

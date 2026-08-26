@@ -7,7 +7,7 @@ const dashboardByRole = {
     doctor: "/doctor",
     pharmacy: "/pharmacy",
     patient: "/patient",
-    receptionist: "/admin",
+    receptionist: "/reception",
     admin: "/admin",
 }
 

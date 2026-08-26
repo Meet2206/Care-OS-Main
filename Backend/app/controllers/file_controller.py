@@ -1,3 +1,4 @@
+from __future__ import annotations
 from fastapi import UploadFile
 
 from app.schemas.file_schema import FileUploadResponse

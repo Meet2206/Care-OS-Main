@@ -1,9 +1,10 @@
+import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import Card from "../../components/common/Card"
 import Button from "../../components/common/Button"
 import StatusPill from "../../components/common/StatusPill"
 import PatientCard from "../../components/modules/patients/PatientCard"
-import { existingPatients, doctorsList } from "../../data/mockData"
+import { apiRequest } from "../../api/client"
 
 const statusTones = {
     Active: "green",
@@ -15,9 +16,22 @@ const statusTones = {
 function PatientDetails() {
     const { id } = useParams()
     const navigate = useNavigate()
-    const patient = existingPatients.find((p) => p.id === id)
+    const [patient, setPatient] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState("")
 
-    if (!patient) {
+    useEffect(() => {
+        apiRequest(`/patients/${id}`)
+            .then(setPatient)
+            .catch((requestError) => setError(requestError.message || "Patient not found."))
+            .finally(() => setLoading(false))
+    }, [id])
+
+    if (loading) {
+        return <div className="py-20 text-center text-sm text-[var(--muted)]">Loading patient…</div>
+    }
+
+    if (!patient || error) {
         return (
             <div className="flex flex-col items-center justify-center py-20 text-center">
                 <p className="font-display text-2xl text-[var(--ink)]">Patient not found</p>
@@ -27,15 +41,14 @@ function PatientDetails() {
         )
     }
 
-    const doctor = doctorsList.find((d) => d.name === patient.doctor)
-    const nameParts = patient.name.split(" ")
+    const nameParts = patient.full_name.split(" ")
     const cardData = {
         firstName: nameParts[0] || "",
         lastName: nameParts.slice(1).join(" ") || "",
-        bloodGroup: patient.bloodGroup,
-        assignedDoctor: patient.doctor,
-        patientId: patient.id,
-        verificationCode: `MLEIET-${Math.floor(Math.random() * 999).toString().padStart(3, "0")}-${Math.random().toString(16).substring(2, 6).toUpperCase()}`,
+        bloodGroup: patient.blood_group,
+        assignedDoctor: "Clinical team",
+        patientId: patient.patient_id,
+        verificationCode: "Backend record",
         profilePhotoPreview: null,
     }
 
@@ -54,9 +67,9 @@ function PatientDetails() {
                         </svg>
                         Back to Patients
                     </button>
-                    <h1 className="font-display text-3xl leading-tight text-[var(--ink)] sm:text-4xl">{patient.name}</h1>
+                    <h1 className="font-display text-3xl leading-tight text-[var(--ink)] sm:text-4xl">{patient.full_name}</h1>
                     <p className="mt-1 flex items-center gap-2 text-sm text-[var(--muted)]">
-                        <span className="font-mono text-xs font-bold text-[var(--primary-blue)]">{patient.id}</span>
+                        <span className="font-mono text-xs font-bold text-[var(--primary-blue)]">{patient.patient_id}</span>
                         <StatusPill tone={statusTones[patient.status] || "neutral"}>{patient.status}</StatusPill>
                     </p>
                 </div>
@@ -77,35 +90,22 @@ function PatientDetails() {
                     <Card className="p-6">
                         <h2 className="mb-4 font-display text-2xl text-[var(--ink)]">Contact Information</h2>
                         <div className="grid gap-4 sm:grid-cols-2">
-                            <InfoField label="Phone" value={patient.mobile} />
+                            <InfoField label="Phone" value={patient.phone} />
                             <InfoField label="Email" value={patient.email} />
-                            <InfoField label="Blood Group" value={patient.bloodGroup} />
-                            <InfoField label="Assigned Doctor" value={patient.doctor} />
+                            <InfoField label="Blood Group" value={patient.blood_group} />
+                            <InfoField label="Status" value={patient.status} />
                         </div>
                     </Card>
 
                     {/* Doctor Card */}
-                    {doctor && (
-                        <Card className="p-6">
-                            <h2 className="mb-4 font-display text-2xl text-[var(--ink)]">Doctor Assignment</h2>
-                            <div className="flex items-center gap-4 rounded-2xl bg-[var(--panel-muted)] px-4 py-4">
-                                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#e8f0fb] to-[#dbeafe] text-sm font-bold text-[var(--primary-blue)]">
-                                    {doctor.name.split(" ").slice(1).map((n) => n[0]).join("")}
-                                </div>
-                                <div>
-                                    <p className="font-semibold text-[var(--ink)]">{doctor.name}</p>
-                                    <p className="text-sm text-[var(--muted)]">{doctor.specialty} • {doctor.location}</p>
-                                </div>
-                            </div>
-                        </Card>
-                    )}
+                    <Card className="p-6"><h2 className="mb-4 font-display text-2xl text-[var(--ink)]">Emergency Contact</h2><InfoField label="Name" value={patient.emergency_contact_name} /><div className="mt-3"><InfoField label="Phone" value={patient.emergency_contact_phone} /></div></Card>
 
                     {/* Medical stub */}
                     <Card className="p-6">
                         <h2 className="mb-4 font-display text-2xl text-[var(--ink)]">Medical Records</h2>
                         <div className="rounded-2xl border border-dashed border-[var(--line)] bg-[var(--panel-muted)]/50 px-6 py-8 text-center">
                             <p className="text-sm font-semibold text-[var(--muted)]">Medical records will appear here</p>
-                            <p className="mt-1 text-xs text-[var(--muted)]">Records will be populated once the backend is connected</p>
+                            <p className="mt-1 text-xs text-[var(--muted)]">Clinical records are available from the Medical Records workspace.</p>
                         </div>
                     </Card>
                 </div>

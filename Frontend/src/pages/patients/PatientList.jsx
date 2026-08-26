@@ -1,9 +1,9 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Card from "../../components/common/Card"
 import Button from "../../components/common/Button"
 import StatusPill from "../../components/common/StatusPill"
-import { existingPatients } from "../../data/mockData"
+import { apiRequest } from "../../api/client"
 
 const statusTones = {
     Active: "green",
@@ -16,12 +16,22 @@ function PatientList() {
     const navigate = useNavigate()
     const [search, setSearch] = useState("")
     const [statusFilter, setStatusFilter] = useState("all")
+    const [patients, setPatients] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState("")
 
-    const filtered = existingPatients.filter((p) => {
+    useEffect(() => {
+        apiRequest("/patients?limit=100")
+            .then((result) => setPatients(result.data))
+            .catch((requestError) => setError(requestError.message || "Unable to load patients."))
+            .finally(() => setLoading(false))
+    }, [])
+
+    const filtered = patients.filter((p) => {
         const matchesSearch =
-            p.name.toLowerCase().includes(search.toLowerCase()) ||
-            p.id.toLowerCase().includes(search.toLowerCase()) ||
-            p.mobile.includes(search)
+            p.full_name.toLowerCase().includes(search.toLowerCase()) ||
+            p.patient_id.toLowerCase().includes(search.toLowerCase()) ||
+            p.phone.includes(search)
 
         const matchesStatus = statusFilter === "all" || p.status === statusFilter
 
@@ -51,18 +61,18 @@ function PatientList() {
             <div className="grid gap-3 sm:grid-cols-3">
                 <div className="rounded-2xl border border-[var(--line)] bg-white/70 px-4 py-4 text-center">
                     <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">Total Patients</p>
-                    <p className="mt-1 font-display text-3xl text-[var(--ink)]">{existingPatients.length}</p>
+                    <p className="mt-1 font-display text-3xl text-[var(--ink)]">{patients.length}</p>
                 </div>
                 <div className="rounded-2xl border border-[var(--line)] bg-white/70 px-4 py-4 text-center">
                     <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">Active</p>
                     <p className="mt-1 font-display text-3xl text-emerald-600">
-                        {existingPatients.filter((p) => p.status === "Active").length}
+                        {patients.filter((p) => p.status === "Active").length}
                     </p>
                 </div>
                 <div className="rounded-2xl border border-[var(--line)] bg-white/70 px-4 py-4 text-center">
                     <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">Follow-up</p>
                     <p className="mt-1 font-display text-3xl text-[var(--primary-blue)]">
-                        {existingPatients.filter((p) => p.status === "Follow-up").length}
+                        {patients.filter((p) => p.status === "Follow-up").length}
                     </p>
                 </div>
             </div>
@@ -102,7 +112,11 @@ function PatientList() {
 
             {/* Patient list */}
             <div className="space-y-3">
-                {filtered.length === 0 ? (
+                {error ? (
+                    <Card className="px-6 py-12 text-center"><p className="text-sm text-red-600">{error}</p></Card>
+                ) : loading ? (
+                    <Card className="px-6 py-12 text-center"><p className="text-sm text-[var(--muted)]">Loading patients…</p></Card>
+                ) : filtered.length === 0 ? (
                     <Card className="px-6 py-12 text-center">
                         <p className="text-lg font-semibold text-[var(--muted)]">No patients found</p>
                         <p className="mt-1 text-sm text-[var(--muted)]">Try adjusting your search or filter</p>
@@ -110,25 +124,25 @@ function PatientList() {
                 ) : (
                     filtered.map((patient) => (
                         <Card
-                            key={patient.id}
+                            key={patient.patient_id}
                             className="flex flex-col gap-4 p-5 transition-shadow hover:shadow-md sm:flex-row sm:items-center sm:justify-between cursor-pointer"
                         >
                             <button
                                 type="button"
-                                onClick={() => navigate(`/admin/patients/${patient.id}`)}
+                                onClick={() => navigate(`/admin/patients/${patient.patient_id}`)}
                                 className="flex flex-1 items-center gap-4 text-left"
                             >
                                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#e8f0fb] to-[#dbeafe] text-sm font-bold text-[var(--primary-blue)]">
-                                    {patient.name.split(" ").map((n) => n[0]).join("")}
+                                    {patient.full_name.split(" ").map((n) => n[0]).join("")}
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                    <p className="font-semibold text-[var(--ink)]">{patient.name}</p>
+                                    <p className="font-semibold text-[var(--ink)]">{patient.full_name}</p>
                                     <p className="mt-0.5 text-sm text-[var(--muted)]">
-                                        <span className="font-mono text-xs">{patient.id}</span>
+                                        <span className="font-mono text-xs">{patient.patient_id}</span>
                                         <span className="mx-2 text-[var(--line)]">•</span>
-                                        {patient.mobile}
+                                        {patient.phone}
                                         <span className="mx-2 text-[var(--line)]">•</span>
-                                        {patient.bloodGroup}
+                                        {patient.blood_group}
                                     </p>
                                 </div>
                             </button>

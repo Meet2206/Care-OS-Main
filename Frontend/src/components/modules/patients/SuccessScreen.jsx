@@ -4,7 +4,7 @@ import PatientCard from "./PatientCard"
 
 const CONFETTI_COLORS = ["#3f78c8", "#0f9fb4", "#8fd1af", "#f59e0b", "#ec4899", "#6366f1"]
 
-function SuccessScreen({ formData, patientId, verificationCode, onRegisterAnother, onViewPatient }) {
+function SuccessScreen({ formData, patientId, verificationCode, accountLoginId, temporaryPassword, onRegisterAnother, onViewPatient }) {
     const [showCard, setShowCard] = useState(false)
     const fullName = `${formData.firstName} ${formData.lastName}`.trim()
 
@@ -103,6 +103,14 @@ function SuccessScreen({ formData, patientId, verificationCode, onRegisterAnothe
                     All onboarding steps are complete. The patient profile is now active in CareOS.
                 </p>
             </div>
+
+            {accountLoginId && temporaryPassword ? (
+                <div className="rounded-2xl border border-[#cfe3f2] bg-[#eef7fc] px-5 py-4 text-left">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">Patient login created</p>
+                    <p className="mt-3 text-sm text-[var(--muted)]">Give these temporary credentials to the patient. The password is shown only on this registration screen.</p>
+                    <div className="mt-3 grid gap-3 sm:grid-cols-2"><div className="rounded-xl bg-white px-4 py-3"><p className="text-xs text-[var(--muted)]">Login ID</p><p className="mt-1 font-semibold text-[var(--ink)]">{accountLoginId}</p></div><div className="rounded-xl bg-white px-4 py-3"><p className="text-xs text-[var(--muted)]">Temporary password</p><p className="mt-1 font-semibold text-[var(--ink)]">{temporaryPassword}</p></div></div>
+                </div>
+            ) : null}
 
             {/* ID Cards */}
             <div className="grid gap-4 sm:grid-cols-2">

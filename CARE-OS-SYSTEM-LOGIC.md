@@ -96,7 +96,7 @@ The intended roles are:
 - `pharmacy`
 - `patient`
 - `receptionist`
-- `admin` is retained for administrative backend operations.
+- `admin` is retained for administrative backend operations. The development account is `Admin@CareOS`.
 
 ### Doctor
 
@@ -455,4 +455,3 @@ The integrated system has been live-tested for:
 - ownership and role attacks
 - backend restart persistence
 - frontend build and ESLint
-

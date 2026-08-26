@@ -6,6 +6,7 @@ import StepMedicalInfo from "../../components/modules/patients/StepMedicalInfo"
 import StepDoctorAssignment from "../../components/modules/patients/StepDoctorAssignment"
 import StepReview from "../../components/modules/patients/StepReview"
 import SuccessScreen from "../../components/modules/patients/SuccessScreen"
+import { apiRequest } from "../../api/client"
 import Modal from "../../components/common/Modal"
 import Button from "../../components/common/Button"
 import {
@@ -13,9 +14,8 @@ import {
     saveDraft,
     loadDraft,
     clearDraft,
-    generatePatientId,
-    generateVerificationCode,
     validateMobile,
+    validateEmail,
 } from "../../utils/patientHelpers"
 
 const TOTAL_STEPS = 4
@@ -29,6 +29,8 @@ function PatientOnboarding() {
     const [submitted, setSubmitted] = useState(false)
     const [patientId, setPatientId] = useState("")
     const [verificationCode, setVerificationCode] = useState("")
+    const [accountLoginId, setAccountLoginId] = useState("")
+    const [temporaryPassword, setTemporaryPassword] = useState("")
     const [validationErrors, setValidationErrors] = useState([])
     const [showDraftModal, setShowDraftModal] = useState(false)
     const [toast, setToast] = useState(null)
@@ -103,6 +105,14 @@ function PatientOnboarding() {
             if (!formData.lastName.trim()) errors.push("Last Name is required")
             const mobileResult = validateMobile(formData.mobile)
             if (!mobileResult.valid) errors.push("Valid 10-digit mobile number is required")
+            if (!formData.gender) errors.push("Gender is required")
+            if (!formData.dob) errors.push("Date of birth is required")
+            if (!formData.email.trim()) errors.push("Email is required")
+            else if (!validateEmail(formData.email).valid) errors.push("Valid email is required")
+            if (!formData.address.trim()) errors.push("Address is required")
+            if (!formData.bloodGroup) errors.push("Blood group is required")
+            if (!formData.emergencyContactName.trim()) errors.push("Emergency contact name is required")
+            if (!validateMobile(formData.emergencyContactNumber).valid) errors.push("Valid emergency contact number is required")
         }
 
         // Steps 1 and 2 have no hard-required fields
@@ -139,17 +149,41 @@ function PatientOnboarding() {
         setShowConfirmModal(false)
         setIsSubmitting(true)
 
-        // Simulate backend processing
-        await new Promise((resolve) => setTimeout(resolve, 1800))
-
-        const newId = generatePatientId()
-        const newCode = generateVerificationCode()
-        setPatientId(newId)
-        setVerificationCode(newCode)
-        setSubmitted(true)
-        setIsSubmitting(false)
-        clearDraft()
-        isDirty.current = false
+        try {
+            const created = await apiRequest("/patients", {
+                method: "POST",
+                body: JSON.stringify({
+                    full_name: `${formData.firstName} ${formData.lastName}`.trim(),
+                    gender: formData.gender,
+                    date_of_birth: formData.dob,
+                    phone: formData.mobile.replace(/\D/g, ""),
+                    email: formData.email.trim(),
+                    address: formData.address.trim(),
+                    blood_group: formData.bloodGroup,
+                    emergency_contact_name: formData.emergencyContactName.trim(),
+                    emergency_contact_phone: formData.emergencyContactNumber.replace(/\D/g, ""),
+                    allergies: formData.allergies,
+                    medical_history: [...formData.chronicDiseases, ...formData.medications, ...(formData.medicalNotes ? [formData.medicalNotes] : [])],
+                }),
+            })
+            setPatientId(created.patient_id)
+            setVerificationCode("Backend record created")
+            setAccountLoginId(created.account_login_id || "")
+            setTemporaryPassword(created.temporary_password || "")
+            setSubmitted(true)
+            clearDraft()
+            isDirty.current = false
+        } catch (error) {
+            const apiDetails = Array.isArray(error.payload?.detail) ? error.payload.detail : []
+            const detailErrors = [...(error.payload?.errors || []), ...apiDetails]
+                .filter((item) => item && typeof item === "object")
+                .map((item) => `${item.loc?.slice(-1)[0] || "Field"}: ${item.msg || "Invalid value"}`)
+            const detailMessage = typeof error.payload?.detail === "string" ? error.payload.detail : ""
+            setValidationErrors(detailErrors.length ? detailErrors : [detailMessage || error.message || "Patient registration failed."])
+            showToast("Registration failed", "amber")
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
     const handleRegisterAnother = () => {
@@ -170,6 +204,8 @@ function PatientOnboarding() {
                     formData={formData}
                     patientId={patientId}
                     verificationCode={verificationCode}
+                    accountLoginId={accountLoginId}
+                    temporaryPassword={temporaryPassword}
                     onRegisterAnother={handleRegisterAnother}
                     onViewPatient={() => navigate("/admin/patients")}
                 />

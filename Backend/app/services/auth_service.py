@@ -128,6 +128,7 @@ def login_user(request: LoginRequest) -> TokenResponse:
 
 
 DEMO_USERS = (
+    ("Admin@CareOS", "MeetLimbachiya22", "admin", "CareOS Admin"),
     ("DoctorMeet@CareOS", "MeetLimbachiya22", "doctor", "Doctor Meet"),
     ("PharmacyMeet@CareOS", "MeetLimbachiya22", "pharmacy", "Pharmacy Meet"),
     ("PatientMeet@CareOS", "MeetLimbachiya22", "patient", "Patient Meet"),

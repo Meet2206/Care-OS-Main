@@ -12,13 +12,12 @@ import PatientIdCard from "../../components/modules/patients/PatientIdCard"
 import PrescriptionOrdersPanel from "../../components/modules/patients/PrescriptionOrdersPanel"
 import upiQrCode from "../../../upi-payment-qr.png"
 import { apiRequest } from "../../api/client"
+import { useAuth } from "../../context/AuthContext"
 import {
     appointmentUpdates,
     appointmentTimeSlots,
     careTeam,
     doctorDirectory,
-    medicalRecords,
-    patientAppointments,
     patientProfile,
     patientSupportOptions,
 } from "../../data/mockData"
@@ -137,7 +136,11 @@ function getPaymentValidationMessage(form, qrPaid = false) {
 }
 
 function PatientDashboard() {
-    const [appointments, setAppointments] = useState(patientAppointments)
+    const { user } = useAuth()
+    const [patient, setPatient] = useState(null)
+    const [patientLoadError, setPatientLoadError] = useState("")
+    const [appointments, setAppointments] = useState([])
+    const [records, setRecords] = useState([])
     const [pharmacyOrders, setPharmacyOrders] = useState([])
     const [pharmacyOrderError, setPharmacyOrderError] = useState("")
     const [showBookingModal, setShowBookingModal] = useState(false)
@@ -162,10 +165,47 @@ function PatientDashboard() {
     })
 
     useEffect(() => {
-        apiRequest("/pharmacy-orders")
-            .then((result) => setPharmacyOrders(result.data))
-            .catch((error) => setPharmacyOrderError(error.message || "Unable to load pharmacy orders."))
-    }, [])
+        if (!user?.patient_id) {
+            setPatientLoadError("This account is not linked to a patient profile yet.")
+            return
+        }
+        Promise.all([
+            apiRequest(`/patients/${user.patient_id}`),
+            apiRequest("/appointments?limit=100"),
+            apiRequest("/medical-records?limit=100"),
+            apiRequest("/pharmacy-orders"),
+        ]).then(([profile, appointmentResult, recordResult, orderResult]) => {
+            setPatient(profile)
+            setAppointments(appointmentResult.data.map((item) => ({
+                ...item,
+                date: item.appointment_date,
+                time: item.appointment_time,
+                doctor: item.doctor_id,
+                specialty: item.appointment_type,
+                location: "Care-OS Clinic",
+            })))
+            setRecords(recordResult.data.map((item) => ({
+                ...item,
+                id: item.record_id,
+                date: item.follow_up_date || item.created_at,
+                type: "Medical record",
+                doctorFull: item.doctor_id,
+                summary: item.diagnosis || item.treatment || "Clinical record",
+            })))
+            setPharmacyOrders(orderResult.data)
+        }).catch((error) => {
+            setPatientLoadError(error.message || "Unable to load your patient profile.")
+            setPharmacyOrderError(error.message || "Unable to load pharmacy orders.")
+        })
+    }, [user?.patient_id])
+
+    const patientProfileData = patient ? {
+        id: patient.patient_id,
+        insurance: patient.status || "Active",
+        phone: patient.phone || "Not provided",
+        bloodGroup: patient.blood_group || "Not provided",
+        assistance: "Contact reception for assistance",
+    } : patientProfile
 
     const handleBookingChange = (key, value) => {
         setBookingForm((current) => ({
@@ -339,7 +379,8 @@ function PatientDashboard() {
                     actions={<Button variant="subtle" onClick={() => setShowBookingModal(true)}>Book Appointment</Button>}
                 />
 
-                <PatientIdCard profile={patientProfile} />
+                {patientLoadError ? <div className="rounded-2xl border border-[#f0c7c2] bg-[#fff4f2] px-4 py-3 text-sm text-[#9b5148]">{patientLoadError}</div> : null}
+                <PatientIdCard profile={patientProfileData} />
 
                 <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
                     <AppointmentStatusPanel updates={appointmentUpdates} />
@@ -427,7 +468,7 @@ function PatientDashboard() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {medicalRecords.map((record) => (
+                                    {records.map((record) => (
                                         <tr key={record.id} className="border-t border-[var(--line)] text-[var(--ink)]">
                                             <td data-label="Date" className="px-4 py-4">{record.date}</td>
                                             <td data-label="Record Type" className="px-4 py-4">{record.type}</td>

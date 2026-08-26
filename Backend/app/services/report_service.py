@@ -1,3 +1,4 @@
+from __future__ import annotations
 from app.database.mongodb import db
 from datetime import date, datetime, time, timezone
 

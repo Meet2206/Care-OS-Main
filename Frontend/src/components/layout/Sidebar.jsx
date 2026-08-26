@@ -58,6 +58,11 @@ function Sidebar({ open = false, onClose }) {
             { label: "Medical Records", to: "/records" },
             { label: "Pharmacy", to: "/pharmacy" },
         ],
+        receptionist: [
+            { label: "Dashboard", to: "/reception" },
+            { label: "Patients", to: "/admin/patients" },
+            { label: "CareAI", to: "/ai" },
+        ],
         doctor: [
             { label: "Dashboard", to: "/doctor" },
             { label: "CareAI", to: "/ai" },
@@ -133,6 +138,8 @@ function Sidebar({ open = false, onClose }) {
                 <p className="mt-2 font-display text-2xl text-[var(--ink)]">
                     {user?.role === "admin"
                         ? "Operational Oversight"
+                        : user?.role === "receptionist"
+                            ? "Patient Coordination"
                         : user?.role === "doctor"
                             ? "Actionable Lists"
                             : user?.role === "pharmacy"

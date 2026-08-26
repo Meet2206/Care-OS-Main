@@ -6,6 +6,7 @@ import { useAuth } from "./context/AuthContext"
 import Login from "./pages/auth/Login"
 import CareAI from "./pages/ai/CareAI"
 import AdminDashboard from "./pages/dashboard/AdminDashboard"
+import ReceptionDashboard from "./pages/dashboard/ReceptionDashboard"
 import DoctorDashboard from "./pages/dashboard/DoctorDashboard"
 import PharmacyDashboard from "./pages/dashboard/PharmacyDashboard"
 import PatientDashboard from "./pages/dashboard/PatientDashboard"
@@ -27,6 +28,7 @@ function AppRoutes() {
                     <Route element={<Layout />}>
                         <Route path="/app" element={<RoleRedirect />} />
                         <Route path="/admin" element={<AdminDashboard />} />
+                        <Route path="/reception" element={<ReceptionDashboard />} />
                         <Route path="/admin/patients" element={<PatientList />} />
                         <Route path="/admin/patients/new" element={<PatientOnboarding />} />
                         <Route path="/admin/patients/:id" element={<PatientDetails />} />
@@ -45,4 +47,3 @@ function AppRoutes() {
 }
 
 export default AppRoutes
-

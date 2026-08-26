@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Query, Response, status
@@ -30,7 +31,7 @@ def _doctor_can_access_patient(current_user: UserResponse, patient_id: str) -> b
         return True
     if not current_user.doctor_id:
         return False
-    return db.appointments.find_one({"doctor_id": current_user.doctor_id, "patient_id": patient_id, "is_deleted": {"$ne": True}}) is not None or db.medical_records.find_one({"doctor_id": current_user.doctor_id, "patient_id": patient_id, "is_deleted": {"$ne": True}}) is not None
+    return db.patients.find_one({"patient_id": patient_id, "assigned_doctor_id": current_user.doctor_id, "is_deleted": {"$ne": True}}) is not None or db.appointments.find_one({"doctor_id": current_user.doctor_id, "patient_id": patient_id, "is_deleted": {"$ne": True}}) is not None or db.medical_records.find_one({"doctor_id": current_user.doctor_id, "patient_id": patient_id, "is_deleted": {"$ne": True}}) is not None
 
 
 @router.post(
@@ -61,6 +62,7 @@ def list_patients(
             return patient_controller.list_all(page=page, limit=limit, search=search, allowed_patient_ids=set())
         patient_ids = {item["patient_id"] for item in db.appointments.find({"doctor_id": current_user.doctor_id, "is_deleted": {"$ne": True}}, {"patient_id": 1})}
         patient_ids.update(item["patient_id"] for item in db.medical_records.find({"doctor_id": current_user.doctor_id, "is_deleted": {"$ne": True}}, {"patient_id": 1}))
+        patient_ids.update(item["patient_id"] for item in db.patients.find({"assigned_doctor_id": current_user.doctor_id, "is_deleted": {"$ne": True}}, {"patient_id": 1}))
         if not patient_ids:
             return patient_controller.list_all(page=page, limit=limit, search=search, allowed_patient_ids=set())
         return patient_controller.list_all(page=page, limit=limit, search=search, allowed_patient_ids=patient_ids)

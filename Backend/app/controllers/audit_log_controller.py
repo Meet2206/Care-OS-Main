@@ -1,3 +1,4 @@
+from __future__ import annotations
 from fastapi import HTTPException, status
 
 from app.schemas.audit_log_schema import AuditAction, AuditLogListResponse, AuditLogResponse, AuditModule

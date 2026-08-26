@@ -5,7 +5,6 @@ import PageIntro from "../../components/common/PageIntro"
 import StatusPill from "../../components/common/StatusPill"
 import { useAuth } from "../../context/AuthContext"
 import { apiRequest } from "../../api/client"
-import { patientDirectory } from "../../data/mockData"
 
 const disclaimer =
     "Please consider consulting a doctor. This guidance is only a general suggestion and should not replace professional medical advice."
@@ -58,6 +57,7 @@ function CareAI() {
     const { user } = useAuth()
     const isPatient = user?.role === "patient"
     const isDoctor = user?.role === "doctor"
+    const isReceptionist = user?.role === "receptionist"
     const isAdmin = user?.role === "admin"
 
     const [messages, setMessages] = useState(() => {
@@ -128,11 +128,12 @@ function CareAI() {
     const [aiError, setAiError] = useState("")
 
     useEffect(() => {
-        if (!isDoctor && !isPatient) return
-        Promise.all([apiRequest("/patients?limit=100"), apiRequest("/appointments?limit=100"), apiRequest("/medical-records?limit=100")])
+        if (!isDoctor && !isPatient && !isReceptionist) return
+        const recordRequest = isDoctor || isPatient ? apiRequest("/medical-records?limit=100") : Promise.resolve({ data: [] })
+        Promise.all([apiRequest("/patients?limit=100"), apiRequest("/appointments?limit=100"), recordRequest])
             .then(([p, a, r]) => { setClinicalPatients(p.data); setClinicalAppointments(a.data); setClinicalRecords(r.data) })
             .catch((error) => setAiError(error.message || "Unable to load clinical context."))
-    }, [isDoctor, isPatient])
+    }, [isDoctor, isPatient, isReceptionist])
 
     const selectedClinicalPatient = clinicalPatients.find((patient) => patient.patient_id === aiPatientId)
     const selectedClinicalRecords = clinicalRecords.filter((record) => record.patient_id === aiPatientId)
@@ -173,9 +174,8 @@ function CareAI() {
             return null
         }
 
-        return (
-            patientDirectory.find((patient) => patient.id.toLowerCase() === normalizedQuery) ||
-            patientDirectory.find((patient) => patient.name.toLowerCase().includes(normalizedQuery))
+        return clinicalPatients.find((patient) =>
+            patient.patient_id.toLowerCase() === normalizedQuery || patient.full_name.toLowerCase().includes(normalizedQuery),
         )
     }
 
@@ -214,10 +214,10 @@ function CareAI() {
         }
 
         setFinderResult(match)
-        appendMessage(
-            "ai",
-            `I found ${match.name} (${match.id}). Current status: ${match.status}. Review the patient summary card below for the latest quick details.`,
-        )
+        const visits = clinicalAppointments.filter((item) => item.patient_id === match.patient_id)
+        const records = clinicalRecords.filter((item) => item.patient_id === match.patient_id)
+        setFinderResult({ ...match, visits, records })
+        appendMessage("ai", `I found ${match.full_name} (${match.patient_id}). I loaded ${visits.length} appointment(s) and ${records.length} medical record(s) from the backend.`)
         setFinderQuery("")
     }
 
@@ -428,7 +428,7 @@ function CareAI() {
                         </Card>
                     ) : null}
 
-                    {isDoctor ? (
+                    {(isDoctor || isReceptionist) ? (
                         <Card className="p-5">
                             <h3 className="font-display text-2xl text-[var(--ink)]">Patient Finder</h3>
                             <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
@@ -439,7 +439,7 @@ function CareAI() {
                                 <input
                                     value={finderQuery}
                                     onChange={(event) => setFinderQuery(event.target.value)}
-                                    placeholder="Search by patient name or ID like P001"
+                                    placeholder="Search by patient name or ID"
                                     className="flex-1 rounded-[20px] border border-[var(--line)] bg-[var(--panel-muted)] px-4 py-3 text-sm text-[var(--ink)] outline-none"
                                 />
                                 <Button type="submit" className="px-6">Find Patient</Button>
@@ -449,9 +449,9 @@ function CareAI() {
                                 <div className="mt-5 rounded-[24px] bg-[var(--panel-muted)] p-5">
                                     <div className="flex flex-wrap items-start justify-between gap-3">
                                         <div>
-                                            <p className="font-display text-3xl text-[var(--ink)]">{finderResult.name}</p>
+                                            <p className="font-display text-3xl text-[var(--ink)]">{finderResult.full_name}</p>
                                             <p className="mt-1 text-sm text-[var(--muted)]">
-                                                {finderResult.id} • Age {finderResult.age}
+                                                {finderResult.patient_id} • {finderResult.gender}
                                             </p>
                                         </div>
                                         <StatusPill tone={finderResult.status === "Stable" || finderResult.status === "Improving" ? "green" : "amber"}>
@@ -461,16 +461,16 @@ function CareAI() {
 
                                     <div className="mt-5 grid gap-3 md:grid-cols-3">
                                         <div className="rounded-2xl bg-white px-4 py-4">
-                                            <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Ward</p>
-                                            <p className="mt-2 text-sm font-semibold text-[var(--ink)]">{finderResult.ward}</p>
+                                            <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Phone</p>
+                                            <p className="mt-2 text-sm font-semibold text-[var(--ink)]">{finderResult.phone}</p>
                                         </div>
                                         <div className="rounded-2xl bg-white px-4 py-4">
-                                            <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Complaint</p>
-                                            <p className="mt-2 text-sm font-semibold text-[var(--ink)]">{finderResult.complaint}</p>
+                                            <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Visits</p>
+                                            <p className="mt-2 text-sm font-semibold text-[var(--ink)]">{finderResult.visits.length}</p>
                                         </div>
                                         <div className="rounded-2xl bg-white px-4 py-4">
-                                            <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Last Visit</p>
-                                            <p className="mt-2 text-sm font-semibold text-[var(--ink)]">{finderResult.lastVisit}</p>
+                                            <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Clinical Records</p>
+                                            <p className="mt-2 text-sm font-semibold text-[var(--ink)]">{finderResult.records.length}</p>
                                         </div>
                                     </div>
                                 </div>

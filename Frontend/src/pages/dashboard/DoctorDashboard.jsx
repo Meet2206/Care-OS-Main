@@ -422,7 +422,7 @@ function DoctorDashboard() {
                                         <label className="block">
                                             <span className="mb-2 block text-sm font-semibold text-[var(--ink)]">Medicine</span>
                                             <select
-                                                value={medicine.medicine}
+                                                value={medicine.medicineId}
                                                 onChange={(event) => {
                                                     const option = medicineOptions.find((item) => item.medicine_id === event.target.value)
                                                     updateMedicine(index, "medicineId", option?.medicine_id || "")

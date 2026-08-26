@@ -1,3 +1,4 @@
+from __future__ import annotations
 from datetime import date, datetime
 from enum import Enum
 from typing import Any
@@ -35,6 +36,7 @@ class PatientBase(BaseModel):
     allergies: list[str] = Field(default_factory=list)
     medical_history: list[str] = Field(default_factory=list)
     status: str = Field(default="Active", min_length=1, max_length=30)
+    assigned_doctor_id: str | None = Field(default=None, max_length=30)
 
 
 class PatientCreate(PatientBase):
@@ -64,6 +66,8 @@ class PatientResponse(PatientBase):
     patient_id: str
     created_at: datetime
     updated_at: datetime
+    account_login_id: str | None = None
+    temporary_password: str | None = None
 
 
 class PatientListResponse(BaseModel):

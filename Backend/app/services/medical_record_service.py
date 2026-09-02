@@ -7,6 +7,7 @@ from pymongo import ReturnDocument
 from pymongo.errors import DuplicateKeyError
 
 from app.database.mongodb import db
+from app.utils.serialization import serialize_documents
 from app.models.appointment import APPOINTMENTS_COLLECTION
 from app.models.doctor import DOCTORS_COLLECTION
 from app.models.medical_record import (
@@ -165,7 +166,7 @@ def list_medical_records(
         total_pages=total_pages,
         has_next=page < total_pages,
         has_previous=page > 1,
-        data=[medical_record_document_to_response(record) for record in records],
+        data=serialize_documents(records, medical_record_document_to_response, identifier_field="record_id"),
     )
 
 

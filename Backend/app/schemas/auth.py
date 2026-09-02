@@ -29,7 +29,7 @@ class RegisterRequest(BaseModel):
     login_id: str | None = Field(default=None, min_length=3, max_length=120)
     email: EmailStr | None = None
     password: str = Field(min_length=8, max_length=72)
-    role: UserRole = UserRole.receptionist
+    role: UserRole
 
     @model_validator(mode="after")
     def set_login_id(self):
@@ -80,6 +80,12 @@ class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
     user: UserResponse
+    must_change_password: bool = False
+
+
+class ChangePasswordRequest(BaseModel):
+    current_password: str = Field(min_length=1, max_length=72)
+    new_password: str = Field(min_length=8, max_length=72)
 
 
 class ErrorResponse(BaseModel):
@@ -96,5 +102,6 @@ AUTH_ERROR_RESPONSES = {
     403: {"model": ErrorResponse, "description": "The authenticated user lacks the required role."},
     404: {"model": ErrorResponse, "description": "The requested resource was not found."},
     409: {"model": ErrorResponse, "description": "A user with this email already exists."},
+    429: {"model": ErrorResponse, "description": "Too many attempts; the caller is temporarily throttled."},
     422: {"model": ValidationErrorResponse, "description": "Request validation failed."},
 }

@@ -7,14 +7,16 @@ from fastapi import APIRouter, Depends, Query
 from app.controllers.report_controller import appointments, doctor, patient_history, patients, revenue
 from app.schemas.auth import UserResponse, UserRole
 from app.schemas.report import AppointmentListReport, DoctorReport, PatientHistoryReport, PatientRegistrationReport, RevenueReport
-from app.utils.security import require_admin, require_roles
+from app.utils.security import require_admin, require_doctor_patient_access, require_roles
 
 router = APIRouter(prefix="/reports", tags=["Reports"])
 ReportUser = Annotated[UserResponse, Depends(require_roles(UserRole.admin, UserRole.doctor))]
 
 
 @router.get("/patient-history/{patient_id}", response_model=PatientHistoryReport)
-def get_patient_history(patient_id: str, _: ReportUser) -> PatientHistoryReport:
+def get_patient_history(patient_id: str, current_user: ReportUser) -> PatientHistoryReport:
+    # A doctor may pull a full history only for a patient they actually treat.
+    require_doctor_patient_access(current_user, patient_id)
     return patient_history(patient_id)
 
 

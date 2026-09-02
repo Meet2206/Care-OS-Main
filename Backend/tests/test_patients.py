@@ -107,9 +107,13 @@ def make_user(role: UserRole) -> UserResponse:
     return UserResponse(
         id="507f1f77bcf86cd799439011",
         full_name="Test Staff",
+        login_id="staff@example.com",
         email="staff@example.com",
         role=role,
         created_at=datetime.now(timezone.utc),
+        user_id="USR000001",
+        doctor_id="DOC000001" if role == UserRole.doctor else None,
+        patient_id="PAT000001" if role == UserRole.patient else None,
     )
 
 
@@ -120,6 +124,14 @@ def client(monkeypatch):
     monkeypatch.setattr(patient_service, "_patients_collection", lambda: collection)
     monkeypatch.setattr(patient_service, "ensure_patient_indexes", lambda: None)
     monkeypatch.setattr(patient_service, "_next_patient_id", lambda: f"PAT{next(patient_numbers):06d}")
+    # Account creation and doctor lookup are exercised by their own tests; keep
+    # this fixture focused on the patient collection.
+    accounts = iter(range(1, 99))
+    monkeypatch.setattr(
+        patient_service,
+        "create_patient_account",
+        lambda patient: (f"Patient{next(accounts)}@CareOS", "GeneratedPass123"),
+    )
     monkeypatch.setattr(main.mongodb, "connect", lambda: None)
     monkeypatch.setattr(main.mongodb, "close", lambda: None)
     monkeypatch.setattr(main, "ensure_patient_indexes", lambda: None)

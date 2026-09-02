@@ -164,6 +164,9 @@ function PatientOnboarding() {
                     emergency_contact_phone: formData.emergencyContactNumber.replace(/\D/g, ""),
                     allergies: formData.allergies,
                     medical_history: [...formData.chronicDiseases, ...formData.medications, ...(formData.medicalNotes ? [formData.medicalNotes] : [])],
+                    // The doctor chosen in the assignment step is persisted, so the
+                    // patient appears on that clinician's list straight away.
+                    ...(formData.assignedDoctorId ? { assigned_doctor_id: formData.assignedDoctorId } : {}),
                 }),
             })
             setPatientId(created.patient_id)

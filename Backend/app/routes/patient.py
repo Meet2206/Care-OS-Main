@@ -1,19 +1,26 @@
 from __future__ import annotations
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Query, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 
 from app.controllers import patient_controller
-from app.database.mongodb import db
 from app.schemas.auth import UserResponse, UserRole
 from app.schemas.patient import (
     PATIENT_ERROR_RESPONSES,
     PatientCreate,
+    PatientCreatedResponse,
     PatientListResponse,
     PatientResponse,
+    PatientSelfUpdate,
     PatientUpdate,
 )
-from app.utils.security import require_admin, require_patient_ownership, require_roles
+from app.utils.security import (
+    doctor_patient_ids,
+    require_admin,
+    require_doctor_patient_access,
+    require_patient_ownership,
+    require_roles,
+)
 
 router = APIRouter(prefix="/patients", tags=["Patients"])
 PatientStaff = Annotated[
@@ -26,22 +33,14 @@ PatientAccess = Annotated[
 ]
 
 
-def _doctor_can_access_patient(current_user: UserResponse, patient_id: str) -> bool:
-    if current_user.role.value != "doctor":
-        return True
-    if not current_user.doctor_id:
-        return False
-    return db.patients.find_one({"patient_id": patient_id, "assigned_doctor_id": current_user.doctor_id, "is_deleted": {"$ne": True}}) is not None or db.appointments.find_one({"doctor_id": current_user.doctor_id, "patient_id": patient_id, "is_deleted": {"$ne": True}}) is not None or db.medical_records.find_one({"doctor_id": current_user.doctor_id, "patient_id": patient_id, "is_deleted": {"$ne": True}}) is not None
-
-
 @router.post(
     "",
-    response_model=PatientResponse,
+    response_model=PatientCreatedResponse,
     status_code=status.HTTP_201_CREATED,
     responses=PATIENT_ERROR_RESPONSES,
     summary="Create a patient",
 )
-def create_patient(request: PatientCreate, _: PatientStaff) -> PatientResponse:
+def create_patient(request: PatientCreate, _: PatientStaff) -> PatientCreatedResponse:
     return patient_controller.create(request)
 
 
@@ -52,20 +51,25 @@ def create_patient(request: PatientCreate, _: PatientStaff) -> PatientResponse:
     summary="List and search patients",
 )
 def list_patients(
-    current_user: Annotated[UserResponse, Depends(require_roles(UserRole.admin, UserRole.receptionist, UserRole.doctor))],
+    current_user: PatientAccess,
     page: int = Query(default=1, ge=1),
     limit: int = Query(default=10, ge=1, le=100),
     search: str | None = Query(default=None, min_length=1, max_length=120),
 ) -> PatientListResponse:
-    if current_user.role.value == "doctor":
-        if not current_user.doctor_id:
-            return patient_controller.list_all(page=page, limit=limit, search=search, allowed_patient_ids=set())
-        patient_ids = {item["patient_id"] for item in db.appointments.find({"doctor_id": current_user.doctor_id, "is_deleted": {"$ne": True}}, {"patient_id": 1})}
-        patient_ids.update(item["patient_id"] for item in db.medical_records.find({"doctor_id": current_user.doctor_id, "is_deleted": {"$ne": True}}, {"patient_id": 1}))
-        patient_ids.update(item["patient_id"] for item in db.patients.find({"assigned_doctor_id": current_user.doctor_id, "is_deleted": {"$ne": True}}, {"patient_id": 1}))
-        if not patient_ids:
-            return patient_controller.list_all(page=page, limit=limit, search=search, allowed_patient_ids=set())
-        return patient_controller.list_all(page=page, limit=limit, search=search, allowed_patient_ids=patient_ids)
+    if current_user.role == UserRole.patient:
+        # A patient's "list" is their own record. Scoping here keeps the patient
+        # portal working without exposing the staff-wide directory.
+        allowed = {current_user.patient_id} if current_user.patient_id else set()
+        return patient_controller.list_all(
+            page=page, limit=limit, search=search, allowed_patient_ids=allowed
+        )
+    if current_user.role == UserRole.doctor:
+        return patient_controller.list_all(
+            page=page,
+            limit=limit,
+            search=search,
+            allowed_patient_ids=doctor_patient_ids(current_user.doctor_id),
+        )
     return patient_controller.list_all(page=page, limit=limit, search=search)
 
 
@@ -76,11 +80,9 @@ def list_patients(
     summary="Get a patient by patient ID",
 )
 def get_patient(patient_id: str, current_user: PatientAccess) -> PatientResponse:
-    if not _doctor_can_access_patient(current_user, patient_id):
-        raise HTTPException(status_code=403, detail="Doctor is not assigned to this patient.")
-    patient = patient_controller.get_one(patient_id)
-    require_patient_ownership(current_user, patient.patient_id)
-    return patient
+    require_patient_ownership(current_user, patient_id)
+    require_doctor_patient_access(current_user, patient_id)
+    return patient_controller.get_one(patient_id)
 
 
 @router.put(
@@ -89,10 +91,26 @@ def get_patient(patient_id: str, current_user: PatientAccess) -> PatientResponse
     responses=PATIENT_ERROR_RESPONSES,
     summary="Update a patient",
 )
-def update_patient(patient_id: str, request: PatientUpdate, current_user: PatientAccess) -> PatientResponse:
-    if not _doctor_can_access_patient(current_user, patient_id):
-        raise HTTPException(status_code=403, detail="Doctor is not assigned to this patient.")
+def update_patient(
+    patient_id: str, request: PatientUpdate, current_user: PatientAccess
+) -> PatientResponse:
     require_patient_ownership(current_user, patient_id)
+    require_doctor_patient_access(current_user, patient_id)
+    if current_user.role == UserRole.patient:
+        # Patients maintain their own contact details only. Clinical fields such
+        # as blood group, allergies, and history are clinician-owned.
+        supplied = request.model_dump(exclude_unset=True)
+        allowed = set(PatientSelfUpdate.model_fields)
+        rejected = sorted(set(supplied) - allowed)
+        if rejected:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=(
+                    "Patients may update only contact details. "
+                    f"Ask your care team to change: {', '.join(rejected)}."
+                ),
+            )
+        request = PatientUpdate(**supplied)
     return patient_controller.update(patient_id, request)
 
 

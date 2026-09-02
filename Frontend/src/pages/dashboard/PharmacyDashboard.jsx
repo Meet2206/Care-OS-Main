@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
-import { jsPDF } from "jspdf"
 import Button from "../../components/common/Button"
 import Card from "../../components/common/Card"
 import Modal from "../../components/common/Modal"
 import PageIntro from "../../components/common/PageIntro"
 import PharmacyQueuePanel from "../../components/modules/pharmacy/PharmacyQueuePanel"
+import { useAuth } from "../../context/AuthContext"
 import { apiRequest } from "../../api/client"
 import { pharmacyAlerts } from "../../data/mockData"
 
@@ -23,6 +23,9 @@ function mapOrder(order) {
 }
 
 function PharmacyDashboard() {
+    const { user } = useAuth()
+    // Only pharmacy users may advance an order; other roles get a read-only view.
+    const canDispense = user?.role === "pharmacy"
     const [orders, setOrders] = useState([])
     const [selectedOrder, setSelectedOrder] = useState(null)
     const [queueMessage, setQueueMessage] = useState("")
@@ -52,10 +55,12 @@ function PharmacyDashboard() {
     const handlePack = (token) => changeStatus(token, "PACKED")
     const handleDispense = (token) => changeStatus(token, "DISPENSED")
 
-    const downloadReceipt = (order) => {
+    const downloadReceipt = async (order) => {
         if (!order) {
             return
         }
+
+        const { jsPDF } = await import("jspdf")
 
         const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" })
         pdf.setFillColor(246, 241, 232)
@@ -113,9 +118,9 @@ function PharmacyDashboard() {
                 <PharmacyQueuePanel
                     className="flex min-h-0 flex-col"
                     orders={orders}
-                    onAccept={handleAccept}
-                    onPack={handlePack}
-                    onDispense={handleDispense}
+                    onAccept={canDispense ? handleAccept : undefined}
+                    onPack={canDispense ? handlePack : undefined}
+                    onDispense={canDispense ? handleDispense : undefined}
                     onView={setSelectedOrder}
                 />
 

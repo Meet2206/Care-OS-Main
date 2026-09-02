@@ -13,11 +13,29 @@ from app.schemas.appointment import (
     AppointmentStatus,
     AppointmentUpdate,
 )
-from app.schemas.auth import UserResponse
-from app.utils.security import require_patient_ownership, require_roles
+from app.schemas.auth import UserResponse, UserRole
+from app.utils.security import (
+    require_doctor_patient_access,
+    require_patient_ownership,
+    require_roles,
+)
 
 router = APIRouter(prefix="/appointments", tags=["Appointments"])
-CurrentUser = Annotated[UserResponse, Depends(require_roles("doctor", "pharmacy", "patient", "receptionist", "admin"))]
+# Pharmacy is excluded outright: dispensing never requires appointment access.
+CurrentUser = Annotated[
+    UserResponse,
+    Depends(require_roles(UserRole.doctor, UserRole.patient, UserRole.receptionist, UserRole.admin)),
+]
+_EMPTY_PAGE = dict(total=0, total_pages=0, has_next=False, has_previous=False, data=[])
+
+
+def _authorize(current_user: UserResponse, appointment: AppointmentResponse) -> None:
+    require_patient_ownership(current_user, appointment.patient_id)
+    if current_user.role == UserRole.doctor and appointment.doctor_id != current_user.doctor_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Doctors may access only their own appointments.",
+        )
 
 
 @router.post(
@@ -27,7 +45,24 @@ CurrentUser = Annotated[UserResponse, Depends(require_roles("doctor", "pharmacy"
     responses=APPOINTMENT_ERROR_RESPONSES,
     summary="Create an appointment",
 )
-def create_appointment(request: AppointmentCreate, _: CurrentUser) -> AppointmentResponse:
+def create_appointment(
+    request: AppointmentCreate, current_user: CurrentUser
+) -> AppointmentResponse:
+    if current_user.role == UserRole.patient:
+        if not current_user.patient_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="This account is not linked to a patient record.",
+            )
+        # A patient books only for themselves; the submitted ID is ignored.
+        request = request.model_copy(update={"patient_id": current_user.patient_id})
+    elif current_user.role == UserRole.doctor:
+        if request.doctor_id != current_user.doctor_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Doctors may create appointments only for themselves.",
+            )
+        require_doctor_patient_access(current_user, request.patient_id)
     return appointment_controller.create(request)
 
 
@@ -47,19 +82,13 @@ def list_appointments(
     appointment_status: AppointmentStatus | None = Query(default=None, alias="status"),
     appointment_date: date | None = Query(default=None),
 ) -> AppointmentListResponse:
-    role = current_user.role.value
-    if role == "pharmacy":
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Pharmacy users do not have appointment-list access.",
-        )
-    if role == "patient":
+    if current_user.role == UserRole.patient:
         if not current_user.patient_id:
-            return AppointmentListResponse(total=0, page=page, limit=limit, total_pages=0, has_next=False, has_previous=False, data=[])
+            return AppointmentListResponse(page=page, limit=limit, **_EMPTY_PAGE)
         patient_id = current_user.patient_id
-    elif role == "doctor":
+    elif current_user.role == UserRole.doctor:
         if not current_user.doctor_id:
-            return AppointmentListResponse(total=0, page=page, limit=limit, total_pages=0, has_next=False, has_previous=False, data=[])
+            return AppointmentListResponse(page=page, limit=limit, **_EMPTY_PAGE)
         doctor_id = current_user.doctor_id
     return appointment_controller.list_all(
         page, limit, search, doctor_id, patient_id, appointment_status, appointment_date
@@ -74,7 +103,7 @@ def list_appointments(
 )
 def get_appointment(appointment_id: str, current_user: CurrentUser) -> AppointmentResponse:
     appointment = appointment_controller.get_one(appointment_id)
-    require_patient_ownership(current_user, appointment.patient_id)
+    _authorize(current_user, appointment)
     return appointment
 
 
@@ -88,7 +117,7 @@ def update_appointment(
     appointment_id: str, request: AppointmentUpdate, current_user: CurrentUser
 ) -> AppointmentResponse:
     appointment = appointment_controller.get_one(appointment_id)
-    require_patient_ownership(current_user, appointment.patient_id)
+    _authorize(current_user, appointment)
     return appointment_controller.update(appointment_id, request)
 
 
@@ -100,6 +129,6 @@ def update_appointment(
 )
 def delete_appointment(appointment_id: str, current_user: CurrentUser) -> Response:
     appointment = appointment_controller.get_one(appointment_id)
-    require_patient_ownership(current_user, appointment.patient_id)
+    _authorize(current_user, appointment)
     appointment_controller.delete(appointment_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

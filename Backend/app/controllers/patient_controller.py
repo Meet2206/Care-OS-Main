@@ -1,7 +1,13 @@
 from __future__ import annotations
 from fastapi import HTTPException, status
 
-from app.schemas.patient import PatientCreate, PatientListResponse, PatientResponse, PatientUpdate
+from app.schemas.patient import (
+    PatientCreate,
+    PatientCreatedResponse,
+    PatientListResponse,
+    PatientResponse,
+    PatientUpdate,
+)
 from app.services import patient_service
 
 
@@ -9,9 +15,14 @@ def _not_found_error(exc: Exception) -> HTTPException:
     return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Patient not found.")
 
 
-def create(request: PatientCreate) -> PatientResponse:
+def create(request: PatientCreate) -> PatientCreatedResponse:
     try:
         return patient_service.create_patient(request)
+    except patient_service.PatientDoctorNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="The selected doctor was not found.",
+        ) from exc
     except patient_service.PatientConflictError as exc:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,

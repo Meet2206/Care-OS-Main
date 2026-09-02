@@ -7,6 +7,7 @@ from pydantic import BaseModel, ConfigDict, Field, IPvAnyAddress
 
 class AuditAction(str, Enum):
     create = "CREATE"
+    read = "READ"
     update = "UPDATE"
     delete = "DELETE"
     login = "LOGIN"
@@ -22,6 +23,10 @@ class AuditModule(str, Enum):
     prescriptions = "Prescriptions"
     billing = "Billing"
     notifications = "Notifications"
+    pharmacy_orders = "Pharmacy Orders"
+    files = "Files"
+    reports = "Reports"
+    ai = "CareAI"
 
 
 class AuditLogCreate(BaseModel):

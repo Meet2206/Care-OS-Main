@@ -61,20 +61,30 @@
         font-family: "Newsreader", serif;
     }
 
+    /* A wide table scrolls inside its own container. The min-width is only
+       applied once the viewport is genuinely wide enough to carry it, so at
+       intermediate sizes the table shrinks instead of pushing its parent past
+       the viewport (where the page-level overflow-x rule would clip it). */
     .scroll-table {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
+        max-width: 100%;
     }
 
-    .scroll-table table {
-        min-width: 760px;
+    @media (min-width: 1280px) {
+        .scroll-table table {
+            min-width: 760px;
+        }
     }
 
     .text-wrap-anywhere {
         overflow-wrap: anywhere;
     }
 
-    @media (max-width: 640px) {
+    /* Below this width a row is rendered as a stacked card. The breakpoint used
+       to be 640px, which left tables between 641px and ~1280px too wide for
+       their container. */
+    @media (max-width: 1023px) {
         .responsive-table {
             overflow: visible;
         }

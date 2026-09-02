@@ -1,9 +1,33 @@
-import { useState } from "react"
-import { doctorsList, appointmentTypes } from "../../../data/mockData"
+import { useEffect, useState } from "react"
+import { appointmentTypes } from "../../../data/mockData"
+import { apiRequest } from "../../../api/client"
 
 function StepDoctorAssignment({ formData, onChange }) {
     const [doctorSearch, setDoctorSearch] = useState("")
     const [showDoctorDropdown, setShowDoctorDropdown] = useState(false)
+
+    const [doctorsList, setDoctorsList] = useState([])
+    const [doctorLoadError, setDoctorLoadError] = useState("")
+
+    // The roster comes from /doctors so the selection carries a real doctor_id.
+    // It previously came from a local mock list, so whichever doctor the desk
+    // picked here could never be attached to the patient record.
+    useEffect(() => {
+        let active = true
+        apiRequest("/doctors?limit=100")
+            .then((result) => {
+                if (!active) return
+                setDoctorsList(result.data.map((doctor) => ({
+                    id: doctor.doctor_id,
+                    name: `${doctor.first_name} ${doctor.last_name}`,
+                    specialty: doctor.specialization,
+                    department: doctor.department,
+                    availability: doctor.availability,
+                })))
+            })
+            .catch((error) => { if (active) setDoctorLoadError(error.message || "Unable to load the doctor list.") })
+        return () => { active = false }
+    }, [])
 
     const filteredDoctors = doctorsList.filter(
         (d) =>
@@ -56,7 +80,9 @@ function StepDoctorAssignment({ formData, onChange }) {
                                 aria-label="Close dropdown"
                             />
                             <div className="anim-fade-in-up absolute left-0 right-0 top-full z-20 mt-1 max-h-60 overflow-y-auto rounded-2xl border border-[var(--line)] bg-white/95 py-1 shadow-lg backdrop-blur-sm">
-                                {filteredDoctors.length === 0 ? (
+                                {doctorLoadError ? (
+                                    <p className="px-4 py-3 text-sm text-[#9b5148]">{doctorLoadError}</p>
+                                ) : filteredDoctors.length === 0 ? (
                                     <p className="px-4 py-3 text-sm text-[var(--muted)]">No doctors found</p>
                                 ) : (
                                     filteredDoctors.map((doctor) => (
@@ -68,6 +94,7 @@ function StepDoctorAssignment({ formData, onChange }) {
                                             }`}
                                             onClick={() => {
                                                 update("assignedDoctor", doctor.name)
+                                                update("assignedDoctorId", doctor.id)
                                                 setShowDoctorDropdown(false)
                                                 setDoctorSearch("")
                                             }}
@@ -107,7 +134,7 @@ function StepDoctorAssignment({ formData, onChange }) {
                         </div>
                         <button
                             type="button"
-                            onClick={() => update("assignedDoctor", "")}
+                            onClick={() => { update("assignedDoctor", ""); update("assignedDoctorId", "") }}
                             className="text-xs font-medium text-red-400 hover:text-red-600"
                             aria-label="Remove doctor assignment"
                         >

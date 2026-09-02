@@ -88,9 +88,11 @@ def current_user() -> UserResponse:
     return UserResponse(
         id="507f1f77bcf86cd799439011",
         full_name="Test Administrator",
+        login_id="admin@example.com",
         email="admin@example.com",
         role=UserRole.admin,
         created_at=datetime.now(timezone.utc),
+        user_id="USR000001",
     )
 
 

@@ -40,6 +40,11 @@ class PharmacyOrderResponse(BaseModel):
 
 class PharmacyOrderListResponse(BaseModel):
     total: int
+    page: int = 1
+    limit: int = 20
+    total_pages: int = 0
+    has_next: bool = False
+    has_previous: bool = False
     data: list[PharmacyOrderResponse]
 
 

@@ -12,7 +12,7 @@ function Layout() {
                 <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
                 <div className="flex min-w-0 flex-1 flex-col gap-4">
                     <Topbar onMenuClick={() => setSidebarOpen(true)} />
-                    <main className="flex-1 overflow-x-hidden rounded-[24px] border border-white/70 bg-[linear-gradient(135deg,#ffffff_0%,#f3fbf7_48%,#edf4fb_100%)] p-4 shadow-[0_18px_50px_rgba(28,46,74,0.07)] sm:rounded-[30px] sm:p-5 lg:rounded-[36px] lg:p-8">
+                    <main className="min-w-0 flex-1 overflow-x-auto rounded-[24px] border border-white/70 bg-[linear-gradient(135deg,#ffffff_0%,#f3fbf7_48%,#edf4fb_100%)] p-4 shadow-[0_18px_50px_rgba(28,46,74,0.07)] sm:rounded-[30px] sm:p-5 lg:rounded-[36px] lg:p-8">
                         <Outlet />
                     </main>
                 </div>

@@ -43,6 +43,22 @@ class PatientCreate(PatientBase):
     pass
 
 
+class PatientSelfUpdate(BaseModel):
+    """The subset of fields a patient may change on their own record.
+
+    Clinical attributes (blood group, allergies, history, status) are owned by
+    the care team and are deliberately absent.
+    """
+
+    phone: str | None = Field(default=None, min_length=1, max_length=20, pattern=r"^\d+$")
+    email: EmailStr | None = None
+    address: str | None = Field(default=None, min_length=1, max_length=300)
+    emergency_contact_name: str | None = Field(default=None, min_length=1, max_length=120)
+    emergency_contact_phone: str | None = Field(
+        default=None, min_length=1, max_length=20, pattern=r"^\d+$"
+    )
+
+
 class PatientUpdate(BaseModel):
     full_name: str | None = Field(default=None, min_length=1, max_length=120)
     gender: Gender | None = None
@@ -66,6 +82,15 @@ class PatientResponse(PatientBase):
     patient_id: str
     created_at: datetime
     updated_at: datetime
+
+
+class PatientCreatedResponse(PatientResponse):
+    """Returned only by patient registration.
+
+    The generated credentials appear in this payload once, at creation time, and
+    are never included in subsequent reads of the patient record.
+    """
+
     account_login_id: str | None = None
     temporary_password: str | None = None
 

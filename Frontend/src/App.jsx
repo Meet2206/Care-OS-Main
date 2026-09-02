@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 import ProtectedRoute from "./components/ProtectedRoute"
 import RoleRedirect from "./components/RoleRedirect"
 import Layout from "./components/layout/Layout"
+import ChangePasswordGate from "./components/ChangePasswordGate"
 import { useAuth } from "./context/AuthContext"
 import Login from "./pages/auth/Login"
 import CareAI from "./pages/ai/CareAI"
@@ -11,15 +12,26 @@ import DoctorDashboard from "./pages/dashboard/DoctorDashboard"
 import PharmacyDashboard from "./pages/dashboard/PharmacyDashboard"
 import PatientDashboard from "./pages/dashboard/PatientDashboard"
 import MedicalRecords from "./pages/records/MedicalRecords"
+import Appointments from "./pages/appointments/Appointments"
 import PatientList from "./pages/patients/PatientList"
 import PatientOnboarding from "./pages/patients/PatientOnboarding"
 import PatientDetails from "./pages/patients/PatientDetails"
 
 function AppRoutes() {
-    const { user } = useAuth()
+    const { user, loading } = useAuth()
+
+    if (loading) {
+        return (
+            <div className="flex min-h-screen items-center justify-center text-sm text-[var(--muted)]">
+                Loading CareOS…
+            </div>
+        )
+    }
 
     return (
         <BrowserRouter>
+            {/* A system-generated password must be rotated before the app is usable. */}
+            <ChangePasswordGate />
             <Routes>
                 <Route path="/" element={<Navigate to={user ? user.dashboardPath : "/login"} replace />} />
                 <Route path="/login" element={<Login />} />
@@ -35,6 +47,7 @@ function AppRoutes() {
                         <Route path="/doctor" element={<DoctorDashboard />} />
                         <Route path="/patient" element={<PatientDashboard />} />
                         <Route path="/pharmacy" element={<PharmacyDashboard />} />
+                        <Route path="/appointments" element={<Appointments />} />
                         <Route path="/records" element={<MedicalRecords />} />
                         <Route path="/ai" element={<CareAI />} />
                     </Route>

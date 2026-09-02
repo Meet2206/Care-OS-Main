@@ -5,6 +5,7 @@ import Modal from "../../components/common/Modal"
 import PageIntro from "../../components/common/PageIntro"
 import StatusPill from "../../components/common/StatusPill"
 import BookingCalendar from "../../components/modules/patients/BookingCalendar"
+import MedicineSearchSelect from "../../components/modules/clinical/MedicineSearchSelect"
 import { useAuth } from "../../context/AuthContext"
 import { apiRequest } from "../../api/client"
 import {
@@ -61,10 +62,10 @@ function DoctorDashboard() {
     const [patients, setPatients] = useState([])
     const [appointments, setAppointments] = useState([])
     const [records, setRecords] = useState([])
-    const [medicineOptions, setMedicineOptions] = useState([])
     const [loading, setLoading] = useState(true)
     const [loadError, setLoadError] = useState("")
     const [prescriptionError, setPrescriptionError] = useState("")
+    const [savingReview, setSavingReview] = useState(false)
 
     useEffect(() => {
         let active = true
@@ -72,13 +73,11 @@ function DoctorDashboard() {
             apiRequest("/patients?limit=100"),
             apiRequest("/appointments?limit=100"),
             apiRequest("/medical-records?limit=100"),
-            apiRequest("/medicines/search?limit=50"),
-        ]).then(([patientResult, appointmentResult, recordResult, medicineResult]) => {
+        ]).then(([patientResult, appointmentResult, recordResult]) => {
             if (!active) return
             setPatients(patientResult.data)
             setAppointments(appointmentResult.data)
             setRecords(recordResult.data)
-            setMedicineOptions(medicineResult.data)
         }).catch((error) => {
             if (active) setLoadError(error.message || "Unable to load doctor data.")
         }).finally(() => {
@@ -170,8 +169,39 @@ function DoctorDashboard() {
         }
         const reportsNote = reviewForm.report === "No report required" ? "No report ordered." : `Report requested: ${reviewForm.report}.`
         const medicinesCount = selectedMedicines.length
+        setPrescriptionError("")
+        setSavingReview(true)
+        try {
+            // Persist the consultation notes first. Previously a review with no
+            // medicines reported success without sending anything at all, so the
+            // clinician's notes and report request were silently discarded.
+            const followUpNote = [
+                reviewForm.improvementStatus ? `Progress: ${reviewForm.improvementStatus}.` : "",
+                reviewForm.improvement ? `Notes: ${reviewForm.improvement}` : "",
+                reportsNote,
+            ].filter(Boolean).join(" ")
+            await apiRequest(`/medical-records/${reviewForm.record.record_id}`, {
+                method: "PUT",
+                body: JSON.stringify({
+                    notes: followUpNote,
+                    ...(reviewForm.nextVisit ? { follow_up_date: reviewForm.nextVisit } : {}),
+                }),
+            })
+        } catch (error) {
+            setPrescriptionError(error.message || "Unable to save the consultation notes.")
+            setSavingReview(false)
+            return
+        }
         if (!medicinesCount) {
-            setSaveMessage(`Review saved for ${selectedPatient?.full_name}. ${reportsNote}`)
+            setSavingReview(false)
+            setSaveMessage(`Review saved for ${selectedPatient?.full_name}. ${reportsNote} No medicines prescribed.`)
+            closeReview()
+            return
+        }
+        const incomplete = selectedMedicines.some((item) => !item.medicineId || !item.tablets || item.times.length === 0)
+        if (incomplete) {
+            setSavingReview(false)
+            setPrescriptionError("Each medicine needs a catalogue selection, a quantity, and at least one dose time.")
             return
         }
         try {
@@ -195,6 +225,8 @@ function DoctorDashboard() {
         } catch (error) {
             setPrescriptionError(error.message || "Unable to save prescription.")
             return
+        } finally {
+            setSavingReview(false)
         }
         setSaveMessage(`Review saved for ${selectedPatient?.full_name}. ${reportsNote} ${medicinesCount} medicine plan item${medicinesCount === 1 ? "" : "s"} added.`)
         closeReview()
@@ -421,20 +453,13 @@ function DoctorDashboard() {
                                     <div className="grid gap-4 md:grid-cols-3">
                                         <label className="block">
                                             <span className="mb-2 block text-sm font-semibold text-[var(--ink)]">Medicine</span>
-                                            <select
-                                                value={medicine.medicineId}
-                                                onChange={(event) => {
-                                                    const option = medicineOptions.find((item) => item.medicine_id === event.target.value)
-                                                    updateMedicine(index, "medicineId", option?.medicine_id || "")
-                                                    updateMedicine(index, "medicine", option?.medicine_name || "")
+                                            <MedicineSearchSelect
+                                                value={medicine.medicine}
+                                                onSelect={(option) => {
+                                                    updateMedicine(index, "medicineId", option.medicine_id)
+                                                    updateMedicine(index, "medicine", option.medicine_name)
                                                 }}
-                                                className="w-full appearance-none rounded-[16px] border border-[rgba(181,198,214,0.92)] bg-[linear-gradient(180deg,rgba(248,251,253,0.98),rgba(236,244,249,0.94))] px-4 py-3 text-sm font-medium text-[var(--ink)] outline-none shadow-[inset_0_1px_0_rgba(255,255,255,0.65)]"
-                                            >
-                                                <option value="">Select medicine</option>
-                                                {medicineOptions.map((option) => (
-                                                    <option key={option.medicine_id} value={option.medicine_id}>{option.medicine_name}</option>
-                                                ))}
-                                            </select>
+                                            />
                                         </label>
 
                                         <label className="block">
@@ -510,7 +535,7 @@ function DoctorDashboard() {
                     <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
                         <Button type="button" variant="subtle" onClick={closeReview}>Cancel</Button>
                         {prescriptionError ? <p className="text-sm text-[#9b5148]">{prescriptionError}</p> : null}
-                        <Button type="submit" className="px-6">Save Review</Button>
+                        <Button type="submit" className="px-6" disabled={savingReview}>{savingReview ? "Saving…" : "Save Review"}</Button>
                     </div>
                 </form>
             </Modal>

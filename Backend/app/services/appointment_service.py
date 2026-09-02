@@ -7,6 +7,7 @@ from pymongo import ReturnDocument
 from pymongo.errors import DuplicateKeyError
 
 from app.database.mongodb import db
+from app.utils.serialization import serialize_documents
 from app.models.appointment import (
     APPOINTMENT_COUNTER_KEY,
     APPOINTMENTS_COLLECTION,
@@ -192,7 +193,7 @@ def list_appointments(
         total_pages=total_pages,
         has_next=page < total_pages,
         has_previous=page > 1,
-        data=[appointment_document_to_response(appointment) for appointment in appointments],
+        data=serialize_documents(appointments, appointment_document_to_response, identifier_field="appointment_id"),
     )
 
 

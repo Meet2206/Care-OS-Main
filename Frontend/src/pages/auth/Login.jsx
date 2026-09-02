@@ -6,10 +6,12 @@ import { useAuth } from "../../context/AuthContext"
 import careOsLogo from "../../../logo-transparent.png"
 
 function Login() {
-    const { user, login } = useAuth()
+    const { user, login, sessionExpired, clearSessionExpired } = useAuth()
     const [loginId, setLoginId] = useState("")
     const [password, setPassword] = useState("")
+    const [showPassword, setShowPassword] = useState(false)
     const [error, setError] = useState("")
+    const [submitting, setSubmitting] = useState(false)
 
     if (user) {
         return <Navigate to={user.dashboardPath} replace />
@@ -18,10 +20,18 @@ function Login() {
     const handleSubmit = async (event) => {
         event.preventDefault()
         setError("")
+        clearSessionExpired()
+        if (!loginId.trim() || !password) {
+            setError("Enter both your login ID and password.")
+            return
+        }
+        setSubmitting(true)
         try {
-            await login(loginId, password)
+            await login(loginId.trim(), password)
         } catch (requestError) {
             setError(requestError.message || "Unable to sign in.")
+        } finally {
+            setSubmitting(false)
         }
     }
 
@@ -82,6 +92,9 @@ function Login() {
                                 <input
                                     value={loginId}
                                     onChange={(event) => setLoginId(event.target.value)}
+                                    autoComplete="username"
+                                    autoCapitalize="none"
+                                    spellCheck={false}
                                     className="w-full rounded-full border border-[var(--line)] bg-[var(--panel-muted)] px-4 py-3 text-sm text-[var(--ink)] outline-none"
                                     placeholder="Your CARE-OS login ID"
                                 />
@@ -89,18 +102,35 @@ function Login() {
 
                             <label className="block">
                                 <span className="mb-2 block text-sm font-semibold text-[var(--ink)]">Password</span>
-                                <input
-                                    value={password}
-                                    onChange={(event) => setPassword(event.target.value)}
-                                    type="password"
-                                    className="w-full rounded-full border border-[var(--line)] bg-[var(--panel-muted)] px-4 py-3 text-sm text-[var(--ink)] outline-none"
-                                    placeholder="Your password"
-                                />
+                                <span className="relative block">
+                                    <input
+                                        value={password}
+                                        onChange={(event) => setPassword(event.target.value)}
+                                        type={showPassword ? "text" : "password"}
+                                        autoComplete="current-password"
+                                        className="w-full rounded-full border border-[var(--line)] bg-[var(--panel-muted)] py-3 pl-4 pr-16 text-sm text-[var(--ink)] outline-none"
+                                        placeholder="Your password"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword((current) => !current)}
+                                        className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-semibold text-[var(--muted)]"
+                                    >
+                                        {showPassword ? "Hide" : "Show"}
+                                    </button>
+                                </span>
                             </label>
 
-                            {error ? <p className="rounded-2xl bg-[#f9dfdb] px-4 py-3 text-sm text-[#8f4f44]">{error}</p> : null}
+                            {sessionExpired && !error ? (
+                                <p className="rounded-2xl bg-[#f7efd8] px-4 py-3 text-sm text-[#946d12]">
+                                    Your session expired. Please sign in again.
+                                </p>
+                            ) : null}
+                            {error ? <p className="text-wrap-anywhere rounded-2xl bg-[#f9dfdb] px-4 py-3 text-sm text-[#8f4f44]">{error}</p> : null}
 
-                            <Button type="submit" className="w-full py-3">Log In</Button>
+                            <Button type="submit" className="w-full py-3" disabled={submitting}>
+                                {submitting ? "Signing in…" : "Log In"}
+                            </Button>
                         </form>
 
                         <div className="mt-6 border-t border-[var(--line)] pt-5">

@@ -50,6 +50,14 @@ def _next_audit_id() -> str:
 
 def create_audit_log(request: AuditLogCreate) -> AuditLogResponse:
     audit_log = request.model_dump(mode="python")
+    # IPvAnyAddress deserialises to an ipaddress object, which BSON cannot
+    # encode. Store the textual form.
+    if audit_log.get("ip_address") is not None:
+        audit_log["ip_address"] = str(audit_log["ip_address"])
+    if audit_log.get("action") is not None:
+        audit_log["action"] = AuditAction(audit_log["action"]).value
+    if audit_log.get("module") is not None:
+        audit_log["module"] = AuditModule(audit_log["module"]).value
     audit_log.update(
         audit_id=_next_audit_id(),
         created_at=datetime.now(timezone.utc),

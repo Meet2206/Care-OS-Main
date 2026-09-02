@@ -7,6 +7,7 @@ from pymongo import ReturnDocument
 from pymongo.errors import DuplicateKeyError
 
 from app.database.mongodb import db
+from app.utils.serialization import serialize_documents
 from app.models.doctor import (
     COUNTERS_COLLECTION,
     DOCTOR_COUNTER_KEY,
@@ -139,7 +140,7 @@ def list_doctors(page: int, limit: int, search: str | None) -> DoctorListRespons
         total_pages=total_pages,
         has_next=page < total_pages,
         has_previous=page > 1,
-        data=[doctor_document_to_response(doctor) for doctor in doctors],
+        data=serialize_documents(doctors, doctor_document_to_response, identifier_field="doctor_id"),
     )
 
 

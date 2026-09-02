@@ -1,376 +1,373 @@
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import Button from "../../components/common/Button"
 import Card from "../../components/common/Card"
 import PageIntro from "../../components/common/PageIntro"
 import StatusPill from "../../components/common/StatusPill"
+import AsyncState from "../../components/common/AsyncState"
+import Field, { Select, TextInput } from "../../components/common/Field"
 import { useAuth } from "../../context/AuthContext"
 import { apiRequest } from "../../api/client"
 
-const disclaimer =
-    "Please consider consulting a doctor. This guidance is only a general suggestion and should not replace professional medical advice."
+const GUIDANCE_DISCLAIMER =
+    "This is general self-care guidance, not medical advice. Contact your care team if symptoms persist or worsen."
 
-const appointmentQuestions = [
-    { key: "department", label: "Department", placeholder: "Cardiology, General Medicine, ENT..." },
-    { key: "doctor", label: "Preferred doctor", placeholder: "Enter doctor name or leave flexible" },
-    { key: "date", label: "Preferred date", placeholder: "Select preferred date" },
-    { key: "time", label: "Preferred time", placeholder: "Morning / Afternoon / Specific time" },
-    { key: "reason", label: "Reason for visit", placeholder: "Describe what you need help with" },
-    { key: "mode", label: "Visit type", placeholder: "In-person / Follow-up / Consultation" },
-]
-
-const symptomGuidance = {
+const SELF_CARE = {
     headache: {
         title: "Headache",
         advice: [
-            "Rest in a quiet room and reduce screen exposure for a while.",
-            "Drink water slowly and regularly in case dehydration is contributing.",
-            "Have a light meal if you have not eaten for several hours.",
+            "Rest in a quiet, dimly lit room and reduce screen time.",
+            "Drink water steadily in case dehydration is contributing.",
+            "Eat something light if it has been several hours since your last meal.",
         ],
     },
     cough: {
         title: "Mild cough",
         advice: [
-            "Sip warm water or warm fluids through the day.",
-            "Avoid cold drinks, smoke exposure, and dusty environments.",
-            "Take rest and monitor whether the cough becomes more frequent or painful.",
+            "Sip warm fluids through the day.",
+            "Avoid cold drinks, smoke, and dusty environments.",
+            "Rest, and watch for the cough becoming more frequent or painful.",
         ],
     },
     sneezing: {
         title: "Mild sneezing",
         advice: [
-            "Avoid dust, perfume, or other possible irritants if you notice a trigger.",
-            "Use clean water to gently rinse the face and stay hydrated.",
-            "Rest and monitor whether congestion or fever develops alongside the sneezing.",
+            "Avoid dust, strong fragrance, and other triggers you notice.",
+            "Rinse your face with clean water and stay hydrated.",
+            "Watch for congestion or fever developing alongside it.",
         ],
     },
     sore_throat: {
         title: "Sore throat",
         advice: [
-            "Use warm water for gentle gargling if comfortable.",
-            "Drink warm fluids and avoid very cold or irritating foods.",
-            "Rest your voice and monitor for increasing pain or difficulty swallowing.",
+            "Gargle with warm water if that is comfortable.",
+            "Drink warm fluids and avoid very cold or spiced food.",
+            "Rest your voice and watch for pain or difficulty swallowing.",
         ],
     },
 }
 
+function ageFrom(dateOfBirth) {
+    if (!dateOfBirth) return null
+    const born = new Date(dateOfBirth)
+    if (Number.isNaN(born.getTime())) return null
+    const today = new Date()
+    let age = today.getFullYear() - born.getFullYear()
+    const monthDelta = today.getMonth() - born.getMonth()
+    if (monthDelta < 0 || (monthDelta === 0 && today.getDate() < born.getDate())) age -= 1
+    return Math.max(0, age)
+}
+
+function daysSince(dateValue) {
+    if (!dateValue) return null
+    const parsed = new Date(dateValue)
+    if (Number.isNaN(parsed.getTime())) return null
+    return Math.max(0, Math.floor((Date.now() - parsed.getTime()) / 86400000))
+}
+
+/**
+ * CareAI decision support.
+ *
+ * Both models one-hot encode their categorical inputs with handle_unknown="ignore",
+ * so any value outside the training vocabulary is silently dropped and the
+ * prediction quietly stops depending on it. The form therefore renders choices
+ * fetched from /ai/schema rather than free-text boxes, and the backend rejects
+ * anything outside that vocabulary instead of returning a hollow answer.
+ */
 function CareAI() {
     const { user } = useAuth()
     const isPatient = user?.role === "patient"
     const isDoctor = user?.role === "doctor"
     const isReceptionist = user?.role === "receptionist"
-    const isAdmin = user?.role === "admin"
 
-    const [messages, setMessages] = useState(() => {
-        if (isDoctor) {
-            return [
-                {
-                    id: 1,
-                    sender: "ai",
-                    text: "Welcome to CareOS. I'm your Mitra.",
-                },
-                {
-                    id: 2,
-                    sender: "ai",
-                    text: "Doctor mode is active. Enter a patient name or unique ID and I will help you find their record summary.",
-                },
-            ]
-        }
+    const [schema, setSchema] = useState(null)
+    const [schemaError, setSchemaError] = useState("")
+    const [loading, setLoading] = useState(true)
 
-        if (isAdmin) {
-            return [
-                {
-                    id: 1,
-                    sender: "ai",
-                    text: "Welcome to CareOS. I'm your Mitra.",
-                },
-                {
-                    id: 2,
-                    sender: "ai",
-                    text: "Mitra's guided care flow is available in the patient workspace. For doctors, Mitra works as a patient finder.",
-                },
-            ]
-        }
+    const [patients, setPatients] = useState([])
+    const [appointments, setAppointments] = useState([])
+    const [records, setRecords] = useState([])
+    const [contextError, setContextError] = useState("")
 
-        return [
-            {
-                id: 1,
-                sender: "ai",
-                text: "Welcome to CareOS. I'm your Mitra.",
-            },
-            {
-                id: 2,
-                sender: "ai",
-                text: "How can I help you today? You can register a new patient or get general guidance for a minor health concern.",
-            },
-        ]
+    const [patientId, setPatientId] = useState("")
+    const [inputs, setInputs] = useState({
+        Disease: "", Severity: "3", Abnormal_Result: "", Diagnosis: "", Symptoms: "",
+        Symptom_Count: "1", Chronic_Condition: "", Severity_Score: "3",
     })
-    const [draft, setDraft] = useState("")
-    const [mode, setMode] = useState("home")
+    const [result, setResult] = useState(null)
+    const [predicting, setPredicting] = useState(false)
+    const [predictError, setPredictError] = useState("")
     const [selectedSymptom, setSelectedSymptom] = useState("")
-    const [finderQuery, setFinderQuery] = useState("")
-    const [finderResult, setFinderResult] = useState(null)
-    const [showContext, setShowContext] = useState(false)
-    const [formValues, setFormValues] = useState({
-        department: "",
-        doctor: "",
-        date: "",
-        time: "",
-        reason: "",
-        mode: "",
-    })
-    const [clinicalPatients, setClinicalPatients] = useState([])
-    const [clinicalAppointments, setClinicalAppointments] = useState([])
-    const [clinicalRecords, setClinicalRecords] = useState([])
-    const [aiPatientId, setAiPatientId] = useState(user?.patient_id || "")
-    const [aiInputs, setAiInputs] = useState({ disease: "", severity: "", abnormal: "", chronic: "", symptomCount: "" })
-    const [aiResult, setAiResult] = useState(null)
-    const [aiLoading, setAiLoading] = useState(false)
-    const [aiError, setAiError] = useState("")
 
-    useEffect(() => {
-        if (!isDoctor && !isPatient && !isReceptionist) return
-        const recordRequest = isDoctor || isPatient ? apiRequest("/medical-records?limit=100") : Promise.resolve({ data: [] })
-        Promise.all([apiRequest("/patients?limit=100"), apiRequest("/appointments?limit=100"), recordRequest])
-            .then(([p, a, r]) => { setClinicalPatients(p.data); setClinicalAppointments(a.data); setClinicalRecords(r.data) })
-            .catch((error) => setAiError(error.message || "Unable to load clinical context."))
-    }, [isDoctor, isPatient, isReceptionist])
+    const load = useCallback(async () => {
+        setLoading(true)
+        setSchemaError("")
+        setContextError("")
+        try {
+            // A patient may read only their own record, so the staff-wide patient
+            // list is not requested for them.
+            const patientRequest = isPatient
+                ? apiRequest(`/patients/${user.patient_id}`).then((one) => ({ data: [one] }))
+                : apiRequest("/patients?limit=100")
+            const recordRequest = isDoctor || isPatient
+                ? apiRequest("/medical-records?limit=100")
+                : Promise.resolve({ data: [] })
+            const [schemaResult, patientResult, appointmentResult, recordResult] = await Promise.all([
+                apiRequest("/ai/schema"),
+                patientRequest,
+                apiRequest("/appointments?limit=100"),
+                recordRequest,
+            ])
+            setSchema(schemaResult)
+            setPatients(patientResult.data)
+            setAppointments(appointmentResult.data)
+            setRecords(recordResult.data)
+            if (isPatient && user.patient_id) setPatientId(user.patient_id)
+        } catch (error) {
+            if (error.status === 503) setSchemaError("CareAI is temporarily unavailable. The prediction models could not be loaded.")
+            else setContextError(error.message || "Unable to load your clinical context.")
+        } finally {
+            setLoading(false)
+        }
+    }, [isDoctor, isPatient, user?.patient_id])
 
-    const selectedClinicalPatient = clinicalPatients.find((patient) => patient.patient_id === aiPatientId)
-    const selectedClinicalRecords = clinicalRecords.filter((record) => record.patient_id === aiPatientId)
-    const selectedClinicalAppointments = clinicalAppointments.filter((appointment) => appointment.patient_id === aiPatientId)
-    const latestRecord = selectedClinicalRecords[0]
-    const latestAppointment = selectedClinicalAppointments.slice().sort((a, b) => String(b.appointment_date).localeCompare(String(a.appointment_date)))[0]
-    const age = selectedClinicalPatient?.date_of_birth ? Math.max(0, new Date().getFullYear() - new Date(selectedClinicalPatient.date_of_birth).getFullYear()) : null
-    const daysSinceLastVisit = latestAppointment?.appointment_date ? Math.max(0, Math.floor((Date.now() - new Date(latestAppointment.appointment_date).getTime()) / 86400000)) : null
+    useEffect(() => { load() }, [load])
+
+    const selectedPatient = patients.find((item) => item.patient_id === patientId)
+    const patientAppointments = useMemo(
+        () => appointments.filter((item) => item.patient_id === patientId),
+        [appointments, patientId],
+    )
+    const latestAppointment = useMemo(
+        () => patientAppointments.slice().sort((a, b) => String(b.appointment_date).localeCompare(String(a.appointment_date)))[0],
+        [patientAppointments],
+    )
+    const age = ageFrom(selectedPatient?.date_of_birth)
+    const sinceLastVisit = daysSince(latestAppointment?.appointment_date)
+
+    const priorityVocab = schema?.patient_priority?.categorical || {}
+    const waitVocab = schema?.wait_time?.categorical || {}
+    const severityBounds = schema?.patient_priority?.numeric?.Severity || { minimum: 1, maximum: 5 }
+
+    const setInput = (key, value) => setInputs((current) => ({ ...current, [key]: value }))
 
     const runPrediction = async (kind) => {
-        setAiLoading(true); setAiError(""); setAiResult(null)
+        setPredicting(true)
+        setPredictError("")
+        setResult(null)
         try {
-            if (!aiPatientId || !selectedClinicalPatient || !latestRecord || age === null || daysSinceLastVisit === null) throw new Error("Select a patient with a linked medical record and appointment.")
-            const common = { patient_id: aiPatientId, Disease: aiInputs.disease, Gender: selectedClinicalPatient.gender, Age: age, Number_of_Visits: selectedClinicalAppointments.length, Abnormal_Result: aiInputs.abnormal }
+            if (!patientId || !selectedPatient) throw new Error("Select a patient first.")
+            if (age === null) throw new Error("This patient has no date of birth recorded, so age cannot be derived.")
+            const shared = {
+                patient_id: patientId,
+                Gender: selectedPatient.gender,
+                Age: age,
+                Number_of_Visits: patientAppointments.length,
+            }
             const payload = kind === "priority"
-                ? { ...common, Severity: Number(aiInputs.severity), Diagnosis: latestRecord.diagnosis, Symptoms: latestRecord.symptoms, Days_Since_Last_Visit: daysSinceLastVisit }
-                : { ...common, Symptom_Count: Number(aiInputs.symptomCount), Chronic_Condition: aiInputs.chronic, Severity_Score: Number(aiInputs.severity) }
-            setAiResult({ kind, data: await apiRequest(`/ai/${kind === "priority" ? "patient-priority" : "wait-time"}`, { method: "POST", body: JSON.stringify(payload) }) })
-        } catch (error) { setAiError(error.message || "The AI request could not be completed.") } finally { setAiLoading(false) }
-    }
-
-    const selectedGuidance = useMemo(() => {
-        if (!selectedSymptom) {
-            return null
+                ? {
+                    ...shared,
+                    Disease: inputs.Disease,
+                    Severity: Number(inputs.Severity),
+                    Abnormal_Result: inputs.Abnormal_Result,
+                    Diagnosis: inputs.Diagnosis,
+                    Symptoms: inputs.Symptoms,
+                    Days_Since_Last_Visit: sinceLastVisit ?? 0,
+                }
+                : {
+                    ...shared,
+                    Disease: inputs.Disease,
+                    Abnormal_Result: inputs.Abnormal_Result_Wait,
+                    Symptom_Count: Number(inputs.Symptom_Count),
+                    Chronic_Condition: inputs.Chronic_Condition,
+                    Severity_Score: Number(inputs.Severity_Score),
+                }
+            const data = await apiRequest(`/ai/${kind === "priority" ? "patient-priority" : "wait-time"}`, {
+                method: "POST",
+                body: JSON.stringify(payload),
+            })
+            setResult({ kind, data })
+        } catch (error) {
+            setPredictError(error.message || "The AI request could not be completed.")
+        } finally {
+            setPredicting(false)
         }
-
-        return symptomGuidance[selectedSymptom]
-    }, [selectedSymptom])
-
-    const appendMessage = (sender, text) => {
-        setMessages((current) => [...current, { id: Date.now() + Math.random(), sender, text }])
     }
 
-    const searchPatient = (query) => {
-        const normalizedQuery = query.trim().toLowerCase()
-
-        if (!normalizedQuery) {
-            return null
-        }
-
-        return clinicalPatients.find((patient) =>
-            patient.patient_id.toLowerCase() === normalizedQuery || patient.full_name.toLowerCase().includes(normalizedQuery),
-        )
-    }
-
-    const handleStartBooking = () => {
-        setMode("book-appointment")
-        appendMessage("user", "I want to book an appointment.")
-        appendMessage("ai", "Sure. Please enter your appointment preferences below and I will prepare a booking request summary.")
-    }
-
-    const handleStartGuidance = () => {
-        setMode("guidance")
-        appendMessage("user", "I need minor health guidance.")
-        appendMessage("ai", "Choose a common symptom below and I will share general home-care suggestions.")
-    }
-
-    const handleSelectSymptom = (symptomKey) => {
-        const guidance = symptomGuidance[symptomKey]
-        setSelectedSymptom(symptomKey)
-        appendMessage("user", `Help me with ${guidance.title.toLowerCase()}.`)
-        appendMessage(
-            "ai",
-            `${guidance.title}: ${guidance.advice.join(" ")} ${disclaimer}`,
-        )
-    }
-
-    const handleDoctorFinder = (event) => {
-        event.preventDefault()
-
-        const match = searchPatient(finderQuery)
-        appendMessage("user", finderQuery.trim())
-
-        if (!match) {
-            setFinderResult(null)
-            appendMessage("ai", "I could not find that patient. Try a full name or a unique ID such as P001.")
-            return
-        }
-
-        setFinderResult(match)
-        const visits = clinicalAppointments.filter((item) => item.patient_id === match.patient_id)
-        const records = clinicalRecords.filter((item) => item.patient_id === match.patient_id)
-        setFinderResult({ ...match, visits, records })
-        appendMessage("ai", `I found ${match.full_name} (${match.patient_id}). I loaded ${visits.length} appointment(s) and ${records.length} medical record(s) from the backend.`)
-        setFinderQuery("")
-    }
-
-    const handlePatientFormChange = (key, value) => {
-        setFormValues((current) => ({
-            ...current,
-            [key]: value,
-        }))
-    }
-
-    const handleAppointmentSubmit = (event) => {
-        event.preventDefault()
-
-        const summary = `Appointment request: ${formValues.department} department, preferred doctor ${formValues.doctor || "flexible"}, preferred date ${formValues.date}, time ${formValues.time}, visit type ${formValues.mode}, reason: ${formValues.reason}.`
-
-        appendMessage("user", summary)
-        appendMessage(
-            "ai",
-            "Your appointment request summary is ready. Please review it and confirm with the hospital desk or online booking flow when available.",
-        )
-        setFormValues({
-            department: "",
-            doctor: "",
-            date: "",
-            time: "",
-            reason: "",
-            mode: "",
-        })
-    }
-
-    const handleSend = (event) => {
-        event.preventDefault()
-
-        if (!draft.trim()) {
-            return
-        }
-
-        const question = draft.trim()
-        appendMessage("user", question)
-        appendMessage("ai", isDoctor ? "Mitra noted your follow-up. Use patient search for direct lookup or continue with clinical context questions." : "Mitra noted that request. For medical concerns, please follow the guidance carefully and consult a doctor when needed.")
-        setDraft("")
-    }
+    const canPredict = Boolean(patientId && selectedPatient && schema)
 
     return (
         <div className="space-y-6">
             <PageIntro
                 eyebrow="Quadrant 3"
                 title="CareAI"
-                description={
-                    isDoctor
-                        ? "Doctor mode turns Mitra into a focused patient finder so clinicians can jump to a person record quickly by name or unique ID."
-                        : "A quiet chat surface prepared for future AI support, designed to assist clinical work without turning itself into the main event."
-                }
-                actions={<Button variant="subtle" onClick={() => setShowContext((current) => !current)}>{showContext ? "Hide Context" : "Open Context"}</Button>}
+                description="Operational decision support for triage priority and expected waiting time. Advisory only — never a diagnosis."
             />
 
-            {showContext ? (
+            {contextError ? (
                 <Card className="p-5">
-                    <h3 className="font-display text-2xl text-[var(--ink)]">Current Mitra Context</h3>
-                    <div className="mt-4 grid gap-3 md:grid-cols-3">
-                        <div className="rounded-2xl bg-[var(--panel-muted)] px-4 py-4">
-                            <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Role</p>
-                            <p className="mt-2 text-sm font-semibold text-[var(--ink)]">{user?.role}</p>
-                        </div>
-                        <div className="rounded-2xl bg-[var(--panel-muted)] px-4 py-4">
-                            <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Mode</p>
-                            <p className="mt-2 text-sm font-semibold text-[var(--ink)]">{isDoctor ? "Patient finder" : isPatient ? mode : "Info only"}</p>
-                        </div>
-                        <div className="rounded-2xl bg-[var(--panel-muted)] px-4 py-4">
-                            <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Messages</p>
-                            <p className="mt-2 text-sm font-semibold text-[var(--ink)]">{messages.length} items</p>
-                        </div>
-                    </div>
+                    <p className="text-sm text-[#9b5148]">{contextError}</p>
                 </Card>
             ) : null}
 
-            {(isDoctor || isPatient) ? (
-                <Card className="p-5">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                        <div>
-                            <h3 className="font-display text-2xl text-[var(--ink)]">Clinical decision support</h3>
-                            <p className="mt-2 text-sm text-[var(--muted)]">Uses your authorized CARE-OS clinical context. Results are advisory and are not diagnoses.</p>
+            <AsyncState loading={loading} error={schemaError} onRetry={load} empty={false}>
+                <div className="space-y-6">
+                    <Card className="min-w-0 p-5">
+                        <div className="flex flex-wrap items-start justify-between gap-3">
+                            <div className="min-w-0">
+                                <h2 className="font-display text-2xl text-[var(--ink)]">Clinical decision support</h2>
+                                <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
+                                    Age, visit count, and days since last visit come from CareOS. The fields below are the
+                                    model&apos;s own vocabulary — only these values carry signal.
+                                </p>
+                            </div>
+                            <StatusPill tone="amber">Advisory only</StatusPill>
                         </div>
-                        <StatusPill tone="amber">Advisory only</StatusPill>
-                    </div>
-                    <div className="mt-4 grid gap-3 md:grid-cols-3">
-                        {isDoctor ? <select value={aiPatientId} onChange={(event) => setAiPatientId(event.target.value)} className="rounded-2xl border border-[var(--line)] bg-[var(--panel-muted)] px-4 py-3 text-sm text-[var(--ink)]"><option value="">Select authorized patient</option>{clinicalPatients.map((patient) => <option key={patient.patient_id} value={patient.patient_id}>{patient.full_name} ({patient.patient_id})</option>)}</select> : <div className="rounded-2xl bg-[var(--panel-muted)] px-4 py-3 text-sm">{selectedClinicalPatient?.full_name || "Loading your patient record"}</div>}
-                        <input value={aiInputs.disease} onChange={(event) => setAiInputs((current) => ({ ...current, disease: event.target.value }))} placeholder="Disease (required)" className="rounded-2xl border border-[var(--line)] bg-[var(--panel-muted)] px-4 py-3 text-sm" />
-                        <input type="number" min="0" max="10" value={aiInputs.severity} onChange={(event) => setAiInputs((current) => ({ ...current, severity: event.target.value }))} placeholder="Severity / score (0-10)" className="rounded-2xl border border-[var(--line)] bg-[var(--panel-muted)] px-4 py-3 text-sm" />
-                        <input value={aiInputs.abnormal} onChange={(event) => setAiInputs((current) => ({ ...current, abnormal: event.target.value }))} placeholder="Abnormal result (required)" className="rounded-2xl border border-[var(--line)] bg-[var(--panel-muted)] px-4 py-3 text-sm" />
-                        <input type="number" min="0" value={aiInputs.symptomCount} onChange={(event) => setAiInputs((current) => ({ ...current, symptomCount: event.target.value }))} placeholder="Symptom count (required)" className="rounded-2xl border border-[var(--line)] bg-[var(--panel-muted)] px-4 py-3 text-sm" />
-                        <input value={aiInputs.chronic} onChange={(event) => setAiInputs((current) => ({ ...current, chronic: event.target.value }))} placeholder="Chronic condition (required)" className="rounded-2xl border border-[var(--line)] bg-[var(--panel-muted)] px-4 py-3 text-sm" />
-                    </div>
-                    <p className="mt-3 text-xs text-[var(--muted)]">Diagnosis and symptoms come from the selected medical record; age, visits, and days since last visit come from backend data.</p>
-                    <div className="mt-4 flex flex-wrap gap-3"><Button type="button" onClick={() => runPrediction("priority")} disabled={aiLoading}>Predict Priority</Button><Button type="button" variant="subtle" onClick={() => runPrediction("wait")} disabled={aiLoading}>Estimate Wait Time</Button></div>
-                    {aiLoading ? <p className="mt-4 text-sm text-[var(--muted)]">Loading prediction…</p> : null}
-                    {aiError ? <p className="mt-4 rounded-2xl bg-[#fff4f2] px-4 py-3 text-sm text-[#9b5148]">{aiError}</p> : null}
-                    {aiResult ? <div className="mt-4 rounded-2xl bg-[var(--panel-muted)] px-4 py-4 text-sm"><p className="font-semibold text-[var(--ink)]">{aiResult.kind === "priority" ? `Predicted priority: ${aiResult.data.prediction}` : `Estimated wait time: ${aiResult.data.estimated_wait_time.toFixed(1)} minutes`}</p>{aiResult.kind === "priority" ? <p className="mt-2 text-[var(--muted)]">Class probabilities: {Object.entries(aiResult.data.probabilities).map(([key, value]) => `${key}: ${(value * 100).toFixed(1)}%`).join(" • ")}</p> : null}<p className="mt-2 text-[var(--muted)]">{aiResult.data.advisory}</p></div> : null}
-                </Card>
-            ) : null}
 
-            <Card className="flex min-h-[560px] flex-col p-4 sm:min-h-[620px] sm:p-6">
-                <div className="flex-1 space-y-4 overflow-y-auto rounded-[28px] bg-[linear-gradient(180deg,#f7fbfd_0%,#eef7f1_100%)] p-5">
-                    {messages.map((message) => (
-                        <div key={message.id} className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}>
-                            <div
-                                className={`text-wrap-anywhere max-w-[88%] rounded-[24px] px-4 py-3 text-sm leading-7 shadow-sm sm:max-w-[72%] ${
-                                    message.sender === "user"
-                                        ? "bg-[linear-gradient(135deg,#4d86d1_0%,#2768bb_100%)] text-white"
-                                        : "bg-white text-[var(--ink)]"
-                                }`}
-                            >
-                                {message.text}
+                        <div className="mt-5 grid min-w-0 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                            <Field label="Patient" required className="md:col-span-2 xl:col-span-1">
+                                {isPatient ? (
+                                    <TextInput readOnly value={selectedPatient ? `${selectedPatient.full_name} (${selectedPatient.patient_id})` : "Loading…"} />
+                                ) : (
+                                    <Select value={patientId} onChange={(event) => setPatientId(event.target.value)}>
+                                        <option value="">Select a patient</option>
+                                        {patients.map((patient) => (
+                                            <option key={patient.patient_id} value={patient.patient_id}>
+                                                {patient.full_name} ({patient.patient_id})
+                                            </option>
+                                        ))}
+                                    </Select>
+                                )}
+                            </Field>
+                            <Field label="Disease" required>
+                                <Select value={inputs.Disease} onChange={(event) => setInput("Disease", event.target.value)}>
+                                    <option value="">Select</option>
+                                    {(priorityVocab.Disease || []).map((value) => <option key={value} value={value}>{value}</option>)}
+                                </Select>
+                            </Field>
+                            <Field label="Severity" required hint={`Trained range ${severityBounds.minimum}–${severityBounds.maximum}`}>
+                                <Select
+                                    value={inputs.Severity}
+                                    onChange={(event) => { setInput("Severity", event.target.value); setInput("Severity_Score", event.target.value) }}
+                                >
+                                    {Array.from(
+                                        { length: severityBounds.maximum - severityBounds.minimum + 1 },
+                                        (_, index) => severityBounds.minimum + index,
+                                    ).map((value) => <option key={value} value={String(value)}>{value}</option>)}
+                                </Select>
+                            </Field>
+                        </div>
+
+                        <div className="mt-6 grid min-w-0 gap-5 xl:grid-cols-2">
+                            <div className="min-w-0 rounded-2xl bg-[var(--panel-muted)] p-4">
+                                <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Triage priority inputs</p>
+                                <div className="mt-3 grid gap-4 sm:grid-cols-2">
+                                    <Field label="Diagnosis" required>
+                                        <Select value={inputs.Diagnosis} onChange={(event) => setInput("Diagnosis", event.target.value)}>
+                                            <option value="">Select</option>
+                                            {(priorityVocab.Diagnosis || []).map((value) => <option key={value} value={value}>{value}</option>)}
+                                        </Select>
+                                    </Field>
+                                    <Field label="Primary symptom" required>
+                                        <Select value={inputs.Symptoms} onChange={(event) => setInput("Symptoms", event.target.value)}>
+                                            <option value="">Select</option>
+                                            {(priorityVocab.Symptoms || []).map((value) => <option key={value} value={value}>{value}</option>)}
+                                        </Select>
+                                    </Field>
+                                    <Field label="Result grade" required className="sm:col-span-2">
+                                        <Select value={inputs.Abnormal_Result} onChange={(event) => setInput("Abnormal_Result", event.target.value)}>
+                                            <option value="">Select</option>
+                                            {(priorityVocab.Abnormal_Result || []).map((value) => <option key={value} value={value}>{value}</option>)}
+                                        </Select>
+                                    </Field>
+                                </div>
+                                <Button className="mt-4 w-full" onClick={() => runPrediction("priority")} disabled={predicting || !canPredict}>
+                                    {predicting ? "Predicting…" : "Predict Priority"}
+                                </Button>
+                            </div>
+
+                            <div className="min-w-0 rounded-2xl bg-[var(--panel-muted)] p-4">
+                                <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Waiting time inputs</p>
+                                <div className="mt-3 grid gap-4 sm:grid-cols-2">
+                                    <Field label="Abnormal result" required hint="This model uses Yes/No">
+                                        <Select value={inputs.Abnormal_Result_Wait || ""} onChange={(event) => setInput("Abnormal_Result_Wait", event.target.value)}>
+                                            <option value="">Select</option>
+                                            {(waitVocab.Abnormal_Result || []).map((value) => <option key={value} value={value}>{value}</option>)}
+                                        </Select>
+                                    </Field>
+                                    <Field label="Chronic condition" required>
+                                        <Select value={inputs.Chronic_Condition} onChange={(event) => setInput("Chronic_Condition", event.target.value)}>
+                                            <option value="">Select</option>
+                                            {(waitVocab.Chronic_Condition || []).map((value) => <option key={value} value={value}>{value}</option>)}
+                                        </Select>
+                                    </Field>
+                                    <Field label="Symptom count" required className="sm:col-span-2">
+                                        <TextInput
+                                            type="number" min="0" max="20"
+                                            value={inputs.Symptom_Count}
+                                            onChange={(event) => setInput("Symptom_Count", event.target.value)}
+                                        />
+                                    </Field>
+                                </div>
+                                <Button variant="subtle" className="mt-4 w-full" onClick={() => runPrediction("wait")} disabled={predicting || !canPredict}>
+                                    {predicting ? "Estimating…" : "Estimate Wait Time"}
+                                </Button>
                             </div>
                         </div>
-                    ))}
-                </div>
 
-                <div className="mt-5 space-y-4">
-                    {isPatient && mode === "home" ? (
-                        <div className="grid gap-3 md:grid-cols-2">
-                            <button
-                                type="button"
-                                onClick={handleStartBooking}
-                                className="rounded-[26px] border border-[var(--line)] bg-[var(--panel-muted)] p-5 text-left shadow-sm"
-                            >
-                                <p className="font-display text-2xl text-[var(--ink)]">Book Appointment</p>
-                                <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
-                                    Share your preferred department, doctor, date, and reason for visit.
-                                </p>
-                            </button>
+                        {selectedPatient ? (
+                            <p className="mt-4 text-xs text-[var(--muted)]">
+                                From CareOS: age {age ?? "unknown"} · {patientAppointments.length} recorded visit
+                                {patientAppointments.length === 1 ? "" : "s"} · {sinceLastVisit ?? "no"} day
+                                {sinceLastVisit === 1 ? "" : "s"} since last visit
+                                {records.filter((item) => item.patient_id === patientId).length
+                                    ? ` · ${records.filter((item) => item.patient_id === patientId).length} clinical record(s)`
+                                    : ""}
+                            </p>
+                        ) : null}
 
-                            <button
-                                type="button"
-                                onClick={handleStartGuidance}
-                                className="rounded-[26px] border border-[var(--line)] bg-[var(--panel-muted)] p-5 text-left shadow-sm"
-                            >
-                                <p className="font-display text-2xl text-[var(--ink)]">Minor Health Guidance</p>
-                                <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
-                                    Get general suggestions for mild symptoms like headache, cough, or sneezing.
-                                </p>
-                            </button>
-                        </div>
-                    ) : null}
+                        {predictError ? (
+                            <p className="text-wrap-anywhere mt-4 rounded-2xl bg-[#fff4f2] px-4 py-3 text-sm text-[#9b5148]">{predictError}</p>
+                        ) : null}
 
-                    {isPatient && mode === "guidance" ? (
-                        <Card className="p-5">
-                            <div className="flex flex-wrap items-center gap-2">
-                                {Object.entries(symptomGuidance).map(([key, item]) => (
+                        {result ? (
+                            <div className="mt-4 rounded-2xl border border-[#cfe0ef] bg-[#f2f8fd] px-4 py-4">
+                                {result.kind === "priority" ? (
+                                    <>
+                                        <p className="font-display text-2xl text-[var(--ink)]">Priority level {result.data.prediction}</p>
+                                        <div className="mt-3 space-y-2">
+                                            {Object.entries(result.data.probabilities).map(([label, value]) => (
+                                                <div key={label} className="flex items-center gap-3">
+                                                    <span className="w-16 shrink-0 text-xs text-[var(--muted)]">Level {label}</span>
+                                                    <span className="h-2 flex-1 overflow-hidden rounded-full bg-white">
+                                                        <span className="block h-full rounded-full bg-[var(--primary-blue)]" style={{ width: `${Math.round(value * 100)}%` }} />
+                                                    </span>
+                                                    <span className="w-14 shrink-0 text-right text-xs font-semibold text-[var(--ink)]">{(value * 100).toFixed(1)}%</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </>
+                                ) : (
+                                    <p className="font-display text-2xl text-[var(--ink)]">
+                                        Estimated wait: {result.data.estimated_wait_time.toFixed(0)} minutes
+                                    </p>
+                                )}
+                                <p className="mt-3 text-xs leading-6 text-[var(--muted)]">{result.data.advisory}</p>
+                            </div>
+                        ) : null}
+                    </Card>
+
+                    {isPatient ? (
+                        <Card className="min-w-0 p-5">
+                            <h2 className="font-display text-2xl text-[var(--ink)]">Self-care guidance</h2>
+                            <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
+                                General suggestions for mild symptoms. Not a substitute for seeing a clinician.
+                            </p>
+                            <div className="mt-4 flex flex-wrap gap-2">
+                                {Object.entries(SELF_CARE).map(([key, item]) => (
                                     <button
                                         key={key}
                                         type="button"
-                                        onClick={() => handleSelectSymptom(key)}
+                                        onClick={() => setSelectedSymptom(key)}
                                         className={`rounded-full border px-4 py-2 text-sm font-medium ${
                                             selectedSymptom === key
                                                 ? "border-[#b9d7eb] bg-[#e8f3fb] text-[var(--ink)]"
@@ -381,123 +378,35 @@ function CareAI() {
                                     </button>
                                 ))}
                             </div>
-
-                            {selectedGuidance ? (
-                                <div className="mt-5 rounded-[24px] bg-[var(--panel-muted)] p-5">
-                                    <div className="flex items-center justify-between gap-3">
-                                        <h3 className="font-display text-2xl text-[var(--ink)]">{selectedGuidance.title}</h3>
+                            {selectedSymptom ? (
+                                <div className="mt-5 rounded-2xl bg-[var(--panel-muted)] p-5">
+                                    <div className="flex flex-wrap items-center justify-between gap-3">
+                                        <h3 className="font-display text-xl text-[var(--ink)]">{SELF_CARE[selectedSymptom].title}</h3>
                                         <StatusPill tone="amber">General guidance only</StatusPill>
                                     </div>
                                     <ul className="mt-4 space-y-3 text-sm leading-7 text-[var(--muted)]">
-                                        {selectedGuidance.advice.map((line) => (
-                                            <li key={line} className="rounded-2xl bg-white px-4 py-3">
-                                                {line}
-                                            </li>
+                                        {SELF_CARE[selectedSymptom].advice.map((line) => (
+                                            <li key={line} className="rounded-2xl bg-white px-4 py-3">{line}</li>
                                         ))}
                                     </ul>
-                                    <p className="mt-4 text-sm leading-7 text-[#8a5d3d]">{disclaimer}</p>
+                                    <p className="mt-4 text-sm leading-7 text-[#8a5d3d]">{GUIDANCE_DISCLAIMER}</p>
                                 </div>
                             ) : null}
                         </Card>
                     ) : null}
 
-                    {isPatient && mode === "book-appointment" ? (
-                        <Card className="p-5">
-                            <h3 className="font-display text-2xl text-[var(--ink)]">Book Appointment</h3>
-                            <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
-                                Capture the visit preferences first so the booking request can be reviewed quickly.
-                            </p>
-
-                            <form onSubmit={handleAppointmentSubmit} className="mt-5 grid gap-4 md:grid-cols-2">
-                                {appointmentQuestions.map((field) => (
-                                    <label key={field.key} className={field.key === "reason" ? "md:col-span-2" : ""}>
-                                        <span className="mb-2 block text-sm font-semibold text-[var(--ink)]">{field.label}</span>
-                                        <input
-                                            value={formValues[field.key]}
-                                            onChange={(event) => handlePatientFormChange(field.key, event.target.value)}
-                                            className="w-full rounded-[20px] border border-[var(--line)] bg-[var(--panel-muted)] px-4 py-3 text-sm text-[var(--ink)] outline-none"
-                                            placeholder={field.placeholder}
-                                        />
-                                    </label>
-                                ))}
-
-                                <div className="md:col-span-2 flex justify-end">
-                                    <Button type="submit" className="px-6">Save Booking Request</Button>
-                                </div>
-                            </form>
+                    {isDoctor || isReceptionist ? (
+                        <Card className="min-w-0 p-5">
+                            <h2 className="font-display text-2xl text-[var(--ink)]">How these models behave</h2>
+                            <ul className="mt-3 space-y-2 text-sm leading-7 text-[var(--muted)]">
+                                <li>Severity dominates both models; the categorical fields refine the estimate but do not drive it.</li>
+                                <li>Values outside the lists above are rejected rather than silently ignored, so a prediction always reflects what you entered.</li>
+                                <li>Output is an operational triage aid. It is not a diagnosis and must not replace clinical judgement.</li>
+                            </ul>
                         </Card>
                     ) : null}
-
-                    {(isDoctor || isReceptionist) ? (
-                        <Card className="p-5">
-                            <h3 className="font-display text-2xl text-[var(--ink)]">Patient Finder</h3>
-                            <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
-                                Search by patient name or unique ID to pull up a quick clinical summary.
-                            </p>
-
-                            <form onSubmit={handleDoctorFinder} className="mt-5 flex flex-col gap-3 sm:flex-row">
-                                <input
-                                    value={finderQuery}
-                                    onChange={(event) => setFinderQuery(event.target.value)}
-                                    placeholder="Search by patient name or ID"
-                                    className="flex-1 rounded-[20px] border border-[var(--line)] bg-[var(--panel-muted)] px-4 py-3 text-sm text-[var(--ink)] outline-none"
-                                />
-                                <Button type="submit" className="px-6">Find Patient</Button>
-                            </form>
-
-                            {finderResult ? (
-                                <div className="mt-5 rounded-[24px] bg-[var(--panel-muted)] p-5">
-                                    <div className="flex flex-wrap items-start justify-between gap-3">
-                                        <div>
-                                            <p className="font-display text-3xl text-[var(--ink)]">{finderResult.full_name}</p>
-                                            <p className="mt-1 text-sm text-[var(--muted)]">
-                                                {finderResult.patient_id} • {finderResult.gender}
-                                            </p>
-                                        </div>
-                                        <StatusPill tone={finderResult.status === "Stable" || finderResult.status === "Improving" ? "green" : "amber"}>
-                                            {finderResult.status}
-                                        </StatusPill>
-                                    </div>
-
-                                    <div className="mt-5 grid gap-3 md:grid-cols-3">
-                                        <div className="rounded-2xl bg-white px-4 py-4">
-                                            <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Phone</p>
-                                            <p className="mt-2 text-sm font-semibold text-[var(--ink)]">{finderResult.phone}</p>
-                                        </div>
-                                        <div className="rounded-2xl bg-white px-4 py-4">
-                                            <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Visits</p>
-                                            <p className="mt-2 text-sm font-semibold text-[var(--ink)]">{finderResult.visits.length}</p>
-                                        </div>
-                                        <div className="rounded-2xl bg-white px-4 py-4">
-                                            <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Clinical Records</p>
-                                            <p className="mt-2 text-sm font-semibold text-[var(--ink)]">{finderResult.records.length}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            ) : null}
-                        </Card>
-                    ) : null}
-
-                    {isAdmin ? (
-                        <Card className="p-5">
-                            <h3 className="font-display text-2xl text-[var(--ink)]">Mitra Availability</h3>
-                            <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
-                                Guided symptom support is limited to the patient workspace. In the doctor workspace, Mitra acts as a patient finder for faster record lookup.
-                            </p>
-                        </Card>
-                    ) : null}
-
-                    <form onSubmit={handleSend} className="flex flex-col gap-3 rounded-[24px] border border-[var(--line)] bg-[var(--panel-muted)] p-2 sm:flex-row sm:rounded-full">
-                        <input
-                            value={draft}
-                            onChange={(event) => setDraft(event.target.value)}
-                            placeholder={isDoctor ? "Ask Mitra for a follow-up note..." : "Ask Mitra a follow-up question..."}
-                            className="min-h-10 flex-1 rounded-full bg-transparent px-4 text-sm text-[var(--ink)] outline-none"
-                        />
-                        <Button type="submit" className="px-6">Send</Button>
-                    </form>
                 </div>
-            </Card>
+            </AsyncState>
         </div>
     )
 }

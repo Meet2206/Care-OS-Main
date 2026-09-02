@@ -7,6 +7,7 @@ from pymongo import ReturnDocument
 from pymongo.errors import DuplicateKeyError
 
 from app.database.mongodb import db
+from app.utils.serialization import serialize_documents
 from app.models.appointment import APPOINTMENTS_COLLECTION
 from app.models.doctor import DOCTORS_COLLECTION
 from app.models.medical_record import MEDICAL_RECORDS_COLLECTION
@@ -179,7 +180,7 @@ def list_prescriptions(
         total_pages=total_pages,
         has_next=page < total_pages,
         has_previous=page > 1,
-        data=[prescription_document_to_response(item) for item in prescriptions],
+        data=serialize_documents(prescriptions, prescription_document_to_response, identifier_field="prescription_id"),
     )
 
 

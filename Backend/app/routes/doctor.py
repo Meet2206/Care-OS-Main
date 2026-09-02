@@ -12,10 +12,13 @@ from app.schemas.doctor import (
     DoctorResponse,
     DoctorUpdate,
 )
-from app.utils.security import get_current_user
+from app.utils.security import get_current_user, require_admin
 
 router = APIRouter(prefix="/doctors", tags=["Doctors"])
+# Reading the directory is needed by every portal (booking, assignment, lookup).
 CurrentUser = Annotated[UserResponse, Depends(get_current_user)]
+# Creating, amending, or retiring a clinician is an administrative action.
+AdminUser = Annotated[UserResponse, Depends(require_admin)]
 
 
 @router.post(
@@ -23,9 +26,9 @@ CurrentUser = Annotated[UserResponse, Depends(get_current_user)]
     response_model=DoctorResponse,
     status_code=status.HTTP_201_CREATED,
     responses=DOCTOR_ERROR_RESPONSES,
-    summary="Create a doctor",
+    summary="Create a doctor (administrators only)",
 )
-def create_doctor(request: DoctorCreate, _: CurrentUser) -> DoctorResponse:
+def create_doctor(request: DoctorCreate, _: AdminUser) -> DoctorResponse:
     return doctor_controller.create(request)
 
 
@@ -58,9 +61,9 @@ def get_doctor(doctor_id: str, _: CurrentUser) -> DoctorResponse:
     "/{doctor_id}",
     response_model=DoctorResponse,
     responses=DOCTOR_ERROR_RESPONSES,
-    summary="Update a doctor",
+    summary="Update a doctor (administrators only)",
 )
-def update_doctor(doctor_id: str, request: DoctorUpdate, _: CurrentUser) -> DoctorResponse:
+def update_doctor(doctor_id: str, request: DoctorUpdate, _: AdminUser) -> DoctorResponse:
     return doctor_controller.update(doctor_id, request)
 
 
@@ -68,8 +71,8 @@ def update_doctor(doctor_id: str, request: DoctorUpdate, _: CurrentUser) -> Doct
     "/{doctor_id}",
     status_code=status.HTTP_204_NO_CONTENT,
     responses=DOCTOR_ERROR_RESPONSES,
-    summary="Soft delete a doctor",
+    summary="Soft delete a doctor (administrators only)",
 )
-def delete_doctor(doctor_id: str, _: CurrentUser) -> Response:
+def delete_doctor(doctor_id: str, _: AdminUser) -> Response:
     doctor_controller.delete(doctor_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

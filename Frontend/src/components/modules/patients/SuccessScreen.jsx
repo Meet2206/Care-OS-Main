@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { jsPDF } from "jspdf"
 import PatientCard from "./PatientCard"
 
 const CONFETTI_COLORS = ["#3f78c8", "#0f9fb4", "#8fd1af", "#f59e0b", "#ec4899", "#6366f1"]
@@ -14,7 +13,8 @@ function SuccessScreen({ formData, patientId, verificationCode, accountLoginId, 
         verificationCode,
     }
 
-    const handlePrint = () => {
+    const handlePrint = async () => {
+        const { jsPDF } = await import("jspdf")
         const doc = new jsPDF({ unit: "mm", format: [90, 55] })
 
         // Header band

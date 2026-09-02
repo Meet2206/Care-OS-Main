@@ -6,6 +6,7 @@ from uuid import uuid4
 from fastapi import HTTPException, UploadFile, status
 from pymongo import ReturnDocument
 
+from app.config.settings import settings
 from app.database.mongodb import db
 from app.models.file_model import COUNTERS_COLLECTION, FILE_COUNTER_KEY, FILES_COLLECTION, file_document_to_response
 from app.models.medical_record import MEDICAL_RECORDS_COLLECTION
@@ -20,7 +21,19 @@ ALLOWED_SUFFIXES = {
     "image/png": {".png"},
     "image/jpeg": {".jpg", ".jpeg"},
 }
-UPLOAD_DIRECTORY = Path("uploads")
+def _upload_directory() -> Path:
+    """Resolve the upload root.
+
+    A relative value is anchored to the Backend package root so that uploads do
+    not land in whatever directory the process happened to start in.
+    """
+    configured = Path(settings.UPLOAD_DIR)
+    if configured.is_absolute():
+        return configured
+    return Path(__file__).resolve().parents[2] / configured
+
+
+UPLOAD_DIRECTORY = _upload_directory()
 
 
 def _detected_file_type(header: bytes) -> str | None:
@@ -127,9 +140,20 @@ def soft_delete_file(file_id: str) -> None:
     )
 
 
-def list_files(page: int, limit: int, search: str | None, patient_id: str | None, medical_record_id: str | None) -> FileListResponse:
+def list_files(
+    page: int,
+    limit: int,
+    search: str | None,
+    patient_id: str | None,
+    medical_record_id: str | None,
+    allowed_patient_ids: set[str] | None = None,
+) -> FileListResponse:
     _validate_references(patient_id, medical_record_id)
     query: dict = {"is_deleted": {"$ne": True}}
+    if allowed_patient_ids is not None:
+        # Caller is scoped to a fixed set of patients (for example a doctor's
+        # own caseload). An empty set must yield nothing, not everything.
+        query["patient_id"] = {"$in": sorted(allowed_patient_ids)}
     if patient_id:
         query["patient_id"] = patient_id
     if medical_record_id:

@@ -22,7 +22,10 @@ def ensure_pharmacy_order_indexes() -> None:
     collection.create_index("order_id", unique=True, name="unique_pharmacy_order_id")
     collection.create_index("prescription_id", unique=True, name="unique_pharmacy_order_prescription")
     collection.create_index("patient_id", name="pharmacy_order_patient_id")
+    collection.create_index("doctor_id", name="pharmacy_order_doctor_id")
     collection.create_index("status", name="pharmacy_order_status")
+    collection.create_index("is_deleted", name="pharmacy_order_is_deleted")
+    collection.create_index("created_at", name="pharmacy_order_created_at")
 
 
 def create_for_prescription(prescription: dict) -> PharmacyOrderResponse:
@@ -44,38 +47,92 @@ def create_for_prescription(prescription: dict) -> PharmacyOrderResponse:
         "status": PharmacyOrderStatus.PENDING.value,
         "created_at": now, "updated_at": now,
         "accepted_at": None, "packed_at": None, "dispensed_at": None,
+        "is_deleted": False, "deleted_at": None,
     }
     db[PHARMACY_ORDERS_COLLECTION].insert_one(document)
     return PharmacyOrderResponse.model_validate(document)
 
 
-def list_orders(patient_id: str | None = None) -> PharmacyOrderListResponse:
-    query = {} if patient_id is None else {"patient_id": patient_id}
-    rows = list(db[PHARMACY_ORDERS_COLLECTION].find(query).sort("created_at", -1))
-    return PharmacyOrderListResponse(total=len(rows), data=[PharmacyOrderResponse.model_validate(row) for row in rows])
+def list_orders(
+    patient_id: str | None = None,
+    doctor_id: str | None = None,
+    order_status: PharmacyOrderStatus | None = None,
+    page: int = 1,
+    limit: int = 20,
+) -> PharmacyOrderListResponse:
+    query: dict = {"is_deleted": {"$ne": True}}
+    if patient_id is not None:
+        query["patient_id"] = patient_id
+    if doctor_id is not None:
+        query["doctor_id"] = doctor_id
+    if order_status is not None:
+        query["status"] = order_status.value
+
+    collection = db[PHARMACY_ORDERS_COLLECTION]
+    total = collection.count_documents(query)
+    rows = list(
+        collection.find(query)
+        .sort("created_at", -1)
+        .skip((page - 1) * limit)
+        .limit(limit)
+    )
+    total_pages = (total + limit - 1) // limit
+    return PharmacyOrderListResponse(
+        total=total,
+        page=page,
+        limit=limit,
+        total_pages=total_pages,
+        has_next=page < total_pages,
+        has_previous=page > 1,
+        data=[PharmacyOrderResponse.model_validate(row) for row in rows],
+    )
 
 
 def get_order(order_id: str) -> PharmacyOrderResponse:
-    row = db[PHARMACY_ORDERS_COLLECTION].find_one({"order_id": order_id})
+    row = db[PHARMACY_ORDERS_COLLECTION].find_one(
+        {"order_id": order_id, "is_deleted": {"$ne": True}}
+    )
     if row is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Pharmacy order not found.")
     return PharmacyOrderResponse.model_validate(row)
 
 
-def update_status(order_id: str, next_status: PharmacyOrderStatus) -> PharmacyOrderResponse:
+def _invalid_transition(current: PharmacyOrderStatus, requested: PharmacyOrderStatus) -> HTTPException:
+    # Report the wire values, not the Python enum repr.
+    return HTTPException(
+        status_code=status.HTTP_409_CONFLICT,
+        detail=(
+            f"Cannot move a pharmacy order from {current.value} to {requested.value}."
+        ),
+    )
+
+
+def update_status(
+    order_id: str, next_status: PharmacyOrderStatus, pharmacy_id: str | None = None
+) -> PharmacyOrderResponse:
     current = get_order(order_id)
     if next_status not in _TRANSITIONS[current.status]:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"Invalid pharmacy order transition: {current.status} to {next_status}.")
+        raise _invalid_transition(current.status, next_status)
     now = datetime.now(timezone.utc)
     timestamp_field = {
         PharmacyOrderStatus.ACCEPTED: "accepted_at",
         PharmacyOrderStatus.PACKED: "packed_at",
         PharmacyOrderStatus.DISPENSED: "dispensed_at",
     }.get(next_status)
-    changes = {"status": next_status.value, "updated_at": now}
+    changes: dict = {"status": next_status.value, "updated_at": now}
     if timestamp_field:
         changes[timestamp_field] = now
+    if next_status is PharmacyOrderStatus.ACCEPTED and pharmacy_id:
+        # Record which pharmacy user took ownership of the order.
+        changes["pharmacy_id"] = pharmacy_id
     row = db[PHARMACY_ORDERS_COLLECTION].find_one_and_update(
-        {"order_id": order_id, "status": current.status.value}, {"$set": changes}, return_document=ReturnDocument.AFTER
+        {"order_id": order_id, "status": current.status.value, "is_deleted": {"$ne": True}},
+        {"$set": changes},
+        return_document=ReturnDocument.AFTER,
     )
+    if row is None:
+        # Another request changed the status between the read and the write.
+        # Re-read and report the conflict rather than raising on a None document.
+        latest = get_order(order_id)
+        raise _invalid_transition(latest.status, next_status)
     return PharmacyOrderResponse.model_validate(row)

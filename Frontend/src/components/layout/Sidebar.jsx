@@ -38,6 +38,15 @@ const icons = {
             <path d="M9 12h6" />
         </svg>
     ),
+    Appointments: (
+        <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.7">
+            <rect x="3.5" y="5" width="17" height="15.5" rx="2.5" />
+            <path d="M3.5 9.5h17" />
+            <path d="M8 3.5v3" />
+            <path d="M16 3.5v3" />
+            <path d="M8.5 13.5h3" />
+        </svg>
+    ),
     Patients: (
         <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.7">
             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
@@ -55,27 +64,29 @@ function Sidebar({ open = false, onClose }) {
         admin: [
             { label: "Dashboard", to: "/admin" },
             { label: "Patients", to: "/admin/patients" },
-            { label: "Medical Records", to: "/records" },
+            { label: "Appointments", to: "/appointments" },
             { label: "Pharmacy", to: "/pharmacy" },
         ],
         receptionist: [
             { label: "Dashboard", to: "/reception" },
             { label: "Patients", to: "/admin/patients" },
+            { label: "Appointments", to: "/appointments" },
             { label: "CareAI", to: "/ai" },
         ],
         doctor: [
             { label: "Dashboard", to: "/doctor" },
-            { label: "CareAI", to: "/ai" },
+            { label: "Appointments", to: "/appointments" },
             { label: "Medical Records", to: "/records" },
+            { label: "CareAI", to: "/ai" },
         ],
         patient: [
             { label: "Dashboard", to: "/patient" },
-            { label: "CareAI", to: "/ai" },
             { label: "Medical Records", to: "/records" },
+            { label: "CareAI", to: "/ai" },
         ],
+        // Pharmacy handles dispensing only; clinical records are out of scope.
         pharmacy: [
             { label: "Dashboard", to: "/pharmacy" },
-            { label: "Medical Records", to: "/records" },
         ],
     }
 

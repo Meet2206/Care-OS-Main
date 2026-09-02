@@ -1,6 +1,20 @@
-"""Explicit, idempotent CARE-OS development clinical data seed."""
+"""Explicit, idempotent CARE-OS development clinical data seed.
 
+Run from the Backend directory:
+
+    python -m scripts.seed_demo_clinical_data
+
+Creates the demo doctor and patients and, crucially, links DoctorMeet@CareOS to
+a doctor_id and PatientMeet@CareOS to a patient_id. Without those links the
+doctor and patient portals load empty and prescriptions cannot be created.
+"""
+
+import sys
 from datetime import datetime, timezone
+from pathlib import Path
+
+# Allow `python scripts/seed_demo_clinical_data.py` as well as `-m`.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from pymongo import MongoClient
 

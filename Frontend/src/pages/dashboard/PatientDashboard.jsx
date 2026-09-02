@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { jsPDF } from "jspdf"
 import Button from "../../components/common/Button"
 import Card from "../../components/common/Card"
 import Modal from "../../components/common/Modal"
@@ -10,14 +9,12 @@ import AssistancePanel from "../../components/modules/patients/AssistancePanel"
 import BookingCalendar from "../../components/modules/patients/BookingCalendar"
 import PatientIdCard from "../../components/modules/patients/PatientIdCard"
 import PrescriptionOrdersPanel from "../../components/modules/patients/PrescriptionOrdersPanel"
-import upiQrCode from "../../../upi-payment-qr.png"
 import { apiRequest } from "../../api/client"
 import { useAuth } from "../../context/AuthContext"
 import {
     appointmentUpdates,
     appointmentTimeSlots,
     careTeam,
-    doctorDirectory,
     patientProfile,
     patientSupportOptions,
 } from "../../data/mockData"
@@ -31,107 +28,10 @@ function formatDateDisplay(value) {
     return `${day}/${month}/${year}`
 }
 
-function paymentMethodLabel(value) {
-    if (value === "upi") return "UPI"
-    if (value === "credit-card") return "Credit Card"
-    if (value === "debit-card") return "Debit Card"
-    return "Net Banking"
-}
-
-function isExpiryValid(expiry) {
-    if (!/^\d{2}\/\d{2}$/.test(expiry)) {
-        return false
-    }
-
-    const [monthText, yearText] = expiry.split("/")
-    const month = Number(monthText)
-    const year = Number(`20${yearText}`)
-
-    if (month < 1 || month > 12) {
-        return false
-    }
-
-    const now = new Date()
-    const currentMonth = now.getMonth() + 1
-    const currentYear = now.getFullYear()
-
-    return year > currentYear || (year === currentYear && month >= currentMonth)
-}
-
-function digitsOnly(value) {
-    return value.replace(/\D/g, "")
-}
-
-function formatCardNumber(value) {
-    return digitsOnly(value).slice(0, 16).replace(/(.{4})/g, "$1 ").trim()
-}
-
-function formatExpiryInput(value) {
-    const digits = digitsOnly(value).slice(0, 4)
-
-    if (!digits) {
-        return ""
-    }
-
-    // Preserve partial typing like "0" so users can naturally reach "01".
-    if (digits.length === 1) {
-        return digits
-    }
-
-    const monthDigits = digits.slice(0, 2)
-    const month = Math.min(Math.max(Number(monthDigits || "1"), 1), 12)
-    const normalizedMonth = `${month}`.padStart(2, "0")
-    const yearDigits = digits.slice(2)
-
-    return yearDigits ? `${normalizedMonth}/${yearDigits}` : normalizedMonth
-}
-
-function createBookingTicket(form) {
-    return {
-        bookingId: `CARE-${Date.now().toString().slice(-6)}`,
-        date: formatDateDisplay(form.date),
-        time: form.time,
-        doctor: form.doctor,
-        specialty: form.specialty,
-        location: form.location,
-        paymentMethod: paymentMethodLabel(form.paymentMethod),
-        amount: "Rs. 300",
-    }
-}
-
-function getPaymentValidationMessage(form, qrPaid = false) {
-    if (!form.date || !form.doctor || !form.time) {
-        return "Choose a date, doctor, and available time slot before payment."
-    }
-
-    if (form.paymentMethod === "upi") {
-        if (qrPaid) {
-            return ""
-        }
-
-        return form.upiId.trim() ? "" : "Enter a valid UPI ID to continue."
-    }
-
-    if (form.paymentMethod === "net-banking") {
-        return form.bankName ? "" : "Select your bank to continue."
-    }
-
-    if (!form.cardName.trim()) {
-        return "Enter the cardholder name."
-    }
-
-    if (digitsOnly(form.cardNumber).length !== 16) {
-        return "Card number must be 16 digits."
-    }
-
-    if (!isExpiryValid(form.expiry)) {
-        return "Enter a valid, non-expired card date."
-    }
-
-    if (digitsOnly(form.cvv).length !== 3) {
-        return "CVV must be exactly 3 digits."
-    }
-
+function getBookingValidationMessage(form) {
+    if (!form.doctor_id) return "Choose a doctor."
+    if (!form.date) return "Choose a date."
+    if (!form.time) return "Choose a time slot."
     return ""
 }
 
@@ -146,22 +46,17 @@ function PatientDashboard() {
     const [showBookingModal, setShowBookingModal] = useState(false)
     const [selectedSupport, setSelectedSupport] = useState("")
     const [bookingTicket, setBookingTicket] = useState(null)
-    const [paymentError, setPaymentError] = useState("")
+    const [bookingError, setBookingError] = useState("")
+    const [booking, setBooking] = useState(false)
+    const [doctorDirectory, setDoctorDirectory] = useState([])
     const [selectedAppointment, setSelectedAppointment] = useState(null)
-    const [useQrPayment, setUseQrPayment] = useState(false)
     const [bookingForm, setBookingForm] = useState({
         date: "",
         time: "",
+        doctor_id: "",
         doctor: "",
         specialty: "",
         location: "",
-        paymentMethod: "upi",
-        upiId: "",
-        cardName: "",
-        cardNumber: "",
-        expiry: "",
-        cvv: "",
-        bankName: "",
     })
 
     useEffect(() => {
@@ -174,7 +69,8 @@ function PatientDashboard() {
             apiRequest("/appointments?limit=100"),
             apiRequest("/medical-records?limit=100"),
             apiRequest("/pharmacy-orders"),
-        ]).then(([profile, appointmentResult, recordResult, orderResult]) => {
+            apiRequest("/doctors?limit=100"),
+        ]).then(([profile, appointmentResult, recordResult, orderResult, doctorResult]) => {
             setPatient(profile)
             setAppointments(appointmentResult.data.map((item) => ({
                 ...item,
@@ -193,6 +89,13 @@ function PatientDashboard() {
                 summary: item.diagnosis || item.treatment || "Clinical record",
             })))
             setPharmacyOrders(orderResult.data)
+            setDoctorDirectory(doctorResult.data.map((item) => ({
+                id: item.doctor_id,
+                name: `${item.first_name} ${item.last_name}`,
+                specialty: item.specialization,
+                location: item.department,
+                availability: item.availability,
+            })))
         }).catch((error) => {
             setPatientLoadError(error.message || "Unable to load your patient profile.")
             setPharmacyOrderError(error.message || "Unable to load pharmacy orders.")
@@ -212,67 +115,81 @@ function PatientDashboard() {
             ...current,
             [key]: value,
         }))
-        setPaymentError("")
+        setBookingError("")
     }
 
     const handleDoctorCardSelect = (doctor) => {
         setBookingForm((current) => ({
             ...current,
+            doctor_id: doctor.id,
             doctor: doctor.name,
             specialty: doctor.specialty,
             location: doctor.location,
         }))
     }
 
-    const handleBookingSubmit = (event) => {
+    const handleBookingSubmit = async (event) => {
         event.preventDefault()
-        const paymentValidationMessage = getPaymentValidationMessage(bookingForm, useQrPayment)
-
-        if (paymentValidationMessage) {
-            setPaymentError(paymentValidationMessage)
+        const validationMessage = getBookingValidationMessage(bookingForm)
+        if (validationMessage) {
+            setBookingError(validationMessage)
             return
         }
 
-        const ticket = createBookingTicket(bookingForm)
-
-        setAppointments((current) => [
-            {
-                date: bookingForm.date ? formatDateDisplay(bookingForm.date) : "Pending date",
-                time: bookingForm.time || "Pending time",
-                doctor: bookingForm.doctor || "CareOS Scheduling Desk",
-                specialty: bookingForm.specialty || "General Medicine",
-                location: bookingForm.location || "Main Clinic",
-                status: "Advance Paid",
-            },
-            ...current,
-        ])
-
-        setBookingForm({
-            date: "",
-            time: "",
-            doctor: "",
-            specialty: "",
-            location: "",
-            paymentMethod: "upi",
-            upiId: "",
-            cardName: "",
-            cardNumber: "",
-            expiry: "",
-            cvv: "",
-            bankName: "",
-        })
-        setShowBookingModal(false)
-        setBookingTicket(ticket)
-        setUseQrPayment(false)
-        setPaymentError("")
+        setBooking(true)
+        setBookingError("")
+        try {
+            // The request is persisted through the API. It previously lived only
+            // in local state, so a "confirmed" appointment vanished on reload and
+            // the clinic never saw it.
+            const created = await apiRequest("/appointments", {
+                method: "POST",
+                body: JSON.stringify({
+                    patient_id: user.patient_id,
+                    doctor_id: bookingForm.doctor_id,
+                    appointment_date: bookingForm.date,
+                    appointment_time: bookingForm.time.length === 5 ? `${bookingForm.time}:00` : bookingForm.time,
+                    appointment_type: "General Consultation",
+                    reason: "Patient-requested appointment",
+                }),
+            })
+            setAppointments((current) => [
+                {
+                    ...created,
+                    date: created.appointment_date,
+                    time: created.appointment_time,
+                    doctor: bookingForm.doctor,
+                    specialty: bookingForm.specialty,
+                    location: bookingForm.location,
+                },
+                ...current,
+            ])
+            setBookingTicket({
+                bookingId: created.appointment_id,
+                date: formatDateDisplay(bookingForm.date),
+                time: bookingForm.time,
+                doctor: bookingForm.doctor,
+                specialty: bookingForm.specialty,
+                location: bookingForm.location,
+                status: created.status,
+            })
+            setBookingForm({ date: "", time: "", doctor_id: "", doctor: "", specialty: "", location: "" })
+            setShowBookingModal(false)
+        } catch (error) {
+            setBookingError(error.message || "Unable to book this appointment.")
+        } finally {
+            setBooking(false)
+        }
     }
 
-    const paymentValidationMessage = getPaymentValidationMessage(bookingForm, useQrPayment)
+    const bookingValidationMessage = getBookingValidationMessage(bookingForm)
 
-    const downloadTicket = () => {
+    const downloadTicket = async () => {
         if (!bookingTicket) {
             return
         }
+
+        const { jsPDF } = await import("jspdf")
 
         const pdf = new jsPDF({
             orientation: "portrait",
@@ -611,170 +528,6 @@ function PatientDashboard() {
                             </div>
                         ) : null}
 
-                        {bookingForm.time ? (
-                            <div className="rounded-[26px] border border-[rgba(216,206,193,0.8)] bg-[rgba(247,242,235,0.92)] p-5">
-                                <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Step 3</p>
-                                <h3 className="mt-2 font-display text-2xl text-[var(--ink)]">Complete advance payment</h3>
-                                <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                                    {[
-                                        ["upi", "UPI"],
-                                        ["credit-card", "Credit Card"],
-                                        ["debit-card", "Debit Card"],
-                                        ["net-banking", "Net Banking"],
-                                    ].map(([value, label]) => (
-                                        <button
-                                            key={value}
-                                            type="button"
-                                            onClick={() =>
-                                                setBookingForm((current) => ({
-                                                    ...current,
-                                                    paymentMethod: value,
-                                                    upiId: "",
-                                                    cardName: "",
-                                                    cardNumber: "",
-                                                    expiry: "",
-                                                    cvv: "",
-                                                    bankName: "",
-                                                }))
-                                            }
-                                            className={`rounded-[20px] border px-4 py-4 text-left ${
-                                                bookingForm.paymentMethod === value
-                                                    ? "border-[#b9d7eb] bg-[#e8f3fb]"
-                                                    : "border-[var(--line)] bg-white"
-                                            }`}
-                                        >
-                                            <p className="font-semibold text-[var(--ink)]">{label}</p>
-                                            <p className="mt-1 text-xs text-[var(--muted)]">
-                                                {value === "upi"
-                                                    ? "Fast QR or UPI app payment"
-                                                    : value === "credit-card"
-                                                        ? "Pay with credit card"
-                                                        : value === "debit-card"
-                                                            ? "Pay with debit card"
-                                                            : "Use internet banking"}
-                                            </p>
-                                        </button>
-                                    ))}
-                                </div>
-
-                                <div className="mt-4 rounded-[22px] border border-[rgba(216,206,193,0.8)] bg-white px-4 py-4">
-                                    <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Payment Details</p>
-
-                                    {bookingForm.paymentMethod === "upi" ? (
-                                        <div className="mt-3 space-y-2">
-                                            <div className="rounded-[20px] border border-[rgba(216,206,193,0.8)] bg-[var(--panel-muted)] p-4">
-                                                <div className="relative overflow-hidden rounded-[18px] bg-white p-3">
-                                                    <img
-                                                        src={upiQrCode}
-                                                        alt="UPI QR Code"
-                                                        className={`mx-auto h-44 w-44 object-contain transition-all ${useQrPayment ? "" : "blur-[6px] scale-105"}`}
-                                                    />
-                                                    {!useQrPayment ? (
-                                                        <div className="absolute inset-0 flex items-center justify-center bg-[rgba(255,255,255,0.28)]">
-                                                            <Button
-                                                                type="button"
-                                                                onClick={() => setUseQrPayment(true)}
-                                                                className="px-5 py-2"
-                                                            >
-                                                                USE QR CODE
-                                                            </Button>
-                                                        </div>
-                                                    ) : null}
-                                                </div>
-                                                <p className="mt-3 text-xs leading-6 text-[var(--muted)]">
-                                                    Scan this QR if you want to complete the advance payment using any supported UPI app.
-                                                </p>
-                                            </div>
-
-                                            <label className="block">
-                                                <span className="mb-2 block text-sm font-semibold text-[var(--ink)]">UPI ID</span>
-                                                <input
-                                                    value={bookingForm.upiId}
-                                                    onChange={(event) => handleBookingChange("upiId", event.target.value)}
-                                                    disabled={useQrPayment}
-                                                    className={`w-full rounded-[16px] border border-[var(--line)] px-4 py-3 text-sm text-[var(--ink)] outline-none ${
-                                                        useQrPayment ? "cursor-not-allowed bg-[rgba(238,232,225,0.8)] text-[rgba(45,50,56,0.55)]" : "bg-[var(--panel-muted)]"
-                                                    }`}
-                                                    placeholder="name@bank"
-                                                />
-                                            </label>
-                                            <p className="text-xs leading-6 text-[var(--muted)]">Pay instantly with any supported UPI app.</p>
-                                        </div>
-                                    ) : null}
-
-                                    {(bookingForm.paymentMethod === "credit-card" || bookingForm.paymentMethod === "debit-card") ? (
-                                        <div className="mt-3 grid gap-3">
-                                            <label className="block">
-                                                <span className="mb-2 block text-sm font-semibold text-[var(--ink)]">Cardholder Name</span>
-                                                <input
-                                                    value={bookingForm.cardName}
-                                                    onChange={(event) => handleBookingChange("cardName", event.target.value)}
-                                                    className="w-full rounded-[16px] border border-[var(--line)] bg-[var(--panel-muted)] px-4 py-3 text-sm text-[var(--ink)] outline-none"
-                                                    placeholder="Name on card"
-                                                />
-                                            </label>
-                                            <label className="block">
-                                                <span className="mb-2 block text-sm font-semibold text-[var(--ink)]">Card Number</span>
-                                                <input
-                                                    value={bookingForm.cardNumber}
-                                                    onChange={(event) => handleBookingChange("cardNumber", formatCardNumber(event.target.value))}
-                                                    className="w-full rounded-[16px] border border-[var(--line)] bg-[var(--panel-muted)] px-4 py-3 text-sm text-[var(--ink)] outline-none"
-                                                    placeholder="1234 5678 9012 3456"
-                                                    inputMode="numeric"
-                                                />
-                                            </label>
-                                            <div className="grid gap-3 sm:grid-cols-2">
-                                                <label className="block">
-                                                    <span className="mb-2 block text-sm font-semibold text-[var(--ink)]">Expiry</span>
-                                                    <input
-                                                        value={bookingForm.expiry}
-                                                        onChange={(event) => handleBookingChange("expiry", formatExpiryInput(event.target.value))}
-                                                        className="w-full rounded-[16px] border border-[var(--line)] bg-[var(--panel-muted)] px-4 py-3 text-sm text-[var(--ink)] outline-none"
-                                                        placeholder="MM/YY"
-                                                        inputMode="numeric"
-                                                    />
-                                                </label>
-                                                <label className="block">
-                                                    <span className="mb-2 block text-sm font-semibold text-[var(--ink)]">CVV</span>
-                                                    <input
-                                                        value={bookingForm.cvv}
-                                                        onChange={(event) => handleBookingChange("cvv", digitsOnly(event.target.value).slice(0, 3))}
-                                                        className="w-full rounded-[16px] border border-[var(--line)] bg-[var(--panel-muted)] px-4 py-3 text-sm text-[var(--ink)] outline-none"
-                                                        placeholder="123"
-                                                        inputMode="numeric"
-                                                    />
-                                                </label>
-                                            </div>
-                                        </div>
-                                    ) : null}
-
-                                    {bookingForm.paymentMethod === "net-banking" ? (
-                                        <div className="mt-3 space-y-2">
-                                            <label className="block">
-                                                <span className="mb-2 block text-sm font-semibold text-[var(--ink)]">Bank Name</span>
-                                                <select
-                                                    value={bookingForm.bankName}
-                                                    onChange={(event) => handleBookingChange("bankName", event.target.value)}
-                                                    className="w-full rounded-[16px] border border-[var(--line)] bg-[var(--panel-muted)] px-4 py-3 text-sm text-[var(--ink)] outline-none"
-                                                >
-                                                    <option value="">Select your bank</option>
-                                                    <option value="State Bank of India">State Bank of India</option>
-                                                    <option value="HDFC Bank">HDFC Bank</option>
-                                                    <option value="ICICI Bank">ICICI Bank</option>
-                                                    <option value="Axis Bank">Axis Bank</option>
-                                                </select>
-                                            </label>
-                                            <p className="text-xs leading-6 text-[var(--muted)]">You will be redirected to your bank portal for secure authentication.</p>
-                                        </div>
-                                    ) : null}
-
-                                    {bookingForm.time && (paymentValidationMessage || paymentError) ? (
-                                        <p className="mt-3 text-sm text-[#9a5a53]">{paymentValidationMessage || paymentError}</p>
-                                    ) : null}
-                                </div>
-                            </div>
-                        ) : null}
-
                         <div className="grid gap-4 md:grid-cols-2">
                             <div className="rounded-[24px] border border-[rgba(216,206,193,0.8)] bg-[rgba(247,242,235,0.92)] px-4 py-4">
                                 <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Selected Doctor</p>
@@ -784,29 +537,33 @@ function PatientDashboard() {
                             </div>
 
                             <div className="rounded-[24px] border border-[rgba(216,206,193,0.8)] bg-[rgba(247,242,235,0.92)] px-4 py-4">
-                                <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Payment</p>
-                                <p className="mt-2 font-semibold text-[var(--ink)]">Advance booking charge: 25%</p>
-                                <p className="mt-1 text-sm text-[var(--muted)]">
-                                    Method: {paymentMethodLabel(bookingForm.paymentMethod)}
+                                <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Billing</p>
+                                <p className="mt-2 font-semibold text-[var(--ink)]">Settled at the front desk</p>
+                                <p className="mt-1 text-sm leading-6 text-[var(--muted)]">
+                                    Consultation charges are raised by the billing desk after your visit. No payment is taken here.
                                 </p>
-                                <p className="mt-2 text-sm text-[var(--muted)]">Estimated advance: Rs. 300</p>
                             </div>
                         </div>
 
                         <div className="rounded-[24px] border border-[rgba(216,206,193,0.8)] bg-[rgba(245,238,228,0.92)] px-4 py-4">
                             <p className="text-sm font-semibold text-[var(--ink)]">Booking Summary</p>
                             <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
-                                Submit this request to reserve your preferred slot. If hospital optimization changes the slot, CareOS will notify you and apply the appropriate consultation and medicine discounts automatically.
+                                Submit this request to reserve your preferred slot. Reception will confirm it, and any change to the
+                                time will appear on this dashboard.
                             </p>
                         </div>
+
+                        {bookingError ? (
+                            <p className="text-wrap-anywhere rounded-2xl bg-[#fff4f2] px-4 py-3 text-sm text-[#9b5148]">{bookingError}</p>
+                        ) : null}
 
                         <div className="flex justify-end">
                             <Button
                                 type="submit"
                                 className="px-6"
-                                disabled={Boolean(paymentValidationMessage)}
+                                disabled={booking || Boolean(bookingValidationMessage)}
                             >
-                                Pay Advance & Confirm
+                                {booking ? "Requesting…" : "Confirm Booking"}
                             </Button>
                         </div>
                     </form>

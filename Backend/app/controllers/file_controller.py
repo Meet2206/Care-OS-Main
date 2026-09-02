@@ -20,5 +20,14 @@ def delete_file(file_id: str) -> None:
     soft_delete_file(file_id)
 
 
-def list_all(page: int, limit: int, search: str | None, patient_id: str | None, medical_record_id: str | None):
-    return list_files(page, limit, search, patient_id, medical_record_id)
+def list_all(
+    page: int,
+    limit: int,
+    search: str | None,
+    patient_id: str | None,
+    medical_record_id: str | None,
+    allowed_patient_ids: set[str] | None = None,
+):
+    return list_files(
+        page, limit, search, patient_id, medical_record_id, allowed_patient_ids=allowed_patient_ids
+    )

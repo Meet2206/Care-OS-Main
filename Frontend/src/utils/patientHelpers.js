@@ -149,6 +149,7 @@ export function createEmptyForm() {
 
         // Step 3 — Doctor Assignment
         assignedDoctor: "",
+        assignedDoctorId: "",
         appointmentType: "",
     }
 }

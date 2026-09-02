@@ -99,10 +99,13 @@ class FakeDatabase:
 def user() -> UserResponse:
     return UserResponse(
         id="507f1f77bcf86cd799439011",
-        full_name="Test Administrator",
-        email="admin@example.com",
-        role=UserRole.admin,
+        full_name="Test Clinician",
+        login_id="clinician@example.com",
+        email="clinician@example.com",
+        role=UserRole.doctor,
         created_at=datetime.now(timezone.utc),
+        user_id="USR000001",
+        doctor_id="DOC000001",
     )
 
 
@@ -122,6 +125,12 @@ def client(monkeypatch):
     monkeypatch.setattr(main, "ensure_appointment_indexes", lambda: None)
     monkeypatch.setattr(main, "ensure_medical_record_indexes", lambda: None)
     app.dependency_overrides[get_current_user] = user
+    # The route now checks that the doctor actually treats the patient; the fake
+    # collections in this module do not model that linkage.
+    monkeypatch.setattr(
+        "app.routes.medical_record.require_doctor_patient_access", lambda user, patient_id: None
+    )
+
     with TestClient(app) as test_client:
         yield test_client, records, references
     app.dependency_overrides.clear()

@@ -1,128 +1,202 @@
-import { useState } from "react"
-import { jsPDF } from "jspdf"
-import Button from "../../components/common/Button"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import Card from "../../components/common/Card"
 import Modal from "../../components/common/Modal"
 import PageIntro from "../../components/common/PageIntro"
-import { medicalRecords } from "../../data/mockData"
+import StatusPill from "../../components/common/StatusPill"
+import AsyncState from "../../components/common/AsyncState"
+import { Select, TextInput } from "../../components/common/Field"
+import { apiRequest } from "../../api/client"
+import { useAuth } from "../../context/AuthContext"
 
+function formatDate(value) {
+    if (!value) return "—"
+    const parsed = new Date(value)
+    return Number.isNaN(parsed.getTime())
+        ? String(value).slice(0, 10)
+        : parsed.toLocaleDateString(undefined, { day: "2-digit", month: "short", year: "numeric" })
+}
+
+/**
+ * Clinical record browser.
+ *
+ * Reads from /medical-records, which the backend already scopes: a patient sees
+ * only their own records and a doctor only those they authored.
+ */
 function MedicalRecords() {
-    const [selectedRecord, setSelectedRecord] = useState(null)
-    const [filter, setFilter] = useState("all")
+    const { user } = useAuth()
+    const isPatient = user?.role === "patient"
 
-    const visibleRecords = medicalRecords.filter((record) => {
-        if (filter === "all") {
-            return true
+    const [records, setRecords] = useState([])
+    const [patients, setPatients] = useState([])
+    const [prescriptions, setPrescriptions] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState("")
+    const [query, setQuery] = useState("")
+    const [patientFilter, setPatientFilter] = useState("")
+    const [selected, setSelected] = useState(null)
+
+    const load = useCallback(async () => {
+        setLoading(true)
+        setError("")
+        try {
+            const [recordResult, patientResult, prescriptionResult] = await Promise.all([
+                apiRequest("/medical-records?limit=100"),
+                apiRequest("/patients?limit=100").catch(() => ({ data: [] })),
+                apiRequest("/prescriptions?limit=100").catch(() => ({ data: [] })),
+            ])
+            setRecords(recordResult.data)
+            setPatients(patientResult.data)
+            setPrescriptions(prescriptionResult.data)
+        } catch (requestError) {
+            setError(requestError.message || "Unable to load medical records.")
+        } finally {
+            setLoading(false)
         }
+    }, [])
 
-        return record.type.toLowerCase().includes(filter)
-    })
+    useEffect(() => { load() }, [load])
 
-    const handleFilter = () => {
-        setFilter((current) => {
-            if (current === "all") return "consultation"
-            if (current === "consultation") return "lab"
-            if (current === "lab") return "imaging"
-            return "all"
-        })
-    }
+    const patientName = useCallback(
+        (patientId) => patients.find((item) => item.patient_id === patientId)?.full_name || patientId,
+        [patients],
+    )
+    const prescriptionFor = useCallback(
+        (recordId) => prescriptions.find((item) => item.medical_record_id === recordId),
+        [prescriptions],
+    )
 
-    const filterLabel =
-        filter === "all"
-            ? "All Records"
-            : filter === "consultation"
-                ? "Consultation Only"
-                : filter === "lab"
-                    ? "Lab Results"
-                    : "Imaging Only"
-
-    const downloadRecord = (record) => {
-        const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" })
-
-        pdf.setFillColor(246, 241, 232)
-        pdf.rect(0, 0, 595, 842, "F")
-        pdf.setFillColor(255, 250, 244)
-        pdf.setDrawColor(216, 206, 193)
-        pdf.roundedRect(36, 36, 523, 360, 18, 18, "FD")
-        pdf.setFont("helvetica", "bold")
-        pdf.setFontSize(10)
-        pdf.setTextColor(110, 116, 111)
-        pdf.text("CAREOS MEDICAL RECORD", 60, 68)
-        pdf.setFont("times", "bold")
-        pdf.setFontSize(24)
-        pdf.setTextColor(45, 50, 56)
-        pdf.text(record.type, 60, 104)
-        pdf.setFont("helvetica", "normal")
-        pdf.setFontSize(12)
-        pdf.text(`Date: ${record.date}`, 60, 146)
-        pdf.text(`Author: ${record.doctorFull}`, 60, 172)
-        pdf.text("Summary", 60, 218)
-        pdf.setTextColor(90, 96, 91)
-        pdf.text(pdf.splitTextToSize(record.summary, 470), 60, 246)
-        pdf.save(`careos-record-${record.id}.pdf`)
-    }
+    const visible = useMemo(() => {
+        const normalized = query.trim().toLowerCase()
+        return records
+            .filter((record) => (patientFilter ? record.patient_id === patientFilter : true))
+            .filter((record) => {
+                if (!normalized) return true
+                return [record.record_id, record.diagnosis, record.symptoms, patientName(record.patient_id)]
+                    .filter(Boolean)
+                    .some((value) => String(value).toLowerCase().includes(normalized))
+            })
+            .sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)))
+    }, [records, query, patientFilter, patientName])
 
     return (
-        <>
-            <div className="space-y-6">
-                <PageIntro
-                    eyebrow="Shared Module"
-                    title="Medical Records"
-                    description="Record summaries are displayed in a clean, accessible table with just enough detail to support a quick clinical read."
-                    actions={<Button variant="subtle" onClick={handleFilter}>Filter: {filterLabel}</Button>}
-                />
+        <div className="space-y-6">
+            <PageIntro
+                eyebrow="Clinical"
+                title="Medical Records"
+                description={isPatient
+                    ? "Every consultation recorded for you, with the prescription that came out of it."
+                    : "Consultations you have recorded, searchable by patient, diagnosis, or symptom."}
+            />
 
-                <Card className="p-6">
-                    <div className="responsive-table scroll-table rounded-[24px] border border-[var(--line)]">
-                        <table className="w-full text-left text-sm">
-                            <thead className="bg-[var(--panel-muted)] text-[var(--muted)]">
-                                <tr>
-                                    <th className="px-4 py-3 font-semibold">Date</th>
-                                    <th className="px-4 py-3 font-semibold">Record Type</th>
-                                    <th className="px-4 py-3 font-semibold">Doctor</th>
-                                    <th className="px-4 py-3 font-semibold">Action</th>
+            <Card className="p-5">
+                <div className="flex flex-col gap-3 sm:flex-row">
+                    <TextInput
+                        value={query}
+                        onChange={(event) => setQuery(event.target.value)}
+                        placeholder="Search by diagnosis, symptom, record ID, or patient"
+                        className="sm:flex-1"
+                    />
+                    {!isPatient ? (
+                        <Select value={patientFilter} onChange={(event) => setPatientFilter(event.target.value)} className="sm:w-64">
+                            <option value="">All patients</option>
+                            {patients.map((patient) => (
+                                <option key={patient.patient_id} value={patient.patient_id}>{patient.full_name}</option>
+                            ))}
+                        </Select>
+                    ) : null}
+                </div>
+            </Card>
+
+            <AsyncState
+                loading={loading}
+                error={error}
+                onRetry={load}
+                empty={visible.length === 0}
+                emptyTitle="No medical records yet"
+                emptyHint={isPatient
+                    ? "Records appear here once a clinician completes a consultation."
+                    : "Record a consultation from the Appointments screen to create the first one."}
+            >
+                <Card className="min-w-0 p-5">
+                    <div className="responsive-table scroll-table -mx-1 min-w-0 overflow-x-auto px-1">
+                        <table className="w-full border-collapse text-left text-sm">
+                            <thead>
+                                <tr className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">
+                                    <th className="py-3 pr-4">Record</th>
+                                    <th className="py-3 pr-4">Patient</th>
+                                    <th className="py-3 pr-4">Diagnosis</th>
+                                    <th className="py-3 pr-4">Recorded</th>
+                                    <th className="py-3">Prescription</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {visibleRecords.map((record) => (
-                                    <tr key={record.id} className="border-t border-[var(--line)] text-[var(--ink)]">
-                                        <td data-label="Date" className="px-4 py-4">{record.date}</td>
-                                        <td data-label="Record Type" className="px-4 py-4">{record.type}</td>
-                                        <td data-label="Doctor" className="px-4 py-4 text-[var(--muted)]">{record.doctorFull}</td>
-                                        <td data-label="Action" className="px-4 py-4">
-                                            <div className="flex flex-wrap gap-2">
-                                                <Button variant="subtle" className="px-4 py-2" onClick={() => setSelectedRecord(record)}>
-                                                    View
-                                                </Button>
-                                                <Button variant="subtle" className="px-4 py-2" onClick={() => downloadRecord(record)}>
-                                                    Download
-                                                </Button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                                {!visibleRecords.length ? (
-                                    <tr className="border-t border-[var(--line)] text-[var(--muted)]">
-                                        <td colSpan="4" className="px-4 py-6 text-center">No records matched the current filter.</td>
-                                    </tr>
-                                ) : null}
+                                {visible.map((record) => {
+                                    const prescription = prescriptionFor(record.record_id)
+                                    return (
+                                        <tr
+                                            key={record.record_id}
+                                            className="cursor-pointer border-t border-[var(--line)] align-top hover:bg-white/50"
+                                            onClick={() => setSelected(record)}
+                                        >
+                                            <td className="py-3 pr-4 font-semibold text-[var(--ink)]" data-label="Record">{record.record_id}</td>
+                                            <td className="py-3 pr-4" data-label="Patient">{patientName(record.patient_id)}</td>
+                                            <td className="py-3 pr-4" data-label="Diagnosis">
+                                                <span className="text-wrap-anywhere">{record.diagnosis}</span>
+                                            </td>
+                                            <td className="py-3 pr-4" data-label="Recorded">{formatDate(record.created_at)}</td>
+                                            <td className="py-3" data-label="Prescription">
+                                                {prescription
+                                                    ? <StatusPill tone="green">{prescription.prescription_id}</StatusPill>
+                                                    : <StatusPill tone="neutral">None</StatusPill>}
+                                            </td>
+                                        </tr>
+                                    )
+                                })}
                             </tbody>
                         </table>
                     </div>
                 </Card>
-            </div>
+            </AsyncState>
 
-            <Modal open={Boolean(selectedRecord)} onClose={() => setSelectedRecord(null)} title={selectedRecord?.type}>
-                <div className="space-y-4">
-                    <p><strong>Date:</strong> {selectedRecord?.date}</p>
-                    <p><strong>Author:</strong> {selectedRecord?.doctorFull}</p>
-                    <p className="mt-4">{selectedRecord?.summary}</p>
-                    <div className="flex justify-end">
-                        <Button onClick={() => downloadRecord(selectedRecord)}>Download PDF</Button>
+            <Modal
+                open={Boolean(selected)}
+                onClose={() => setSelected(null)}
+                title={selected ? `${selected.record_id} · ${patientName(selected.patient_id)}` : "Record"}
+                eyebrow="Consultation"
+            >
+                {selected ? (
+                    <div className="space-y-4">
+                        {[
+                            ["Diagnosis", selected.diagnosis],
+                            ["Symptoms", selected.symptoms],
+                            ["Treatment", selected.treatment],
+                            ["Notes", selected.notes],
+                        ].map(([label, value]) => (
+                            <div key={label} className="rounded-2xl bg-[var(--panel-muted)] px-4 py-3">
+                                <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">{label}</p>
+                                <p className="text-wrap-anywhere mt-1 text-sm text-[var(--ink)]">{value || "Not recorded"}</p>
+                            </div>
+                        ))}
+                        {selected.vital_signs && Object.keys(selected.vital_signs).length > 0 ? (
+                            <div className="rounded-2xl bg-[var(--panel-muted)] px-4 py-3">
+                                <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Vital signs</p>
+                                <div className="mt-2 grid gap-2 sm:grid-cols-3">
+                                    {Object.entries(selected.vital_signs).map(([key, value]) => (
+                                        <p key={key} className="text-sm text-[var(--ink)]">
+                                            <span className="text-[var(--muted)]">{key.replace(/_/g, " ")}:</span> {String(value)}
+                                        </p>
+                                    ))}
+                                </div>
+                            </div>
+                        ) : null}
+                        <div className="grid gap-2 sm:grid-cols-2">
+                            <p className="text-xs text-[var(--muted)]">Appointment: {selected.appointment_id}</p>
+                            <p className="text-xs text-[var(--muted)]">Follow-up: {formatDate(selected.follow_up_date)}</p>
+                        </div>
                     </div>
-                </div>
+                ) : null}
             </Modal>
-        </>
+        </div>
     )
 }
 

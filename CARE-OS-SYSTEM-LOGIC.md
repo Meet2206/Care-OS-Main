@@ -53,7 +53,12 @@ FastAPI routes
         +--> medicine CSV catalog
 ```
 
-The frontend never directly reads MongoDB, model files, passwords, or model internals. It calls the centralized API client, which attaches the access token from browser session storage.
+The frontend never directly reads MongoDB, model files, passwords, or model internals. It calls the
+centralized API client, which attaches the access token from browser local storage. A `401` from any
+call clears the token and returns the user to the sign-in screen.
+
+Two middlewares wrap every request: one applies response hardening headers, the other records an
+audit entry for authenticated access to clinical and administrative resources.
 
 ## 4. Frontend logic
 
@@ -63,7 +68,10 @@ The frontend never directly reads MongoDB, model files, passwords, or model inte
 
 `AuthContext` restores the session by calling `/api/v1/auth/me` when a token exists. If the token is invalid or expired, it clears the token and returns the user to authentication.
 
-`ProtectedRoute` prevents unauthenticated access. `RoleRedirect` chooses the dashboard based on the backend role. The role is not inferred from a frontend hardcoded account.
+`ProtectedRoute` prevents unauthenticated access **and** checks the signed-in role against the route
+being opened, redirecting to the user's own dashboard otherwise. `RoleRedirect` chooses the dashboard
+based on the backend role. The role is not inferred from a frontend hardcoded account. These checks
+are for navigation; the backend remains authoritative and enforces the same boundaries.
 
 ### 4.2 API client
 
@@ -86,7 +94,10 @@ The current integrated clinical and pharmacy workflows use backend data:
 - Patient pharmacy orders.
 - CareAI patient context and predictions.
 
-Some legacy presentation areas still contain mock data in `Frontend/src/data/mockData.js`. Those are not authoritative for the live clinical/pharmacy flows.
+`Frontend/src/data/mockData.js` still supplies presentation-only copy on the patient and pharmacy
+dashboards (care-team contacts, assistance options, counter alerts, slot availability). It is not
+used by any clinical decision or write path. The admin overview and the medical-records browser now
+read live API data.
 
 ## 5. Roles and permissions
 
@@ -113,7 +124,8 @@ The intended roles are:
 - Can transition orders through the pharmacy status machine.
 - Cannot access AI.
 - Cannot modify prescriptions or medical records.
-- Does not have broad appointment-list access.
+- Has **no** appointment access at all: not list, and not read, update, or delete by ID.
+- Cannot create, amend, or retire a doctor.
 
 ### Patient
 
@@ -134,7 +146,14 @@ The intended roles are:
 
 ### Admin
 
-Administrative routes preserve appropriate broad operational access. Admin behavior is controlled by backend role dependencies, not frontend visibility alone.
+Administrative routes preserve appropriate broad operational access: dashboards, reports, the patient
+registry, the doctor directory, billing, notifications, files, and the audit trail. Admin is the only
+role that may create accounts, create or retire doctors, void bills, or read the audit log.
+
+Admin deliberately does **not** have clinical-record read access; `/medical-records` remains scoped
+to the treating doctor and the patient. Oversight is served by the reports module instead.
+
+Admin behaviour is controlled by backend role dependencies, not frontend visibility alone.
 
 ## 6. Authentication logic
 
@@ -162,16 +181,15 @@ The backend:
 
 The token identity is resolved from the database on protected requests. Inactive or deleted users are rejected even if an old token exists.
 
-The demo accounts are development accounts and must not be used as production credentials:
+Demo accounts are seeded **only** when `ENVIRONMENT=development` and `SEED_DEMO_USERS=true`. The
+settings model refuses to load if seeding is enabled in any other environment, or if `SECRET_KEY` is
+shorter than 32 characters outside development. No password appears in source: it comes from
+`DEMO_USER_PASSWORD`, or is generated per process and written to the startup log.
 
-```text
-DoctorMeet@CareOS   doctor
-PharmacyMeet@CareOS pharmacy
-PatientMeet@CareOS  patient
-Reception@CareOS    receptionist
-```
-
-Passwords are seeded as hashes and are never returned by APIs or logged.
+Repeated failed sign-ins are throttled per login ID and per client address, returning `429` with
+`Retry-After`. Passwords are stored as bcrypt hashes and are never returned by APIs or logged.
+`POST /auth/change-password` lets a user rotate their own password; system-generated patient
+accounts are flagged `must_change_password` and the UI blocks until that is done.
 
 ## 7. Backend request flow
 
@@ -332,17 +350,24 @@ Patient ownership is enforced server-side. Doctors must have a linked appointmen
 ### Priority input assembly
 
 - Gender: patient record.
-- Age: calculated from patient date of birth.
+- Age: calculated from patient date of birth (full date arithmetic, not a year subtraction).
 - Number of visits: linked appointments.
-- Diagnosis: latest medical record.
-- Symptoms: latest medical record.
 - Days since last visit: latest appointment date.
-- Disease, severity, abnormal result: explicitly entered structured UI values when not present in CARE-OS data.
+- Disease, Severity, Abnormal_Result, Diagnosis, Symptoms: chosen by the user from the model's own
+  training vocabulary, served by `GET /ai/schema`.
+
+Diagnosis and Symptoms are **not** taken from the medical-record free text. Both are 6- and 15-value
+controlled vocabularies in the training data, so free text encodes to an all-zero vector and the
+prediction silently stops depending on it.
 
 ### Wait-time input assembly
 
 - Gender, age, and visit count: backend patient/appointment data.
-- Disease, abnormal result, symptom count, chronic condition, severity score: explicit structured UI values where the current data model does not provide them.
+- Disease, Abnormal_Result, Chronic_Condition: chosen from this model's own vocabulary. Note that
+  `Abnormal_Result` is Yes/No here but a four-level ordinal in the priority model; the two are
+  separate fields in the UI for that reason.
+- Symptom_Count and Severity_Score: entered numerically. Severity_Score is limited to 1-5, the
+  trained range.
 
 The frontend does not fabricate missing clinical values, expose model paths, or present predictions as diagnoses.
 
@@ -429,16 +454,25 @@ Common response meanings:
 - `404`: resource or relationship does not exist.
 - `409`: conflict such as duplicate record or invalid workflow transition.
 - `422`: request validation failure.
+- `429`: too many failed sign-in attempts; `Retry-After` gives the wait in seconds.
 - `503`: AI model unavailable.
 
 Frontend error states should display safe user-facing messages and never reveal secrets, model paths, stack traces, or database credentials.
 
 ## 17. Known implementation boundaries
 
-- Some legacy dashboard presentation sections still contain mock data.
-- The patient demo account is linked to `PATDEMO001`; newly registered patients are not automatically attached to that login without an explicit supported account-linking operation.
-- AI fields absent from the current clinical schema must be supplied explicitly; they must not be inferred from medicine names or unrelated fields.
-- The current project is configured for local MongoDB development and should receive production hardening before deployment.
+- Presentation-only copy on the patient and pharmacy dashboards is still static (care-team contacts,
+  assistance options, counter alerts, slot availability). No clinical or write path depends on it.
+- The demo accounts are linked to clinical records by `Backend/scripts/seed_demo_clinical_data.py`,
+  which must be run explicitly. Newly registered patients get their own linked login automatically.
+- AI fields absent from the clinical schema are supplied explicitly by the user from the model's
+  vocabulary; they are never inferred from medicine names or unrelated fields.
+- Login throttling is in-process. A multi-worker or multi-instance deployment needs a shared store
+  (Redis) behind `app/utils/rate_limit.py`; the interface is deliberately small so the swap is local.
+- Appointment slot availability shown to patients is presentational; the authoritative conflict check
+  is the unique index on doctor/date/time, which returns `409`.
+- The project targets a local MongoDB. Deployment packaging (containers, TLS termination, migrations,
+  a shared rate-limit store) is not included.
 
 ## 18. Verification reference
 

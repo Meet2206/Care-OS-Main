@@ -1,422 +1,492 @@
-# CARE-OS Complete Technical Reference
+# CARE-OS — Machine Learning Engineering & Model Development Guide
+**Document Purpose:** Complete specification, data contracts, feature schemas, training pipelines, and deployment instructions for **Jenil** (ML Engineer) to build, train, evaluate, and package the production machine learning models for CARE-OS.
 
-This file is a developer handoff for the current CARE-OS implementation. It documents the architecture, modules, data contracts, algorithms, authorization rules, frontend behavior, AI integration, and operational workflow.
+---
 
-## 1. Product and architecture
+## 1. Executive Overview & System Context
 
-CARE-OS is a role-based healthcare operations system:
-
-```text
-Frontend (React + Vite)
-        |
-        | JSON over HTTP with Bearer JWT
-        v
-Backend (FastAPI)
-        |
-        +--> MongoDB: care_os
-        +--> Medicine_Details.csv catalog
-        +--> AI model service
-```
-
-The frontend is the authoritative UI. The backend is authoritative for identity, permissions, clinical relationships, persistence, pharmacy transitions, and AI access. The frontend never connects directly to MongoDB or model files.
-
-Repository areas:
-
-| Area | Responsibility |
-|---|---|
-| `Frontend/` | React pages, routing, components, API client, session state |
-| `Backend/` | FastAPI routes, schemas, controllers, services, security |
-| `AI/ML/` | Serialized priority and wait-time models when present |
-| `Dataset/` | Patient/medicine datasets and medicine catalog |
-
-Main entry points:
-
-- Frontend: `Frontend/src/main.jsx`
-- Frontend routes: `Frontend/src/App.jsx`
-- Frontend API client: `Frontend/src/api/client.js`
-- Frontend auth: `Frontend/src/context/AuthContext.jsx`
-- Backend: `Backend/main.py`
-- Backend settings: `Backend/app/config/settings.py`
-- MongoDB: `Backend/app/database/mongodb.py`
-- Security: `Backend/app/utils/security.py`
-
-## 2. Backend request lifecycle
+CARE-OS is a role-based hospital operations and clinical management system. The machine learning subsystem (**CareAI**) provides real-time, advisory clinical decision support and hospital operational insights to **Doctors**, **Receptionists**, and **Patients**.
 
 ```text
-HTTP request
-  -> CORS middleware
-  -> JWT/role/ownership dependency
-  -> Pydantic request validation
-  -> route
-  -> controller
-  -> domain service
-  -> MongoDB or catalog/model adapter
-  -> Pydantic response schema
++-------------------------------------------------------------------------------+
+|                             CARE-OS Web Application                           |
+|      (Doctor Portal, Reception Desk, Patient Portal - React + Vite)           |
++-------------------------------------------------------------------------------+
+                                      |
+                                      | HTTP POST /api/v1/ai/* with Bearer JWT
+                                      v
++-------------------------------------------------------------------------------+
+|                           FastAPI Backend Service                             |
+|               (app/routes/ai.py & app/services/ai_service.py)                |
++-------------------------------------------------------------------------------+
+           |                                                 |
+           v                                                 v
++------------------------------------+    +------------------------------------+
+|  Model 1: Patient Priority Triage  |    |     Model 2: Wait-Time Predictor   |
+|  (patient_priority_rf_model.joblib)|    |   (patient_wait_time_model.joblib) |
+|  Type: RandomForestClassifier      |    |   Type: RandomForestRegressor      |
+|  Task: 5-level Triage Priority     |    |   Task: Estimated Wait Time (mins) |
++------------------------------------+    +------------------------------------+
 ```
 
-Routes handle transport and authorization dependencies. Controllers translate domain exceptions into HTTP errors. Services implement business rules, indexes, identifiers, filtering, and persistence. Schemas define input/output contracts. Models contain collection names and document conversion helpers.
+### Critical Operational Boundaries
+1. **Advisory Decision Support Only:** Predictions are advisory operational tools to assist queue management and clinical triage; they do **not** replace certified medical diagnosis.
+2. **Deterministic Schemas & Zero Silent Degradation:** The backend dynamically inspects fitted encoders. Any category outside the trained vocabulary causes a validation error (`422 Unprocessable Entity`) rather than being silently discarded by `OneHotEncoder(handle_unknown="ignore")`.
+3. **Artifact Location:** Model artifacts are loaded at backend startup from the `AI:ML/` directory (or fallback aliases `AI_ML/`, `models/`).
 
-## 3. Configuration and database
+---
 
-Configuration is loaded from `Backend/.env` through `app/config/settings.py`. Secrets are never hardcoded in React or Python source.
+## 2. Models to Build
 
-Required local configuration:
+Jenil is responsible for delivering **two trained scikit-learn Pipeline artifacts**:
 
-```env
-HOST=127.0.0.1
-PORT=8000
-MONGODB_URI=mongodb://localhost:27017/
-DATABASE_NAME=care_os
-SECRET_KEY=<local-development-secret>
-CORS_ORIGINS=http://localhost:5173
+| Model Name | Artifact Filename | ML Task | Target Variable | Evaluation Metrics |
+|---|---|---|---|---|
+| **Patient Priority Classifier** | `patient_priority_rf_model.joblib` | Multi-class Classification (5 classes) | `Priority_Score` (1 to 5) | Multi-class Macro F1-Score, Balanced Accuracy, Log-Loss |
+| **Patient Wait-Time Regressor** | `patient_wait_time_model.joblib` | Continuous Regression | `Wait_Time` (minutes) | MAE, RMSE, R² Score |
+
+---
+
+## 3. Model 1: Patient Priority Triage Classifier
+
+### 3.1 Objective
+Predict the clinical urgency level of an incoming or queued patient on a 5-point triage scale:
+- **Level 1 (Routine / Low):** Mild or chronic symptoms, stable vitals.
+- **Level 2 (Standard):** Routine follow-up, minor acute symptoms.
+- **Level 3 (Urgent):** Needs clinical assessment within reasonable queue time.
+- **Level 4 (Highly Urgent):** Serious symptoms, potential rapid deterioration.
+- **Level 5 (Critical / Emergency):** Severe/life-threatening symptoms, immediate attention.
+
+### 3.2 Feature Specification & Schema
+The model must accept exactly **9 input features** in the specified order:
+
+| Feature Name | Type | Processing | Valid Domain / Range / Categories |
+|---|---|---|---|
+| `Disease` | Categorical | One-Hot Encoded | `['Arthritis', 'Asthma', 'COPD', 'Cancer', 'Common Cold', 'Diabetes', 'Fracture', 'Gastroenteritis', 'Heart Disease', 'Hypertension', 'Kidney Disease', 'Migraine', 'Pneumonia', 'Stroke', 'UTI']` (15 classes) |
+| `Severity` | Numeric (int) | Scaled / Standardized | `1` to `5` (inclusive) |
+| `Gender` | Categorical | One-Hot Encoded | `['Female', 'Male', 'Other']` (3 classes) |
+| `Age` | Numeric (int) | Scaled / Standardized | `0` to `130` |
+| `Number_of_Visits` | Numeric (int) | Scaled / Standardized | `>= 0` |
+| `Abnormal_Result` | Categorical | One-Hot Encoded | `['Moderately Abnormal', 'Normal', 'Severely Abnormal', 'Slightly Abnormal']` (4 classes) |
+| `Diagnosis` | Categorical | One-Hot Encoded | `['Acute', 'Chronic Controlled', 'Chronic Uncontrolled', 'Critical', 'Needs Follow-up', 'Stable']` (6 classes) |
+| `Symptoms` | Categorical | One-Hot Encoded | `['Abdominal Pain', 'Bleeding', 'Chest Pain', 'Confusion', 'Cough', 'Dizziness', 'Fatigue', 'Fever', 'Headache', 'Nausea', 'None/Mild', 'Severe Pain', 'Shortness of Breath', 'Vomiting', 'Weakness']` (15 classes) |
+| `Days_Since_Last_Visit`| Numeric (int) | Scaled / Standardized | `>= 0` |
+
+### 3.3 Target Variable
+- **Target Name:** `Priority_Score`
+- **Type:** Integer (1, 2, 3, 4, 5)
+- **Model Method Requirements:** Must support both `.predict()` and `.predict_proba()` with `.classes_` exposing `[1, 2, 3, 4, 5]`.
+
+### 3.4 API Request & Response Schemas (Pydantic & JSON)
+
+#### Request Schema (`PatientPriorityRequest`):
+```python
+class PatientPriorityRequest(BaseModel):
+    patient_id: str = Field(min_length=1, max_length=30)
+    Disease: str = Field(min_length=1, max_length=120)
+    Severity: int = Field(ge=1, le=5)
+    Gender: str = Field(min_length=1, max_length=30)
+    Age: int = Field(ge=0, le=130)
+    Number_of_Visits: int = Field(ge=0)
+    Abnormal_Result: str = Field(min_length=1, max_length=80)
+    Diagnosis: str = Field(min_length=1, max_length=120)
+    Symptoms: str = Field(min_length=1, max_length=200)
+    Days_Since_Last_Visit: int = Field(ge=0)
 ```
 
-MongoDB is accessed through PyMongo. Startup performs a ping and creates indexes for patients, doctors, appointments, records, prescriptions, pharmacy orders, billing, notifications, users, files, and audit logs. Demo-user seeding is idempotent: existing users are not duplicated or overwritten.
-
-## 4. Authentication and identity
-
-`POST /api/v1/auth/login` accepts `login_id` and `password`. The service finds the active user, verifies the password hash, and signs a JWT using the environment secret. Passwords are stored only as hashes. Responses contain no password or password hash.
-
-`GET /api/v1/auth/me` resolves the authenticated user and returns sanitized identity, role, `user_id`, and optional `patient_id`/`doctor_id` links.
-
-Frontend session logic:
-
-1. Login receives the access token.
-2. `api/client.js` attaches it to API calls.
-3. `AuthContext` restores `/auth/me` on refresh.
-4. `ProtectedRoute` blocks unauthenticated pages.
-5. `RoleRedirect` selects the dashboard from the backend role.
-6. Logout removes the token and clears React auth state.
-
-Development accounts:
-
-| Login | Role | Link |
-|---|---|---|
-| `DoctorMeet@CareOS` | doctor | `DOCDEMO001` |
-| `PharmacyMeet@CareOS` | pharmacy | pharmacy workflow |
-| `PatientMeet@CareOS` | patient | linked patient record |
-| `Reception@CareOS` | receptionist | operations |
-| `Admin@CareOS` | admin | administration |
-
-## 5. Roles and authorization
-
-Backend authorization is authoritative; frontend role checks are navigation only.
-
-### Doctor
-
-Doctors can view patients in their clinical scope, view their appointments and records, create prescriptions using their own `doctor_id`, search medicines, and use authorized CareAI flows.
-
-### Patient
-
-Patients are always restricted to their authenticated `patient_id`. Query parameters cannot broaden appointment, medical-record, prescription, pharmacy-order, or AI access. Object-detail routes apply ownership checks as well as role checks.
-
-### Pharmacy
-
-Pharmacy users read and process pharmacy orders. They cannot access clinical records, prescriptions, CareAI, or broad appointment lists. Order status changes are validated by the pharmacy transition rules.
-
-### Receptionist
-
-Receptionists remain distinct from admin and doctor. They handle patient registration and operational appointment workflows but do not receive doctor-only clinical mutation permissions.
-
-### Admin
-
-Admin routes provide appropriate operational administration. Admin is not silently treated as receptionist, and receptionist is not silently treated as admin.
-
-## 6. Schemas and domain models
-
-Every schema is a Pydantic model under `Backend/app/schemas/`. Every model is a MongoDB collection/document helper under `Backend/app/models/`.
-
-### User schema/model
-
-Core fields include `login_id`, `user_id`, `full_name`, `role`, `password_hash`, `status`, timestamps, and optional `patient_id` or `doctor_id`. Unique indexes protect `login_id`, `user_id`, and sparse legacy email values.
-
-### Patient schema/model
-
-Fields:
-
-- `patient_id`
-- `full_name`, `gender`, `date_of_birth`
-- `phone`, `email`, `address`
-- `blood_group`
-- `emergency_contact_name`, `emergency_contact_phone`
-- `allergies`, `medical_history`, `status`
-- optional `assigned_doctor_id`
-- timestamps and soft-delete fields
-
-Patient creation allocates a sequential `PAT######` identifier. It also generates a linked patient login using the normalized name and birth day, for example `ChandraDave@CareOS` and `ChandraDave16`. If the login exists, a numeric suffix is added. The temporary password is returned only in the creation response/success screen and is never stored in plaintext.
-
-### Doctor schema/model
-
-Stores `doctor_id`, name, specialization, department, license/contact information, availability, status, and timestamps. Doctor identity is linked to the authenticated user through `doctor_id`.
-
-### Appointment schema/model
-
-Fields:
-
-- `appointment_id`, `patient_id`, `doctor_id`
-- `appointment_date`, `appointment_time`
-- `appointment_type`
-- `reason`, `notes`
-- status: `Scheduled`, `Completed`, `Cancelled`, or `No Show`
-
-### Medical record schema/model
-
-Fields:
-
-- `record_id`, `appointment_id`, `patient_id`, `doctor_id`
-- `diagnosis`, `symptoms`
-- `vital_signs`: blood pressure, heart rate, temperature, respiratory rate, oxygen saturation, weight, height
-- `treatment`, `notes`, `follow_up_date`
-
-Records must be tied to real appointment/patient/doctor relationships.
-
-### Prescription schema/model
-
-Fields:
-
-- `prescription_id`
-- `medical_record_id`, `appointment_id`, `patient_id`, `doctor_id`
-- `medicines[]`
-
-Each medicine contains `medicine_id`, `medicine_name`, `dosage`, `frequency`, `duration`, and `instructions`. The authenticated doctor's ID is used; the frontend cannot impersonate another doctor. The service validates the linked clinical record and prevents duplicate active prescriptions for the same record.
-
-### Pharmacy order schema/model
-
-Fields include `order_id`, `prescription_id`, `patient_id`, `doctor_id`, optional pharmacy link, medicine snapshots, status, timestamps, and audit information.
-
-Status algorithm:
-
-```text
-PENDING -> ACCEPTED -> PACKED -> DISPENSED
+#### Request JSON Payload Example:
+```json
+{
+  "patient_id": "PAT000003",
+  "Disease": "Asthma",
+  "Severity": 3,
+  "Gender": "Male",
+  "Age": 42,
+  "Number_of_Visits": 4,
+  "Abnormal_Result": "Moderately Abnormal",
+  "Diagnosis": "Acute",
+  "Symptoms": "Shortness of Breath",
+  "Days_Since_Last_Visit": 12
+}
 ```
 
-Invalid transitions and unauthorized role changes are rejected server-side.
-
-### Other schemas/models
-
-- Billing: bills, line items, totals, payment/status data.
-- Notifications: recipient, title, message, type, read state, timestamps.
-- Files: metadata, patient/record association, storage reference, uploader.
-- Audit logs: actor, role, action, entity, entity ID, metadata, timestamp.
-- Dashboard/report schemas: aggregated operational metrics and recent activity.
-- AI schemas: validated model input and user-friendly prediction responses.
-
-## 7. Backend modules
-
-### Routes
-
-Routes under `Backend/app/routes/`:
-
-| Route module | Main capability |
-|---|---|
-| `auth.py` | login and current-user session |
-| `patient.py` | patient registration, list, detail, update |
-| `doctor.py` | doctor CRUD/list |
-| `appointment.py` | appointment CRUD/list and scope filtering |
-| `medical_record.py` | clinical record CRUD/list |
-| `prescription.py` | prescription CRUD/list and ownership |
-| `medicine.py` | doctor-only medicine catalog search |
-| `pharmacy_order.py` | pharmacy order read/status workflow |
-| `ai.py` | priority and wait-time predictions |
-| `dashboard.py` | operational dashboard metrics |
-| `report.py` | patient/doctor/appointment/revenue reports |
-| `notification.py` | notification CRUD/list |
-| `billing.py` | billing operations |
-| `file_routes.py` | file upload/list/download/delete |
-| `audit_log_routes.py` | audit-log access |
-| `database.py` | protected database test |
-
-### Services
-
-Services implement the business logic for each route domain. Important algorithms include sequential patient IDs, password hashing, JWT creation/validation, unique-index creation, soft deletion, pagination, doctor/patient scoping, prescription-to-pharmacy-order creation, pharmacy status transitions, report aggregation, and AI input validation.
-
-## 8. Frontend modules and features
-
-### Shared frontend infrastructure
-
-- `api/client.js`: centralized HTTP client and bearer-token handling.
-- `api/auth.js`: login, `/auth/me`, logout.
-- `AuthContext.jsx`: session lifecycle and role dashboard mapping.
-- `ProtectedRoute.jsx`: authentication gate.
-- `RoleRedirect.jsx`: role-based landing route.
-- `Layout`, `Sidebar`, `Topbar`: shared application shell.
-- `Button`, `Card`, `Modal`, `PageIntro`, `StatusPill`, `MetricCard`: design system primitives.
-
-### Pages
-
-- Login: backend authentication; no hardcoded credentials.
-- Admin: operational metrics, patients, doctors, reports, billing, logs.
-- Reception: patient registration, patient directory, appointments, queue actions.
-- Doctor: scoped patients, appointments, medical records, medicine search, prescriptions.
-- Patient: own profile, appointments, records, orders, CareAI.
-- Pharmacy: order queue and status processing.
-- CareAI: patient context, advisory priority/wait-time predictions, patient detail chatbot flow.
-
-### Patient onboarding algorithm
-
-1. Collect and validate demographics/contact data.
-2. Collect medical history and medications.
-3. Collect doctor assignment/appointment information in the UI.
-4. Submit normalized data to `POST /api/v1/patients`.
-5. Backend persists the patient, creates the linked account, and returns the real ID.
-6. Success screen shows the real patient ID and one-time temporary credentials.
-
-The frontend does not treat generated mock IDs or localStorage as the source of truth.
-
-## 9. Doctor prescription algorithm
-
-```text
-Doctor login
-  -> load doctor-scoped patients, appointments, records
-  -> select a real patient
-  -> resolve a real linked appointment
-  -> resolve a real medical record
-  -> search Medicine_Details.csv through /medicines/search
-  -> select medicine_id and enter dosage/frequency
-  -> POST /prescriptions with real relationship IDs
-  -> backend validates doctor scope and creates prescription
-  -> backend creates pharmacy order
+#### Response JSON Payload Example:
+```json
+{
+  "patient_id": "PAT000003",
+  "prediction": 4,
+  "probabilities": {
+    "1": 0.05,
+    "2": 0.10,
+    "3": 0.25,
+    "4": 0.55,
+    "5": 0.05
+  },
+  "advisory": "Operational decision support only; not a medical diagnosis or guaranteed clinical decision."
+}
 ```
 
-The medicine dropdown is controlled by `medicine_id`; the display label is `medicine_name`. This prevents selection-state mismatches.
+---
 
-A prescription is intentionally rejected when the patient lacks a real appointment or medical record. This protects the clinical data model and avoids fabricated records.
+## 4. Model 2: Patient Wait-Time Regressor
 
-## 10. Medicine catalog
+### 4.1 Objective
+Predict the anticipated waiting time (in minutes) for an outpatient visit before consultation, accounting for patient clinical complexity, symptom count, and chronic conditions.
 
-`GET /api/v1/medicines/search?q=<text>&limit=<n>` is doctor-only. The backend reads `Dataset/Medicine_Details.csv`, matches medicine name or composition case-insensitively, and returns stable IDs in the form `MED######`, name, and composition. The CSV is a catalog source; prescriptions persist selected medicine IDs and snapshots.
+### 4.2 Feature Specification & Schema
+The model must accept exactly **8 input features** in the specified order:
 
-## 11. CareAI and machine-learning algorithms
+| Feature Name | Type | Processing | Valid Domain / Range / Categories |
+|---|---|---|---|
+| `Disease` | Categorical | One-Hot Encoded | `['Allergy', 'Arthritis', 'Asthma', 'Back Pain', 'Bronchitis', 'Common Cold', 'Diabetes', 'Flu', 'Gastritis', 'Heart Disease', 'Hypertension', 'Migraine', 'Pneumonia', 'Skin Infection', 'Urinary Tract Infection']` (15 classes) |
+| `Gender` | Categorical | One-Hot Encoded | `['Female', 'Male', 'Other']` (3 classes) |
+| `Age` | Numeric (int) | Scaled / Identity | `0` to `130` |
+| `Number_of_Visits` | Numeric (int) | Scaled / Identity | `>= 0` |
+| `Abnormal_Result` | Categorical | One-Hot Encoded | `['No', 'Yes']` (2 classes) |
+| `Symptom_Count` | Numeric (int) | Scaled / Identity | `>= 0` |
+| `Chronic_Condition`| Categorical | One-Hot Encoded | `['No', 'Yes']` (2 classes) |
+| `Severity_Score` | Numeric (int) | Scaled / Identity | `1` to `5` (inclusive) |
 
-CareAI is advisory decision support and is not a diagnosis.
+> [!IMPORTANT]
+> **Key Category Difference to Note:**
+> Notice that `Abnormal_Result` in the Wait-Time model is binary (`['No', 'Yes']`), whereas in the Priority model it is multi-level (`['Moderately Abnormal', 'Normal', 'Severely Abnormal', 'Slightly Abnormal']`). Do not mix these up during preprocessing.
 
-### Priority model contract
+### 4.3 Target Variable
+- **Target Name:** `Wait_Time` (or `Estimated_Wait_Minutes`)
+- **Type:** Float / Non-negative continuous
+- **Model Method Requirements:** Must support `.predict()`. Values returned are capped at `>= 0.0` by the backend.
 
-Required features, in model order:
+### 4.4 API Request & Response Schemas (Pydantic & JSON)
 
-```text
-Disease
-Severity
-Gender
-Age
-Number_of_Visits
-Abnormal_Result
-Diagnosis
-Symptoms
-Days_Since_Last_Visit
+#### Request Schema (`WaitTimeRequest`):
+```python
+class WaitTimeRequest(BaseModel):
+    patient_id: str = Field(min_length=1, max_length=30)
+    Disease: str = Field(min_length=1, max_length=120)
+    Gender: str = Field(min_length=1, max_length=30)
+    Age: int = Field(ge=0, le=130)
+    Number_of_Visits: int = Field(ge=0)
+    Abnormal_Result: str = Field(min_length=1, max_length=80)
+    Symptom_Count: int = Field(ge=0)
+    Chronic_Condition: str = Field(min_length=1, max_length=30)
+    Severity_Score: int = Field(ge=1, le=5)
 ```
 
-### Wait-time model contract
-
-Required features, in model order:
-
-```text
-Disease
-Gender
-Age
-Number_of_Visits
-Abnormal_Result
-Symptom_Count
-Chronic_Condition
-Severity_Score
+#### Request JSON Payload Example:
+```json
+{
+  "patient_id": "PAT000003",
+  "Disease": "Asthma",
+  "Gender": "Male",
+  "Age": 42,
+  "Number_of_Visits": 4,
+  "Abnormal_Result": "Yes",
+  "Symptom_Count": 2,
+  "Chronic_Condition": "Yes",
+  "Severity_Score": 3
+}
 ```
 
-### Runtime flow
-
-1. User selects or is linked to an authorized patient.
-2. Backend checks role and patient/doctor ownership.
-3. Backend loads patient, appointment, and medical-record context.
-4. Input fields are assembled and validated; missing clinical data causes a clear error rather than fabricated values.
-5. `ai_service.py` loads the trusted local joblib artifacts and calls the estimator.
-6. Response is converted to a user-friendly priority/wait-time result.
-7. Frontend presents loading, success, empty, and error states without exposing model paths, sklearn internals, feature engineering, or private probabilities.
-
-Endpoints:
-
-```text
-POST /api/v1/ai/patient-priority
-POST /api/v1/ai/wait-time
+#### Response JSON Payload Example:
+```json
+{
+  "patient_id": "PAT000003",
+  "estimated_wait_time": 38.5,
+  "advisory": "Operational estimate only; actual waiting time may vary."
+}
 ```
 
-The serialized artifacts are not retrained or modified at runtime. Compatibility depends on the Python/joblib/scikit-learn environment used to load them.
+---
 
-## 12. Patient ownership algorithm
+## 5. Required Pipeline Architecture & Packaging
 
-For patient users, the backend ignores caller-supplied patient IDs where necessary and replaces them with `current_user.patient_id`. Detail endpoints fetch the object, then call ownership validation. A patient changing an ID receives `403` or an empty scoped list, never another patient's protected data.
+To ensure seamless integration with `Backend/app/services/ai_service.py`, both models **must** be packaged as scikit-learn `Pipeline` objects with specific internal step names.
 
-Doctor lists and details are scoped by `doctor_id`, appointments, records, and the patient's `assigned_doctor_id`. Pharmacy appointment access is denied because it is not required by the current workflow. Receptionist operational access remains available.
+### 5.1 Pipeline Structure Requirements
+1. **Named Step `preprocessor`:**
+   A `ColumnTransformer` containing:
+   - `num` transformer for numeric columns (e.g. `StandardScaler` or `Pipeline([('scaler', StandardScaler())])`).
+   - `cat` transformer for categorical columns (e.g. `Pipeline([('onehot', OneHotEncoder(handle_unknown='ignore'))])`).
+2. **Estimator Step:**
+   - Named `'classifier'` for Priority (e.g. `RandomForestClassifier`).
+   - Named `'regressor'` or `'model'` for Wait-Time (e.g. `RandomForestRegressor`).
+3. **Preserve `feature_names_in_`:**
+   Fitting the pipeline on a Pandas DataFrame preserves `feature_names_in_`, which the backend relies on to align input columns before prediction.
 
-## 13. API examples
+### 5.2 Python & Library Environment
+Ensure your local training environment uses compatible library versions matching the CARE-OS production runtime:
+- **Python:** `3.12.x` or `3.14.x`
+- **scikit-learn:** `1.6.1`
+- **joblib:** `1.4.2`
+- **pandas:** `3.0.x`
+- **numpy:** `^1.26.0` or `^2.0.0`
 
-```text
-GET  /health
-POST /api/v1/auth/login
-GET  /api/v1/auth/me
-GET  /api/v1/patients
-POST /api/v1/patients
-GET  /api/v1/appointments
-POST /api/v1/appointments
-GET  /api/v1/medical-records
-POST /api/v1/medical-records
-GET  /api/v1/medicines/search
-POST /api/v1/prescriptions
-GET  /api/v1/pharmacy-orders
-PATCH /api/v1/pharmacy-orders/{order_id}/status
-POST /api/v1/ai/patient-priority
-POST /api/v1/ai/wait-time
+---
+
+## 6. End-to-End Training Script Template for Jenil
+
+Here is a turnkey reference implementation showing how to train, evaluate, and export both pipelines:
+
+```python
+"""
+train_careos_models.py
+ML Model Training Script for CARE-OS
+Author: Jenil
+"""
+
+from pathlib import Path
+import joblib
+import numpy as np
+import pandas as pd
+from sklearn.compose import ColumnTransformer
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.metrics import classification_report, mean_absolute_error, r2_score
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+
+# Artifact output directory
+OUTPUT_DIR = Path("AI:ML")
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+# -----------------------------------------------------------------------------
+# 1. TRAIN PATIENT PRIORITY MODEL
+# -----------------------------------------------------------------------------
+def train_priority_model(dataset_path: str):
+    print("--> Training Patient Priority Classifier...")
+    df = pd.read_csv(dataset_path)
+
+    numeric_features = ["Severity", "Age", "Number_of_Visits", "Days_Since_Last_Visit"]
+    categorical_features = ["Disease", "Gender", "Abnormal_Result", "Diagnosis", "Symptoms"]
+    target = "Priority_Score"
+
+    X = df[categorical_features + numeric_features]
+    y = df[target].astype(int)
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42, stratify=y
+    )
+
+    numeric_transformer = Pipeline([
+        ("scaler", StandardScaler())
+    ])
+
+    categorical_transformer = Pipeline([
+        ("onehot", OneHotEncoder(handle_unknown="ignore", sparse_output=False))
+    ])
+
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ("num", numeric_transformer, numeric_features),
+            ("cat", categorical_transformer, categorical_features),
+        ]
+    )
+
+    pipeline = Pipeline([
+        ("preprocessor", preprocessor),
+        ("classifier", RandomForestClassifier(
+            n_estimators=150,
+            max_depth=12,
+            random_state=42,
+            class_weight="balanced"
+        )),
+    ])
+
+    pipeline.fit(X_train, y_train)
+
+    y_pred = pipeline.predict(X_test)
+    print("Priority Model Evaluation:\n", classification_report(y_test, y_pred))
+
+    model_path = OUTPUT_DIR / "patient_priority_rf_model.joblib"
+    joblib.dump(pipeline, model_path)
+    print(f"Saved Priority Model to: {model_path}\n")
+
+
+# -----------------------------------------------------------------------------
+# 2. TRAIN PATIENT WAIT-TIME MODEL
+# -----------------------------------------------------------------------------
+def train_wait_time_model(df_wait_time: pd.DataFrame):
+    print("--> Training Patient Wait-Time Regressor...")
+    numeric_features = ["Age", "Number_of_Visits", "Symptom_Count", "Severity_Score"]
+    categorical_features = ["Disease", "Gender", "Abnormal_Result", "Chronic_Condition"]
+    target = "Wait_Time"
+
+    X = df_wait_time[categorical_features + numeric_features]
+    y = df_wait_time[target].astype(float)
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    numeric_transformer = StandardScaler()
+    categorical_transformer = Pipeline([
+        ("onehot", OneHotEncoder(handle_unknown="ignore", sparse_output=False))
+    ])
+
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ("num", numeric_transformer, numeric_features),
+            ("cat", categorical_transformer, categorical_features),
+        ]
+    )
+
+    pipeline = Pipeline([
+        ("preprocessor", preprocessor),
+        ("regressor", RandomForestRegressor(
+            n_estimators=150,
+            max_depth=10,
+            random_state=42
+        )),
+    ])
+
+    pipeline.fit(X_train, y_train)
+
+    y_pred = pipeline.predict(X_test)
+    mae = mean_absolute_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+    print(f"Wait-Time Model MAE: {mae:.2f} mins, R2 Score: {r2:.3f}")
+
+    model_path = OUTPUT_DIR / "patient_wait_time_model.joblib"
+    joblib.dump(pipeline, model_path)
+    print(f"Saved Wait-Time Model to: {model_path}\n")
+
+
+# -----------------------------------------------------------------------------
+# 3. SYNTHETIC WAIT-TIME DATA GENERATOR (IF RE-TRAINING FROM SCRATCH)
+# -----------------------------------------------------------------------------
+def generate_synthetic_wait_time_dataset(n_samples: int = 1000) -> pd.DataFrame:
+    """Generates synthetic training records matching the required Wait-Time schema."""
+    rng = np.random.default_rng(42)
+    diseases = [
+        "Allergy", "Arthritis", "Asthma", "Back Pain", "Bronchitis",
+        "Common Cold", "Diabetes", "Flu", "Gastritis", "Heart Disease",
+        "Hypertension", "Migraine", "Pneumonia", "Skin Infection", "Urinary Tract Infection"
+    ]
+    genders = ["Female", "Male", "Other"]
+    yes_no = ["No", "Yes"]
+
+    data = {
+        "Disease": rng.choice(diseases, size=n_samples),
+        "Gender": rng.choice(genders, size=n_samples, p=[0.49, 0.49, 0.02]),
+        "Age": rng.integers(1, 95, size=n_samples),
+        "Number_of_Visits": rng.integers(0, 15, size=n_samples),
+        "Abnormal_Result": rng.choice(yes_no, size=n_samples, p=[0.7, 0.3]),
+        "Symptom_Count": rng.integers(1, 8, size=n_samples),
+        "Chronic_Condition": rng.choice(yes_no, size=n_samples, p=[0.65, 0.35]),
+        "Severity_Score": rng.integers(1, 6, size=n_samples),
+    }
+    df = pd.DataFrame(data)
+
+    # Base wait time formula + noise:
+    base_wait = 15.0
+    severity_factor = df["Severity_Score"] * 8.0
+    abnormal_factor = (df["Abnormal_Result"] == "Yes").astype(int) * 12.0
+    symptom_factor = df["Symptom_Count"] * 3.5
+    chronic_factor = (df["Chronic_Condition"] == "Yes").astype(int) * 6.0
+    noise = rng.normal(0, 4, size=n_samples)
+
+    df["Wait_Time"] = np.clip(
+        base_wait + severity_factor + abnormal_factor + symptom_factor + chronic_factor + noise,
+        5.0,
+        180.0
+    ).round(1)
+
+    return df
+
+
+if __name__ == "__main__":
+    # 1. Train Priority Model from existing dataset:
+    train_priority_model("Dataset/patient_priority_dataset_500.csv")
+
+    # 2. Train Wait-Time Model:
+    df_wait = generate_synthetic_wait_time_dataset(n_samples=1200)
+    train_wait_time_model(df_wait)
 ```
 
-## 14. Run commands
+---
 
-MongoDB:
+## 7. How the Frontend (CareAI) Consumes These Models
 
+Understanding how the frontend interacts with your models helps ensure seamless end-to-end UX:
+
+1. **Dynamic Schema Retrieval (`GET /api/v1/ai/schema`):**
+   - On page load, `CareAI.jsx` calls `/api/v1/ai/schema`.
+   - The backend introspects your fitted `OneHotEncoder` categories and returns them as JSON.
+   - The UI dynamically populates dropdowns (Diseases, Symptoms, Diagnoses) directly from your model's categories. This guarantees the user can only select values that your model actually knows how to encode!
+
+2. **Patient Autofill & Clinical Context:**
+   - The doctor or receptionist selects an existing patient (e.g. `PAT000003`).
+   - The UI auto-fills `patient_id`, `Age`, `Gender`, and recent medical history from MongoDB.
+   - Any missing fields (like triage severity or current symptoms) are selected via the schema dropdowns.
+
+3. **Inference Execution:**
+   - The user clicks **Run Triage Analysis** or **Estimate Wait Time**.
+   - The frontend sends `POST /api/v1/ai/patient-priority` or `POST /api/v1/ai/wait-time`.
+   - The backend runs inference using your `.joblib` model and returns:
+     - Priority: Predicted level (1-5), probabilities for all classes, and advisory banner.
+     - Wait Time: Estimated minutes and advisory banner.
+
+---
+
+## 8. Cross-Platform Folder Compatibility
+
+> [!NOTE]
+> **Windows vs macOS/Linux Paths:**
+> On macOS/Linux, the directory name is `AI:ML/`. However, colon `:` is an illegal character on Windows NTFS file systems.
+> The CARE-OS backend automatically searches the following candidate directory names in order:
+> 1. `AI:ML`
+> 2. `AI_ML`
+> 3. `AI-ML`
+> 4. `models`
+>
+> If you develop or train on Windows, you can safely name your directory `AI_ML` or `models` and the backend will locate it automatically!
+
+---
+
+## 9. Verification & Handoff Checklist for Jenil
+
+Before committing updated models to the repository, verify the following 3 tests:
+
+### Step 1: Unpickle & Feature Alignment Verification
+Test that both model files load into Python without warnings and have the expected feature names:
 ```bash
-brew services start mongodb-community@7.0
-mongosh "mongodb://localhost:27017/care_os" --quiet --eval 'db.runCommand({ping:1})'
+python -c "
+import joblib
+p = joblib.load('AI:ML/patient_priority_rf_model.joblib')
+w = joblib.load('AI:ML/patient_wait_time_model.joblib')
+print('Priority features:', list(p.feature_names_in_))
+print('Priority classes:', list(p.classes_))
+print('Wait-Time features:', list(w.feature_names_in_))
+"
 ```
 
-Backend:
-
+### Step 2: Backend Dynamic Schema Verification
+Verify that the backend dynamic schema endpoint extracts the categorical vocabulary properly:
 ```bash
 cd Backend
 source .venv/bin/activate
-uvicorn main:app --host 127.0.0.1 --port 8000
+python -c "
+from app.services.ai_service import input_schema
+schema = input_schema()
+print('Priority Categoricals:', list(schema['patient_priority']['categorical'].keys()))
+print('Wait Time Categoricals:', list(schema['wait_time']['categorical'].keys()))
+"
 ```
 
-Frontend:
-
+### Step 3: Run Full Backend Test Suite
+Run pytest to verify that all AI route and authorization tests pass:
 ```bash
-cd Frontend
-npm install
-npm run dev -- --host 127.0.0.1
+pytest tests/test_authorization.py -v
 ```
 
-Checks:
+---
 
-```bash
-cd Frontend && npm run lint && npm run build
-cd ../Backend && python -m compileall -q app
-```
+## 10. Summary Checklist for Jenil
+- [ ] Save models with exact filenames:
+  - `AI:ML/patient_priority_rf_model.joblib`
+  - `AI:ML/patient_wait_time_model.joblib`
+- [ ] Use `OneHotEncoder(handle_unknown="ignore")` inside a named transformer `'cat'` under a `ColumnTransformer` named `'preprocessor'`.
+- [ ] Name estimator step `'classifier'` for priority and `'regressor'` for wait-time.
+- [ ] Ensure all 9 priority features and 8 wait-time features match exact case and spelling.
+- [ ] Ensure priority output classes are `[1, 2, 3, 4, 5]`.
+- [ ] Ensure wait-time regression output is non-negative continuous (minutes).
+- [ ] Validate that artifacts unpickle cleanly under `scikit-learn 1.6.1` and `joblib 1.4.2`.
 
-## 15. Security rules
-
-- Never commit `.env`, secrets, API keys, or production database credentials.
-- Never store or log plaintext passwords.
-- Never trust frontend role checks as authorization.
-- Never accept a patient ID from a patient when it conflicts with the authenticated identity.
-- Never let a doctor submit another doctor's ID as the acting doctor.
-- Never expose model files, internal paths, or private model internals to React.
-- Never fabricate clinical IDs, appointments, records, or diagnoses.
-- Keep pharmacy status transitions server-side and auditable.
-
-## 16. Known boundaries
-
-Some presentation-only legacy sections still contain mock copy or placeholders in `Frontend/src/data/mockData.js`. The integrated authentication, patient persistence, doctor clinical workflow, medicine search, prescription, pharmacy, patient dashboard, and CareAI flows use backend data.
-
-The complete prescription path requires a real clinical relationship chain:
-
-```text
-Patient -> Appointment -> Medical Record -> Prescription -> Pharmacy Order
-```
-
-That restriction is intentional: it prevents invalid or fabricated clinical data from entering MongoDB.

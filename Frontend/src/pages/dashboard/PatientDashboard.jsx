@@ -29,6 +29,18 @@ function formatDateDisplay(value) {
     return `${day}/${month}/${year}`
 }
 
+function formatCardNumber(value) {
+    return value
+        .replace(/\D/g, "")
+        .slice(0, 16)
+        .replace(/(\d{4})(?=\d)/g, "$1 ")
+}
+
+function formatCardExpiry(value) {
+    const digits = value.replace(/\D/g, "").slice(0, 4)
+    return digits.length > 2 ? `${digits.slice(0, 2)}/${digits.slice(2)}` : digits
+}
+
 function getBookingValidationMessage(form) {
     if (!form.doctor_id) return "Choose a doctor."
     if (!form.date) return "Choose a date."
@@ -146,9 +158,16 @@ function PatientDashboard() {
         if (!paymentForm.method) return "Choose a payment method."
         if (paymentForm.method === "UPI ID" && !/^[-a-zA-Z0-9._]{2,}@[a-zA-Z]{2,}$/.test(paymentForm.upiId.trim())) return "Enter a valid UPI ID."
         if (["Credit Card", "Debit Card"].includes(paymentForm.method)) {
-            if (!/^\d{12,19}$/.test(paymentForm.cardNumber.replace(/\s/g, ""))) return "Enter a valid card number."
-            if (!/^\d{2}\/\d{2}$/.test(paymentForm.expiry)) return "Enter card expiry as MM/YY."
-            if (!/^\d{3,4}$/.test(paymentForm.cvv)) return "Enter a valid CVV."
+            const normalizedCardNumber = paymentForm.cardNumber.replace(/\s/g, "")
+            if (!/^\d{16}$/.test(normalizedCardNumber)) return "Card number must contain exactly 16 digits."
+            const expiryMatch = /^(\d{2})\/(\d{2})$/.exec(paymentForm.expiry)
+            if (!expiryMatch) return "Enter card expiry as MM/YY."
+            const expiryMonth = Number(expiryMatch[1])
+            const expiryYear = 2000 + Number(expiryMatch[2])
+            const now = new Date()
+            if (expiryMonth < 1 || expiryMonth > 12) return "Enter a valid expiry month."
+            if (expiryYear < now.getFullYear() || (expiryYear === now.getFullYear() && expiryMonth < now.getMonth() + 1)) return "This card has expired."
+            if (!/^\d{3}$/.test(paymentForm.cvv)) return "CVV must contain exactly 3 digits."
         }
         return ""
     }
@@ -609,7 +628,6 @@ function PatientDashboard() {
                                         <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Step 3 · Payment</p>
                                         <h3 className="mt-2 font-display text-2xl text-[var(--ink)]">Pay the 25% advance</h3>
                                     </div>
-                                    <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-[var(--primary-blue)]">Demo Payment</span>
                                 </div>
                                 <p className="mt-2 text-sm leading-6 text-[var(--muted)]">No payment gateway is connected. Choose a method and click Payment Done only after completing this simulated step.</p>
 
@@ -656,9 +674,9 @@ function PatientDashboard() {
                                 ) : null}
                                 {["Credit Card", "Debit Card"].includes(paymentForm.method) ? (
                                     <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                                        <input className="form-input sm:col-span-3" inputMode="numeric" value={paymentForm.cardNumber} onChange={(event) => updatePaymentField("cardNumber", event.target.value.replace(/[^\d ]/g, "").slice(0, 19))} placeholder="Card number" autoComplete="off" />
-                                        <input className="form-input" value={paymentForm.expiry} onChange={(event) => updatePaymentField("expiry", event.target.value.replace(/[^\d/]/g, "").slice(0, 5))} placeholder="MM/YY" autoComplete="off" />
-                                        <input className="form-input" inputMode="numeric" value={paymentForm.cvv} onChange={(event) => updatePaymentField("cvv", event.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="CVV" autoComplete="off" />
+                                        <input className="form-input sm:col-span-3" inputMode="numeric" maxLength={19} value={paymentForm.cardNumber} onChange={(event) => updatePaymentField("cardNumber", formatCardNumber(event.target.value))} placeholder="1234 5678 9012 3456" autoComplete="off" />
+                                        <input className="form-input" inputMode="numeric" maxLength={5} value={paymentForm.expiry} onChange={(event) => updatePaymentField("expiry", formatCardExpiry(event.target.value))} placeholder="MM/YY" autoComplete="off" />
+                                        <input className="form-input" inputMode="numeric" maxLength={3} value={paymentForm.cvv} onChange={(event) => updatePaymentField("cvv", event.target.value.replace(/\D/g, "").slice(0, 3))} placeholder="3-digit CVV" autoComplete="off" />
                                     </div>
                                 ) : null}
                             </div>

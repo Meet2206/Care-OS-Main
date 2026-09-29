@@ -17,8 +17,8 @@ from app.services.pharmacy_order_service import ensure_pharmacy_order_indexes
 from app.services.billing_service import ensure_billing_indexes
 from app.services.notification_service import ensure_notification_indexes
 from app.services.patient_service import ensure_patient_indexes
-from app.services.auth_service import ensure_user_indexes
-from app.services.initial_data_service import clear_seeded_content, ensure_hospital_doctors
+from app.services.auth_service import ensure_demo_users, ensure_user_indexes
+from app.services.initial_data_service import clear_seeded_content, ensure_hospital_doctor_accounts, ensure_hospital_doctors
 from app.services.file_service import ensure_file_indexes
 from app.services.audit_log_service import ensure_audit_log_indexes
 from app.services.advance_payment_service import ensure_advance_payment_indexes
@@ -47,7 +47,16 @@ async def lifespan(_: FastAPI):
     ensure_advance_payment_indexes()
 
     clear_seeded_content()
+    seeded_password = ensure_demo_users()
     ensure_hospital_doctors()
+    development_password = seeded_password or settings.demo_user_password
+    doctor_logins = ensure_hospital_doctor_accounts(development_password)
+    if seeded_password or doctor_logins:
+        logger.warning(
+            "Development accounts ready. Password: %s. Doctor logins created: %s",
+            development_password,
+            ", ".join(doctor_logins) or "already present",
+        )
     yield
     mongodb.close()
 

@@ -1,4 +1,4 @@
-const STEP_LABELS = ["Basic Information", "Medical Information", "Doctor Assignment", "Review & Submit"]
+const STEP_LABELS = ["Basic Information", "Doctor Assignment", "Medical Information", "Review & Submit"]
 
 function Stepper({ currentStep }) {
     return (

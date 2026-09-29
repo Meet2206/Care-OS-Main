@@ -227,9 +227,9 @@ function PatientOnboarding() {
             case 0:
                 return <StepBasicInfo formData={formData} onChange={handleFormChange} />
             case 1:
-                return <StepMedicalInfo formData={formData} onChange={handleFormChange} />
-            case 2:
                 return <StepDoctorAssignment formData={formData} onChange={handleFormChange} />
+            case 2:
+                return <StepMedicalInfo formData={formData} onChange={handleFormChange} />
             case 3:
                 return <StepReview formData={formData} />
             default:

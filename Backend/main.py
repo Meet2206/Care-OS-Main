@@ -17,7 +17,8 @@ from app.services.pharmacy_order_service import ensure_pharmacy_order_indexes
 from app.services.billing_service import ensure_billing_indexes
 from app.services.notification_service import ensure_notification_indexes
 from app.services.patient_service import ensure_patient_indexes
-from app.services.auth_service import ensure_demo_users, ensure_user_indexes
+from app.services.auth_service import ensure_user_indexes
+from app.services.initial_data_service import clear_seeded_content, ensure_hospital_doctors
 from app.services.file_service import ensure_file_indexes
 from app.services.audit_log_service import ensure_audit_log_indexes
 
@@ -43,16 +44,8 @@ async def lifespan(_: FastAPI):
     ensure_file_indexes()
     ensure_audit_log_indexes()
 
-    seeded_password = ensure_demo_users()
-    if seeded_password:
-        # Development only. Printed once so a local run is usable without
-        # storing a password anywhere in the repository.
-        logger.warning(
-            "Seeded development accounts (Admin@CareOS, DoctorMeet@CareOS, "
-            "PharmacyMeet@CareOS, PatientMeet@CareOS, Reception@CareOS) "
-            "with password: %s",
-            seeded_password,
-        )
+    clear_seeded_content()
+    ensure_hospital_doctors()
     yield
     mongodb.close()
 

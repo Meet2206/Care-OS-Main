@@ -93,8 +93,13 @@ function StepDoctorAssignment({ formData, onChange }) {
                                                 formData.assignedDoctor === doctor.name ? "bg-[#e8f0fb]" : ""
                                             }`}
                                             onClick={() => {
-                                                update("assignedDoctor", doctor.name)
-                                                update("assignedDoctorId", doctor.id)
+                                                onChange({
+                                                    ...formData,
+                                                    assignedDoctor: doctor.name,
+                                                    assignedDoctorId: doctor.id,
+                                                    assignedDoctorSpecialty: doctor.specialty,
+                                                    assignedDoctorDepartment: doctor.department,
+                                                })
                                                 setShowDoctorDropdown(false)
                                                 setDoctorSearch("")
                                             }}
@@ -104,9 +109,9 @@ function StepDoctorAssignment({ formData, onChange }) {
                                             </div>
                                             <div className="min-w-0 flex-1">
                                                 <p className="text-sm font-semibold text-[var(--ink)]">{doctor.name}</p>
-                                                <p className="text-xs text-[var(--muted)]">{doctor.specialty} • {doctor.location}</p>
+                                                <p className="text-xs text-[var(--muted)]">{doctor.specialty} • {doctor.department}</p>
                                             </div>
-                                            {!doctor.available && (
+                                            {doctor.availability !== "Available" && (
                                                 <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-700">Unavailable</span>
                                             )}
                                             {formData.assignedDoctor === doctor.name && (
@@ -130,11 +135,17 @@ function StepDoctorAssignment({ formData, onChange }) {
                         </div>
                         <div className="flex-1">
                             <p className="text-sm font-semibold text-[var(--ink)]">{selectedDoctor.name}</p>
-                            <p className="text-xs text-[var(--muted)]">{selectedDoctor.specialty} • {selectedDoctor.location}</p>
+                            <p className="text-xs text-[var(--muted)]">{selectedDoctor.specialty} • {selectedDoctor.department}</p>
                         </div>
                         <button
                             type="button"
-                            onClick={() => { update("assignedDoctor", ""); update("assignedDoctorId", "") }}
+                            onClick={() => onChange({
+                                ...formData,
+                                assignedDoctor: "",
+                                assignedDoctorId: "",
+                                assignedDoctorSpecialty: "",
+                                assignedDoctorDepartment: "",
+                            })}
                             className="text-xs font-medium text-red-400 hover:text-red-600"
                             aria-label="Remove doctor assignment"
                         >

@@ -1,11 +1,13 @@
 import { calculateAge } from "../../../utils/patientHelpers"
-import { appointmentTypes, doctorsList } from "../../../data/mockData"
+import { appointmentTypes } from "../../../data/mockData"
 
 function StepReview({ formData }) {
     const age = calculateAge(formData.dob)
     const fullName = `${formData.firstName} ${formData.lastName}`.trim()
     const apptType = appointmentTypes.find((t) => t.value === formData.appointmentType)
-    const doctor = doctorsList.find((d) => d.name === formData.assignedDoctor)
+    const doctor = formData.assignedDoctor
+        ? { name: formData.assignedDoctor, specialty: formData.assignedDoctorSpecialty, location: formData.assignedDoctorDepartment }
+        : null
 
     return (
         <div className="anim-fade-in-up space-y-6">
@@ -115,7 +117,7 @@ function StepReview({ formData }) {
                                 </div>
                                 <div>
                                     <p className="text-sm font-semibold text-[var(--ink)]">{doctor.name}</p>
-                                    <p className="text-xs text-[var(--muted)]">{doctor.specialty} • {doctor.location}</p>
+                                    <p className="text-xs text-[var(--muted)]">{[doctor.specialty, doctor.location].filter(Boolean).join(" • ")}</p>
                                 </div>
                             </div>
                         ) : (

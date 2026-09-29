@@ -510,7 +510,7 @@ function PatientDashboard() {
                             <div className="rounded-[26px] border border-[rgba(216,206,193,0.8)] bg-[rgba(247,242,235,0.92)] p-5">
                                 <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Step 2</p>
                                 <h3 className="mt-2 font-display text-2xl text-[var(--ink)]">Choose a time slot</h3>
-                                <p className="mt-2 text-xs text-[var(--muted)]">30-minute slots from 11:00 AM to 5:00 PM. Red means booked, green means available.</p>
+                                <p className="mt-2 text-xs text-[var(--muted)]">Select an available 30-minute consultation slot. The selected time is sent to the hospital in 24-hour format.</p>
                                 <div className="mt-5 grid gap-3 sm:grid-cols-3 md:grid-cols-4">
                                     {appointmentTimeSlots.map((slot) => {
                                         const selected = bookingForm.time === slot.time

@@ -1,5 +1,5 @@
 import TagInput from "./TagInput"
-import { commonAllergies, chronicDiseasesList } from "../../../data/mockData"
+import { commonAllergies, doctorDiseaseOptions } from "../../../data/mockData"
 
 const commonMedications = [
     "Paracetamol 500mg",
@@ -15,6 +15,8 @@ const commonMedications = [
 ]
 
 function StepMedicalInfo({ formData, onChange }) {
+    const diseaseSuggestions = doctorDiseaseOptions[formData.assignedDoctorDepartment] || []
+
     const update = (field, value) => {
         onChange({ ...formData, [field]: value })
     }
@@ -94,14 +96,21 @@ function StepMedicalInfo({ formData, onChange }) {
             />
 
             {/* Chronic Diseases */}
-            <TagInput
-                label="Chronic Diseases"
-                id="chronicDiseases"
-                value={formData.chronicDiseases}
-                onChange={(v) => update("chronicDiseases", v)}
-                suggestions={chronicDiseasesList}
-                placeholder="Type a condition and press Enter…"
-            />
+            <div>
+                <TagInput
+                    label="Doctor-specific Diseases"
+                    id="chronicDiseases"
+                    value={formData.chronicDiseases}
+                    onChange={(v) => update("chronicDiseases", v)}
+                    suggestions={diseaseSuggestions}
+                    placeholder={formData.assignedDoctor ? "Search diseases for the selected doctor…" : "Select a doctor first"}
+                />
+                <p className="mt-1.5 text-xs text-[var(--muted)]">
+                    {formData.assignedDoctor
+                        ? `Suggestions are based on ${formData.assignedDoctor}'s department. You may also enter another documented condition.`
+                        : "Choose a doctor in the next step to load specialty-specific disease options."}
+                </p>
+            </div>
 
             {/* Current Medications */}
             <TagInput

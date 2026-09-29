@@ -16,6 +16,7 @@ class AppointmentType(str, Enum):
 
 class AppointmentStatus(str, Enum):
     scheduled = "Scheduled"
+    payment_pending = "Payment Pending"
     completed = "Completed"
     cancelled = "Cancelled"
     no_show = "No Show"
@@ -86,6 +87,13 @@ class AppointmentResponse(AppointmentBase):
     appointment_id: str
     created_at: datetime
     updated_at: datetime
+    payment_status: str = "Pending"
+    payment_id: str | None = None
+    total_amount: float = 0
+    advance_amount: float = 0
+    remaining_amount: float = 0
+    payment_method: str | None = None
+    transaction_reference: str | None = None
 
 
 class AppointmentListResponse(BaseModel):

@@ -8,7 +8,7 @@ from app.config.settings import settings
 from app.database import mongodb
 from app.middleware.audit import AuditLogMiddleware
 from app.middleware.security_headers import SecurityHeadersMiddleware
-from app.routes import ai, appointment, audit_log_routes, auth, billing, dashboard, database, doctor, file_routes, medical_record, medicine, notification, patient, pharmacy_order, prescription, report
+from app.routes import advance_payment, ai, appointment, audit_log_routes, auth, billing, dashboard, database, doctor, file_routes, medical_record, medicine, notification, patient, pharmacy_order, prescription, report
 from app.services.appointment_service import ensure_appointment_indexes
 from app.services.doctor_service import ensure_doctor_indexes
 from app.services.medical_record_service import ensure_medical_record_indexes
@@ -21,6 +21,7 @@ from app.services.auth_service import ensure_user_indexes
 from app.services.initial_data_service import clear_seeded_content, ensure_hospital_doctors
 from app.services.file_service import ensure_file_indexes
 from app.services.audit_log_service import ensure_audit_log_indexes
+from app.services.advance_payment_service import ensure_advance_payment_indexes
 
 logging.basicConfig(
     level=logging.INFO,
@@ -43,6 +44,7 @@ async def lifespan(_: FastAPI):
     ensure_user_indexes()
     ensure_file_indexes()
     ensure_audit_log_indexes()
+    ensure_advance_payment_indexes()
 
     clear_seeded_content()
     ensure_hospital_doctors()
@@ -78,6 +80,7 @@ app.include_router(ai.router, prefix="/api/v1")
 app.include_router(patient.router, prefix="/api/v1")
 app.include_router(doctor.router, prefix="/api/v1")
 app.include_router(appointment.router, prefix="/api/v1")
+app.include_router(advance_payment.router, prefix="/api/v1")
 app.include_router(medical_record.router, prefix="/api/v1")
 app.include_router(prescription.router, prefix="/api/v1")
 app.include_router(medicine.router, prefix="/api/v1")

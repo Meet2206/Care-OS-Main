@@ -48,6 +48,7 @@ function PatientDashboard() {
     const [bookingTicket, setBookingTicket] = useState(null)
     const [bookingError, setBookingError] = useState("")
     const [booking, setBooking] = useState(false)
+    const [paymentForm, setPaymentForm] = useState({ method: "", upiId: "", cardNumber: "", expiry: "", cvv: "" })
     const [doctorDirectory, setDoctorDirectory] = useState([])
     const [selectedAppointment, setSelectedAppointment] = useState(null)
     const [bookingForm, setBookingForm] = useState({
@@ -95,6 +96,7 @@ function PatientDashboard() {
                 specialty: item.specialization,
                 location: item.department,
                 availability: item.availability,
+                consultationFee: Number(item.consultation_fee || 0),
             })))
         }).catch((error) => {
             setPatientLoadError(error.message || "Unable to load your patient profile.")
@@ -126,22 +128,42 @@ function PatientDashboard() {
             specialty: doctor.specialty,
             location: doctor.location,
         }))
+        setPaymentForm({ method: "", upiId: "", cardNumber: "", expiry: "", cvv: "" })
+    }
+
+    const selectedDoctor = doctorDirectory.find((doctor) => doctor.id === bookingForm.doctor_id)
+    const totalAmount = selectedDoctor?.consultationFee || 0
+    const advanceAmount = Math.round(totalAmount * 25) / 100
+    const remainingAmount = Math.round((totalAmount - advanceAmount) * 100) / 100
+
+    const updatePaymentField = (field, value) => {
+        setPaymentForm((current) => ({ ...current, [field]: value }))
+        setBookingError("")
+    }
+
+    const getPaymentValidationMessage = () => {
+        if (!paymentForm.method) return "Choose a payment method."
+        if (paymentForm.method === "UPI ID" && !/^[-a-zA-Z0-9._]{2,}@[a-zA-Z]{2,}$/.test(paymentForm.upiId.trim())) return "Enter a valid UPI ID."
+        if (["Credit Card", "Debit Card"].includes(paymentForm.method)) {
+            if (!/^\d{12,19}$/.test(paymentForm.cardNumber.replace(/\s/g, ""))) return "Enter a valid card number."
+            if (!/^\d{2}\/\d{2}$/.test(paymentForm.expiry)) return "Enter card expiry as MM/YY."
+            if (!/^\d{3,4}$/.test(paymentForm.cvv)) return "Enter a valid CVV."
+        }
+        return ""
     }
 
     const handleBookingSubmit = async (event) => {
         event.preventDefault()
         const validationMessage = getBookingValidationMessage(bookingForm)
-        if (validationMessage) {
-            setBookingError(validationMessage)
+        const paymentValidationMessage = getPaymentValidationMessage()
+        if (validationMessage || paymentValidationMessage) {
+            setBookingError(validationMessage || paymentValidationMessage)
             return
         }
 
         setBooking(true)
         setBookingError("")
         try {
-            // The request is persisted through the API. It previously lived only
-            // in local state, so a "confirmed" appointment vanished on reload and
-            // the clinic never saw it.
             const created = await apiRequest("/appointments", {
                 method: "POST",
                 body: JSON.stringify({
@@ -151,11 +173,24 @@ function PatientDashboard() {
                     appointment_time: bookingForm.time.length === 5 ? `${bookingForm.time}:00` : bookingForm.time,
                     appointment_type: "General Consultation",
                     reason: "Patient-requested appointment",
+                    status: "Payment Pending",
+                }),
+            })
+            const payment = await apiRequest(`/appointments/${created.appointment_id}/advance-payment`, {
+                method: "POST",
+                body: JSON.stringify({
+                    payment_method: paymentForm.method,
+                    ...(paymentForm.method === "UPI ID" ? { upi_id: paymentForm.upiId.trim() } : {}),
+                    ...(["Credit Card", "Debit Card"].includes(paymentForm.method)
+                        ? { card_last4: paymentForm.cardNumber.replace(/\s/g, "").slice(-4) }
+                        : {}),
                 }),
             })
             setAppointments((current) => [
                 {
                     ...created,
+                    ...payment,
+                    status: "Scheduled",
                     date: created.appointment_date,
                     time: created.appointment_time,
                     doctor: bookingForm.doctor,
@@ -171,9 +206,18 @@ function PatientDashboard() {
                 doctor: bookingForm.doctor,
                 specialty: bookingForm.specialty,
                 location: bookingForm.location,
-                status: created.status,
+                status: "Scheduled",
+                paymentStatus: payment.payment_status,
+                totalAmount: payment.total_amount,
+                advanceAmount: payment.advance_amount,
+                remainingAmount: payment.remaining_amount,
+                paymentMethod: payment.payment_method,
+                transactionReference: payment.transaction_reference,
+                patientName: patient?.full_name,
+                amount: `₹${payment.advance_amount.toLocaleString("en-IN")}`,
             })
             setBookingForm({ date: "", time: "", doctor_id: "", doctor: "", specialty: "", location: "" })
+            setPaymentForm({ method: "", upiId: "", cardNumber: "", expiry: "", cvv: "" })
             setShowBookingModal(false)
         } catch (error) {
             setBookingError(error.message || "Unable to book this appointment.")
@@ -183,6 +227,7 @@ function PatientDashboard() {
     }
 
     const bookingValidationMessage = getBookingValidationMessage(bookingForm)
+    const paymentValidationMessage = getPaymentValidationMessage()
 
     const downloadTicket = async () => {
         if (!bookingTicket) {
@@ -303,7 +348,7 @@ function PatientDashboard() {
                             <path d="M12 7v5l3 2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </div>
-                    <div>
+                        <div>
                         <p className="font-semibold text-[var(--ink)]">Account Inactivity Notice</p>
                         <p className="mt-1 text-sm leading-6 text-[var(--muted)]">Your CARE-OS account may be deleted if there is no account activity for 2 months or more. Please sign in regularly or contact reception if you need help keeping your account active.</p>
                     </div>
@@ -550,19 +595,69 @@ function PatientDashboard() {
                             </div>
 
                             <div className="rounded-[24px] border border-[rgba(216,206,193,0.8)] bg-[rgba(247,242,235,0.92)] px-4 py-4">
-                                <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Billing</p>
-                                <p className="mt-2 font-semibold text-[var(--ink)]">Settled at the front desk</p>
-                                <p className="mt-1 text-sm leading-6 text-[var(--muted)]">
-                                    Consultation charges are raised by the billing desk after your visit. No payment is taken here.
-                                </p>
+                                <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Booking amount</p>
+                                <p className="mt-2 font-semibold text-[var(--ink)]">{totalAmount ? `₹${totalAmount.toLocaleString("en-IN")}` : "Select a doctor"}</p>
+                                <p className="mt-1 text-sm leading-6 text-[var(--muted)]">The doctor’s consultation fee is used to calculate the advance.</p>
                             </div>
                         </div>
+
+                        {bookingForm.doctor_id && bookingForm.date && bookingForm.time ? (
+                            <div className="rounded-[26px] border border-[#b9d9eb] bg-[#f0f8fc] p-5">
+                                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                                    <div>
+                                        <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Step 3 · Payment</p>
+                                        <h3 className="mt-2 font-display text-2xl text-[var(--ink)]">Pay the 25% advance</h3>
+                                    </div>
+                                    <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-[var(--primary-blue)]">Demo Payment</span>
+                                </div>
+                                <p className="mt-2 text-sm leading-6 text-[var(--muted)]">No payment gateway is connected. Choose a method and click Payment Done only after completing this simulated step.</p>
+
+                                <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                                    {[
+                                        ["Total Amount", totalAmount],
+                                        ["Advance Required (25%)", advanceAmount],
+                                        ["Remaining Amount", remainingAmount],
+                                    ].map(([label, amount]) => (
+                                        <div key={label} className="rounded-2xl bg-white px-4 py-3">
+                                            <p className="text-xs uppercase tracking-[0.12em] text-[var(--muted)]">{label}</p>
+                                            <p className="mt-2 text-lg font-bold text-[var(--ink)]">₹{Number(amount).toLocaleString("en-IN")}</p>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="mt-5">
+                                    <p className="text-sm font-semibold text-[var(--ink)]">Select payment method</p>
+                                    <div className="mt-3 grid gap-2 sm:grid-cols-4">
+                                        {["UPI", "UPI ID", "Credit Card", "Debit Card"].map((method) => (
+                                            <button
+                                                key={method}
+                                                type="button"
+                                                onClick={() => updatePaymentField("method", method)}
+                                                className={`rounded-2xl border px-3 py-3 text-sm font-semibold ${paymentForm.method === method ? "border-[var(--primary-blue)] bg-white text-[var(--primary-blue)]" : "border-[var(--line)] bg-white/70 text-[var(--ink)]"}`}
+                                            >
+                                                {method}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {paymentForm.method === "UPI ID" ? (
+                                    <input className="form-input mt-4" value={paymentForm.upiId} onChange={(event) => updatePaymentField("upiId", event.target.value)} placeholder="Enter UPI ID, e.g. name@bank" autoComplete="off" />
+                                ) : null}
+                                {["Credit Card", "Debit Card"].includes(paymentForm.method) ? (
+                                    <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                                        <input className="form-input sm:col-span-3" inputMode="numeric" value={paymentForm.cardNumber} onChange={(event) => updatePaymentField("cardNumber", event.target.value.replace(/[^\d ]/g, "").slice(0, 19))} placeholder="Card number" autoComplete="off" />
+                                        <input className="form-input" value={paymentForm.expiry} onChange={(event) => updatePaymentField("expiry", event.target.value.replace(/[^\d/]/g, "").slice(0, 5))} placeholder="MM/YY" autoComplete="off" />
+                                        <input className="form-input" inputMode="numeric" value={paymentForm.cvv} onChange={(event) => updatePaymentField("cvv", event.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="CVV" autoComplete="off" />
+                                    </div>
+                                ) : null}
+                            </div>
+                        ) : null}
 
                         <div className="rounded-[24px] border border-[rgba(216,206,193,0.8)] bg-[rgba(245,238,228,0.92)] px-4 py-4">
                             <p className="text-sm font-semibold text-[var(--ink)]">Booking Summary</p>
                             <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
-                                Submit this request to reserve your preferred slot. Reception will confirm it, and any change to the
-                                time will appear on this dashboard.
+                                Your booking is created as Payment Pending first. It becomes confirmed only after the simulated advance payment succeeds.
                             </p>
                         </div>
 
@@ -574,9 +669,9 @@ function PatientDashboard() {
                             <Button
                                 type="submit"
                                 className="px-6"
-                                disabled={booking || Boolean(bookingValidationMessage)}
+                                disabled={booking || Boolean(bookingValidationMessage || paymentValidationMessage)}
                             >
-                                {booking ? "Requesting…" : "Confirm Booking"}
+                                {booking ? "Processing payment…" : "Payment Done"}
                             </Button>
                         </div>
                     </form>
@@ -598,6 +693,11 @@ function PatientDashboard() {
                             ["Specialty", selectedAppointment?.specialty],
                             ["Location", selectedAppointment?.location],
                             ["Status", selectedAppointment?.status],
+                            ["Payment Status", selectedAppointment?.payment_status || "Pending"],
+                            ["Payment Method", selectedAppointment?.payment_method || "—"],
+                            ["Total Amount", selectedAppointment?.total_amount ? `₹${Number(selectedAppointment.total_amount).toLocaleString("en-IN")}` : "—"],
+                            ["Advance Paid", selectedAppointment?.advance_amount ? `₹${Number(selectedAppointment.advance_amount).toLocaleString("en-IN")}` : "—"],
+                            ["Remaining Amount", selectedAppointment?.remaining_amount ? `₹${Number(selectedAppointment.remaining_amount).toLocaleString("en-IN")}` : "—"],
                         ].map(([label, value]) => (
                             <div key={label} className="rounded-2xl bg-[var(--panel-muted)] px-4 py-4">
                                 <p className="text-xs uppercase tracking-[0.16em]">{label}</p>
@@ -629,6 +729,10 @@ function PatientDashboard() {
 
                     <div className="grid gap-3 sm:grid-cols-2">
                         <div className="rounded-2xl bg-[var(--panel-muted)] px-4 py-4">
+                            <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Patient</p>
+                            <p className="mt-2 font-semibold text-[var(--ink)]">{bookingTicket?.patientName || patient?.full_name}</p>
+                        </div>
+                        <div className="rounded-2xl bg-[var(--panel-muted)] px-4 py-4">
                             <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Date</p>
                             <p className="mt-2 font-semibold text-[var(--ink)]">{bookingTicket?.date}</p>
                         </div>
@@ -650,7 +754,10 @@ function PatientDashboard() {
                     <div className="rounded-[24px] border border-[rgba(216,206,193,0.8)] bg-white px-4 py-4">
                         <p className="text-sm font-semibold text-[var(--ink)]">Payment Receipt</p>
                         <p className="mt-2 text-sm text-[var(--muted)]">Method: {bookingTicket?.paymentMethod}</p>
-                        <p className="mt-1 text-sm text-[var(--muted)]">Advance Paid: {bookingTicket?.amount}</p>
+                            <p className="mt-1 text-sm text-[var(--muted)]">Advance Paid: {bookingTicket?.amount}</p>
+                        <p className="mt-1 text-sm text-[var(--muted)]">Total Amount: ₹{Number(bookingTicket?.totalAmount || 0).toLocaleString("en-IN")}</p>
+                        <p className="mt-1 text-sm text-[var(--muted)]">Remaining Amount: ₹{Number(bookingTicket?.remainingAmount || 0).toLocaleString("en-IN")}</p>
+                        <p className="mt-1 text-sm text-[var(--muted)]">Status: {bookingTicket?.paymentStatus}</p>
                     </div>
 
                     <div className="flex justify-end">

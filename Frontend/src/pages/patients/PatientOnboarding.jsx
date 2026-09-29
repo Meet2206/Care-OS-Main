@@ -195,8 +195,15 @@ function PatientOnboarding() {
         setSubmitted(false)
         setPatientId("")
         setVerificationCode("")
+        setAccountLoginId("")
+        setTemporaryPassword("")
         isDirty.current = false
         window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    const dismissCredentials = () => {
+        setTemporaryPassword("")
+        setAccountLoginId("")
     }
 
     // ── Render step content ─────────────────────────────────────────────
@@ -209,6 +216,7 @@ function PatientOnboarding() {
                     verificationCode={verificationCode}
                     accountLoginId={accountLoginId}
                     temporaryPassword={temporaryPassword}
+                    onDismissCredentials={dismissCredentials}
                     onRegisterAnother={handleRegisterAnother}
                     onViewPatient={() => navigate("/admin/patients")}
                 />

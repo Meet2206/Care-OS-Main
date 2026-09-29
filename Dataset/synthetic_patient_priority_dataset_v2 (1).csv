@@ -1,0 +1,2001 @@
+patient_id,Disease,Severity,Gender,Age,Number_of_Visits,Days_Since_Last_Visit,Symptoms,Abnormal_Result,Diagnosis,risk_score,Priority_Score
+PAT012543,Cancer,5,Other,70,10,232,Fatigue,Severely Abnormal,Critical,32.46798039882986,5
+PAT011420,COPD,2,Male,6,12,69,Fatigue,Normal,Chronic Controlled,8.43387115045393,2
+PAT011096,UTI,5,Female,26,6,161,Fever,Moderately Abnormal,Chronic Uncontrolled,19.387643099532962,3
+PAT015643,Stroke,3,Other,41,14,176,Dizziness,Moderately Abnormal,Chronic Controlled,18.754036873751648,3
+PAT002221,Diabetes,3,Female,72,8,356,Weakness,Slightly Abnormal,Needs Follow-up,15.488853613356236,3
+PAT005515,Fracture,1,Male,129,11,254,Severe Pain,Slightly Abnormal,Needs Follow-up,15.092261834684493,3
+PAT010115,Migraine,3,Male,107,1,254,Headache,Slightly Abnormal,Acute,18.11329472174714,3
+PAT012956,Fracture,4,Other,33,14,67,Severe Pain,Slightly Abnormal,Acute,21.99323132862162,4
+PAT007306,Gastroenteritis,1,Other,78,8,141,Nausea,Normal,Chronic Controlled,7.2683384727626805,1
+PAT013301,Asthma,3,Other,33,1,232,Fatigue,Moderately Abnormal,Acute,20.170616522052374,3
+PAT008295,Asthma,1,Male,59,9,224,Cough,Normal,Stable,1.9651320561444414,1
+PAT007584,Arthritis,4,Other,35,1,339,None/Mild,Severely Abnormal,Needs Follow-up,20.94899852453337,3
+PAT001734,Gastroenteritis,3,Female,50,7,86,Vomiting,Moderately Abnormal,Needs Follow-up,18.30225346763128,3
+PAT006508,Pneumonia,2,Female,18,4,111,Fatigue,Normal,Chronic Controlled,7.5597369896399105,2
+PAT003877,Asthma,1,Other,89,13,93,Cough,Slightly Abnormal,Chronic Controlled,9.794006157438858,2
+PAT006775,Diabetes,2,Other,38,11,315,Weakness,Normal,Chronic Controlled,5.812061512704015,1
+PAT009353,Kidney Disease,3,Male,22,7,204,Nausea,Normal,Chronic Controlled,10.370703869746986,2
+PAT004664,Diabetes,1,Female,118,10,216,Fatigue,Normal,Stable,5.454894921017564,1
+PAT018333,Common Cold,4,Female,125,12,299,Cough,Slightly Abnormal,Critical,24.81376337763857,4
+PAT018304,Kidney Disease,5,Female,29,14,141,Confusion,Severely Abnormal,Acute,32.39413324443936,5
+PAT008954,COPD,2,Other,32,11,161,Fever,Normal,Stable,8.150823207989475,2
+PAT018320,Kidney Disease,4,Male,49,5,124,Nausea,Severely Abnormal,Needs Follow-up,24.558572234326554,4
+PAT013453,Pneumonia,5,Other,14,3,328,Fever,Moderately Abnormal,Critical,29.256357896717255,5
+PAT013110,Heart Disease,3,Other,20,12,124,Chest Pain,Slightly Abnormal,Stable,13.253426614990431,3
+PAT015506,Common Cold,4,Other,117,9,154,Fever,Severely Abnormal,Critical,30.3784173135693,5
+PAT010948,Diabetes,1,Male,66,7,194,Weakness,Normal,Stable,4.252972627174874,1
+PAT014183,Pneumonia,3,Male,60,11,231,Confusion,Moderately Abnormal,Needs Follow-up,19.299110108944216,3
+PAT001886,Heart Disease,1,Male,30,13,113,Shortness of Breath,Normal,Needs Follow-up,13.679135492217045,3
+PAT003662,Fracture,3,Male,121,12,232,None/Mild,Slightly Abnormal,Stable,9.121242174592197,2
+PAT007554,Kidney Disease,1,Other,122,7,76,Nausea,Normal,Stable,4.778865184321148,1
+PAT016809,Migraine,2,Other,113,1,53,Dizziness,Normal,Stable,9.410857710346928,2
+PAT012072,COPD,3,Other,61,1,25,Fatigue,Slightly Abnormal,Needs Follow-up,15.903018259179964,3
+PAT019719,Arthritis,2,Female,4,9,101,Fatigue,Slightly Abnormal,Chronic Controlled,10.070584401017209,2
+PAT018517,Stroke,1,Other,77,1,132,Shortness of Breath,Normal,Needs Follow-up,14.99922232652774,3
+PAT006716,Heart Disease,3,Male,68,1,151,Chest Pain,Moderately Abnormal,Stable,16.372659220781262,3
+PAT005679,Heart Disease,1,Male,11,9,322,Shortness of Breath,Normal,Needs Follow-up,11.933976801073598,2
+PAT005194,Common Cold,4,Female,66,2,333,Cough,Severely Abnormal,Chronic Uncontrolled,24.663384978030262,4
+PAT002969,Heart Disease,2,Female,72,13,176,Confusion,Normal,Needs Follow-up,14.501333472292522,3
+PAT015260,Hypertension,5,Female,0,6,346,None/Mild,Moderately Abnormal,Needs Follow-up,18.310280780801843,3
+PAT017800,Diabetes,1,Male,18,1,130,Nausea,Normal,Stable,3.597941554814247,1
+PAT007331,Diabetes,1,Other,71,7,4,Nausea,Normal,Chronic Controlled,7.154874974766571,1
+PAT015803,Asthma,5,Female,40,8,260,Shortness of Breath,Severely Abnormal,Critical,36.95695068705263,5
+PAT007906,Gastroenteritis,2,Other,74,5,69,Abdominal Pain,Normal,Stable,4.4429162498606445,1
+PAT015940,Asthma,1,Male,86,4,306,Fatigue,Normal,Needs Follow-up,9.833729379917372,2
+PAT010532,Heart Disease,4,Male,78,4,312,Chest Pain,Slightly Abnormal,Needs Follow-up,21.206373838865414,4
+PAT008697,Hypertension,1,Other,86,5,81,Shortness of Breath,Normal,Stable,11.789792770654758,2
+PAT013819,Gastroenteritis,3,Female,75,2,128,Abdominal Pain,Slightly Abnormal,Chronic Controlled,10.62078685461784,2
+PAT001970,Cancer,4,Male,76,4,361,Fatigue,Moderately Abnormal,Chronic Uncontrolled,18.85723783185673,3
+PAT010765,Pneumonia,1,Female,47,13,322,Fatigue,Normal,Chronic Controlled,4.917003658700398,1
+PAT003222,Cancer,4,Male,35,11,332,Fatigue,Severely Abnormal,Needs Follow-up,24.695069044737437,4
+PAT018864,Cancer,5,Female,79,9,211,Fatigue,Moderately Abnormal,Needs Follow-up,21.35017116589049,4
+PAT003135,COPD,2,Other,6,3,67,Fatigue,Normal,Chronic Controlled,7.271859618370087,1
+PAT011477,Hypertension,4,Female,55,4,143,None/Mild,Severely Abnormal,Acute,22.93575038540225,4
+PAT007666,Fracture,2,Male,91,3,310,Severe Pain,Normal,Stable,7.151441947044238,1
+PAT010582,Diabetes,3,Female,108,1,276,Headache,Slightly Abnormal,Acute,17.433542405082065,3
+PAT012453,Kidney Disease,5,Other,57,12,205,Fatigue,Severely Abnormal,Acute,26.133847184862706,4
+PAT005395,UTI,4,Other,75,11,351,Fever,Slightly Abnormal,Acute,18.396474230033462,3
+PAT005024,Heart Disease,4,Male,3,12,143,Chest Pain,Slightly Abnormal,Needs Follow-up,22.3468225474837,4
+PAT008507,Diabetes,2,Male,92,1,39,Confusion,Normal,Chronic Controlled,14.309973976734366,3
+PAT017622,Fracture,3,Male,13,1,150,None/Mild,Slightly Abnormal,Chronic Controlled,12.11692377175374,2
+PAT009189,Pneumonia,4,Male,31,1,314,Fever,Slightly Abnormal,Critical,21.273773039946718,4
+PAT003993,Common Cold,2,Other,96,1,204,Fever,Slightly Abnormal,Stable,9.02651971144807,2
+PAT017848,Stroke,5,Female,81,10,338,Weakness,Slightly Abnormal,Needs Follow-up,21.539735599105377,4
+PAT009414,Heart Disease,2,Male,113,3,169,Confusion,Slightly Abnormal,Needs Follow-up,16.399901851237395,3
+PAT014450,Pneumonia,4,Female,94,7,50,Cough,Moderately Abnormal,Critical,27.38565568223246,5
+PAT010480,Common Cold,4,Other,56,0,72,Cough,Severely Abnormal,Critical,31.187084057842807,5
+PAT019015,Kidney Disease,3,Other,0,7,98,Confusion,Slightly Abnormal,Acute,20.370427979509838,3
+PAT016610,Arthritis,4,Other,86,2,129,Headache,Severely Abnormal,Needs Follow-up,21.939636405252138,4
+PAT003241,Arthritis,1,Male,35,3,17,None/Mild,Normal,Chronic Controlled,3.5182639524716617,1
+PAT002951,COPD,5,Female,67,2,111,Fever,Severely Abnormal,Chronic Uncontrolled,24.39715607271138,4
+PAT012392,Cancer,3,Male,41,9,4,Severe Pain,Moderately Abnormal,Acute,24.437705841151562,4
+PAT006429,Migraine,3,Female,89,1,103,Headache,Slightly Abnormal,Stable,11.920654528879147,2
+PAT014418,Hypertension,5,Female,109,2,283,None/Mild,Slightly Abnormal,Chronic Uncontrolled,15.675237859933448,3
+PAT008145,Pneumonia,3,Other,30,14,357,Fever,Slightly Abnormal,Acute,16.786258525295324,3
+PAT005126,Pneumonia,1,Other,117,2,126,Headache,Normal,Needs Follow-up,7.5509705625794235,2
+PAT019132,Kidney Disease,2,Male,115,5,68,Weakness,Slightly Abnormal,Stable,9.207428461207293,2
+PAT018848,Pneumonia,5,Other,20,2,353,Cough,Severely Abnormal,Chronic Uncontrolled,25.07466709551165,4
+PAT012033,Diabetes,2,Male,40,0,22,Weakness,Normal,Stable,8.876128280685236,2
+PAT014914,Stroke,1,Other,108,11,361,Confusion,Slightly Abnormal,Chronic Controlled,9.96022404502405,2
+PAT009163,Migraine,5,Other,123,10,161,Dizziness,Severely Abnormal,Needs Follow-up,27.644930810144004,5
+PAT003342,Diabetes,2,Female,110,9,108,Weakness,Normal,Stable,3.3213196595213903,1
+PAT019724,Migraine,2,Other,69,7,141,Dizziness,Normal,Stable,7.591323640243843,2
+PAT016910,Heart Disease,3,Other,109,12,176,Confusion,Moderately Abnormal,Acute,25.275614000232917,4
+PAT012172,Asthma,4,Female,2,0,357,Cough,Severely Abnormal,Chronic Uncontrolled,23.627676831022303,4
+PAT016804,Common Cold,5,Female,90,7,353,Cough,Severely Abnormal,Chronic Uncontrolled,26.06794827469908,4
+PAT002755,Arthritis,4,Female,33,6,77,None/Mild,Slightly Abnormal,Critical,24.592789011884925,4
+PAT018229,Common Cold,5,Male,20,9,296,Cough,Moderately Abnormal,Critical,29.518140235849792,5
+PAT001106,Migraine,2,Male,31,13,273,Nausea,Slightly Abnormal,Chronic Controlled,8.62561318021936,2
+PAT005874,COPD,1,Male,123,11,7,Fever,Normal,Stable,2.176110851361446,1
+PAT007782,Diabetes,5,Male,8,14,96,Nausea,Slightly Abnormal,Acute,21.84499444751218,4
+PAT015182,COPD,4,Female,72,6,321,Fatigue,Severely Abnormal,Acute,26.732017500178365,4
+PAT002657,Common Cold,5,Male,4,3,356,None/Mild,Moderately Abnormal,Acute,24.36395162473104,4
+PAT013586,Migraine,2,Male,2,13,262,Nausea,Normal,Stable,4.168651839164247,1
+PAT017391,Gastroenteritis,1,Other,93,14,99,Vomiting,Normal,Stable,7.18656587042659,1
+PAT008755,Arthritis,4,Male,51,9,270,Headache,Moderately Abnormal,Critical,27.39103572028098,5
+PAT016147,Gastroenteritis,5,Other,59,11,218,Fever,Severely Abnormal,Needs Follow-up,27.64563561780438,5
+PAT015868,Heart Disease,3,Male,79,7,353,Dizziness,Normal,Stable,9.872142831958083,2
+PAT008199,Pneumonia,2,Male,51,9,45,Shortness of Breath,Normal,Chronic Controlled,14.226683861177895,3
+PAT007498,Common Cold,4,Other,74,11,218,Shortness of Breath,Moderately Abnormal,Acute,26.96460388879894,4
+PAT019513,COPD,5,Male,67,8,11,Cough,Severely Abnormal,Critical,29.98136788189431,5
+PAT004554,Hypertension,2,Male,67,2,64,Shortness of Breath,Normal,Needs Follow-up,16.358316209812518,3
+PAT005626,Kidney Disease,1,Male,78,12,105,Confusion,Slightly Abnormal,Chronic Controlled,15.02300038427395,3
+PAT012686,Kidney Disease,2,Female,85,10,107,Weakness,Normal,Needs Follow-up,10.402058405905947,2
+PAT015278,Fracture,3,Male,102,3,308,Severe Pain,Moderately Abnormal,Chronic Controlled,16.153115832561774,3
+PAT005305,Arthritis,1,Other,29,10,139,None/Mild,Normal,Needs Follow-up,6.366620857214584,1
+PAT004460,Heart Disease,3,Other,23,13,358,Chest Pain,Moderately Abnormal,Stable,14.307387283349367,3
+PAT019393,Heart Disease,2,Female,32,13,154,Chest Pain,Normal,Chronic Controlled,9.950410108274669,2
+PAT012694,Diabetes,1,Male,89,10,328,Weakness,Normal,Chronic Controlled,6.407234702978753,1
+PAT014657,Kidney Disease,2,Male,30,8,68,Nausea,Normal,Needs Follow-up,9.704950674015118,2
+PAT005249,Common Cold,1,Female,92,8,161,Cough,Slightly Abnormal,Needs Follow-up,11.27607916760651,2
+PAT010760,COPD,1,Other,126,1,122,Shortness of Breath,Normal,Needs Follow-up,11.479365652789735,2
+PAT012949,Stroke,2,Other,39,2,221,Shortness of Breath,Normal,Chronic Controlled,14.845905703309382,3
+PAT011543,Fracture,4,Female,111,5,123,None/Mild,Moderately Abnormal,Chronic Uncontrolled,17.12196539524896,3
+PAT017188,Migraine,4,Female,43,10,254,Dizziness,Severely Abnormal,Critical,30.462914335853586,5
+PAT003159,Hypertension,2,Male,53,6,86,None/Mild,Normal,Needs Follow-up,9.961051924796854,2
+PAT016896,Diabetes,2,Male,22,5,78,Weakness,Slightly Abnormal,Chronic Controlled,10.589185717182266,2
+PAT016324,UTI,3,Male,37,10,21,Vomiting,Moderately Abnormal,Needs Follow-up,20.354160362881196,3
+PAT003046,Common Cold,3,Other,53,9,123,Fever,Slightly Abnormal,Acute,16.88135733265482,3
+PAT009882,COPD,2,Male,8,3,122,Cough,Normal,Needs Follow-up,10.988517634859177,2
+PAT017728,COPD,4,Male,101,6,31,Fever,Severely Abnormal,Acute,25.695834709326853,4
+PAT010818,Asthma,4,Female,71,7,77,Fatigue,Severely Abnormal,Critical,30.56754814877762,5
+PAT016297,Diabetes,5,Other,40,0,39,Nausea,Moderately Abnormal,Chronic Uncontrolled,21.113855644836516,3
+PAT005803,Stroke,3,Other,87,12,290,Weakness,Moderately Abnormal,Chronic Controlled,13.403126522374896,3
+PAT008094,COPD,1,Other,93,12,6,Fever,Normal,Chronic Controlled,9.057100405366143,2
+PAT005135,Gastroenteritis,2,Male,1,14,168,Fever,Normal,Needs Follow-up,11.073421352880054,2
+PAT008790,Arthritis,5,Other,55,5,345,None/Mild,Slightly Abnormal,Critical,24.058017393965596,4
+PAT000583,UTI,3,Male,3,5,120,Fever,Normal,Stable,7.806920971636513,2
+PAT016262,Stroke,3,Female,12,9,153,Dizziness,Moderately Abnormal,Stable,15.225771284704624,3
+PAT004813,Asthma,2,Other,4,12,326,Shortness of Breath,Normal,Stable,13.216989170890042,3
+PAT013463,Migraine,3,Female,74,10,228,Nausea,Moderately Abnormal,Stable,11.516146331759014,2
+PAT013777,Migraine,5,Male,100,14,174,Dizziness,Slightly Abnormal,Critical,29.067531406836526,5
+PAT009003,Hypertension,5,Male,6,12,357,Confusion,Moderately Abnormal,Critical,31.663490109915035,5
+PAT006439,Diabetes,2,Female,100,14,127,Fatigue,Normal,Needs Follow-up,10.007103797272933,2
+PAT009397,Pneumonia,3,Female,57,9,16,Fatigue,Normal,Acute,11.337646355019494,2
+PAT000511,COPD,2,Male,101,4,254,Fatigue,Slightly Abnormal,Chronic Controlled,11.679736646986724,2
+PAT009031,Pneumonia,3,Male,73,10,259,Cough,Moderately Abnormal,Acute,20.77852201334314,3
+PAT006113,Cancer,4,Other,35,1,174,Bleeding,Severely Abnormal,Acute,31.871240288935642,5
+PAT014577,Kidney Disease,4,Male,41,9,87,Confusion,Severely Abnormal,Critical,34.84494080763836,5
+PAT011642,Gastroenteritis,4,Male,77,8,254,Fever,Moderately Abnormal,Critical,25.38401925696634,4
+PAT017808,Kidney Disease,4,Female,12,10,22,Confusion,Slightly Abnormal,Acute,24.282984143222105,4
+PAT005717,Kidney Disease,3,Female,94,5,269,Fatigue,Moderately Abnormal,Acute,19.87209767239141,3
+PAT002333,Migraine,2,Male,35,14,165,Dizziness,Slightly Abnormal,Chronic Controlled,10.431050497600284,2
+PAT015515,Migraine,4,Female,60,13,284,Headache,Slightly Abnormal,Critical,24.513313519978983,4
+PAT010571,Hypertension,3,Female,88,5,78,None/Mild,Slightly Abnormal,Acute,14.579960410697302,3
+PAT012577,Hypertension,4,Other,121,4,106,None/Mild,Moderately Abnormal,Critical,26.502986578055083,4
+PAT002572,Arthritis,3,Other,31,1,64,Headache,Slightly Abnormal,Chronic Controlled,10.211641351938418,2
+PAT019383,Heart Disease,2,Female,6,10,127,Shortness of Breath,Normal,Stable,11.756464042478145,2
+PAT012386,Asthma,3,Other,47,13,149,Cough,Moderately Abnormal,Chronic Controlled,16.706796572090486,3
+PAT001620,Hypertension,1,Female,79,1,37,Headache,Normal,Chronic Controlled,6.3556792630526315,1
+PAT019772,Asthma,1,Female,112,6,173,Fatigue,Normal,Chronic Controlled,6.0626872916013115,1
+PAT018420,Heart Disease,4,Female,117,1,220,Dizziness,Moderately Abnormal,Acute,23.252982917515446,4
+PAT015444,UTI,3,Other,24,2,261,Abdominal Pain,Moderately Abnormal,Acute,20.081901124854305,3
+PAT010638,Diabetes,2,Female,47,8,168,Nausea,Slightly Abnormal,Chronic Controlled,11.260722235848474,2
+PAT019149,Gastroenteritis,3,Other,30,8,340,Vomiting,Slightly Abnormal,Acute,19.111632925473298,3
+PAT009941,Heart Disease,3,Male,110,7,294,Confusion,Normal,Stable,12.64580890514628,2
+PAT002799,Kidney Disease,1,Male,8,14,158,Weakness,Normal,Stable,3.0146191970621645,1
+PAT009116,Fracture,3,Male,45,13,116,Severe Pain,Slightly Abnormal,Chronic Controlled,11.676140703262778,2
+PAT017673,Migraine,5,Other,7,14,215,Nausea,Moderately Abnormal,Acute,24.30727437362808,4
+PAT004920,Fracture,2,Other,113,14,72,None/Mild,Normal,Chronic Controlled,8.315929181758655,2
+PAT004358,Kidney Disease,5,Female,117,3,284,Fatigue,Severely Abnormal,Chronic Uncontrolled,24.13788194970248,4
+PAT015956,Diabetes,1,Male,81,6,184,Nausea,Normal,Needs Follow-up,7.653140048390176,2
+PAT015208,Common Cold,2,Other,90,3,0,Fever,Slightly Abnormal,Stable,10.184321521658077,2
+PAT010330,Fracture,2,Female,34,11,4,None/Mild,Normal,Needs Follow-up,7.096002048571979,1
+PAT011505,Arthritis,3,Female,116,12,48,Headache,Normal,Needs Follow-up,15.499340413418286,3
+PAT012062,Gastroenteritis,5,Female,1,12,47,Abdominal Pain,Severely Abnormal,Critical,32.599850858504404,5
+PAT015674,UTI,4,Female,107,5,61,Vomiting,Severely Abnormal,Chronic Uncontrolled,22.092854967974816,4
+PAT004653,Fracture,5,Other,99,3,350,None/Mild,Moderately Abnormal,Acute,24.44467328133961,4
+PAT010041,COPD,3,Other,123,6,250,Shortness of Breath,Slightly Abnormal,Stable,18.249725108712834,3
+PAT010886,Common Cold,1,Male,127,1,309,Fever,Normal,Needs Follow-up,7.400610167586856,1
+PAT008884,Diabetes,5,Male,9,9,114,Fatigue,Moderately Abnormal,Acute,24.756773874223487,4
+PAT006473,Gastroenteritis,3,Female,15,0,19,Nausea,Normal,Acute,13.461905648962448,3
+PAT017613,Asthma,2,Other,57,12,222,Shortness of Breath,Normal,Chronic Controlled,12.44008639621031,2
+PAT019101,Kidney Disease,4,Female,87,7,144,Fatigue,Moderately Abnormal,Critical,28.186177192426022,5
+PAT017852,Stroke,5,Male,34,7,304,Chest Pain,Severely Abnormal,Critical,35.072048385873,5
+PAT004245,Asthma,3,Female,9,6,174,Fever,Slightly Abnormal,Stable,8.602108683759196,2
+PAT010244,Gastroenteritis,5,Female,63,0,161,Vomiting,Slightly Abnormal,Needs Follow-up,21.087065378023908,3
+PAT006318,Common Cold,2,Female,33,2,175,Fever,Normal,Chronic Controlled,9.970551331913612,2
+PAT018800,Heart Disease,1,Female,23,9,7,Confusion,Slightly Abnormal,Needs Follow-up,16.796950036585052,3
+PAT012063,Diabetes,5,Male,113,5,19,Fatigue,Moderately Abnormal,Chronic Uncontrolled,20.2330259216346,3
+PAT009633,Asthma,4,Female,48,5,41,Fatigue,Severely Abnormal,Needs Follow-up,22.612667338313294,4
+PAT013775,Kidney Disease,1,Female,80,2,350,Confusion,Slightly Abnormal,Needs Follow-up,13.725062299816774,3
+PAT018836,Fracture,1,Other,42,13,319,Shortness of Breath,Normal,Chronic Controlled,11.552837862354103,2
+PAT002186,Cancer,4,Male,96,7,17,Bleeding,Slightly Abnormal,Critical,27.546414870815575,5
+PAT015375,Hypertension,3,Female,86,12,42,None/Mild,Moderately Abnormal,Acute,20.013815902727945,3
+PAT002902,Common Cold,1,Female,10,9,52,Fatigue,Slightly Abnormal,Chronic Controlled,9.59618103886244,2
+PAT010551,Diabetes,1,Other,45,13,10,Weakness,Normal,Needs Follow-up,8.170969549298375,2
+PAT014056,Heart Disease,5,Other,32,8,354,Shortness of Breath,Severely Abnormal,Acute,30.944654974345234,5
+PAT005770,Kidney Disease,4,Male,108,1,274,Fatigue,Severely Abnormal,Acute,23.77345281035004,4
+PAT015801,COPD,3,Other,22,9,194,Shortness of Breath,Normal,Needs Follow-up,16.380604893751023,3
+PAT012113,Kidney Disease,3,Female,130,9,162,Fatigue,Slightly Abnormal,Needs Follow-up,14.985389201279224,3
+PAT013019,Common Cold,2,Female,27,3,105,Fatigue,Normal,Needs Follow-up,11.563828905567444,2
+PAT012727,Asthma,1,Other,22,3,91,Cough,Normal,Chronic Controlled,6.829117048641084,1
+PAT008770,Hypertension,5,Male,102,8,60,None/Mild,Moderately Abnormal,Acute,20.24813931590227,3
+PAT011709,Arthritis,2,Female,94,12,95,Headache,Normal,Stable,6.502018768128892,1
+PAT010046,Stroke,2,Female,113,2,296,Weakness,Normal,Stable,5.393634406257534,1
+PAT003268,COPD,2,Other,73,9,282,Fever,Normal,Needs Follow-up,10.577549279861275,2
+PAT007430,Cancer,2,Female,101,9,235,Chest Pain,Slightly Abnormal,Chronic Controlled,13.00833479892313,3
+PAT005546,Hypertension,3,Other,47,1,215,None/Mild,Slightly Abnormal,Needs Follow-up,12.33844700623619,2
+PAT000269,Common Cold,3,Male,64,13,211,None/Mild,Moderately Abnormal,Stable,9.882300984007014,2
+PAT019660,Stroke,3,Other,25,10,197,Confusion,Moderately Abnormal,Acute,24.590021435374418,4
+PAT016124,Migraine,5,Male,127,12,246,Nausea,Severely Abnormal,Critical,32.141967314466335,5
+PAT010823,Fracture,2,Male,119,11,28,None/Mild,Normal,Needs Follow-up,7.949438357803837,2
+PAT004641,Migraine,1,Other,48,5,204,Dizziness,Normal,Chronic Controlled,7.385578828411847,1
+PAT010459,Fracture,3,Female,37,1,150,None/Mild,Moderately Abnormal,Stable,11.15653264948191,2
+PAT009337,Common Cold,3,Male,56,6,214,Cough,Slightly Abnormal,Stable,9.33426928693426,2
+PAT011027,Common Cold,2,Male,71,14,225,None/Mild,Normal,Chronic Controlled,6.678398384892123,1
+PAT001520,Kidney Disease,4,Other,129,12,221,Weakness,Slightly Abnormal,Critical,23.47400356364719,4
+PAT011273,Asthma,4,Other,29,14,106,Fever,Severely Abnormal,Chronic Uncontrolled,18.843852619291987,3
+PAT017311,Kidney Disease,5,Male,70,12,329,Weakness,Slightly Abnormal,Needs Follow-up,16.04107162839687,3
+PAT013515,Asthma,2,Female,44,12,313,Fever,Normal,Chronic Controlled,6.094369325248342,1
+PAT018775,Common Cold,5,Male,79,11,70,Fatigue,Moderately Abnormal,Acute,21.391729793031644,4
+PAT001718,Pneumonia,3,Female,34,12,149,Fever,Slightly Abnormal,Stable,5.943537459932799,1
+PAT003277,Arthritis,3,Other,18,3,96,None/Mild,Slightly Abnormal,Stable,6.266123132582974,1
+PAT008692,Cancer,1,Other,104,6,173,Fatigue,Normal,Chronic Controlled,6.069207446924606,1
+PAT016220,Pneumonia,3,Male,41,2,319,Fatigue,Slightly Abnormal,Chronic Controlled,10.549591738239961,2
+PAT002129,Stroke,4,Female,104,5,45,Weakness,Severely Abnormal,Critical,30.824174967078875,5
+PAT010885,Stroke,3,Male,34,8,70,Chest Pain,Slightly Abnormal,Needs Follow-up,19.601002539306236,3
+PAT004473,Gastroenteritis,3,Other,117,11,74,Nausea,Slightly Abnormal,Chronic Controlled,10.904955871918967,2
+PAT008508,Asthma,2,Male,69,6,208,Shortness of Breath,Normal,Stable,10.290481993330092,2
+PAT006306,Migraine,3,Female,108,2,225,Dizziness,Moderately Abnormal,Stable,15.621903246290717,3
+PAT007720,Common Cold,3,Male,80,3,193,Fever,Moderately Abnormal,Needs Follow-up,18.395166756819815,3
+PAT002359,UTI,1,Male,67,10,65,Fever,Normal,Stable,4.626350813841429,1
+PAT005710,COPD,2,Other,8,0,208,Fever,Normal,Chronic Controlled,8.771921514386486,2
+PAT007437,UTI,4,Female,70,4,246,Abdominal Pain,Slightly Abnormal,Needs Follow-up,16.100619720010066,3
+PAT019001,Common Cold,5,Female,63,8,183,Cough,Severely Abnormal,Critical,32.66402503005563,5
+PAT002577,COPD,5,Male,103,0,312,Shortness of Breath,Severely Abnormal,Needs Follow-up,28.099893820093584,5
+PAT005490,UTI,1,Male,90,0,112,Abdominal Pain,Normal,Needs Follow-up,9.056588677282653,2
+PAT014065,Arthritis,1,Female,106,1,163,Headache,Normal,Chronic Controlled,5.470365343028094,1
+PAT001992,Heart Disease,4,Female,106,0,104,Shortness of Breath,Slightly Abnormal,Acute,25.90358305026123,4
+PAT001967,Cancer,2,Other,85,10,133,Severe Pain,Normal,Stable,8.05220533497755,2
+PAT011223,Pneumonia,4,Female,90,2,135,Cough,Severely Abnormal,Critical,28.421418971414738,5
+PAT008064,Migraine,1,Female,102,10,136,Dizziness,Normal,Stable,5.223469209843505,1
+PAT017246,COPD,4,Male,94,14,52,Fatigue,Moderately Abnormal,Acute,23.361216638792914,4
+PAT007226,UTI,4,Other,13,14,116,Nausea,Severely Abnormal,Acute,26.029733121167883,4
+PAT016618,Fracture,4,Male,106,2,117,None/Mild,Severely Abnormal,Critical,29.65903620639769,5
+PAT003262,Heart Disease,2,Male,20,12,157,Cough,Normal,Needs Follow-up,11.334059389252747,2
+PAT006481,Migraine,3,Other,99,8,136,Nausea,Normal,Needs Follow-up,12.956662368949278,3
+PAT018716,Heart Disease,3,Female,125,10,361,Shortness of Breath,Slightly Abnormal,Stable,18.24968629189647,3
+PAT001482,Fracture,4,Other,23,4,229,None/Mild,Slightly Abnormal,Acute,17.410494771828475,3
+PAT006596,Pneumonia,1,Male,31,6,226,Fatigue,Normal,Needs Follow-up,8.666981732657371,2
+PAT006855,Heart Disease,1,Female,125,6,352,Dizziness,Slightly Abnormal,Stable,10.07470228336517,2
+PAT012171,Pneumonia,4,Female,21,4,221,Shortness of Breath,Slightly Abnormal,Chronic Uncontrolled,21.73105162638785,4
+PAT011058,Stroke,1,Other,102,5,34,Weakness,Normal,Chronic Controlled,8.890594902722203,2
+PAT015179,Diabetes,1,Female,23,6,75,Confusion,Slightly Abnormal,Needs Follow-up,13.919810850164698,3
+PAT015084,Common Cold,4,Female,32,2,204,Fever,Severely Abnormal,Needs Follow-up,21.128098723251163,3
+PAT013792,Hypertension,1,Other,21,6,132,None/Mild,Normal,Chronic Controlled,1.6846580518809162,1
+PAT019737,Pneumonia,2,Female,85,6,17,Cough,Normal,Needs Follow-up,9.642333425844686,2
+PAT018270,UTI,5,Female,113,6,359,Dizziness,Slightly Abnormal,Critical,31.324672288957856,5
+PAT006117,Hypertension,1,Female,70,8,48,Fatigue,Slightly Abnormal,Chronic Controlled,10.872316713995474,2
+PAT010420,Gastroenteritis,3,Other,50,11,210,Abdominal Pain,Normal,Acute,13.035931605601288,3
+PAT017938,Diabetes,4,Female,110,2,253,Fatigue,Slightly Abnormal,Needs Follow-up,15.889164553503722,3
+PAT000382,COPD,1,Other,109,11,43,Shortness of Breath,Normal,Stable,7.442927565328756,2
+PAT003999,Cancer,2,Male,0,12,268,Severe Pain,Normal,Needs Follow-up,13.771915329386527,3
+PAT006951,Heart Disease,1,Male,38,10,198,Chest Pain,Normal,Chronic Controlled,8.36778438207106,2
+PAT019640,UTI,5,Male,75,3,142,Abdominal Pain,Moderately Abnormal,Acute,26.13184235394848,4
+PAT009531,Pneumonia,3,Male,69,0,305,Fever,Slightly Abnormal,Acute,18.61344167711561,3
+PAT002687,Fracture,1,Female,88,12,40,Severe Pain,Normal,Chronic Controlled,9.538369334261231,2
+PAT019267,Cancer,1,Female,83,8,221,Severe Pain,Normal,Chronic Controlled,8.646703379269145,2
+PAT002292,COPD,4,Male,46,14,219,Fever,Severely Abnormal,Critical,28.301387682350967,5
+PAT008573,UTI,3,Male,83,11,301,Fever,Moderately Abnormal,Acute,19.24352159931783,3
+PAT014746,Migraine,2,Other,96,6,269,Dizziness,Normal,Stable,4.598212051972193,1
+PAT009684,Arthritis,5,Other,110,8,185,Headache,Severely Abnormal,Critical,33.64277289138029,5
+PAT004533,Arthritis,1,Other,33,13,162,Headache,Normal,Stable,3.67300864032779,1
+PAT005783,Asthma,5,Male,42,14,334,Headache,Moderately Abnormal,Acute,25.05453981581884,4
+PAT012111,Stroke,3,Female,124,14,80,Weakness,Moderately Abnormal,Needs Follow-up,16.1437668234619,3
+PAT005496,Pneumonia,5,Female,99,1,360,Shortness of Breath,Slightly Abnormal,Needs Follow-up,23.885139349986577,4
+PAT018529,Arthritis,2,Male,84,6,177,None/Mild,Slightly Abnormal,Chronic Controlled,7.615856079369459,2
+PAT003542,Diabetes,1,Other,39,5,300,Fatigue,Normal,Chronic Controlled,6.6886543529391975,1
+PAT017719,Heart Disease,1,Other,14,14,92,Dizziness,Normal,Stable,2.8794212910242694,1
+PAT018651,Cancer,4,Other,121,11,342,Fatigue,Moderately Abnormal,Acute,20.459144156870703,3
+PAT005866,Gastroenteritis,3,Female,105,10,254,Vomiting,Slightly Abnormal,Stable,13.364515627501833,3
+PAT001323,Stroke,5,Female,87,4,17,Dizziness,Moderately Abnormal,Critical,28.984527438253142,5
+PAT004263,Fracture,3,Female,80,6,60,None/Mild,Normal,Stable,7.7387950081658,2
+PAT014379,Hypertension,4,Female,15,3,128,Fatigue,Moderately Abnormal,Acute,22.242032361586677,4
+PAT001248,Hypertension,5,Other,86,0,72,Fatigue,Slightly Abnormal,Critical,27.80731811687878,5
+PAT012533,Heart Disease,5,Female,63,1,170,Dizziness,Severely Abnormal,Critical,34.07976116871666,5
+PAT012535,Hypertension,1,Female,33,0,118,Headache,Slightly Abnormal,Needs Follow-up,11.365608263814298,2
+PAT007890,Diabetes,1,Female,105,4,5,Confusion,Normal,Chronic Controlled,11.04420624964268,2
+PAT016219,Gastroenteritis,5,Female,93,14,89,Fever,Moderately Abnormal,Acute,24.493824656010386,4
+PAT011568,COPD,1,Other,25,9,89,Fever,Normal,Chronic Controlled,6.515570688706732,1
+PAT012537,Pneumonia,5,Female,115,3,231,Weakness,Moderately Abnormal,Critical,30.93637675105882,5
+PAT018082,Pneumonia,5,Other,56,8,91,Cough,Slightly Abnormal,Critical,25.471404821168953,4
+PAT015947,Diabetes,1,Female,103,11,242,Weakness,Slightly Abnormal,Needs Follow-up,10.577075709286762,2
+PAT014899,UTI,3,Female,20,5,130,Abdominal Pain,Slightly Abnormal,Needs Follow-up,13.519320853298787,3
+PAT000324,Asthma,3,Other,106,13,223,Fatigue,Slightly Abnormal,Acute,16.46471767921554,3
+PAT006084,Migraine,1,Male,74,1,210,Nausea,Normal,Chronic Controlled,5.435765779427125,1
+PAT016644,Fracture,3,Female,85,3,138,None/Mild,Slightly Abnormal,Stable,6.745139939006061,1
+PAT013799,Asthma,5,Female,48,6,259,Fatigue,Severely Abnormal,Chronic Uncontrolled,25.387067387821563,4
+PAT012412,Common Cold,1,Male,21,3,100,Nausea,Normal,Needs Follow-up,7.302375554364591,1
+PAT001565,Common Cold,2,Male,60,10,284,None/Mild,Normal,Chronic Controlled,7.295579634033295,1
+PAT001687,Arthritis,3,Female,4,1,354,Fatigue,Moderately Abnormal,Acute,18.39676532822977,3
+PAT002261,Asthma,3,Other,103,12,333,Shortness of Breath,Moderately Abnormal,Needs Follow-up,24.480662491106315,4
+PAT007562,UTI,4,Male,4,2,252,Vomiting,Severely Abnormal,Acute,24.853405375985613,4
+PAT019522,Arthritis,4,Male,3,6,10,None/Mild,Severely Abnormal,Acute,24.19329747072761,4
+PAT011875,Heart Disease,2,Male,94,2,185,Weakness,Normal,Needs Follow-up,10.81110597566179,2
+PAT004181,Arthritis,2,Male,10,11,175,Abdominal Pain,Normal,Chronic Controlled,8.690700527981784,2
+PAT009646,Cancer,1,Male,10,8,82,Fatigue,Normal,Chronic Controlled,6.128754608796586,1
+PAT000293,Common Cold,4,Other,110,13,266,Fatigue,Moderately Abnormal,Acute,21.41421786217946,4
+PAT014170,COPD,5,Female,15,3,74,Shortness of Breath,Severely Abnormal,Acute,30.17526626750183,5
+PAT019153,Stroke,2,Female,62,5,112,Shortness of Breath,Normal,Chronic Controlled,10.677057248693956,2
+PAT018389,Gastroenteritis,2,Other,6,1,258,Fever,Slightly Abnormal,Needs Follow-up,9.995405113284527,2
+PAT015131,Pneumonia,3,Female,6,5,218,Fever,Normal,Stable,6.459620746293188,1
+PAT001331,Migraine,5,Female,52,8,19,Nausea,Severely Abnormal,Critical,28.95402110379045,5
+PAT009707,Hypertension,3,Male,69,4,275,Headache,Slightly Abnormal,Acute,15.811761290157467,3
+PAT016743,Kidney Disease,2,Other,30,0,292,Nausea,Slightly Abnormal,Chronic Controlled,8.893918457896977,2
+PAT015578,Heart Disease,4,Female,13,12,173,Chest Pain,Severely Abnormal,Critical,32.75185753418987,5
+PAT019670,Arthritis,3,Other,108,12,189,None/Mild,Slightly Abnormal,Needs Follow-up,13.653442066274398,3
+PAT003335,Stroke,2,Male,103,5,283,Shortness of Breath,Slightly Abnormal,Needs Follow-up,17.476784603278357,3
+PAT011203,Heart Disease,1,Female,60,4,159,Dizziness,Normal,Needs Follow-up,13.15825582130342,3
+PAT006098,Migraine,2,Other,98,4,288,Headache,Normal,Stable,4.0806244287864235,1
+PAT015183,Hypertension,4,Female,109,10,30,Fatigue,Slightly Abnormal,Chronic Uncontrolled,15.294776732362859,3
+PAT005808,Fracture,5,Male,58,8,85,None/Mild,Severely Abnormal,Acute,24.984679894472414,4
+PAT017863,Migraine,4,Female,52,9,243,Headache,Slightly Abnormal,Chronic Uncontrolled,14.661318973617965,3
+PAT009341,Gastroenteritis,4,Male,101,2,261,Vomiting,Moderately Abnormal,Chronic Uncontrolled,19.655674835965563,3
+PAT006611,Kidney Disease,4,Male,94,7,150,Confusion,Slightly Abnormal,Needs Follow-up,20.659247444111056,3
+PAT016535,COPD,1,Female,16,5,352,Shortness of Breath,Normal,Chronic Controlled,10.777536481048923,2
+PAT014826,Kidney Disease,5,Other,44,5,225,Weakness,Moderately Abnormal,Needs Follow-up,22.626971390207515,4
+PAT004963,Heart Disease,4,Other,58,0,323,Dizziness,Moderately Abnormal,Critical,26.7063556982896,4
+PAT007167,UTI,5,Female,54,8,59,Vomiting,Severely Abnormal,Acute,28.588095326764126,5
+PAT011720,Kidney Disease,5,Other,2,12,277,Fatigue,Severely Abnormal,Needs Follow-up,24.54983459405446,4
+PAT009935,Hypertension,1,Other,79,9,100,None/Mild,Normal,Stable,2.213933101488102,1
+PAT016154,Pneumonia,5,Male,0,10,356,Fatigue,Moderately Abnormal,Chronic Uncontrolled,22.957939253766963,4
+PAT014828,Arthritis,2,Male,99,3,141,Fatigue,Normal,Stable,7.193101210222492,1
+PAT004108,Arthritis,1,Female,31,5,34,Fatigue,Normal,Needs Follow-up,9.245695819594985,2
+PAT017064,Arthritis,5,Male,82,14,75,Fatigue,Slightly Abnormal,Chronic Uncontrolled,18.939709612166315,3
+PAT003389,Kidney Disease,2,Female,22,6,236,Weakness,Normal,Needs Follow-up,9.576529839391283,2
+PAT014888,Asthma,5,Other,42,4,277,Shortness of Breath,Severely Abnormal,Acute,28.945976181789852,5
+PAT011339,Heart Disease,2,Other,111,7,18,Chest Pain,Normal,Chronic Controlled,11.950407958462415,2
+PAT001461,Stroke,5,Male,95,10,66,Chest Pain,Slightly Abnormal,Acute,25.031725820979062,4
+PAT011794,Common Cold,2,Female,58,13,14,Fatigue,Normal,Chronic Controlled,8.721626901283999,2
+PAT003724,Asthma,2,Female,60,1,83,Bleeding,Normal,Chronic Controlled,10.587035139368696,2
+PAT002887,Gastroenteritis,2,Male,45,2,116,Vomiting,Normal,Needs Follow-up,10.958167349312719,2
+PAT007861,Common Cold,4,Other,48,2,109,Cough,Severely Abnormal,Acute,25.97391627918154,4
+PAT010888,Diabetes,1,Female,1,14,284,Weakness,Normal,Needs Follow-up,7.658776206661458,2
+PAT000124,Common Cold,1,Female,82,3,134,Fever,Slightly Abnormal,Needs Follow-up,10.594681118609216,2
+PAT004113,Pneumonia,4,Male,110,6,270,Fatigue,Severely Abnormal,Needs Follow-up,21.205905195914394,4
+PAT008888,Stroke,1,Male,44,8,270,Weakness,Normal,Needs Follow-up,10.799747212608406,2
+PAT001142,Hypertension,2,Other,10,10,110,Fatigue,Normal,Stable,5.195613262374287,1
+PAT014138,Kidney Disease,5,Male,63,14,286,Fever,Moderately Abnormal,Chronic Uncontrolled,20.115389085507086,3
+PAT019116,Kidney Disease,4,Male,82,2,44,Weakness,Moderately Abnormal,Acute,22.76852229266753,4
+PAT000373,Heart Disease,3,Male,106,0,208,Confusion,Slightly Abnormal,Needs Follow-up,21.43133812561669,4
+PAT005968,COPD,1,Other,49,5,193,Cough,Normal,Chronic Controlled,8.270807474319332,2
+PAT012167,Gastroenteritis,4,Other,78,10,132,Nausea,Severely Abnormal,Critical,30.17495072183504,5
+PAT014636,Heart Disease,3,Female,88,14,212,Dizziness,Slightly Abnormal,Stable,12.471519725520604,2
+PAT016539,Kidney Disease,3,Female,15,6,126,Dizziness,Slightly Abnormal,Stable,11.140592593741662,2
+PAT012335,Diabetes,4,Male,35,13,152,Nausea,Severely Abnormal,Acute,26.69207691742644,4
+PAT018457,Kidney Disease,1,Female,70,9,316,Weakness,Normal,Needs Follow-up,10.110161960259067,2
+PAT007021,UTI,5,Male,81,1,85,Bleeding,Severely Abnormal,Acute,28.64971218227518,5
+PAT007136,Gastroenteritis,4,Male,27,6,204,Nausea,Severely Abnormal,Acute,26.13482547523994,4
+PAT000968,Migraine,4,Other,36,13,359,Nausea,Slightly Abnormal,Chronic Uncontrolled,18.48781905790536,3
+PAT007380,UTI,2,Male,52,11,342,Fever,Slightly Abnormal,Stable,4.782504977293202,1
+PAT007766,Kidney Disease,1,Male,88,12,314,Fatigue,Normal,Chronic Controlled,8.31424049621114,2
+PAT015986,Kidney Disease,5,Female,78,7,195,Fatigue,Slightly Abnormal,Needs Follow-up,19.1144637028844,3
+PAT010549,Hypertension,5,Other,56,13,218,Nausea,Severely Abnormal,Chronic Uncontrolled,24.82970576591238,4
+PAT011333,Pneumonia,1,Female,56,3,85,Fever,Normal,Chronic Controlled,6.515102629916444,1
+PAT004592,Heart Disease,1,Other,41,9,348,Shortness of Breath,Slightly Abnormal,Chronic Controlled,12.63636293522006,2
+PAT018484,Hypertension,4,Female,45,3,265,Headache,Severely Abnormal,Critical,30.13854619923896,5
+PAT002424,Cancer,3,Female,116,13,151,Bleeding,Moderately Abnormal,Acute,25.78898615684557,4
+PAT001938,Stroke,3,Other,7,7,234,Weakness,Moderately Abnormal,Needs Follow-up,18.054419951523528,3
+PAT004036,Common Cold,2,Female,116,3,193,Fever,Slightly Abnormal,Needs Follow-up,13.5088450629817,3
+PAT014468,Pneumonia,1,Other,21,6,55,Shortness of Breath,Slightly Abnormal,Stable,10.182868677201169,2
+PAT001562,Heart Disease,3,Male,103,10,162,Dizziness,Normal,Needs Follow-up,10.197841466821023,2
+PAT000845,Stroke,2,Other,120,2,365,Weakness,Slightly Abnormal,Stable,8.972526579471294,2
+PAT006284,Arthritis,1,Female,128,0,92,Headache,Slightly Abnormal,Stable,6.265032038412297,1
+PAT002158,Gastroenteritis,3,Male,101,13,292,Fever,Normal,Needs Follow-up,12.314769236868909,2
+PAT007221,Pneumonia,3,Other,104,9,4,Fever,Slightly Abnormal,Stable,9.938507518553907,2
+PAT015352,Migraine,4,Other,125,12,137,Nausea,Moderately Abnormal,Critical,26.13733279296482,4
+PAT004354,Pneumonia,2,Male,14,6,127,Fever,Normal,Chronic Controlled,7.919893361963965,2
+PAT003314,Pneumonia,4,Female,15,7,25,Fatigue,Slightly Abnormal,Acute,20.24956890852745,3
+PAT016587,Pneumonia,2,Female,9,2,216,Cough,Normal,Stable,5.661685905541342,1
+PAT014298,Pneumonia,4,Other,96,1,118,Cough,Severely Abnormal,Chronic Uncontrolled,23.656018326203938,4
+PAT014004,Cancer,4,Other,50,5,144,Weakness,Severely Abnormal,Acute,27.149760001891632,5
+PAT009208,COPD,1,Female,26,5,193,Fever,Normal,Chronic Controlled,5.859708299714185,1
+PAT015518,Fracture,4,Female,12,4,66,None/Mild,Slightly Abnormal,Critical,22.333915535671554,4
+PAT017835,Cancer,4,Other,68,11,70,Weakness,Severely Abnormal,Acute,21.716301203101192,4
+PAT003149,Arthritis,4,Other,96,3,253,Headache,Moderately Abnormal,Critical,26.97579223060804,4
+PAT018509,Fracture,2,Female,66,4,84,Severe Pain,Normal,Needs Follow-up,8.548320179297065,2
+PAT001772,Pneumonia,5,Male,124,6,260,Shortness of Breath,Slightly Abnormal,Needs Follow-up,24.68720032791721,4
+PAT012395,Gastroenteritis,4,Female,88,4,280,Abdominal Pain,Moderately Abnormal,Critical,28.442138154289285,5
+PAT007081,Arthritis,4,Female,35,9,39,None/Mild,Moderately Abnormal,Critical,25.796946336181627,4
+PAT011068,UTI,5,Male,100,0,95,Abdominal Pain,Moderately Abnormal,Chronic Uncontrolled,24.13622068076496,4
+PAT001414,COPD,4,Other,100,7,336,Fatigue,Slightly Abnormal,Acute,17.91446469707837,3
+PAT019340,Hypertension,3,Female,112,7,270,Fatigue,Normal,Chronic Controlled,10.30353628781698,2
+PAT010057,Migraine,5,Male,98,10,241,Nausea,Severely Abnormal,Acute,24.465173306289987,4
+PAT006248,Migraine,5,Female,46,5,234,Nausea,Moderately Abnormal,Chronic Uncontrolled,23.384754006875394,4
+PAT010296,Migraine,2,Female,47,13,304,Headache,Normal,Chronic Controlled,8.377538998536952,2
+PAT003956,UTI,2,Male,30,13,43,Vomiting,Normal,Stable,9.407151186907836,2
+PAT019252,COPD,4,Female,95,5,308,Fatigue,Slightly Abnormal,Critical,21.87188401172814,4
+PAT019732,Migraine,2,Female,112,11,8,Nausea,Slightly Abnormal,Chronic Controlled,8.662970899192759,2
+PAT016519,Hypertension,5,Other,76,1,299,Fatigue,Moderately Abnormal,Chronic Uncontrolled,22.343101522209665,4
+PAT012427,Gastroenteritis,4,Male,65,4,73,Fatigue,Severely Abnormal,Critical,28.989497662748605,5
+PAT001525,Fracture,5,Male,99,6,158,None/Mild,Severely Abnormal,Chronic Uncontrolled,22.320541480142026,4
+PAT019646,Kidney Disease,3,Male,29,8,76,Nausea,Normal,Chronic Controlled,8.484728216379647,2
+PAT002860,Kidney Disease,3,Other,24,14,224,Weakness,Slightly Abnormal,Needs Follow-up,12.814500946525193,2
+PAT000908,Gastroenteritis,2,Other,16,13,294,Fever,Normal,Needs Follow-up,9.407348428660463,2
+PAT001005,COPD,3,Male,83,8,273,Shortness of Breath,Slightly Abnormal,Stable,15.073084461566399,3
+PAT008677,Heart Disease,3,Male,45,6,349,Dizziness,Moderately Abnormal,Needs Follow-up,19.971491607504813,3
+PAT018623,COPD,4,Other,43,7,264,Shortness of Breath,Moderately Abnormal,Needs Follow-up,24.804193055719153,4
+PAT010617,Cancer,1,Male,10,11,211,Fatigue,Normal,Stable,4.884981782620627,1
+PAT013213,Hypertension,2,Female,92,9,88,Fatigue,Normal,Needs Follow-up,10.270211766658381,2
+PAT018074,Kidney Disease,2,Other,27,10,319,Confusion,Normal,Chronic Controlled,13.101629836048112,3
+PAT016114,Common Cold,2,Male,91,8,300,None/Mild,Normal,Stable,3.2684907033738897,1
+PAT017508,UTI,1,Male,47,0,209,Nausea,Slightly Abnormal,Chronic Controlled,7.871588638439842,2
+PAT012541,Arthritis,2,Male,71,13,183,None/Mild,Normal,Needs Follow-up,9.203621086898687,2
+PAT005478,Arthritis,1,Male,26,13,27,Fatigue,Normal,Needs Follow-up,8.196904944075996,2
+PAT012493,Kidney Disease,5,Other,46,13,288,Nausea,Slightly Abnormal,Chronic Uncontrolled,18.76176382243569,3
+PAT012352,COPD,5,Male,64,4,163,Fever,Severely Abnormal,Critical,33.54575632263871,5
+PAT010599,Pneumonia,3,Female,92,12,46,Shortness of Breath,Normal,Stable,12.420269578340957,2
+PAT003497,Stroke,2,Other,65,1,274,Chest Pain,Normal,Needs Follow-up,15.754924806805427,3
+PAT015292,Migraine,3,Female,38,12,172,Dizziness,Moderately Abnormal,Stable,15.085678660911803,3
+PAT007746,COPD,3,Male,6,5,123,Fatigue,Normal,Needs Follow-up,12.649621922798893,2
+PAT009041,Diabetes,1,Female,70,7,185,Fatigue,Normal,Chronic Controlled,9.238301767884922,2
+PAT007405,Gastroenteritis,4,Female,74,2,267,Vomiting,Severely Abnormal,Acute,25.520828590532794,4
+PAT012685,UTI,4,Female,81,7,122,Nausea,Slightly Abnormal,Needs Follow-up,14.824019066620512,3
+PAT017570,Hypertension,1,Male,73,5,266,None/Mild,Normal,Needs Follow-up,6.8198888790760845,1
+PAT016034,Cancer,3,Female,5,8,75,Bleeding,Normal,Acute,17.83511699224849,3
+PAT013964,UTI,1,Other,95,12,274,Fatigue,Normal,Needs Follow-up,5.543678728495812,1
+PAT013688,Gastroenteritis,1,Other,56,11,180,Vomiting,Normal,Stable,5.549418826750499,1
+PAT005187,Cancer,2,Male,52,14,54,Headache,Normal,Stable,6.115325288644506,1
+PAT002900,Kidney Disease,5,Female,128,13,122,Weakness,Severely Abnormal,Critical,33.230970011891934,5
+PAT012194,COPD,2,Other,46,3,69,Vomiting,Normal,Chronic Controlled,9.868708794559529,2
+PAT019421,Hypertension,2,Male,70,13,245,Headache,Slightly Abnormal,Chronic Controlled,7.631579022123925,2
+PAT014240,Migraine,4,Other,68,4,160,Nausea,Slightly Abnormal,Acute,19.40255101827244,3
+PAT008807,Heart Disease,1,Male,27,13,83,Shortness of Breath,Normal,Stable,7.837288162251064,2
+PAT004698,Arthritis,3,Female,106,14,86,None/Mild,Slightly Abnormal,Needs Follow-up,14.15880598054513,3
+PAT000336,Stroke,4,Male,106,9,158,Chest Pain,Severely Abnormal,Acute,29.778173920569753,5
+PAT018724,Hypertension,5,Other,19,10,323,None/Mild,Moderately Abnormal,Needs Follow-up,18.99455495931158,3
+PAT016455,Arthritis,4,Male,40,14,168,None/Mild,Moderately Abnormal,Critical,20.913106136799247,3
+PAT011894,Hypertension,3,Male,36,10,222,Headache,Moderately Abnormal,Stable,13.469527078006918,3
+PAT010652,Common Cold,3,Other,77,5,98,Fatigue,Slightly Abnormal,Acute,16.69601783073368,3
+PAT008907,COPD,2,Female,100,3,233,Fever,Slightly Abnormal,Chronic Controlled,10.37526494884203,2
+PAT002926,Arthritis,4,Female,73,8,263,None/Mild,Severely Abnormal,Needs Follow-up,23.01622712252895,4
+PAT011388,Migraine,3,Male,125,10,106,Headache,Normal,Acute,16.38418491613431,3
+PAT001936,Kidney Disease,1,Male,101,8,262,Nausea,Normal,Needs Follow-up,9.202395950131592,2
+PAT012304,COPD,5,Female,67,9,242,Shortness of Breath,Severely Abnormal,Acute,31.37460822739351,5
+PAT002653,Heart Disease,5,Male,67,13,10,Chest Pain,Moderately Abnormal,Critical,34.21147101430673,5
+PAT019648,Pneumonia,5,Male,71,13,55,Cough,Moderately Abnormal,Chronic Uncontrolled,20.778220743089392,3
+PAT018934,UTI,4,Other,86,6,201,Abdominal Pain,Slightly Abnormal,Chronic Uncontrolled,16.40182189659961,3
+PAT001476,Gastroenteritis,2,Female,21,6,57,Fever,Normal,Chronic Controlled,9.551969378361449,2
+PAT011786,Kidney Disease,5,Male,63,9,132,Fatigue,Moderately Abnormal,Acute,22.78864633954193,4
+PAT017802,Common Cold,3,Male,54,0,222,Fever,Slightly Abnormal,Needs Follow-up,11.357681713774301,2
+PAT012719,Fracture,1,Female,0,0,94,None/Mild,Slightly Abnormal,Chronic Controlled,4.4928754457094975,1
+PAT017494,Pneumonia,4,Male,61,4,141,Cough,Moderately Abnormal,Needs Follow-up,21.164921377966564,4
+PAT006441,Arthritis,1,Other,10,2,270,Fatigue,Slightly Abnormal,Needs Follow-up,9.297851649264608,2
+PAT000052,Kidney Disease,4,Female,27,8,317,Weakness,Moderately Abnormal,Critical,26.87559662769615,4
+PAT005945,Cancer,3,Female,93,10,128,Bleeding,Normal,Stable,12.391998844535486,2
+PAT008952,Hypertension,5,Female,53,7,223,None/Mild,Slightly Abnormal,Acute,18.480050658753704,3
+PAT005638,Pneumonia,5,Male,43,11,176,Cough,Severely Abnormal,Needs Follow-up,22.568398239194114,4
+PAT007501,Kidney Disease,3,Male,13,1,228,Weakness,Slightly Abnormal,Stable,10.975924848860338,2
+PAT015478,Common Cold,3,Male,56,8,297,Fatigue,Slightly Abnormal,Needs Follow-up,15.292830155081628,3
+PAT007701,Kidney Disease,1,Female,52,10,324,Nausea,Normal,Chronic Controlled,4.85082644767025,1
+PAT001539,Arthritis,3,Female,53,2,269,Fatigue,Slightly Abnormal,Acute,16.66269158826268,3
+PAT011628,Gastroenteritis,1,Male,95,5,338,Abdominal Pain,Slightly Abnormal,Stable,6.5656232101979795,1
+PAT000360,Pneumonia,3,Female,85,6,31,Cough,Slightly Abnormal,Chronic Controlled,15.244346988245894,3
+PAT019158,Cancer,5,Female,73,1,240,Weakness,Moderately Abnormal,Critical,29.43694608812134,5
+PAT007943,Cancer,4,Female,61,10,84,Severe Pain,Slightly Abnormal,Needs Follow-up,22.210851046495534,4
+PAT008429,Asthma,1,Other,73,6,62,Fever,Normal,Needs Follow-up,9.457512126789911,2
+PAT014414,Arthritis,5,Other,47,13,167,Fatigue,Severely Abnormal,Needs Follow-up,23.641540966960743,4
+PAT003574,Migraine,5,Female,114,14,41,Headache,Moderately Abnormal,Acute,25.0147631425612,4
+PAT000368,Asthma,2,Other,80,0,177,Shortness of Breath,Normal,Chronic Controlled,12.041407280497431,2
+PAT014149,COPD,1,Female,23,3,167,Nausea,Normal,Chronic Controlled,4.764951669037162,1
+PAT002811,Cancer,1,Female,46,3,255,Bleeding,Normal,Needs Follow-up,10.660424391966563,2
+PAT000310,Diabetes,2,Female,90,9,322,Nausea,Normal,Chronic Controlled,8.327621090335386,2
+PAT019593,Stroke,3,Other,19,6,97,Bleeding,Normal,Acute,15.359592207990657,3
+PAT000703,Pneumonia,1,Female,46,12,292,Fever,Slightly Abnormal,Needs Follow-up,10.963222903592134,2
+PAT006494,Hypertension,1,Male,87,5,49,Headache,Normal,Stable,2.0601581257403803,1
+PAT000797,Common Cold,1,Other,106,11,160,Fatigue,Normal,Needs Follow-up,6.395858424622133,1
+PAT015095,Hypertension,5,Other,77,12,278,None/Mild,Moderately Abnormal,Needs Follow-up,17.68758995593715,3
+PAT000882,Pneumonia,1,Other,119,6,128,Fever,Normal,Chronic Controlled,7.063430479979725,1
+PAT000334,Gastroenteritis,4,Female,30,0,157,Abdominal Pain,Moderately Abnormal,Needs Follow-up,17.66737540879624,3
+PAT013061,Migraine,3,Other,54,4,49,Dizziness,Normal,Needs Follow-up,12.806035823019576,2
+PAT009563,Hypertension,2,Female,5,12,364,Headache,Normal,Needs Follow-up,10.198777223733794,2
+PAT000348,Asthma,2,Female,126,0,108,Fatigue,Slightly Abnormal,Needs Follow-up,12.355276474500993,2
+PAT010465,Arthritis,5,Male,104,7,254,Fatigue,Slightly Abnormal,Acute,20.665370551208753,3
+PAT014218,COPD,4,Male,45,5,73,Cough,Severely Abnormal,Needs Follow-up,23.239839315387734,4
+PAT014923,Asthma,2,Other,64,10,243,Severe Pain,Normal,Stable,9.33425343626232,2
+PAT015443,Kidney Disease,1,Male,84,10,347,Confusion,Normal,Chronic Controlled,10.342721202838216,2
+PAT014558,Stroke,1,Male,94,2,347,Shortness of Breath,Slightly Abnormal,Chronic Controlled,11.923358982438518,2
+PAT003393,Asthma,1,Male,36,4,259,Fever,Normal,Stable,5.492250823883805,1
+PAT019744,Cancer,5,Other,128,0,139,Severe Pain,Moderately Abnormal,Needs Follow-up,23.702769997873848,4
+PAT011140,Stroke,5,Male,78,8,69,Abdominal Pain,Severely Abnormal,Critical,33.28501640586402,5
+PAT011940,UTI,4,Other,30,2,191,Abdominal Pain,Slightly Abnormal,Critical,24.421468702302814,4
+PAT006618,Hypertension,2,Other,29,11,205,Fatigue,Normal,Stable,4.299604448813182,1
+PAT002921,Heart Disease,1,Male,44,1,310,Severe Pain,Normal,Chronic Controlled,10.098929521460716,2
+PAT001357,Common Cold,5,Male,50,6,149,None/Mild,Moderately Abnormal,Needs Follow-up,16.95752628591862,3
+PAT018429,Diabetes,3,Other,61,8,243,Fatigue,Slightly Abnormal,Acute,15.922002119314916,3
+PAT017000,Diabetes,2,Other,129,12,346,Weakness,Slightly Abnormal,Stable,9.52252840559814,2
+PAT009934,Kidney Disease,3,Male,128,10,301,Fatigue,Moderately Abnormal,Stable,12.163692791330321,2
+PAT013374,Common Cold,5,Male,29,0,122,Fatigue,Slightly Abnormal,Acute,20.717857361864805,3
+PAT012826,Common Cold,1,Other,50,5,191,Cough,Normal,Chronic Controlled,8.677590128816268,2
+PAT002358,Arthritis,5,Other,72,5,111,Fatigue,Moderately Abnormal,Needs Follow-up,21.167640616284807,4
+PAT019036,Asthma,1,Other,57,8,227,Fatigue,Normal,Needs Follow-up,9.6568695389317,2
+PAT012129,Stroke,5,Other,92,0,334,Confusion,Severely Abnormal,Acute,31.597597996873382,5
+PAT004992,Pneumonia,3,Other,11,10,129,Fatigue,Moderately Abnormal,Stable,12.861786820567827,2
+PAT017691,Kidney Disease,2,Other,125,14,16,Weakness,Normal,Needs Follow-up,10.639672003518298,2
+PAT014477,Pneumonia,1,Female,17,11,342,Shortness of Breath,Normal,Stable,7.917171708418254,2
+PAT002241,Migraine,3,Male,101,12,9,Dizziness,Slightly Abnormal,Needs Follow-up,15.806710373504362,3
+PAT018107,Asthma,2,Female,56,13,174,Fever,Slightly Abnormal,Stable,8.535919864253994,2
+PAT006628,Stroke,3,Other,32,13,360,Shortness of Breath,Moderately Abnormal,Needs Follow-up,23.560106196854413,4
+PAT003320,Asthma,2,Male,106,13,270,Fever,Normal,Needs Follow-up,12.784703453199839,2
+PAT003752,UTI,5,Male,32,0,324,Nausea,Severely Abnormal,Chronic Uncontrolled,21.39480530917066,4
+PAT007116,Gastroenteritis,1,Male,27,3,103,Vomiting,Normal,Chronic Controlled,7.790734153125046,2
+PAT002932,Pneumonia,1,Other,52,7,166,Shortness of Breath,Slightly Abnormal,Chronic Controlled,14.556206193524325,3
+PAT019675,Gastroenteritis,3,Male,40,14,30,Fever,Normal,Acute,13.467602351821675,3
+PAT011152,Kidney Disease,3,Female,122,2,312,Dizziness,Moderately Abnormal,Acute,21.366429333201108,4
+PAT018360,Heart Disease,4,Male,98,1,137,Confusion,Severely Abnormal,Critical,34.92101436855041,5
+PAT004624,Arthritis,3,Male,105,11,239,Fatigue,Moderately Abnormal,Acute,23.100192852462275,4
+PAT011744,Gastroenteritis,1,Female,116,11,32,Vomiting,Normal,Chronic Controlled,6.671111381121769,1
+PAT011852,Heart Disease,5,Male,81,0,350,Dizziness,Severely Abnormal,Acute,29.43318207577237,5
+PAT000540,Arthritis,3,Male,41,9,162,Headache,Moderately Abnormal,Needs Follow-up,17.495369614461787,3
+PAT019133,Cancer,1,Male,68,3,164,Weakness,Normal,Stable,3.626226640937431,1
+PAT008499,Stroke,1,Other,19,9,34,Weakness,Normal,Needs Follow-up,5.771249742925155,1
+PAT008919,Gastroenteritis,2,Male,15,14,322,Weakness,Normal,Chronic Controlled,9.589308089950812,2
+PAT004346,UTI,5,Male,111,5,356,Fever,Moderately Abnormal,Needs Follow-up,24.477852362945807,4
+PAT017522,Gastroenteritis,5,Other,33,4,35,Vomiting,Severely Abnormal,Acute,31.640473737175753,5
+PAT016254,Hypertension,4,Other,7,12,194,Fatigue,Severely Abnormal,Chronic Uncontrolled,23.789609127770824,4
+PAT002315,Pneumonia,1,Male,11,4,315,Shortness of Breath,Normal,Chronic Controlled,12.736909539560202,2
+PAT014708,Heart Disease,1,Female,120,0,179,Dizziness,Normal,Chronic Controlled,6.946399642873,1
+PAT006835,Arthritis,5,Female,10,13,146,Fatigue,Severely Abnormal,Acute,25.298017698888845,4
+PAT001911,Arthritis,3,Male,43,7,112,Headache,Moderately Abnormal,Chronic Controlled,16.596303483533354,3
+PAT019939,Arthritis,5,Other,5,5,75,Headache,Severely Abnormal,Needs Follow-up,23.85856324064852,4
+PAT000320,COPD,2,Male,46,7,85,Shortness of Breath,Slightly Abnormal,Stable,10.830898156082661,2
+PAT000587,Fracture,5,Other,57,13,100,Severe Pain,Severely Abnormal,Chronic Uncontrolled,24.308813480494337,4
+PAT011379,Kidney Disease,1,Male,51,2,71,Nausea,Normal,Needs Follow-up,9.117057298983717,2
+PAT011419,Migraine,3,Other,126,1,343,Nausea,Slightly Abnormal,Stable,8.784700943163699,2
+PAT007008,COPD,1,Female,76,9,142,Cough,Slightly Abnormal,Needs Follow-up,8.869907571395572,2
+PAT015386,Migraine,1,Female,5,13,199,Headache,Slightly Abnormal,Stable,9.483586038863507,2
+PAT006998,Heart Disease,2,Female,25,6,154,Chest Pain,Slightly Abnormal,Chronic Controlled,12.00413066260878,2
+PAT013543,UTI,3,Male,46,11,0,Abdominal Pain,Moderately Abnormal,Stable,9.644330412094277,2
+PAT018476,Pneumonia,3,Other,64,13,32,Cough,Moderately Abnormal,Needs Follow-up,16.64543031315711,3
+PAT015814,UTI,3,Other,22,5,221,Abdominal Pain,Slightly Abnormal,Acute,16.593339259334837,3
+PAT018505,Cancer,4,Female,101,1,242,Weakness,Severely Abnormal,Critical,32.121957458869964,5
+PAT005522,Asthma,1,Male,71,6,340,Fever,Normal,Chronic Controlled,7.175719292386932,1
+PAT003156,Hypertension,2,Female,60,4,125,Headache,Normal,Stable,8.809657556250013,2
+PAT014495,Gastroenteritis,3,Other,58,9,76,Vomiting,Moderately Abnormal,Needs Follow-up,19.950736760739897,3
+PAT001803,Stroke,4,Female,97,14,12,Chest Pain,Moderately Abnormal,Critical,33.68179551175094,5
+PAT001347,Gastroenteritis,4,Male,93,9,334,Vomiting,Severely Abnormal,Needs Follow-up,23.003362942162795,4
+PAT000256,Common Cold,4,Male,7,13,216,Fatigue,Moderately Abnormal,Acute,20.402663591199573,3
+PAT014539,Heart Disease,1,Male,5,2,80,Chest Pain,Normal,Chronic Controlled,9.813250923059975,2
+PAT016723,Cancer,5,Other,86,12,262,Fatigue,Severely Abnormal,Acute,29.81532137409388,5
+PAT001641,Fracture,2,Other,117,10,295,None/Mild,Normal,Chronic Controlled,6.827949563928372,1
+PAT018963,Gastroenteritis,4,Male,128,14,361,Abdominal Pain,Moderately Abnormal,Needs Follow-up,18.958422013972477,3
+PAT004524,Asthma,2,Male,47,1,122,Shortness of Breath,Normal,Needs Follow-up,15.243193903982979,3
+PAT005148,UTI,3,Female,92,7,113,Fever,Moderately Abnormal,Chronic Controlled,14.965878490938588,3
+PAT017418,Stroke,2,Male,5,4,46,Bleeding,Normal,Needs Follow-up,16.50186186089661,3
+PAT003978,Common Cold,4,Other,93,10,218,Cough,Moderately Abnormal,Chronic Uncontrolled,18.765237089594827,3
+PAT005748,COPD,2,Other,41,2,144,Shortness of Breath,Normal,Chronic Controlled,12.301458002510365,2
+PAT003632,COPD,5,Male,105,0,86,Shortness of Breath,Slightly Abnormal,Acute,24.305781876622184,4
+PAT006662,Cancer,4,Other,62,4,150,Bleeding,Slightly Abnormal,Critical,30.027551647383895,5
+PAT000477,Hypertension,4,Male,78,0,142,Headache,Severely Abnormal,Acute,27.820331924722776,5
+PAT010413,Pneumonia,2,Male,99,10,270,Fever,Normal,Stable,7.580851940387751,2
+PAT004456,Hypertension,1,Male,22,7,61,Fatigue,Slightly Abnormal,Chronic Controlled,5.049525583317697,1
+PAT006762,Fracture,1,Female,55,7,280,None/Mild,Normal,Chronic Controlled,1.892128744990225,1
+PAT012923,Heart Disease,3,Other,17,14,21,Weakness,Slightly Abnormal,Acute,15.269450351039229,3
+PAT000277,Gastroenteritis,2,Female,47,9,199,Nausea,Normal,Stable,5.84420066284488,1
+PAT014132,Heart Disease,1,Female,105,5,350,Confusion,Slightly Abnormal,Needs Follow-up,13.88223497003361,3
+PAT001093,Kidney Disease,5,Male,72,2,306,Nausea,Slightly Abnormal,Critical,22.47353972196202,4
+PAT001386,Asthma,4,Female,71,12,292,Fever,Severely Abnormal,Critical,34.84162471796718,5
+PAT002101,Cancer,1,Female,58,10,30,Fatigue,Normal,Stable,3.438073862621328,1
+PAT010752,Asthma,5,Female,65,5,360,Fever,Severely Abnormal,Acute,25.28106028467545,4
+PAT011244,UTI,1,Female,117,11,79,Fever,Normal,Needs Follow-up,10.64390958412519,2
+PAT008710,Hypertension,5,Other,1,3,139,None/Mild,Severely Abnormal,Critical,30.6839360285307,5
+PAT012157,Arthritis,3,Other,20,1,311,Severe Pain,Slightly Abnormal,Needs Follow-up,17.860512310301797,3
+PAT008672,Stroke,1,Female,49,14,22,Confusion,Slightly Abnormal,Stable,9.054633308903961,2
+PAT014316,COPD,2,Other,83,11,53,Fatigue,Normal,Stable,9.50564312231364,2
+PAT008805,Hypertension,3,Female,7,0,218,Fatigue,Moderately Abnormal,Chronic Controlled,17.537930914297682,3
+PAT012759,Diabetes,4,Male,19,0,126,Fatigue,Severely Abnormal,Critical,30.531964552947606,5
+PAT008033,Diabetes,2,Female,3,10,331,Weakness,Normal,Needs Follow-up,8.80042910320438,2
+PAT014013,Migraine,3,Male,14,1,358,Dizziness,Moderately Abnormal,Needs Follow-up,19.023612321220387,3
+PAT018208,Stroke,2,Male,48,1,223,Weakness,Normal,Stable,5.614987916215794,1
+PAT005049,Pneumonia,4,Other,39,14,227,Cough,Slightly Abnormal,Acute,18.674795646047635,3
+PAT012741,Pneumonia,3,Female,33,9,46,Cough,Slightly Abnormal,Acute,18.294169875763185,3
+PAT011819,Arthritis,3,Other,58,3,173,None/Mild,Slightly Abnormal,Needs Follow-up,15.65108644794957,3
+PAT012355,Gastroenteritis,3,Other,81,10,53,Nausea,Moderately Abnormal,Acute,21.257721745563828,4
+PAT011583,Pneumonia,1,Other,17,0,284,Fatigue,Slightly Abnormal,Needs Follow-up,11.69385651058287,2
+PAT015953,Heart Disease,2,Male,2,4,358,Shortness of Breath,Normal,Chronic Controlled,13.32238279605101,3
+PAT009478,Gastroenteritis,2,Other,42,6,360,Abdominal Pain,Normal,Needs Follow-up,11.97426965901027,2
+PAT001030,Migraine,3,Other,11,9,327,Nausea,Slightly Abnormal,Acute,16.98410954484537,3
+PAT012490,UTI,5,Male,24,1,33,Vomiting,Severely Abnormal,Acute,29.48122393928282,5
+PAT014802,Heart Disease,5,Other,12,2,341,Shortness of Breath,Severely Abnormal,Needs Follow-up,29.03362156197553,5
+PAT011139,Cancer,4,Other,83,4,301,Bleeding,Moderately Abnormal,Needs Follow-up,24.436851304156168,4
+PAT016732,Pneumonia,5,Male,120,0,157,Fatigue,Severely Abnormal,Acute,28.60135806513924,5
+PAT000724,Heart Disease,5,Male,40,12,311,Dizziness,Slightly Abnormal,Chronic Uncontrolled,22.31115849574124,4
+PAT000905,Gastroenteritis,1,Female,32,9,66,Abdominal Pain,Normal,Needs Follow-up,7.987057667615996,2
+PAT008621,Heart Disease,3,Other,5,8,52,Weakness,Slightly Abnormal,Acute,15.940484449794855,3
+PAT000962,Migraine,2,Female,120,13,331,Nausea,Slightly Abnormal,Chronic Controlled,10.94562876152193,2
+PAT011856,COPD,4,Male,1,2,102,Fatigue,Moderately Abnormal,Needs Follow-up,18.693508339879806,3
+PAT005184,Cancer,5,Male,99,14,87,Severe Pain,Slightly Abnormal,Acute,21.925839206843705,4
+PAT006373,Heart Disease,2,Male,52,3,11,Dizziness,Normal,Chronic Controlled,10.257105470470183,2
+PAT000875,Cancer,2,Male,103,1,19,Fatigue,Normal,Chronic Controlled,7.140021913889122,1
+PAT018148,COPD,4,Other,21,3,343,Cough,Moderately Abnormal,Critical,27.98390778957751,5
+PAT004607,Cancer,1,Female,6,8,159,Severe Pain,Slightly Abnormal,Stable,7.807944510412716,2
+PAT004057,Fracture,4,Other,22,12,306,Severe Pain,Severely Abnormal,Acute,29.275209817165216,5
+PAT010960,Migraine,5,Male,15,7,158,Dizziness,Slightly Abnormal,Chronic Uncontrolled,17.42952145301226,3
+PAT007931,Heart Disease,4,Male,130,0,194,Chest Pain,Severely Abnormal,Chronic Uncontrolled,27.17427380143453,5
+PAT013011,Common Cold,1,Male,47,12,355,Cough,Normal,Stable,2.243855363089647,1
+PAT008233,Pneumonia,4,Other,76,5,268,Shortness of Breath,Severely Abnormal,Chronic Uncontrolled,23.9657886529361,4
+PAT015015,Heart Disease,5,Male,110,14,242,Weakness,Severely Abnormal,Critical,31.88122263905932,5
+PAT010499,Stroke,3,Other,39,1,0,Shortness of Breath,Slightly Abnormal,Needs Follow-up,17.94914854768867,3
+PAT016776,Kidney Disease,3,Male,75,14,290,Nausea,Slightly Abnormal,Acute,16.83277451432513,3
+PAT002079,Arthritis,1,Other,63,11,182,Severe Pain,Normal,Chronic Controlled,11.240427872162496,2
+PAT013102,COPD,2,Male,25,10,118,Fatigue,Normal,Needs Follow-up,8.54113202976584,2
+PAT008079,Heart Disease,2,Female,122,12,57,Chest Pain,Slightly Abnormal,Stable,11.817319693882895,2
+PAT016468,Gastroenteritis,3,Male,51,7,140,Vomiting,Slightly Abnormal,Needs Follow-up,17.76460733835901,3
+PAT014932,Fracture,5,Male,118,6,106,None/Mild,Severely Abnormal,Needs Follow-up,21.027471628913545,3
+PAT011989,Asthma,3,Male,79,10,323,Fatigue,Slightly Abnormal,Acute,16.59864932635082,3
+PAT001910,Fracture,3,Other,64,4,218,Severe Pain,Moderately Abnormal,Stable,15.17119951356366,3
+PAT018052,Fracture,3,Other,101,2,136,Severe Pain,Moderately Abnormal,Acute,21.47503470111887,4
+PAT000185,Migraine,2,Other,60,14,313,Nausea,Normal,Chronic Controlled,6.027681584223326,1
+PAT016611,Common Cold,5,Male,119,4,304,Fever,Moderately Abnormal,Acute,23.796576433199398,4
+PAT011212,Common Cold,4,Male,27,13,183,None/Mild,Slightly Abnormal,Needs Follow-up,16.482376751829875,3
+PAT017181,Gastroenteritis,3,Other,126,1,336,Abdominal Pain,Normal,Stable,9.39046943942503,2
+PAT000922,Pneumonia,3,Female,118,5,191,Fatigue,Moderately Abnormal,Acute,20.62409361012501,3
+PAT004977,Heart Disease,4,Male,112,0,172,Bleeding,Slightly Abnormal,Acute,25.08973803345303,4
+PAT013800,Migraine,5,Other,104,4,208,Nausea,Severely Abnormal,Chronic Uncontrolled,24.451132595239567,4
+PAT010540,Kidney Disease,5,Other,127,4,90,Weakness,Severely Abnormal,Chronic Uncontrolled,26.548561890745077,4
+PAT018474,Kidney Disease,3,Male,21,14,281,Fatigue,Normal,Needs Follow-up,13.035398363657494,3
+PAT015815,Gastroenteritis,1,Male,108,12,172,Vomiting,Slightly Abnormal,Needs Follow-up,15.221515205028673,3
+PAT005408,Pneumonia,2,Female,38,2,335,Cough,Slightly Abnormal,Chronic Controlled,11.707136930528392,2
+PAT003485,Heart Disease,3,Female,3,4,2,Confusion,Normal,Needs Follow-up,16.21344944053896,3
+PAT019084,UTI,4,Male,99,4,29,Fever,Severely Abnormal,Acute,24.62784611632998,4
+PAT014060,Asthma,3,Male,23,8,313,Cough,Slightly Abnormal,Acute,19.02357453333218,3
+PAT018616,Cancer,1,Female,97,14,337,Severe Pain,Slightly Abnormal,Chronic Controlled,10.6039244192319,2
+PAT007478,Common Cold,3,Male,82,4,272,None/Mild,Normal,Acute,12.846430680427767,2
+PAT008966,Asthma,5,Other,91,14,315,Shortness of Breath,Severely Abnormal,Critical,35.707779697911306,5
+PAT001961,Gastroenteritis,4,Male,55,12,51,Nausea,Severely Abnormal,Needs Follow-up,24.295420648286573,4
+PAT002553,COPD,4,Other,24,9,59,Fever,Severely Abnormal,Needs Follow-up,23.711417125081155,4
+PAT005813,Migraine,5,Other,86,0,141,Headache,Severely Abnormal,Chronic Uncontrolled,20.425082246321757,3
+PAT018675,Pneumonia,2,Female,31,3,236,Cough,Normal,Chronic Controlled,8.593110031922802,2
+PAT005137,Kidney Disease,3,Female,123,0,142,Confusion,Normal,Acute,19.371101847760215,3
+PAT006892,Hypertension,1,Female,93,9,280,Headache,Normal,Chronic Controlled,7.377531153677411,1
+PAT009005,Kidney Disease,5,Female,1,11,97,Fatigue,Severely Abnormal,Critical,31.899023825960366,5
+PAT006648,Kidney Disease,1,Other,12,2,311,Nausea,Slightly Abnormal,Needs Follow-up,12.016028676919609,2
+PAT018781,UTI,3,Female,7,3,271,Abdominal Pain,Moderately Abnormal,Chronic Controlled,17.998682160023215,3
+PAT003588,Hypertension,1,Male,26,14,95,Headache,Normal,Chronic Controlled,6.0411903854631985,1
+PAT016684,UTI,1,Female,52,4,282,Fever,Normal,Needs Follow-up,7.971035807009031,2
+PAT009338,Heart Disease,5,Female,68,8,13,Dizziness,Severely Abnormal,Acute,29.865566128491732,5
+PAT005414,Common Cold,5,Other,40,6,263,Cough,Moderately Abnormal,Critical,28.846160579462307,5
+PAT003585,Diabetes,2,Other,118,11,194,Fatigue,Slightly Abnormal,Stable,7.239372601987421,1
+PAT017046,Diabetes,4,Female,47,14,200,Nausea,Moderately Abnormal,Chronic Uncontrolled,19.07895550030295,3
+PAT011750,Arthritis,4,Female,75,11,213,Fatigue,Severely Abnormal,Chronic Uncontrolled,24.025357651774193,4
+PAT017666,Fracture,1,Male,99,0,149,None/Mild,Normal,Needs Follow-up,5.155820094297739,1
+PAT001667,Pneumonia,1,Other,29,4,149,Cough,Slightly Abnormal,Chronic Controlled,8.70305716412133,2
+PAT017851,UTI,4,Male,41,12,224,Fever,Severely Abnormal,Critical,30.670369784422714,5
+PAT016456,Kidney Disease,5,Male,53,1,198,Nausea,Severely Abnormal,Acute,28.52241133644272,5
+PAT014405,Cancer,5,Male,73,2,271,Weakness,Severely Abnormal,Acute,27.048684090662018,5
+PAT015706,Asthma,3,Male,82,13,235,Fever,Slightly Abnormal,Stable,10.306965468755033,2
+PAT008801,Stroke,2,Male,125,4,164,Chest Pain,Normal,Chronic Controlled,11.763779231999631,2
+PAT017986,Common Cold,4,Female,64,8,65,Fever,Severely Abnormal,Chronic Uncontrolled,20.181284966355665,3
+PAT008959,Fracture,2,Female,38,14,213,Severe Pain,Slightly Abnormal,Chronic Controlled,13.675899337422386,3
+PAT008737,Diabetes,4,Female,49,1,264,Nausea,Severely Abnormal,Acute,26.708226422254732,4
+PAT012969,Common Cold,4,Other,49,11,229,Fatigue,Slightly Abnormal,Acute,16.29902627885405,3
+PAT011851,Arthritis,4,Male,47,0,242,Fatigue,Slightly Abnormal,Needs Follow-up,17.00556153651618,3
+PAT006063,Hypertension,3,Female,128,12,289,None/Mild,Normal,Acute,15.187924172853002,3
+PAT014449,Pneumonia,4,Male,43,5,134,Cough,Moderately Abnormal,Acute,22.820110966840343,4
+PAT007739,COPD,2,Other,52,8,221,Fatigue,Normal,Stable,4.971096454267476,1
+PAT009818,Fracture,3,Other,15,14,280,Severe Pain,Moderately Abnormal,Chronic Controlled,17.752461679845858,3
+PAT014252,Heart Disease,4,Male,67,6,12,Chest Pain,Severely Abnormal,Acute,30.43361255090972,5
+PAT018330,COPD,3,Male,96,1,335,Cough,Slightly Abnormal,Chronic Controlled,12.160756729674334,2
+PAT009993,Diabetes,2,Male,88,13,169,Weakness,Normal,Chronic Controlled,9.090979006301641,2
+PAT011707,Common Cold,1,Female,45,9,321,None/Mild,Normal,Needs Follow-up,7.324008248308327,1
+PAT012263,Migraine,5,Female,123,14,265,Nausea,Slightly Abnormal,Chronic Uncontrolled,16.386499050058912,3
+PAT014750,Fracture,5,Other,99,9,32,None/Mild,Slightly Abnormal,Needs Follow-up,18.434791087619278,3
+PAT013405,UTI,3,Other,124,12,359,Fever,Slightly Abnormal,Stable,10.827113726348756,2
+PAT008192,Fracture,1,Female,129,5,68,Severe Pain,Slightly Abnormal,Needs Follow-up,14.518786336471912,3
+PAT018925,Kidney Disease,4,Female,84,1,100,Confusion,Severely Abnormal,Needs Follow-up,24.783428700861762,4
+PAT012898,Cancer,1,Female,70,1,275,Weakness,Slightly Abnormal,Chronic Controlled,5.221356876818,1
+PAT008097,Pneumonia,4,Other,38,4,347,Fever,Moderately Abnormal,Acute,21.89849678554325,4
+PAT001923,Pneumonia,3,Female,124,2,154,Fatigue,Moderately Abnormal,Stable,12.450325942305826,2
+PAT008592,Fracture,1,Other,126,3,99,Severe Pain,Normal,Stable,5.740602028823319,1
+PAT006601,Kidney Disease,2,Other,87,11,60,Fatigue,Slightly Abnormal,Chronic Controlled,11.186621254787543,2
+PAT013082,Heart Disease,4,Male,124,6,134,Chest Pain,Slightly Abnormal,Acute,24.13295998007545,4
+PAT004680,Common Cold,4,Male,35,10,72,Fever,Slightly Abnormal,Acute,18.732383436732345,3
+PAT003266,COPD,3,Other,81,0,168,Fatigue,Moderately Abnormal,Chronic Controlled,15.049070840110087,3
+PAT015843,Heart Disease,1,Male,76,2,164,Shortness of Breath,Normal,Chronic Controlled,10.158992074164832,2
+PAT002699,UTI,3,Female,73,2,158,Abdominal Pain,Slightly Abnormal,Stable,9.285470579626242,2
+PAT016276,Fracture,5,Male,20,14,277,None/Mild,Severely Abnormal,Needs Follow-up,23.95304719581066,4
+PAT019222,Cancer,1,Male,0,12,27,Fatigue,Normal,Stable,4.971144972255969,1
+PAT019114,Gastroenteritis,4,Male,61,2,193,Fever,Slightly Abnormal,Acute,19.589709163055172,3
+PAT009585,Hypertension,5,Male,120,4,295,Headache,Severely Abnormal,Critical,29.41639900973462,5
+PAT006256,Arthritis,3,Female,51,11,258,Fatigue,Moderately Abnormal,Needs Follow-up,17.106896856104775,3
+PAT004956,Asthma,3,Female,91,12,155,Fatigue,Slightly Abnormal,Acute,19.83941716355108,3
+PAT008491,Heart Disease,1,Male,60,11,350,Chest Pain,Normal,Chronic Controlled,11.568151940058193,2
+PAT001070,Cancer,4,Male,39,9,94,Fatigue,Slightly Abnormal,Critical,23.57174057345051,4
+PAT006064,COPD,3,Male,71,13,310,Shortness of Breath,Moderately Abnormal,Needs Follow-up,22.23496957525666,4
+PAT018233,Fracture,5,Female,93,0,346,Severe Pain,Slightly Abnormal,Needs Follow-up,22.948072696197794,4
+PAT016354,Cancer,5,Other,126,8,152,Bleeding,Severely Abnormal,Chronic Uncontrolled,25.896030389779355,4
+PAT003322,Common Cold,5,Female,15,7,332,Cough,Severely Abnormal,Chronic Uncontrolled,25.6170405085998,4
+PAT013456,Diabetes,2,Male,20,12,271,Confusion,Normal,Chronic Controlled,15.716332307662492,3
+PAT007914,Hypertension,5,Male,90,10,335,Headache,Slightly Abnormal,Acute,23.832379418817755,4
+PAT001308,Cancer,2,Female,108,3,219,Weakness,Normal,Needs Follow-up,11.06876899398004,2
+PAT019571,Gastroenteritis,2,Other,119,11,83,Nausea,Slightly Abnormal,Chronic Controlled,10.885207313256172,2
+PAT011823,Stroke,1,Male,76,0,118,Shortness of Breath,Slightly Abnormal,Stable,11.094568693750745,2
+PAT010795,Migraine,3,Female,106,5,304,Dizziness,Moderately Abnormal,Chronic Controlled,14.987877301411594,3
+PAT001726,COPD,3,Other,64,8,104,Shortness of Breath,Slightly Abnormal,Chronic Controlled,15.644431839174384,3
+PAT001494,Gastroenteritis,4,Female,107,3,174,Abdominal Pain,Severely Abnormal,Acute,24.49227082894796,4
+PAT011487,Fracture,1,Female,78,11,79,None/Mild,Normal,Chronic Controlled,3.8024838549976243,1
+PAT005943,Pneumonia,1,Male,2,9,114,Shortness of Breath,Normal,Needs Follow-up,13.557188068586992,3
+PAT014673,Migraine,2,Female,87,1,351,Dizziness,Normal,Chronic Controlled,8.338232435002567,2
+PAT016563,Diabetes,1,Female,120,1,86,Nausea,Normal,Needs Follow-up,6.6562544207666505,1
+PAT011188,Diabetes,4,Other,30,0,323,Fatigue,Severely Abnormal,Critical,29.792306260584557,5
+PAT017425,Cancer,5,Male,72,1,174,Severe Pain,Moderately Abnormal,Acute,27.08913901513626,5
+PAT011425,Migraine,2,Other,22,9,153,Headache,Slightly Abnormal,Stable,7.672751276352733,2
+PAT017081,Stroke,4,Male,22,0,207,Chest Pain,Moderately Abnormal,Critical,30.97989412733832,5
+PAT000986,Diabetes,3,Female,88,12,155,Nausea,Normal,Stable,5.778751463499442,1
+PAT002611,Pneumonia,5,Female,8,10,335,Cough,Slightly Abnormal,Acute,21.314912025489864,4
+PAT008912,Kidney Disease,2,Other,14,0,5,Weakness,Normal,Chronic Controlled,9.569004314087938,2
+PAT000989,Kidney Disease,1,Other,128,6,158,Confusion,Slightly Abnormal,Stable,10.636986593519199,2
+PAT009790,UTI,1,Female,107,14,88,Abdominal Pain,Slightly Abnormal,Stable,6.860898485339947,1
+PAT013220,UTI,2,Other,69,9,14,Abdominal Pain,Normal,Stable,4.8952290909689475,1
+PAT019208,Stroke,3,Female,105,5,357,Dizziness,Slightly Abnormal,Acute,20.685838685731014,3
+PAT002792,Asthma,2,Female,116,12,170,Shortness of Breath,Normal,Needs Follow-up,14.599658549573197,3
+PAT000707,Cancer,3,Other,44,9,150,Severe Pain,Slightly Abnormal,Needs Follow-up,15.384430478849518,3
+PAT018239,Asthma,1,Female,39,11,133,Cough,Normal,Chronic Controlled,6.566438549967643,1
+PAT016022,Hypertension,2,Other,57,14,169,Headache,Normal,Needs Follow-up,8.561209250346156,2
+PAT002136,Pneumonia,1,Male,121,11,226,Shortness of Breath,Normal,Needs Follow-up,12.302345674714413,2
+PAT008797,Hypertension,5,Female,83,11,218,None/Mild,Moderately Abnormal,Needs Follow-up,22.26627348956666,4
+PAT018147,Hypertension,2,Male,62,2,224,None/Mild,Normal,Chronic Controlled,6.0321645882472446,1
+PAT000799,Cancer,2,Female,79,9,265,Fatigue,Normal,Needs Follow-up,8.807336043376726,2
+PAT013414,Stroke,3,Female,81,6,176,Dizziness,Slightly Abnormal,Acute,19.083542997078798,3
+PAT012280,Fracture,2,Female,34,8,357,None/Mild,Slightly Abnormal,Chronic Controlled,5.475096782837857,1
+PAT011655,Common Cold,5,Female,87,13,339,None/Mild,Severely Abnormal,Acute,24.894890026835295,4
+PAT011309,Common Cold,2,Male,64,5,29,None/Mild,Slightly Abnormal,Needs Follow-up,12.780989400639532,2
+PAT013256,Fracture,5,Male,86,7,92,None/Mild,Slightly Abnormal,Acute,22.917196976341888,4
+PAT014757,Common Cold,3,Other,60,14,349,Fever,Normal,Acute,14.449905927863416,3
+PAT017869,Asthma,1,Male,124,12,58,Cough,Slightly Abnormal,Chronic Controlled,7.797394009929053,2
+PAT010577,Arthritis,2,Female,65,2,266,None/Mild,Normal,Stable,7.102559914335978,1
+PAT013318,Arthritis,4,Other,51,8,312,Headache,Slightly Abnormal,Needs Follow-up,15.403288665069445,3
+PAT009559,Stroke,1,Male,66,9,332,Confusion,Normal,Stable,7.419521768430698,2
+PAT015912,Pneumonia,3,Other,74,0,78,Fever,Slightly Abnormal,Needs Follow-up,15.951218218534104,3
+PAT004821,Cancer,1,Other,3,0,238,Fatigue,Normal,Stable,1.560717332603196,1
+PAT003859,Diabetes,3,Other,77,14,193,Nausea,Normal,Stable,7.9911187045808445,2
+PAT016473,Hypertension,2,Female,34,1,53,Fatigue,Normal,Needs Follow-up,9.153118185951477,2
+PAT006321,Migraine,2,Female,2,6,91,Dizziness,Normal,Chronic Controlled,10.785605247994226,2
+PAT006745,Kidney Disease,3,Other,34,10,185,Cough,Normal,Acute,14.109651662391126,3
+PAT004182,COPD,1,Female,67,6,175,Fatigue,Normal,Chronic Controlled,9.709926259687798,2
+PAT013934,Fracture,4,Male,40,13,353,None/Mild,Severely Abnormal,Needs Follow-up,21.230945992037626,4
+PAT017055,UTI,2,Female,0,6,331,Abdominal Pain,Slightly Abnormal,Needs Follow-up,13.051642957695229,3
+PAT016690,Kidney Disease,2,Other,45,8,268,Nausea,Slightly Abnormal,Chronic Controlled,8.180658831516645,2
+PAT017159,Fracture,2,Other,36,13,69,Severe Pain,Normal,Chronic Controlled,12.874617330729444,2
+PAT015391,Cancer,2,Female,122,13,220,Fatigue,Normal,Stable,4.9231954118561525,1
+PAT000371,Diabetes,2,Female,16,9,237,Confusion,Normal,Chronic Controlled,14.82275711758781,3
+PAT009577,COPD,3,Female,21,5,166,Cough,Slightly Abnormal,Stable,8.517010047807977,2
+PAT011638,Common Cold,1,Other,108,1,346,Cough,Slightly Abnormal,Chronic Controlled,5.597062302022464,1
+PAT016849,Arthritis,2,Female,84,11,31,Fatigue,Normal,Stable,5.784071867310361,1
+PAT012073,Diabetes,1,Other,4,7,194,Fatigue,Normal,Needs Follow-up,9.728437894261964,2
+PAT012064,UTI,2,Male,16,3,208,Nausea,Slightly Abnormal,Stable,6.593304133626421,1
+PAT002179,Arthritis,2,Female,48,1,179,None/Mild,Normal,Needs Follow-up,8.243567480081113,2
+PAT017568,Migraine,3,Female,1,13,61,Dizziness,Moderately Abnormal,Needs Follow-up,19.684833167648172,3
+PAT017045,Pneumonia,3,Other,27,7,261,Shortness of Breath,Moderately Abnormal,Chronic Controlled,17.708400337105946,3
+PAT006263,COPD,3,Other,89,8,227,Fever,Moderately Abnormal,Chronic Controlled,15.652902560881852,3
+PAT005287,Asthma,3,Other,120,9,171,Nausea,Moderately Abnormal,Chronic Controlled,16.335698742547184,3
+PAT005313,Gastroenteritis,5,Other,2,7,158,Nausea,Severely Abnormal,Needs Follow-up,22.21444823100886,4
+PAT015790,UTI,1,Other,36,10,101,Nausea,Normal,Chronic Controlled,9.670930956852128,2
+PAT010656,Kidney Disease,4,Female,37,8,344,Fatigue,Moderately Abnormal,Chronic Uncontrolled,21.371629625609273,4
+PAT011162,UTI,2,Male,68,7,119,Fever,Slightly Abnormal,Stable,6.470279227930332,1
+PAT014742,Cancer,1,Male,17,8,24,Bleeding,Slightly Abnormal,Needs Follow-up,16.95032270828411,3
+PAT010123,Migraine,4,Male,93,10,36,Nausea,Moderately Abnormal,Needs Follow-up,21.49908676741364,4
+PAT016626,Pneumonia,3,Other,27,1,265,Fever,Normal,Chronic Controlled,12.945767175956165,3
+PAT008742,Heart Disease,4,Female,106,8,352,Weakness,Slightly Abnormal,Acute,18.032234327034576,3
+PAT000478,Gastroenteritis,5,Male,18,2,235,Fever,Severely Abnormal,Acute,25.94377025139796,4
+PAT001187,Arthritis,1,Other,23,5,86,None/Mild,Normal,Needs Follow-up,9.644913974503261,2
+PAT015310,Pneumonia,1,Female,109,3,129,Cough,Slightly Abnormal,Chronic Controlled,10.007940752147443,2
+PAT012521,Kidney Disease,2,Male,32,13,306,Bleeding,Normal,Needs Follow-up,14.956275456670676,3
+PAT003310,Fracture,5,Other,55,6,235,None/Mild,Severely Abnormal,Critical,29.672014825377865,5
+PAT002786,Diabetes,3,Male,103,3,281,Weakness,Moderately Abnormal,Acute,19.380732764977964,3
+PAT013274,Asthma,4,Other,22,13,165,Cough,Moderately Abnormal,Critical,29.758403516364545,5
+PAT008468,Cancer,4,Female,113,11,181,Severe Pain,Slightly Abnormal,Acute,21.199610283311323,4
+PAT001859,Migraine,2,Other,105,12,127,Nausea,Slightly Abnormal,Needs Follow-up,12.173565462745687,2
+PAT011362,Migraine,3,Female,102,8,192,Dizziness,Moderately Abnormal,Chronic Controlled,16.925988712899755,3
+PAT012071,Fracture,2,Male,51,10,134,None/Mild,Normal,Stable,6.495746235430564,1
+PAT011018,Heart Disease,4,Other,127,0,160,Weakness,Slightly Abnormal,Acute,19.091443468983964,3
+PAT013748,Heart Disease,4,Female,67,14,23,Weakness,Moderately Abnormal,Needs Follow-up,18.53712000364259,3
+PAT004385,Kidney Disease,5,Male,5,2,158,Fatigue,Slightly Abnormal,Critical,24.349059103761952,4
+PAT003508,Kidney Disease,3,Male,34,8,271,Fatigue,Moderately Abnormal,Chronic Controlled,12.457748655508892,2
+PAT016465,Pneumonia,2,Other,116,14,343,Cough,Slightly Abnormal,Chronic Controlled,11.998231744501934,2
+PAT009011,UTI,5,Other,84,7,87,Vomiting,Severely Abnormal,Acute,30.220837037399477,5
+PAT019188,COPD,3,Other,32,1,280,Fatigue,Moderately Abnormal,Stable,13.41440412156816,3
+PAT009727,Diabetes,2,Female,13,3,282,Nausea,Normal,Needs Follow-up,11.14374354217656,2
+PAT017161,Heart Disease,1,Male,128,9,96,Dizziness,Slightly Abnormal,Needs Follow-up,10.743230510599073,2
+PAT001693,Heart Disease,2,Female,112,10,358,Dizziness,Normal,Chronic Controlled,10.018341964894654,2
+PAT007645,Migraine,2,Male,32,3,134,Nausea,Normal,Chronic Controlled,9.893291982376299,2
+PAT009989,Gastroenteritis,3,Other,82,6,345,Cough,Slightly Abnormal,Stable,7.806952981176382,2
+PAT009454,Fracture,5,Female,24,14,288,None/Mild,Slightly Abnormal,Chronic Uncontrolled,14.146472107097049,3
+PAT017664,Pneumonia,2,Other,22,6,90,Fever,Normal,Stable,5.498884111599315,1
+PAT000549,Common Cold,4,Other,40,5,117,None/Mild,Slightly Abnormal,Needs Follow-up,14.010409524189742,3
+PAT015851,Kidney Disease,2,Female,76,12,330,Confusion,Slightly Abnormal,Stable,12.417983256910965,2
+PAT001893,Arthritis,2,Female,116,6,198,Fatigue,Normal,Chronic Controlled,8.620787290872427,2
+PAT016614,Hypertension,3,Male,7,13,243,Headache,Moderately Abnormal,Stable,13.485979330542984,3
+PAT000631,Hypertension,5,Male,51,4,261,Fatigue,Slightly Abnormal,Chronic Uncontrolled,15.869623673417319,3
+PAT017557,Kidney Disease,4,Female,78,1,57,Fatigue,Severely Abnormal,Needs Follow-up,24.32830669714894,4
+PAT005252,Common Cold,5,Male,44,9,205,None/Mild,Moderately Abnormal,Critical,28.334421569769123,5
+PAT017071,Gastroenteritis,5,Female,45,4,42,Vomiting,Slightly Abnormal,Chronic Uncontrolled,18.309627668667662,3
+PAT009932,Common Cold,2,Female,50,5,265,Chest Pain,Normal,Needs Follow-up,15.093294731690293,3
+PAT004769,UTI,1,Female,22,1,121,Fever,Normal,Chronic Controlled,3.661189001428212,1
+PAT003832,UTI,4,Male,75,10,32,Abdominal Pain,Slightly Abnormal,Chronic Uncontrolled,15.801925892224206,3
+PAT012642,Arthritis,2,Male,3,8,29,Fatigue,Normal,Chronic Controlled,8.12559173965936,2
+PAT010247,Diabetes,3,Male,107,8,349,Nausea,Moderately Abnormal,Needs Follow-up,18.467719063038807,3
+PAT007319,Pneumonia,3,Other,3,8,293,Fatigue,Normal,Acute,14.85062851670922,3
+PAT011231,Kidney Disease,2,Female,63,13,212,Fatigue,Normal,Needs Follow-up,11.569430164059161,2
+PAT006404,Heart Disease,2,Male,51,9,78,Shortness of Breath,Slightly Abnormal,Chronic Controlled,12.55189456601631,2
+PAT016375,Gastroenteritis,3,Female,125,7,265,Vomiting,Slightly Abnormal,Needs Follow-up,13.286743662089199,3
+PAT005339,Pneumonia,1,Female,64,5,302,Fever,Normal,Needs Follow-up,6.480808007381752,1
+PAT012856,Hypertension,2,Male,29,13,275,None/Mild,Slightly Abnormal,Stable,5.787372588843191,1
+PAT000615,Common Cold,4,Female,72,10,282,Fatigue,Moderately Abnormal,Critical,27.94514892818659,5
+PAT010683,Fracture,3,Male,107,0,68,None/Mild,Moderately Abnormal,Stable,10.315961895968139,2
+PAT012354,Common Cold,3,Female,27,6,16,Fever,Slightly Abnormal,Stable,10.926230204610498,2
+PAT018703,Kidney Disease,4,Other,123,6,291,Weakness,Severely Abnormal,Acute,24.012459489175537,4
+PAT010104,Asthma,2,Other,74,7,18,Fatigue,Slightly Abnormal,Needs Follow-up,11.9413965405306,2
+PAT007887,Arthritis,1,Male,42,13,192,None/Mild,Slightly Abnormal,Needs Follow-up,10.578088179858327,2
+PAT003352,UTI,4,Female,99,13,84,Abdominal Pain,Severely Abnormal,Acute,23.906690221311926,4
+PAT014247,Pneumonia,1,Female,93,13,87,Fatigue,Slightly Abnormal,Chronic Controlled,6.158785329228653,1
+PAT016593,Pneumonia,4,Male,101,8,215,Shortness of Breath,Slightly Abnormal,Critical,26.985921456873317,4
+PAT016578,Cancer,1,Other,16,12,304,Fatigue,Normal,Stable,4.10574486909548,1
+PAT007321,Cancer,4,Male,50,5,128,Bleeding,Severely Abnormal,Critical,32.22658363533824,5
+PAT000861,UTI,4,Male,60,0,82,Vomiting,Slightly Abnormal,Acute,20.82528231430676,3
+PAT003390,Migraine,4,Other,78,5,71,Dizziness,Severely Abnormal,Critical,32.81133625512873,5
+PAT015223,Fracture,4,Other,53,12,182,Severe Pain,Moderately Abnormal,Acute,23.3433226625403,4
+PAT015656,Arthritis,3,Other,66,4,307,Fatigue,Slightly Abnormal,Needs Follow-up,12.99631241340369,3
+PAT001164,Hypertension,2,Female,99,13,14,None/Mild,Slightly Abnormal,Needs Follow-up,13.627332742822173,3
+PAT005611,COPD,5,Male,48,3,33,Shortness of Breath,Severely Abnormal,Acute,30.343336791985976,5
+PAT012928,Asthma,2,Female,72,2,65,Cough,Normal,Chronic Controlled,8.920443161717735,2
+PAT012140,Cancer,5,Female,45,9,270,Severe Pain,Severely Abnormal,Acute,29.5435228902616,5
+PAT019322,Pneumonia,3,Other,99,1,295,Shortness of Breath,Moderately Abnormal,Chronic Controlled,20.609209538085345,3
+PAT013070,Heart Disease,2,Other,121,3,39,Dizziness,Normal,Chronic Controlled,9.827813728904694,2
+PAT014603,Common Cold,2,Female,89,3,224,None/Mild,Normal,Chronic Controlled,7.381677163427274,1
+PAT012245,Stroke,4,Male,53,6,234,Chest Pain,Moderately Abnormal,Acute,24.60836728307838,4
+PAT001053,Migraine,5,Other,8,7,306,Dizziness,Moderately Abnormal,Acute,25.831426084305544,4
+PAT003035,Common Cold,2,Other,66,5,117,Fatigue,Normal,Stable,6.396159933628162,1
+PAT015416,Common Cold,2,Male,112,14,34,Fever,Normal,Chronic Controlled,7.692594155898871,2
+PAT015875,Pneumonia,4,Female,56,10,334,Fever,Slightly Abnormal,Chronic Uncontrolled,16.211779678600937,3
+PAT018143,Cancer,1,Male,68,2,135,Weakness,Normal,Stable,1.9991082735897825,1
+PAT018761,Gastroenteritis,1,Female,129,2,256,Vomiting,Normal,Needs Follow-up,11.422792764515329,2
+PAT009748,Gastroenteritis,1,Other,122,9,20,Fever,Slightly Abnormal,Chronic Controlled,10.716953856000881,2
+PAT006576,COPD,3,Male,97,9,353,Cough,Slightly Abnormal,Acute,16.95183489754185,3
+PAT010313,UTI,3,Male,124,11,249,Vomiting,Moderately Abnormal,Needs Follow-up,19.99448115724809,3
+PAT005682,Pneumonia,1,Male,71,12,11,Fatigue,Normal,Chronic Controlled,5.451558131620636,1
+PAT004091,Kidney Disease,3,Male,116,1,117,Fever,Moderately Abnormal,Needs Follow-up,16.1576891907595,3
+PAT002547,Asthma,3,Female,22,5,198,Fatigue,Slightly Abnormal,Stable,8.805031916866477,2
+PAT002674,Heart Disease,3,Male,81,12,314,Dizziness,Slightly Abnormal,Needs Follow-up,18.691020110832092,3
+PAT018142,Kidney Disease,3,Male,112,9,128,Nausea,Normal,Needs Follow-up,11.031979592506136,2
+PAT017767,Diabetes,3,Male,76,6,157,Weakness,Moderately Abnormal,Needs Follow-up,15.58372662091756,3
+PAT013523,Fracture,5,Other,110,2,221,Severe Pain,Moderately Abnormal,Chronic Uncontrolled,27.326692877952027,5
+PAT000427,Stroke,3,Other,106,2,324,Confusion,Normal,Needs Follow-up,13.967876433733304,3
+PAT017602,Gastroenteritis,4,Other,1,13,238,Fever,Slightly Abnormal,Needs Follow-up,14.51507790375368,3
+PAT011055,Heart Disease,2,Other,55,8,167,Abdominal Pain,Slightly Abnormal,Stable,10.39212097608177,2
+PAT000493,Migraine,1,Other,96,5,187,Nausea,Normal,Stable,2.2331714155529117,1
+PAT012340,Kidney Disease,4,Female,59,3,27,Confusion,Moderately Abnormal,Critical,32.454015475118204,5
+PAT016020,Pneumonia,4,Female,4,5,303,Fatigue,Moderately Abnormal,Chronic Uncontrolled,18.348761642210658,3
+PAT010134,Arthritis,1,Other,50,14,46,Fatigue,Normal,Chronic Controlled,6.776327209202863,1
+PAT015382,Cancer,4,Female,83,1,175,Severe Pain,Slightly Abnormal,Needs Follow-up,20.393735415359192,3
+PAT011283,Hypertension,3,Male,42,9,232,Weakness,Moderately Abnormal,Needs Follow-up,17.575115250884075,3
+PAT011778,UTI,3,Other,35,12,259,Fever,Normal,Stable,8.5578176081229,2
+PAT001921,Hypertension,2,Female,83,7,331,Headache,Normal,Needs Follow-up,12.893379238469775,2
+PAT019410,COPD,2,Other,37,0,271,Shortness of Breath,Normal,Stable,9.464401014774223,2
+PAT000966,UTI,4,Female,79,2,332,Fever,Severely Abnormal,Chronic Uncontrolled,23.941203027040018,4
+PAT004867,Asthma,4,Other,50,3,61,Cough,Moderately Abnormal,Acute,23.020448671079162,4
+PAT008928,Fracture,3,Male,85,3,345,None/Mild,Slightly Abnormal,Chronic Controlled,10.936651245023683,2
+PAT017092,Asthma,2,Other,69,7,199,Cough,Normal,Stable,5.234010382886247,1
+PAT001765,Pneumonia,5,Other,3,12,72,Fatigue,Moderately Abnormal,Critical,27.064571326080834,5
+PAT006505,Migraine,5,Other,3,7,344,Dizziness,Slightly Abnormal,Acute,19.961674361475225,3
+PAT005619,Gastroenteritis,1,Male,31,4,314,Abdominal Pain,Normal,Needs Follow-up,7.938734343425096,2
+PAT017345,Common Cold,2,Other,104,12,322,Cough,Normal,Stable,4.359369264282702,1
+PAT014861,Arthritis,4,Other,93,2,259,Headache,Slightly Abnormal,Acute,19.323790259789973,3
+PAT003953,Pneumonia,5,Other,38,11,359,Fever,Moderately Abnormal,Acute,24.150993072949124,4
+PAT001190,Pneumonia,2,Female,67,13,155,Fatigue,Normal,Chronic Controlled,6.8145526364030085,1
+PAT009459,Stroke,1,Female,108,11,358,Shortness of Breath,Normal,Chronic Controlled,8.49987998730121,2
+PAT006551,Fracture,5,Other,82,12,16,Severe Pain,Severely Abnormal,Critical,35.84517513280219,5
+PAT014184,Cancer,2,Female,110,2,107,Bleeding,Normal,Chronic Controlled,10.20155604489085,2
+PAT005117,Heart Disease,4,Male,73,13,131,Dizziness,Slightly Abnormal,Critical,29.07021534369177,5
+PAT002705,Stroke,3,Female,52,0,6,Dizziness,Slightly Abnormal,Needs Follow-up,11.48717256073802,2
+PAT019659,Fracture,3,Other,86,13,98,None/Mild,Slightly Abnormal,Acute,15.905158748785873,3
+PAT008947,Diabetes,4,Female,71,6,261,Confusion,Severely Abnormal,Critical,34.155463319141525,5
+PAT011552,Pneumonia,3,Male,64,0,345,Cough,Slightly Abnormal,Chronic Controlled,15.706181705417041,3
+PAT014506,COPD,2,Other,57,10,185,Fever,Normal,Stable,7.990273516099135,2
+PAT005921,Hypertension,1,Male,85,12,16,Fatigue,Slightly Abnormal,Chronic Controlled,8.117230579231027,2
+PAT003403,Arthritis,1,Other,47,9,201,Fatigue,Normal,Chronic Controlled,5.138995992971481,1
+PAT016811,Pneumonia,2,Male,106,13,57,Shortness of Breath,Normal,Stable,10.172817835256598,2
+PAT014930,Hypertension,2,Male,61,9,125,Headache,Slightly Abnormal,Needs Follow-up,11.993536156095374,2
+PAT007049,Fracture,5,Female,105,6,183,None/Mild,Moderately Abnormal,Needs Follow-up,21.809412715760917,4
+PAT008537,Common Cold,4,Female,79,10,292,Fever,Slightly Abnormal,Acute,21.217844617272377,4
+PAT005855,UTI,4,Male,9,14,317,Fever,Moderately Abnormal,Acute,20.716304630183167,3
+PAT009679,Kidney Disease,4,Male,104,11,327,Confusion,Slightly Abnormal,Chronic Uncontrolled,22.37570776787021,4
+PAT004622,Pneumonia,3,Other,90,8,47,Shortness of Breath,Slightly Abnormal,Needs Follow-up,17.909643860067238,3
+PAT016657,Fracture,2,Other,65,8,283,Severe Pain,Normal,Stable,10.003675037116249,2
+PAT011017,UTI,4,Female,70,11,86,Vomiting,Severely Abnormal,Critical,28.410768861739644,5
+PAT009191,UTI,3,Other,90,14,96,Vomiting,Slightly Abnormal,Chronic Controlled,13.575166451576226,3
+PAT002981,Common Cold,4,Male,49,3,55,Cough,Moderately Abnormal,Needs Follow-up,18.616778068313806,3
+PAT002665,Stroke,1,Female,93,12,188,Chest Pain,Normal,Needs Follow-up,12.13429667058174,2
+PAT015086,Heart Disease,1,Male,97,9,11,Weakness,Normal,Chronic Controlled,6.3133783215044295,1
+PAT006564,Gastroenteritis,3,Female,57,12,145,Vomiting,Moderately Abnormal,Acute,22.046623500645627,4
+PAT003976,Diabetes,5,Female,116,9,353,Fatigue,Severely Abnormal,Chronic Uncontrolled,24.63731112851351,4
+PAT002898,Hypertension,5,Other,71,9,105,None/Mild,Slightly Abnormal,Chronic Uncontrolled,18.98469563602086,3
+PAT004131,Migraine,1,Female,128,8,42,Headache,Slightly Abnormal,Needs Follow-up,12.42076273236092,2
+PAT003134,Fracture,2,Female,126,9,66,None/Mild,Normal,Needs Follow-up,8.715225385386116,2
+PAT014752,Gastroenteritis,3,Other,107,0,134,Vomiting,Slightly Abnormal,Stable,13.164267613891461,3
+PAT014381,Diabetes,1,Female,92,10,10,Confusion,Normal,Chronic Controlled,11.903591613926508,2
+PAT018109,Gastroenteritis,4,Female,110,2,85,Vomiting,Slightly Abnormal,Needs Follow-up,16.54353018308398,3
+PAT003850,Gastroenteritis,2,Male,89,10,85,Vomiting,Slightly Abnormal,Stable,8.934032669093344,2
+PAT012474,Arthritis,3,Male,47,2,206,None/Mild,Normal,Stable,6.2204564543798275,1
+PAT015481,Stroke,4,Female,107,14,337,Weakness,Moderately Abnormal,Chronic Uncontrolled,18.901401798831277,3
+PAT001602,Cancer,3,Female,86,13,171,Fatigue,Moderately Abnormal,Chronic Controlled,15.855148251834112,3
+PAT005473,Gastroenteritis,5,Female,87,13,231,Vomiting,Moderately Abnormal,Critical,29.726689111266772,5
+PAT016141,Common Cold,1,Other,48,3,195,Fever,Normal,Chronic Controlled,6.165170452763801,1
+PAT000428,Pneumonia,2,Other,104,11,117,Fever,Normal,Stable,3.9290321106438197,1
+PAT002106,Hypertension,5,Male,102,9,18,Headache,Moderately Abnormal,Critical,28.936822503037828,5
+PAT014526,Fracture,4,Male,75,13,335,Severe Pain,Severely Abnormal,Critical,33.05611145145973,5
+PAT008385,Kidney Disease,1,Male,86,4,268,Fatigue,Normal,Stable,3.0039241500871134,1
+PAT015368,Arthritis,3,Female,50,2,287,Fatigue,Normal,Needs Follow-up,14.918092684477353,3
+PAT008978,Heart Disease,3,Other,15,11,30,Abdominal Pain,Moderately Abnormal,Needs Follow-up,19.13505797592971,3
+PAT000946,Stroke,2,Male,108,9,228,Chest Pain,Normal,Needs Follow-up,13.91042029337102,3
+PAT000747,Asthma,4,Other,47,11,130,Cough,Severely Abnormal,Critical,29.547756652093362,5
+PAT015918,Fracture,3,Male,84,6,280,Severe Pain,Moderately Abnormal,Needs Follow-up,20.564153549433666,3
+PAT001925,UTI,4,Other,130,3,343,Vomiting,Severely Abnormal,Chronic Uncontrolled,25.359770239561854,4
+PAT011243,Gastroenteritis,1,Male,33,8,154,Fever,Slightly Abnormal,Stable,4.305018781729549,1
+PAT008586,Cancer,3,Other,33,4,193,Bleeding,Normal,Stable,9.390572899798377,2
+PAT018272,Common Cold,1,Male,53,11,197,Fatigue,Normal,Needs Follow-up,7.411621293386343,1
+PAT008450,Heart Disease,2,Male,49,14,305,Dizziness,Normal,Needs Follow-up,13.037496620373165,3
+PAT001144,Arthritis,5,Female,87,13,114,Fatigue,Moderately Abnormal,Needs Follow-up,21.246131049827476,4
+PAT000012,Kidney Disease,5,Female,60,12,328,Confusion,Severely Abnormal,Acute,29.868848405403693,5
+PAT012807,Fracture,4,Other,22,4,48,None/Mild,Moderately Abnormal,Critical,25.86064597023343,4
+PAT015200,Fracture,3,Female,108,0,35,Severe Pain,Normal,Acute,18.018929199479086,3
+PAT002872,Cancer,1,Male,19,12,117,Severe Pain,Normal,Needs Follow-up,10.249695635074492,2
+PAT019304,Diabetes,1,Male,61,14,20,Weakness,Slightly Abnormal,Chronic Controlled,9.150355659052757,2
+PAT012738,Stroke,2,Male,38,1,24,Chest Pain,Normal,Needs Follow-up,12.73138109031031,2
+PAT012097,Asthma,5,Other,24,5,228,Shortness of Breath,Severely Abnormal,Critical,35.43611155285725,5
+PAT005013,Cancer,1,Other,75,9,109,Bleeding,Normal,Stable,8.058184070618712,2
+PAT000686,Stroke,3,Female,71,8,58,Chest Pain,Normal,Needs Follow-up,20.173235802721948,3
+PAT008583,Pneumonia,1,Female,91,5,30,Cough,Slightly Abnormal,Needs Follow-up,13.078752453885468,3
+PAT012321,Heart Disease,5,Male,11,1,136,Dizziness,Moderately Abnormal,Critical,32.362471632321345,5
+PAT000553,COPD,3,Male,95,14,100,Shortness of Breath,Slightly Abnormal,Acute,22.574264093046605,4
+PAT002404,UTI,4,Male,99,13,45,Vomiting,Moderately Abnormal,Acute,25.656525119902586,4
+PAT011763,UTI,5,Other,82,6,1,Nausea,Slightly Abnormal,Needs Follow-up,18.510569651838512,3
+PAT000390,Stroke,4,Female,8,14,253,Dizziness,Slightly Abnormal,Critical,27.089048731011477,5
+PAT001257,Arthritis,2,Other,121,11,268,Fatigue,Normal,Chronic Controlled,5.930972995421895,1
+PAT014841,Diabetes,3,Male,89,6,262,Nausea,Slightly Abnormal,Stable,8.954777658612983,2
+PAT008562,Stroke,2,Other,65,12,240,Dizziness,Normal,Chronic Controlled,10.919040499056788,2
+PAT006469,UTI,4,Other,7,13,179,Severe Pain,Moderately Abnormal,Needs Follow-up,21.080592001258406,3
+PAT019512,COPD,2,Male,93,1,214,Cough,Normal,Needs Follow-up,9.979479128242582,2
+PAT004766,Asthma,4,Male,58,6,111,Fever,Slightly Abnormal,Chronic Uncontrolled,18.997145070868505,3
+PAT011330,COPD,4,Female,20,14,238,Fever,Severely Abnormal,Acute,25.082957906048108,4
+PAT009859,COPD,4,Female,119,7,1,Abdominal Pain,Slightly Abnormal,Critical,24.101228305258413,4
+PAT009688,Heart Disease,1,Male,2,1,55,Weakness,Normal,Needs Follow-up,7.415576323280921,2
+PAT009147,Pneumonia,5,Other,14,2,237,Fatigue,Moderately Abnormal,Chronic Uncontrolled,18.970440221143775,3
+PAT012941,Cancer,4,Other,15,3,194,Fatigue,Moderately Abnormal,Chronic Uncontrolled,17.405595417876523,3
+PAT015534,Kidney Disease,5,Other,9,5,148,Fever,Severely Abnormal,Critical,32.31913853094521,5
+PAT018327,Pneumonia,5,Male,68,2,141,Cough,Severely Abnormal,Critical,34.15615155567811,5
+PAT011737,Common Cold,5,Other,75,5,354,Fatigue,Severely Abnormal,Critical,31.084165601627145,5
+PAT018436,UTI,5,Male,35,8,99,Nausea,Slightly Abnormal,Chronic Uncontrolled,17.525533625918747,3
+PAT001962,Heart Disease,4,Female,54,0,303,Chest Pain,Severely Abnormal,Critical,33.456881421092795,5
+PAT007089,Pneumonia,4,Male,34,9,67,Fever,Moderately Abnormal,Chronic Uncontrolled,18.48172112222027,3
+PAT018756,Migraine,3,Female,41,14,164,Headache,Normal,Acute,12.731485145465708,2
+PAT001317,Kidney Disease,2,Female,62,10,51,Confusion,Slightly Abnormal,Stable,13.580122604193093,3
+PAT006960,Migraine,2,Female,103,11,84,Nausea,Slightly Abnormal,Chronic Controlled,9.124463106647521,2
+PAT014364,COPD,5,Male,51,9,193,Fever,Slightly Abnormal,Acute,22.20750975840639,4
+PAT006570,Gastroenteritis,2,Other,24,9,326,Fever,Slightly Abnormal,Needs Follow-up,14.458025894176355,3
+PAT001576,Heart Disease,4,Other,84,6,352,Chest Pain,Severely Abnormal,Needs Follow-up,25.902556186848752,4
+PAT017212,Asthma,1,Female,61,4,90,Fatigue,Normal,Chronic Controlled,5.343838860431968,1
+PAT004011,Migraine,1,Male,113,2,199,Headache,Normal,Chronic Controlled,6.35588059604656,1
+PAT014513,Diabetes,4,Other,82,4,328,Fatigue,Severely Abnormal,Critical,29.268318520970737,5
+PAT017856,COPD,2,Male,47,5,63,Fever,Slightly Abnormal,Stable,5.929426084050538,1
+PAT008759,Migraine,1,Female,94,1,101,Dizziness,Normal,Needs Follow-up,12.301268020803764,2
+PAT003164,COPD,2,Other,72,0,197,Shortness of Breath,Normal,Needs Follow-up,14.646436722409142,3
+PAT009739,Fracture,1,Female,129,1,268,None/Mild,Normal,Stable,3.1872981636584794,1
+PAT005559,Pneumonia,2,Other,92,6,308,Shortness of Breath,Slightly Abnormal,Needs Follow-up,18.224940437185587,3
+PAT003550,UTI,5,Other,47,4,202,Fever,Severely Abnormal,Needs Follow-up,24.662128359830465,4
+PAT016472,Fracture,3,Other,36,13,19,None/Mild,Normal,Acute,14.01763343575697,3
+PAT006146,Cancer,1,Other,63,1,22,Bleeding,Normal,Chronic Controlled,9.157561545233818,2
+PAT013610,Kidney Disease,1,Male,41,3,145,Weakness,Normal,Chronic Controlled,6.515397080686839,1
+PAT016876,Fracture,3,Male,111,0,176,None/Mild,Slightly Abnormal,Chronic Controlled,9.129213458154798,2
+PAT009870,Common Cold,3,Other,31,4,316,None/Mild,Moderately Abnormal,Acute,19.20751701300163,3
+PAT016946,Stroke,5,Male,26,10,178,Chest Pain,Moderately Abnormal,Acute,28.55853369959241,5
+PAT006532,Hypertension,2,Female,39,5,62,None/Mild,Normal,Chronic Controlled,6.701043713020772,1
+PAT019417,Asthma,3,Female,122,12,278,Shortness of Breath,Normal,Needs Follow-up,19.247737585410928,3
+PAT005565,UTI,5,Male,94,7,225,Abdominal Pain,Severely Abnormal,Acute,27.902289909202008,5
+PAT018885,Common Cold,3,Male,13,9,92,Cough,Slightly Abnormal,Chronic Controlled,12.499526524915893,2
+PAT004225,Common Cold,2,Female,119,11,281,Fever,Slightly Abnormal,Stable,7.618100258229381,2
+PAT000200,Hypertension,5,Other,61,13,82,Headache,Severely Abnormal,Chronic Uncontrolled,22.733520438765716,4
+PAT019245,Fracture,5,Male,72,11,170,None/Mild,Moderately Abnormal,Critical,27.05025421589312,5
+PAT010539,Gastroenteritis,4,Female,108,9,11,Fever,Slightly Abnormal,Needs Follow-up,15.051544668954723,3
+PAT001705,Arthritis,2,Other,88,13,36,None/Mild,Slightly Abnormal,Chronic Controlled,9.611870127892372,2
+PAT015192,Fracture,1,Other,32,0,114,None/Mild,Normal,Stable,0.13951631827784938,1
+PAT019855,Fracture,4,Male,101,13,86,Severe Pain,Slightly Abnormal,Chronic Uncontrolled,22.016085277255744,4
+PAT015320,Kidney Disease,2,Male,17,12,249,Nausea,Normal,Needs Follow-up,9.523691889008598,2
+PAT008593,Common Cold,1,Male,111,9,152,Cough,Normal,Stable,4.680045267941318,1
+PAT004930,Diabetes,1,Male,121,4,229,Nausea,Normal,Needs Follow-up,9.988454664769998,2
+PAT000175,Arthritis,1,Male,36,2,127,None/Mild,Slightly Abnormal,Needs Follow-up,11.406239466658201,2
+PAT010004,UTI,5,Male,74,12,235,Fever,Slightly Abnormal,Critical,24.46312885389788,4
+PAT014389,Cancer,5,Female,95,2,227,Fatigue,Slightly Abnormal,Acute,19.197140443070488,3
+PAT005327,Arthritis,2,Other,57,9,32,Headache,Normal,Needs Follow-up,9.201735593377144,2
+PAT001978,Stroke,1,Other,126,12,59,Confusion,Normal,Stable,8.957823341701626,2
+PAT011376,Hypertension,5,Female,50,1,106,Fatigue,Severely Abnormal,Needs Follow-up,23.823864726227587,4
+PAT002568,Cancer,1,Male,99,12,113,Severe Pain,Normal,Stable,4.957911798845406,1
+PAT003246,Asthma,5,Female,60,13,217,Cough,Moderately Abnormal,Needs Follow-up,20.43324965940593,3
+PAT009592,Fracture,4,Male,50,3,213,Severe Pain,Severely Abnormal,Acute,27.712191510434486,5
+PAT019278,Kidney Disease,3,Male,12,14,365,Weakness,Normal,Chronic Controlled,6.750196065258851,1
+PAT015202,Common Cold,5,Other,90,6,295,Fatigue,Slightly Abnormal,Critical,28.65643444067335,5
+PAT001663,Gastroenteritis,2,Male,74,6,295,Nausea,Slightly Abnormal,Chronic Controlled,10.20136172621782,2
+PAT010286,Heart Disease,3,Male,110,14,276,Dizziness,Slightly Abnormal,Needs Follow-up,14.23848201399161,3
+PAT003071,Arthritis,1,Female,62,11,284,None/Mild,Normal,Stable,4.172981643100689,1
+PAT014976,Asthma,2,Female,94,8,127,Fever,Normal,Needs Follow-up,11.232395780328462,2
+PAT000053,COPD,2,Female,74,5,177,Fever,Slightly Abnormal,Chronic Controlled,8.982469900974776,2
+PAT003154,Cancer,2,Female,103,4,134,Fatigue,Slightly Abnormal,Needs Follow-up,13.205407507257917,3
+PAT014270,Arthritis,3,Male,19,4,269,Fatigue,Moderately Abnormal,Chronic Controlled,16.92264409433111,3
+PAT017406,Hypertension,3,Female,51,12,163,Fatigue,Normal,Chronic Controlled,9.756276109484341,2
+PAT018040,Migraine,3,Female,14,10,244,Dizziness,Slightly Abnormal,Stable,8.976295563427177,2
+PAT000769,COPD,4,Male,105,11,147,Fatigue,Moderately Abnormal,Acute,21.57990666700882,4
+PAT005755,Migraine,3,Male,63,1,85,Headache,Moderately Abnormal,Chronic Controlled,15.749655017437515,3
+PAT009950,Diabetes,5,Male,73,2,101,Fatigue,Severely Abnormal,Critical,35.19741043476279,5
+PAT014845,Heart Disease,2,Male,65,4,141,Weakness,Normal,Needs Follow-up,9.66037885559564,2
+PAT001606,Migraine,1,Male,59,9,5,Nausea,Normal,Chronic Controlled,4.3663993027459,1
+PAT002434,Kidney Disease,2,Male,2,13,256,Confusion,Normal,Needs Follow-up,16.627515346176917,3
+PAT014975,Cancer,2,Male,57,1,302,Bleeding,Slightly Abnormal,Stable,12.948033553292202,3
+PAT006325,Stroke,3,Male,121,11,129,Dizziness,Slightly Abnormal,Chronic Controlled,12.686344526576503,2
+PAT012243,Migraine,2,Other,59,12,20,Headache,Slightly Abnormal,Stable,8.33797525349135,2
+PAT006869,Cancer,2,Female,49,8,172,Weakness,Normal,Stable,3.356053514865731,1
+PAT004750,Kidney Disease,1,Female,78,3,163,Fatigue,Normal,Stable,3.926863504181129,1
+PAT000228,Hypertension,5,Male,24,9,188,None/Mild,Slightly Abnormal,Chronic Uncontrolled,18.61427371080662,3
+PAT005674,Stroke,2,Male,79,5,161,Weakness,Normal,Chronic Controlled,9.25319698524294,2
+PAT006268,Pneumonia,1,Male,6,11,37,Cough,Slightly Abnormal,Chronic Controlled,6.770320794251511,1
+PAT007899,Fracture,1,Other,105,8,358,None/Mild,Normal,Chronic Controlled,4.213694374422546,1
+PAT016581,Hypertension,2,Male,78,8,3,Headache,Normal,Chronic Controlled,11.031594018546253,2
+PAT013105,UTI,2,Other,42,0,284,Vomiting,Normal,Stable,5.491724444578388,1
+PAT019869,Gastroenteritis,4,Female,78,14,13,Fever,Moderately Abnormal,Acute,20.7866022157627,3
+PAT000041,Arthritis,3,Male,77,10,189,Fatigue,Slightly Abnormal,Chronic Controlled,15.091595763137171,3
+PAT010615,Gastroenteritis,5,Female,92,2,63,Nausea,Moderately Abnormal,Needs Follow-up,21.308874260547732,4
+PAT016413,UTI,5,Male,76,2,251,Fever,Severely Abnormal,Critical,29.485699090488357,5
+PAT006128,Stroke,1,Male,65,9,106,Dizziness,Normal,Chronic Controlled,8.158920377694605,2
+PAT019143,Fracture,4,Male,114,0,365,None/Mild,Severely Abnormal,Acute,20.366179719503982,3
+PAT010080,Fracture,5,Male,77,7,53,None/Mild,Slightly Abnormal,Critical,25.241419148528674,4
+PAT011717,Asthma,5,Female,85,6,53,Cough,Slightly Abnormal,Critical,27.181597185301953,5
+PAT000335,Kidney Disease,2,Other,3,10,298,Nausea,Normal,Needs Follow-up,8.977628526902787,2
+PAT012102,Stroke,4,Other,113,1,29,Dizziness,Moderately Abnormal,Needs Follow-up,20.886507569237843,3
+PAT012137,Asthma,2,Female,125,5,58,Fever,Normal,Chronic Controlled,7.7698284905522845,2
+PAT018516,Gastroenteritis,1,Other,47,13,119,Vomiting,Normal,Needs Follow-up,8.304041270268325,2
+PAT003996,Kidney Disease,4,Male,42,10,26,Weakness,Severely Abnormal,Chronic Uncontrolled,24.52582464005864,4
+PAT009136,Cancer,2,Other,79,13,90,Severe Pain,Normal,Stable,8.167645827696795,2
+PAT012302,Cancer,2,Other,56,9,333,Fatigue,Normal,Needs Follow-up,10.795676467380567,2
+PAT019060,Stroke,4,Male,56,12,331,Chest Pain,Severely Abnormal,Critical,35.06602442004877,5
+PAT008446,Fracture,2,Male,72,9,272,None/Mild,Slightly Abnormal,Chronic Controlled,8.898589932165272,2
+PAT012422,Heart Disease,4,Female,99,12,28,Weakness,Severely Abnormal,Chronic Uncontrolled,20.893541906131116,3
+PAT000407,Kidney Disease,3,Other,5,3,62,Weakness,Normal,Acute,16.578647618820135,3
+PAT014430,Common Cold,1,Male,91,0,17,Fever,Normal,Stable,1.995457200439593,1
+PAT008140,Pneumonia,2,Other,23,7,262,Shortness of Breath,Normal,Needs Follow-up,18.943564034545517,3
+PAT010630,Pneumonia,3,Female,3,5,312,Cough,Moderately Abnormal,Needs Follow-up,18.54668692738009,3
+PAT005282,Stroke,3,Other,30,4,302,Weakness,Normal,Needs Follow-up,13.021279714819322,3
+PAT007732,Hypertension,3,Other,44,4,37,Fatigue,Normal,Stable,6.600546357850792,1
+PAT008298,Arthritis,2,Female,113,10,345,Headache,Normal,Chronic Controlled,6.590252489854658,1
+PAT014401,Arthritis,1,Female,58,7,261,None/Mild,Normal,Stable,1.5757840070482496,1
+PAT013028,Common Cold,2,Female,21,4,195,Fatigue,Slightly Abnormal,Chronic Controlled,11.087111746702591,2
+PAT010161,Common Cold,3,Male,106,11,336,None/Mild,Moderately Abnormal,Chronic Controlled,12.046623471272357,2
+PAT009909,Pneumonia,4,Female,115,3,334,Fatigue,Moderately Abnormal,Acute,22.769093206393936,4
+PAT000913,Common Cold,1,Female,33,1,88,None/Mild,Normal,Needs Follow-up,7.000254359717504,1
+PAT006120,Asthma,5,Female,2,12,279,Cough,Severely Abnormal,Chronic Uncontrolled,22.808489599960186,4
+PAT013797,Pneumonia,5,Female,37,13,203,Fatigue,Severely Abnormal,Acute,24.862094092213077,4
+PAT009574,Heart Disease,4,Female,126,6,338,Weakness,Severely Abnormal,Critical,28.39992958377583,5
+PAT002318,Heart Disease,4,Male,87,8,290,Confusion,Severely Abnormal,Acute,31.855680351901093,5
+PAT005142,Diabetes,5,Other,55,11,28,Weakness,Severely Abnormal,Chronic Uncontrolled,24.228129681696004,4
+PAT006671,Diabetes,3,Male,20,3,299,Confusion,Normal,Acute,20.26459249141407,3
+PAT017162,COPD,3,Other,52,0,55,Fever,Slightly Abnormal,Stable,8.991873191026107,2
+PAT015977,Pneumonia,3,Female,2,7,87,Shortness of Breath,Slightly Abnormal,Acute,23.193577586595374,4
+PAT001014,Kidney Disease,5,Other,129,4,283,Fatigue,Moderately Abnormal,Critical,31.14493953121844,5
+PAT004337,Kidney Disease,2,Other,8,12,277,Confusion,Slightly Abnormal,Needs Follow-up,15.269230950597137,3
+PAT013729,Hypertension,5,Male,32,7,45,None/Mild,Slightly Abnormal,Acute,19.22386910245915,3
+PAT007007,Stroke,3,Female,11,9,218,Dizziness,Moderately Abnormal,Needs Follow-up,19.138187546826334,3
+PAT015751,Cancer,3,Male,100,9,164,Bleeding,Moderately Abnormal,Chronic Controlled,20.79816503670372,3
+PAT015064,Kidney Disease,4,Other,76,7,218,Weakness,Severely Abnormal,Chronic Uncontrolled,22.83891176144993,4
+PAT012208,Gastroenteritis,3,Male,27,11,23,Vomiting,Normal,Chronic Controlled,8.863965977376887,2
+PAT000109,Hypertension,1,Female,45,13,90,Fatigue,Normal,Chronic Controlled,8.051503436782735,2
+PAT018064,Gastroenteritis,1,Female,68,8,315,Fever,Normal,Chronic Controlled,5.519532757426886,1
+PAT007457,Common Cold,1,Male,91,12,126,None/Mild,Slightly Abnormal,Stable,4.457666428309173,1
+PAT005863,Migraine,5,Other,12,3,35,Dizziness,Moderately Abnormal,Acute,26.202759259906898,4
+PAT012608,COPD,3,Male,62,13,196,Shortness of Breath,Normal,Stable,11.815020022850327,2
+PAT001048,Stroke,5,Female,42,12,303,Weakness,Moderately Abnormal,Critical,29.969097464321482,5
+PAT019317,Common Cold,2,Other,54,8,349,Cough,Normal,Chronic Controlled,6.8130721488205,1
+PAT015575,Arthritis,2,Male,124,8,330,Cough,Normal,Chronic Controlled,7.47290727847756,2
+PAT010709,Stroke,2,Other,120,10,175,Weakness,Normal,Chronic Controlled,7.563185711909689,2
+PAT013839,Common Cold,2,Other,108,5,185,Fever,Slightly Abnormal,Chronic Controlled,11.318153672522246,2
+PAT001672,Arthritis,2,Other,67,3,134,None/Mild,Normal,Needs Follow-up,9.848304024382172,2
+PAT013702,Asthma,2,Female,95,0,172,Cough,Normal,Stable,6.007575724870152,1
+PAT017944,Hypertension,2,Female,130,2,232,None/Mild,Normal,Needs Follow-up,8.388971754900929,2
+PAT007637,Gastroenteritis,4,Other,100,6,159,Fever,Slightly Abnormal,Acute,18.008264715692583,3
+PAT014528,Gastroenteritis,1,Other,3,10,233,Abdominal Pain,Normal,Needs Follow-up,9.583817391388715,2
+PAT000060,UTI,2,Male,11,0,114,Vomiting,Normal,Stable,7.345574293508053,1
+PAT011681,UTI,5,Other,14,8,72,Vomiting,Severely Abnormal,Chronic Uncontrolled,26.325465491329627,4
+PAT012717,Arthritis,2,Female,32,5,65,Headache,Normal,Stable,7.189185437458851,1
+PAT010726,Arthritis,2,Male,108,13,324,Headache,Normal,Chronic Controlled,9.371596716800175,2
+PAT004219,Arthritis,4,Female,59,1,232,Fatigue,Slightly Abnormal,Chronic Uncontrolled,16.914219457676033,3
+PAT016663,Common Cold,2,Other,95,14,135,Fever,Slightly Abnormal,Stable,7.322307923523006,1
+PAT013765,Arthritis,1,Female,70,5,286,Headache,Normal,Chronic Controlled,6.959261877937736,1
+PAT016120,Cancer,5,Male,32,5,220,Severe Pain,Moderately Abnormal,Needs Follow-up,23.224750949938667,4
+PAT014827,Cancer,3,Other,11,3,204,Weakness,Moderately Abnormal,Chronic Controlled,15.534040863297623,3
+PAT011409,Kidney Disease,3,Other,41,6,140,Weakness,Moderately Abnormal,Stable,9.858374311619976,2
+PAT006021,Cancer,4,Male,68,13,8,Weakness,Moderately Abnormal,Needs Follow-up,21.965396623464393,4
+PAT011783,Fracture,4,Female,102,14,349,Severe Pain,Severely Abnormal,Chronic Uncontrolled,26.60743888726422,4
+PAT002475,Diabetes,4,Female,59,13,158,Abdominal Pain,Severely Abnormal,Chronic Uncontrolled,22.690613892452834,4
+PAT013202,Asthma,3,Male,91,4,118,Fatigue,Slightly Abnormal,Chronic Controlled,12.63327289466747,2
+PAT016919,Common Cold,1,Female,69,10,188,Fever,Normal,Chronic Controlled,2.9360929583427504,1
+PAT014212,COPD,2,Female,11,9,327,Fever,Normal,Chronic Controlled,8.08252053615544,2
+PAT009162,Hypertension,4,Female,119,12,233,Headache,Moderately Abnormal,Critical,24.674275925636955,4
+PAT018098,Fracture,3,Female,56,14,91,None/Mild,Slightly Abnormal,Stable,10.009624059422192,2
+PAT012673,Fracture,4,Male,123,6,63,Severe Pain,Severely Abnormal,Acute,29.657653404384195,5
+PAT005617,COPD,2,Other,105,10,128,Cough,Normal,Needs Follow-up,10.525297038329098,2
+PAT018704,Heart Disease,4,Other,38,2,68,Dizziness,Moderately Abnormal,Chronic Uncontrolled,17.835149271081193,3
+PAT016323,Common Cold,3,Male,89,1,9,Fever,Moderately Abnormal,Chronic Controlled,13.253741787856262,3
+PAT006580,Hypertension,4,Female,121,1,109,None/Mild,Moderately Abnormal,Needs Follow-up,17.407174031378837,3
+PAT004410,Pneumonia,2,Male,129,14,299,Fever,Normal,Stable,6.203485759201095,1
+PAT010402,Heart Disease,4,Male,11,3,132,Weakness,Moderately Abnormal,Needs Follow-up,17.13659310508876,3
+PAT015719,Cancer,1,Male,85,1,71,Weakness,Normal,Stable,3.82943794093273,1
+PAT000120,Gastroenteritis,1,Male,1,3,148,Nausea,Normal,Needs Follow-up,8.760056901245944,2
+PAT009701,Migraine,1,Male,21,1,155,Headache,Normal,Stable,3.2432163596417816,1
+PAT006057,UTI,2,Other,22,12,195,Nausea,Slightly Abnormal,Needs Follow-up,14.316694330991906,3
+PAT010348,Diabetes,1,Other,130,11,106,Confusion,Normal,Stable,7.848689749860597,2
+PAT011567,Common Cold,5,Other,39,2,122,Abdominal Pain,Slightly Abnormal,Needs Follow-up,18.552040067067455,3
+PAT007578,Common Cold,4,Female,58,0,133,Fever,Slightly Abnormal,Chronic Uncontrolled,15.42632581528591,3
+PAT016237,Cancer,2,Female,90,9,119,Weakness,Normal,Chronic Controlled,8.373489663114363,2
+PAT012645,Stroke,4,Female,70,5,226,Shortness of Breath,Slightly Abnormal,Chronic Uncontrolled,22.867091428979442,4
+PAT019903,COPD,1,Other,95,14,184,Fatigue,Normal,Chronic Controlled,4.1955712937976095,1
+PAT002493,Asthma,2,Male,16,2,111,Fatigue,Normal,Stable,5.794403374155105,1
+PAT014057,Gastroenteritis,2,Female,55,10,43,Abdominal Pain,Slightly Abnormal,Stable,6.994748198354126,1
+PAT012609,UTI,2,Male,46,5,321,Abdominal Pain,Normal,Stable,3.7392741723262244,1
+PAT001291,COPD,1,Female,52,4,64,Fatigue,Normal,Needs Follow-up,5.484617858816095,1
+PAT007328,Kidney Disease,1,Other,111,9,12,Confusion,Slightly Abnormal,Stable,11.613732355369244,2
+PAT009929,Pneumonia,2,Female,56,2,99,Fatigue,Normal,Chronic Controlled,6.607768726499204,1
+PAT016216,UTI,4,Female,94,8,255,Fever,Moderately Abnormal,Acute,22.6459978438371,4
+PAT019406,Fracture,5,Female,84,5,59,None/Mild,Slightly Abnormal,Critical,21.46267322112236,4
+PAT019064,Gastroenteritis,1,Other,22,6,17,Abdominal Pain,Normal,Stable,5.470919367840411,1
+PAT011286,Diabetes,2,Female,98,9,33,Fatigue,Normal,Chronic Controlled,5.188037364265291,1
+PAT008475,Gastroenteritis,3,Other,100,1,170,Nausea,Moderately Abnormal,Stable,13.013098768434228,3
+PAT002114,Common Cold,1,Male,96,6,232,Fever,Normal,Needs Follow-up,7.964232076825189,2
+PAT011618,Gastroenteritis,1,Other,100,11,132,Nausea,Normal,Stable,-0.13315763373175038,1
+PAT011752,Pneumonia,1,Male,69,8,117,Cough,Normal,Chronic Controlled,7.004890783071097,1
+PAT014436,Migraine,5,Female,106,8,1,Headache,Slightly Abnormal,Critical,27.21359288520553,5
+PAT008796,Asthma,4,Other,63,0,256,Fever,Moderately Abnormal,Critical,25.330341008391706,4
+PAT002521,Cancer,2,Male,95,11,56,Weakness,Normal,Needs Follow-up,9.37697878989362,2
+PAT012867,Hypertension,5,Other,107,7,353,None/Mild,Severely Abnormal,Acute,23.970513536714083,4
+PAT000789,Migraine,3,Female,42,13,156,Dizziness,Moderately Abnormal,Acute,19.288936182255856,3
+PAT008329,Arthritis,3,Other,90,8,74,None/Mild,Normal,Stable,7.105179343903753,1
+PAT005423,Kidney Disease,1,Male,37,13,240,Weakness,Normal,Chronic Controlled,6.4448311082246015,1
+PAT011912,Asthma,2,Female,22,3,230,Fever,Slightly Abnormal,Chronic Controlled,10.396154520491342,2
+PAT009952,Arthritis,5,Female,86,0,153,Headache,Severely Abnormal,Chronic Uncontrolled,25.209589269567925,4
+PAT019259,Fracture,2,Female,7,12,95,Severe Pain,Slightly Abnormal,Chronic Controlled,12.617958881788514,2
+PAT015700,COPD,2,Male,62,6,157,Shortness of Breath,Slightly Abnormal,Needs Follow-up,15.041330584457352,3
+PAT014897,Fracture,3,Male,0,1,163,None/Mild,Normal,Stable,5.112235862936775,1
+PAT003425,Heart Disease,5,Male,104,11,282,Severe Pain,Slightly Abnormal,Critical,28.19686053541773,5
+PAT015854,Gastroenteritis,2,Female,93,5,252,Abdominal Pain,Normal,Chronic Controlled,9.035207252154192,2
+PAT011003,Gastroenteritis,3,Female,97,4,317,Vomiting,Slightly Abnormal,Needs Follow-up,15.69734704177454,3
+PAT004212,UTI,1,Female,90,8,12,Fever,Normal,Stable,3.446303856725724,1
+PAT016074,Common Cold,2,Female,36,6,11,None/Mild,Normal,Needs Follow-up,9.303194891099047,2
+PAT000674,Gastroenteritis,1,Female,128,8,21,Vomiting,Slightly Abnormal,Stable,6.0624207074186405,1
+PAT000396,Cancer,5,Male,126,4,222,Severe Pain,Severely Abnormal,Acute,32.42874162304435,5
+PAT009019,Asthma,4,Male,21,14,47,Cough,Slightly Abnormal,Needs Follow-up,15.982369505111816,3
+PAT006814,Pneumonia,2,Other,21,1,247,Shortness of Breath,Normal,Chronic Controlled,13.950783979601269,3
+PAT003975,Gastroenteritis,4,Female,44,12,36,Nausea,Severely Abnormal,Acute,25.792760123704195,4
+PAT007281,COPD,3,Male,33,9,255,Fatigue,Moderately Abnormal,Acute,22.60175809417328,4
+PAT012039,Arthritis,4,Male,126,5,193,None/Mild,Severely Abnormal,Acute,23.58126253692993,4
+PAT005802,Common Cold,3,Other,48,12,12,None/Mild,Slightly Abnormal,Stable,8.589637161982303,2
+PAT012551,Hypertension,3,Other,113,12,56,Headache,Moderately Abnormal,Stable,13.55142285547079,3
+PAT019246,Pneumonia,1,Male,86,7,289,Cough,Normal,Needs Follow-up,8.336983896620236,2
+PAT006382,Pneumonia,1,Female,41,0,214,Fatigue,Normal,Stable,3.21495762305646,1
+PAT017814,Pneumonia,5,Female,96,7,10,Cough,Moderately Abnormal,Needs Follow-up,21.367402374789293,4
+PAT017599,Kidney Disease,1,Female,37,1,60,Nausea,Slightly Abnormal,Chronic Controlled,7.134722001432865,1
+PAT002069,Fracture,3,Male,85,10,268,Severe Pain,Slightly Abnormal,Stable,14.511980629099448,3
+PAT001997,UTI,1,Female,88,3,57,Fever,Slightly Abnormal,Stable,4.02477248019979,1
+PAT016978,Gastroenteritis,5,Other,90,6,238,Nausea,Severely Abnormal,Chronic Uncontrolled,24.914470527139265,4
+PAT008159,Migraine,1,Male,15,11,159,Dizziness,Slightly Abnormal,Chronic Controlled,8.043905350110105,2
+PAT016810,Fracture,2,Male,101,5,197,None/Mild,Normal,Chronic Controlled,6.6641482649082375,1
+PAT019610,Gastroenteritis,5,Male,85,1,7,Nausea,Moderately Abnormal,Needs Follow-up,24.08198397226688,4
+PAT005774,Diabetes,4,Female,125,5,186,Confusion,Slightly Abnormal,Critical,29.503030455597422,5
+PAT011279,UTI,2,Female,22,5,170,Fever,Normal,Stable,5.284614683816785,1
+PAT018986,UTI,1,Other,13,1,238,Abdominal Pain,Normal,Stable,3.4314188387944693,1
+PAT003473,Common Cold,5,Female,125,9,12,Fatigue,Moderately Abnormal,Acute,26.593979546401282,4
+PAT000759,Arthritis,5,Female,85,4,301,None/Mild,Severely Abnormal,Needs Follow-up,22.288273172769816,4
+PAT011584,Fracture,3,Other,22,3,1,None/Mild,Normal,Needs Follow-up,10.86680154397837,2
+PAT000402,Hypertension,2,Female,10,11,286,Headache,Normal,Chronic Controlled,8.242655691511992,2
+PAT008824,Cancer,4,Other,2,14,239,Severe Pain,Severely Abnormal,Acute,28.820850617778078,5
+PAT018405,Arthritis,5,Other,25,6,160,Headache,Slightly Abnormal,Critical,26.486803813689345,4
+PAT011547,Migraine,2,Other,24,6,125,Headache,Slightly Abnormal,Stable,6.856670852554958,1
+PAT004566,Migraine,4,Female,4,7,38,Headache,Slightly Abnormal,Chronic Uncontrolled,14.795466153629064,3
+PAT002597,Gastroenteritis,2,Female,65,4,352,Vomiting,Slightly Abnormal,Needs Follow-up,15.074099986712497,3
+PAT007250,Migraine,2,Male,85,5,204,Dizziness,Slightly Abnormal,Needs Follow-up,16.772749879761363,3
+PAT000091,Diabetes,4,Female,40,1,160,Nausea,Severely Abnormal,Chronic Uncontrolled,21.093154656781167,3
+PAT004807,Hypertension,2,Other,50,11,131,None/Mild,Normal,Chronic Controlled,4.858399111757507,1
+PAT019995,Diabetes,3,Female,38,1,323,Confusion,Slightly Abnormal,Stable,13.813453132321351,3
+PAT013048,Hypertension,3,Male,38,14,338,None/Mild,Slightly Abnormal,Chronic Controlled,12.491674094943452,2
+PAT016770,Asthma,4,Male,45,4,253,Shortness of Breath,Severely Abnormal,Acute,31.833344644357542,5
+PAT014822,Heart Disease,3,Female,11,3,20,Shortness of Breath,Moderately Abnormal,Needs Follow-up,18.250548883567077,3
+PAT011884,UTI,1,Other,53,1,182,Vomiting,Normal,Chronic Controlled,7.63864405351371,2
+PAT000491,Heart Disease,5,Female,29,12,79,Dizziness,Severely Abnormal,Critical,32.177887610377525,5
+PAT010356,Common Cold,3,Female,72,3,353,Fever,Moderately Abnormal,Needs Follow-up,17.228392477431047,3
+PAT017422,Diabetes,5,Female,119,8,203,Confusion,Slightly Abnormal,Acute,24.37581074484537,4
+PAT009910,COPD,4,Male,0,14,168,Fever,Severely Abnormal,Needs Follow-up,23.003864938643243,4
+PAT001839,Asthma,1,Male,43,6,180,Fever,Slightly Abnormal,Chronic Controlled,7.8112736452304565,2
+PAT010273,Gastroenteritis,4,Male,40,7,323,Fever,Moderately Abnormal,Needs Follow-up,21.346400581983822,4
+PAT000705,Cancer,3,Other,37,6,132,Severe Pain,Normal,Stable,13.136780845125799,3
+PAT016555,Diabetes,5,Other,76,7,336,Nausea,Moderately Abnormal,Chronic Uncontrolled,21.05339980151428,3
+PAT007481,Hypertension,1,Other,33,14,188,None/Mild,Normal,Chronic Controlled,2.3291674196247665,1
+PAT004951,Asthma,2,Other,6,2,124,Cough,Normal,Chronic Controlled,8.026143028365867,2
+PAT006749,UTI,1,Other,90,12,350,Abdominal Pain,Slightly Abnormal,Needs Follow-up,14.192626422034873,3
+PAT017154,Kidney Disease,1,Female,72,11,123,Fatigue,Normal,Needs Follow-up,8.530505081240081,2
+PAT005176,Common Cold,1,Female,23,14,334,Cough,Normal,Chronic Controlled,4.524833164132023,1
+PAT016175,Common Cold,3,Female,104,0,204,None/Mild,Slightly Abnormal,Chronic Controlled,9.8137164017296,2
+PAT011386,Heart Disease,3,Male,126,7,9,Chest Pain,Moderately Abnormal,Stable,15.27196494371547,3
+PAT019944,Heart Disease,1,Female,61,14,92,Dizziness,Normal,Chronic Controlled,6.676393659729002,1
+PAT002861,Arthritis,1,Female,41,1,185,Headache,Normal,Chronic Controlled,4.735864341478199,1
+PAT001198,Fracture,3,Other,91,14,264,None/Mild,Moderately Abnormal,Acute,18.191940046443037,3
+PAT001186,Asthma,1,Other,109,1,110,Shortness of Breath,Normal,Stable,7.847040512006967,2
+PAT002677,Diabetes,4,Female,116,2,243,Confusion,Moderately Abnormal,Acute,24.249429412511613,4
+PAT002997,Asthma,2,Female,72,4,142,Shortness of Breath,Normal,Chronic Controlled,14.257820699178076,3
+PAT016191,Arthritis,5,Male,24,0,25,None/Mild,Moderately Abnormal,Critical,30.447194572073897,5
+PAT004432,Cancer,4,Female,46,3,97,Severe Pain,Moderately Abnormal,Chronic Uncontrolled,22.239361522483577,4
+PAT007528,Diabetes,3,Male,0,6,127,Fatigue,Slightly Abnormal,Acute,21.267333611093704,4
+PAT004783,Heart Disease,1,Male,53,6,166,Abdominal Pain,Slightly Abnormal,Needs Follow-up,14.099818338619349,3
+PAT016936,COPD,1,Male,84,14,294,Cough,Slightly Abnormal,Stable,5.963208625405975,1
+PAT010363,Cancer,2,Other,96,8,306,Fatigue,Slightly Abnormal,Chronic Controlled,10.690242869324486,2
+PAT001543,Fracture,2,Male,65,1,313,Vomiting,Normal,Chronic Controlled,8.294866985771957,2
+PAT018935,Asthma,1,Female,64,3,199,Fatigue,Normal,Needs Follow-up,7.11208998392575,1
+PAT004589,Stroke,3,Male,121,13,185,Dizziness,Slightly Abnormal,Chronic Controlled,16.832962788922963,3
+PAT015677,Diabetes,3,Female,100,13,293,Fatigue,Slightly Abnormal,Chronic Controlled,11.177525344656464,2
+PAT012601,COPD,2,Male,11,3,33,Shortness of Breath,Slightly Abnormal,Chronic Controlled,15.176506355609586,3
+PAT000079,Cancer,3,Other,117,12,143,Severe Pain,Slightly Abnormal,Chronic Controlled,16.8862205560812,3
+PAT013645,Arthritis,4,Female,30,10,94,None/Mild,Severely Abnormal,Acute,22.03022332373762,4
+PAT006274,Heart Disease,2,Female,122,14,75,Shortness of Breath,Slightly Abnormal,Chronic Controlled,13.166478460805461,3
+PAT008438,Diabetes,3,Other,117,2,96,Nausea,Slightly Abnormal,Chronic Controlled,12.710145304398386,2
+PAT011531,Stroke,3,Other,50,1,210,Chest Pain,Normal,Chronic Controlled,17.050069218427602,3
+PAT010944,Pneumonia,5,Male,52,11,57,Shortness of Breath,Slightly Abnormal,Chronic Uncontrolled,22.66301458865393,4
+PAT001152,Asthma,3,Other,35,10,338,Fever,Moderately Abnormal,Stable,13.037863883843254,3
+PAT001564,Migraine,4,Female,54,8,249,Cough,Slightly Abnormal,Acute,20.590922512163882,3
+PAT003004,Migraine,2,Male,58,13,313,Dizziness,Normal,Needs Follow-up,11.273382000263487,2
+PAT011597,Asthma,3,Female,108,6,271,Cough,Slightly Abnormal,Stable,9.890686083112296,2
+PAT003707,Cancer,4,Other,127,6,344,Severe Pain,Severely Abnormal,Critical,32.09077303040684,5
+PAT009671,UTI,3,Male,110,4,166,Abdominal Pain,Moderately Abnormal,Acute,19.632864638595763,3
+PAT017681,Pneumonia,2,Female,83,5,180,Fatigue,Normal,Chronic Controlled,8.850184402801462,2
+PAT019502,Stroke,1,Male,32,2,50,Weakness,Slightly Abnormal,Chronic Controlled,8.45180986622754,2
+PAT016199,Asthma,3,Other,84,4,232,Cough,Slightly Abnormal,Acute,18.7564872891412,3
+PAT006585,Arthritis,3,Male,81,4,207,None/Mild,Moderately Abnormal,Stable,11.584322408377657,2
+PAT014582,Heart Disease,3,Other,15,14,22,Weakness,Moderately Abnormal,Acute,18.598648164788802,3
+PAT009650,Stroke,2,Female,35,7,308,Chest Pain,Normal,Needs Follow-up,14.362640531551842,3
+PAT015768,Pneumonia,5,Other,37,11,190,Fatigue,Moderately Abnormal,Chronic Uncontrolled,20.160145906221754,3
+PAT007335,Hypertension,3,Male,4,14,176,Fatigue,Slightly Abnormal,Chronic Controlled,13.82317950485041,3
+PAT000903,Common Cold,2,Male,99,7,7,Cough,Normal,Chronic Controlled,8.677697452825178,2
+PAT001716,COPD,2,Other,95,3,188,Fever,Normal,Stable,7.540680021998225,2
+PAT002014,Hypertension,4,Male,86,5,183,Fatigue,Slightly Abnormal,Critical,26.561186862678785,4
+PAT000641,COPD,2,Male,9,10,8,Shortness of Breath,Normal,Chronic Controlled,11.047852861097857,2
+PAT005438,Gastroenteritis,4,Male,66,10,28,Fever,Severely Abnormal,Needs Follow-up,21.06233050955482,3
+PAT013487,Migraine,3,Other,71,14,64,Headache,Normal,Stable,10.893758116093217,2
+PAT011659,Stroke,2,Female,114,3,267,Weakness,Normal,Chronic Controlled,8.268136941182222,2
+PAT013179,Migraine,3,Male,34,5,93,Nausea,Normal,Acute,18.568713560276187,3
+PAT005758,Stroke,2,Female,111,3,188,Confusion,Slightly Abnormal,Chronic Controlled,15.033661971722022,3
+PAT014289,Cancer,5,Other,44,12,153,Fatigue,Slightly Abnormal,Critical,25.090747373595843,4
+PAT019004,COPD,5,Female,107,8,26,Fever,Moderately Abnormal,Acute,25.72886290155492,4
+PAT000806,UTI,5,Male,5,6,16,Fever,Severely Abnormal,Needs Follow-up,22.53508485600544,4
+PAT006289,Heart Disease,4,Male,70,14,260,Dizziness,Severely Abnormal,Acute,26.954466175875815,4
+PAT010565,Arthritis,4,Female,64,7,193,None/Mild,Moderately Abnormal,Critical,23.19448377520052,4
+PAT012434,Gastroenteritis,4,Other,43,11,179,Fever,Slightly Abnormal,Needs Follow-up,15.145830966662336,3
+PAT012374,Fracture,5,Other,1,6,278,None/Mild,Slightly Abnormal,Critical,23.97944034333212,4
+PAT005904,Stroke,4,Male,27,3,22,Chest Pain,Severely Abnormal,Acute,25.838635201852544,4
+PAT012935,Common Cold,3,Other,127,11,75,Fatigue,Moderately Abnormal,Chronic Controlled,14.913973865663241,3
+PAT002037,Cancer,2,Male,106,10,235,Bleeding,Normal,Needs Follow-up,16.14510436268048,3
+PAT016174,Migraine,1,Female,10,11,256,Dizziness,Normal,Chronic Controlled,6.356908766246047,1
+PAT009305,Cancer,3,Other,27,3,240,Severe Pain,Slightly Abnormal,Chronic Controlled,15.799233994158419,3
+PAT000241,UTI,3,Other,93,9,358,Vomiting,Slightly Abnormal,Stable,11.304216500494784,2
+PAT019905,UTI,4,Male,97,8,93,Nausea,Slightly Abnormal,Acute,20.75821071777487,3
+PAT014269,Heart Disease,2,Female,24,8,84,Dizziness,Slightly Abnormal,Stable,9.804617571924647,2
+PAT009744,COPD,5,Male,116,11,214,Fever,Moderately Abnormal,Acute,24.342197504830587,4
+PAT004689,Diabetes,2,Female,124,6,53,Nausea,Normal,Stable,3.3743389488298563,1
+PAT011526,Fracture,1,Male,125,11,349,None/Mild,Normal,Chronic Controlled,4.641333555233687,1
+PAT018403,Fracture,3,Female,18,7,278,Severe Pain,Moderately Abnormal,Stable,15.438832381295901,3
+PAT001195,Heart Disease,3,Male,121,12,191,Dizziness,Moderately Abnormal,Chronic Controlled,14.19595733725707,3
+PAT007624,Arthritis,4,Female,33,8,97,Fatigue,Slightly Abnormal,Critical,26.325487927103325,4
+PAT011038,Arthritis,2,Male,49,7,153,Confusion,Normal,Stable,11.11259273266882,2
+PAT019256,Heart Disease,3,Male,15,6,7,Dizziness,Slightly Abnormal,Chronic Controlled,14.546432685352688,3
+PAT013280,COPD,1,Other,21,14,339,Fever,Slightly Abnormal,Chronic Controlled,9.85275207213401,2
+PAT007622,Stroke,4,Other,100,4,216,Dizziness,Severely Abnormal,Acute,26.135291417756513,4
+PAT018550,UTI,2,Female,76,10,73,Fever,Normal,Chronic Controlled,9.125484041513271,2
+PAT003001,Kidney Disease,3,Other,111,1,255,Nausea,Slightly Abnormal,Chronic Controlled,12.79216402732852,2
+PAT000608,Fracture,5,Other,129,11,314,None/Mild,Moderately Abnormal,Needs Follow-up,19.87182511811404,3
+PAT007152,Diabetes,2,Male,84,0,82,Confusion,Slightly Abnormal,Chronic Controlled,13.52903384512514,3
+PAT014319,Gastroenteritis,2,Female,84,13,162,Fever,Normal,Needs Follow-up,12.50135417223952,2
+PAT019319,Stroke,5,Other,86,14,284,Confusion,Moderately Abnormal,Critical,36.10633572280671,5
+PAT013265,Arthritis,3,Other,88,0,156,None/Mild,Slightly Abnormal,Stable,7.823285058305265,2
+PAT005192,Arthritis,5,Other,78,7,107,Fatigue,Moderately Abnormal,Chronic Uncontrolled,21.38313476462414,4
+PAT016257,Diabetes,5,Male,46,1,215,Headache,Severely Abnormal,Chronic Uncontrolled,24.62313664883865,4
+PAT019257,Diabetes,5,Female,25,11,40,Weakness,Moderately Abnormal,Needs Follow-up,21.200258188700356,4
+PAT005051,Migraine,1,Other,125,14,33,Dizziness,Normal,Chronic Controlled,7.693560447296373,2
+PAT009322,COPD,1,Male,42,10,224,Fatigue,Slightly Abnormal,Stable,6.4825382281927,1
+PAT002274,Fracture,3,Female,69,7,300,None/Mild,Slightly Abnormal,Acute,13.99260654747027,3
+PAT001920,Kidney Disease,1,Other,61,13,0,Weakness,Normal,Chronic Controlled,6.117483105320478,1
+PAT005368,Heart Disease,1,Other,50,14,331,Shortness of Breath,Normal,Stable,10.363603835559028,2
+PAT002054,COPD,1,Other,3,6,278,Fatigue,Normal,Stable,3.969059438330809,1
+PAT001267,Migraine,4,Female,97,5,114,Headache,Severely Abnormal,Critical,29.877516577206343,5
+PAT014725,Kidney Disease,5,Male,102,11,256,Weakness,Slightly Abnormal,Needs Follow-up,18.838988843821365,3
+PAT014211,COPD,4,Other,40,13,340,Cough,Moderately Abnormal,Chronic Uncontrolled,18.99710111698101,3
+PAT005853,Pneumonia,4,Other,31,8,281,Fever,Moderately Abnormal,Chronic Uncontrolled,19.765410267935753,3
+PAT011382,UTI,5,Male,105,14,183,Fever,Moderately Abnormal,Critical,31.947674155059534,5
+PAT018046,Stroke,2,Other,71,3,355,Dizziness,Normal,Needs Follow-up,13.296704200988485,3
+PAT002683,Heart Disease,3,Female,112,7,282,Weakness,Normal,Acute,15.959427939266192,3
+PAT008448,Cancer,4,Female,88,3,13,Severe Pain,Severely Abnormal,Acute,28.129310935464883,5
+PAT003871,Stroke,4,Female,103,14,295,Chest Pain,Moderately Abnormal,Acute,27.684986538309158,5
+PAT017574,COPD,1,Female,106,8,46,Headache,Normal,Chronic Controlled,8.282821159140447,2
+PAT019889,Arthritis,2,Other,43,12,10,Fatigue,Slightly Abnormal,Chronic Controlled,9.85627706263803,2
+PAT016625,Hypertension,4,Female,11,4,63,Headache,Slightly Abnormal,Acute,19.27655490718963,3
+PAT001904,Common Cold,2,Male,68,12,304,None/Mild,Normal,Chronic Controlled,6.100541132408506,1
+PAT001459,Common Cold,4,Other,108,9,111,None/Mild,Severely Abnormal,Needs Follow-up,19.625363616740593,3
+PAT019183,Fracture,1,Female,84,9,330,Severe Pain,Normal,Needs Follow-up,13.673041772685535,3
+PAT001328,UTI,4,Male,48,8,40,Vomiting,Moderately Abnormal,Critical,29.91475585705226,5
+PAT005793,Migraine,3,Female,124,8,121,Nausea,Normal,Acute,15.506009610382996,3
+PAT003392,Cancer,1,Male,111,8,125,Weakness,Slightly Abnormal,Stable,2.1908041259549345,1
+PAT016731,Migraine,3,Other,11,6,107,Nausea,Moderately Abnormal,Needs Follow-up,14.955910994825482,3
+PAT002278,Hypertension,2,Other,98,0,337,Fatigue,Slightly Abnormal,Needs Follow-up,14.853361735710276,3
+PAT000267,Fracture,4,Male,72,8,9,None/Mild,Moderately Abnormal,Acute,19.88988536273162,3
+PAT008407,Kidney Disease,5,Male,118,0,39,Fatigue,Severely Abnormal,Needs Follow-up,24.945546249635385,4
+PAT009821,Diabetes,4,Female,34,2,342,Confusion,Slightly Abnormal,Needs Follow-up,20.545406436839443,3
+PAT015406,Pneumonia,1,Male,53,12,357,Cough,Normal,Needs Follow-up,8.561565615570494,2
+PAT005291,Stroke,2,Female,111,0,302,Severe Pain,Normal,Chronic Controlled,13.10696197228605,3
+PAT002837,Cancer,5,Female,62,11,179,Fatigue,Moderately Abnormal,Chronic Uncontrolled,20.2434395437121,3
+PAT010720,Common Cold,5,Female,1,8,119,Cough,Slightly Abnormal,Acute,20.17438973785872,3
+PAT013168,UTI,2,Other,15,11,155,Vomiting,Slightly Abnormal,Stable,9.878657634972917,2
+PAT010509,Pneumonia,2,Other,66,0,37,Fever,Slightly Abnormal,Chronic Controlled,10.548581242522705,2
+PAT001365,Hypertension,2,Female,20,14,335,None/Mild,Normal,Needs Follow-up,8.074447053302269,2
+PAT003809,Gastroenteritis,1,Male,37,9,134,Cough,Normal,Stable,5.19034933286646,1
+PAT007485,Cancer,2,Female,20,6,349,Bleeding,Normal,Chronic Controlled,12.765949644727982,2
+PAT004149,Migraine,5,Other,18,13,252,Nausea,Severely Abnormal,Critical,31.918680956074933,5
+PAT013343,Fracture,4,Male,31,5,192,Severe Pain,Severely Abnormal,Chronic Uncontrolled,23.970603410038965,4
+PAT009536,Hypertension,5,Female,37,9,305,None/Mild,Moderately Abnormal,Needs Follow-up,17.571361806247054,3
+PAT015314,Arthritis,4,Other,112,12,104,None/Mild,Moderately Abnormal,Critical,25.750786217387326,4
+PAT014892,Cancer,5,Male,0,0,295,Bleeding,Moderately Abnormal,Acute,26.492659851384996,4
+PAT016756,Hypertension,5,Female,127,0,344,None/Mild,Severely Abnormal,Needs Follow-up,25.34525256724573,4
+PAT004115,COPD,4,Other,88,11,121,Fever,Slightly Abnormal,Needs Follow-up,17.494902950140183,3
+PAT008827,Hypertension,3,Male,38,13,119,Fatigue,Slightly Abnormal,Chronic Controlled,14.137737695964795,3
+PAT008845,Pneumonia,3,Female,76,2,276,Cough,Moderately Abnormal,Chronic Controlled,15.415583802120667,3
+PAT000621,Hypertension,3,Female,39,5,207,None/Mild,Slightly Abnormal,Stable,5.017520003327646,1
+PAT007873,Asthma,3,Female,12,13,314,Shortness of Breath,Normal,Acute,21.494103825322725,4
+PAT011608,Kidney Disease,2,Other,112,14,346,Nausea,Normal,Chronic Controlled,9.597232599070779,2
+PAT011317,Gastroenteritis,5,Other,110,13,31,Abdominal Pain,Moderately Abnormal,Chronic Uncontrolled,20.82544965907537,3
+PAT006589,Kidney Disease,3,Male,2,4,102,Weakness,Slightly Abnormal,Acute,17.8344530875542,3
+PAT007951,Migraine,3,Male,6,14,287,Headache,Slightly Abnormal,Chronic Controlled,12.93211960118959,3
+PAT002681,Pneumonia,2,Female,21,12,245,Shortness of Breath,Slightly Abnormal,Chronic Controlled,14.805753709142113,3
+PAT002199,Stroke,4,Male,65,4,77,Confusion,Slightly Abnormal,Chronic Uncontrolled,18.991257405723402,3
+PAT003922,Gastroenteritis,4,Female,21,5,80,Abdominal Pain,Slightly Abnormal,Acute,18.925740370472113,3
+PAT017433,Heart Disease,5,Female,90,0,161,Dizziness,Slightly Abnormal,Critical,26.446077857811893,4
+PAT019488,Common Cold,5,Male,10,7,109,Cough,Severely Abnormal,Chronic Uncontrolled,24.32326701131436,4
+PAT019002,Cancer,3,Male,59,6,229,Fatigue,Moderately Abnormal,Needs Follow-up,19.187624367553145,3
+PAT007675,Fracture,3,Male,4,13,191,Severe Pain,Moderately Abnormal,Acute,23.451341249591064,4
+PAT013123,Diabetes,1,Female,3,1,330,Nausea,Normal,Needs Follow-up,8.729539909889137,2
+PAT008256,Common Cold,2,Female,121,13,334,Fever,Slightly Abnormal,Chronic Controlled,9.536630342183933,2
+PAT019978,Fracture,2,Male,98,6,355,None/Mild,Normal,Chronic Controlled,9.055611773758882,2
+PAT007436,Common Cold,2,Male,89,13,71,Fatigue,Normal,Needs Follow-up,11.864023023660414,2
+PAT003761,Gastroenteritis,1,Female,129,4,291,Abdominal Pain,Normal,Chronic Controlled,6.624399897712913,1
+PAT004278,Common Cold,2,Female,41,8,324,Fever,Normal,Chronic Controlled,7.253248216067862,1
+PAT007173,Pneumonia,3,Female,107,13,145,Shortness of Breath,Moderately Abnormal,Acute,24.26091315924689,4
+PAT017971,Diabetes,1,Female,58,4,83,Nausea,Normal,Needs Follow-up,8.831390532549923,2
+PAT018982,UTI,3,Other,104,12,116,Abdominal Pain,Moderately Abnormal,Stable,12.633643932777685,2
+PAT014503,Common Cold,1,Male,36,10,205,None/Mild,Normal,Needs Follow-up,6.479811068518151,1
+PAT007835,Diabetes,4,Male,108,5,256,Fatigue,Slightly Abnormal,Chronic Uncontrolled,15.098431080966428,3
+PAT008454,Diabetes,4,Female,84,7,101,Fatigue,Severely Abnormal,Acute,22.952820024342945,4
+PAT011722,Kidney Disease,3,Other,85,10,247,Nausea,Moderately Abnormal,Acute,19.915853315717335,3
+PAT016443,Migraine,3,Male,15,7,250,Dizziness,Normal,Needs Follow-up,14.232837641871619,3
+PAT002598,Kidney Disease,3,Female,107,2,1,Fatigue,Normal,Chronic Controlled,9.584259605416818,2
+PAT003842,Arthritis,1,Other,8,13,192,Headache,Normal,Stable,3.7305826158086957,1
+PAT009089,Kidney Disease,4,Female,63,1,210,Weakness,Moderately Abnormal,Needs Follow-up,20.12360776411803,3
+PAT003777,Gastroenteritis,5,Male,65,11,259,Fever,Slightly Abnormal,Needs Follow-up,19.62062715146291,3
+PAT000107,Arthritis,5,Other,40,8,78,None/Mild,Severely Abnormal,Acute,26.614528295074553,4
+PAT001212,Arthritis,4,Other,15,4,359,Headache,Severely Abnormal,Critical,28.77608277849116,5
+PAT005743,Hypertension,1,Male,14,10,270,None/Mild,Normal,Chronic Controlled,6.647711945496536,1
+PAT013872,Heart Disease,1,Other,2,14,271,Shortness of Breath,Normal,Stable,5.690810131887598,1
+PAT017339,Pneumonia,5,Female,31,5,285,Shortness of Breath,Severely Abnormal,Chronic Uncontrolled,30.64182431027952,5
+PAT015130,Migraine,1,Male,34,9,131,Dizziness,Normal,Needs Follow-up,8.704392407306212,2
+PAT005502,Arthritis,5,Other,91,14,343,Headache,Severely Abnormal,Critical,30.91860493702762,5
+PAT012771,Migraine,4,Female,10,13,113,Nausea,Severely Abnormal,Needs Follow-up,24.611619214339427,4
+PAT008457,Heart Disease,2,Other,114,2,300,Shortness of Breath,Normal,Chronic Controlled,13.649982627787413,3
+PAT012437,Diabetes,4,Other,27,8,2,Weakness,Moderately Abnormal,Acute,22.209447323666407,4
+PAT000691,Gastroenteritis,1,Other,10,4,211,Vomiting,Slightly Abnormal,Chronic Controlled,8.229950802582545,2
+PAT006305,Cancer,2,Female,21,3,95,Fatigue,Normal,Stable,4.268091902945653,1
+PAT010262,Asthma,3,Female,51,7,195,Fatigue,Moderately Abnormal,Needs Follow-up,18.96865068290645,3
+PAT011610,Common Cold,3,Other,40,0,72,Fever,Slightly Abnormal,Stable,9.53450233662435,2
+PAT016687,Heart Disease,1,Other,119,4,204,Chest Pain,Slightly Abnormal,Chronic Controlled,12.127975989497081,2
+PAT005003,Hypertension,2,Male,21,13,286,Headache,Normal,Chronic Controlled,10.386976501709473,2
+PAT008739,Gastroenteritis,5,Other,75,5,227,Shortness of Breath,Severely Abnormal,Needs Follow-up,29.240466706279538,5
+PAT017976,Kidney Disease,4,Female,127,1,7,Nausea,Severely Abnormal,Acute,26.322577083420477,4
+PAT019982,Fracture,2,Other,128,6,0,None/Mild,Slightly Abnormal,Needs Follow-up,11.677609904292648,2
+PAT016992,Pneumonia,1,Other,77,1,64,Shortness of Breath,Normal,Needs Follow-up,12.548378699432494,2
+PAT011005,Kidney Disease,4,Female,21,13,184,Fatigue,Slightly Abnormal,Chronic Uncontrolled,15.702409659542816,3
+PAT001258,Gastroenteritis,1,Male,6,13,292,Vomiting,Slightly Abnormal,Chronic Controlled,9.987149499225643,2
+PAT019459,Asthma,4,Female,97,14,188,Fever,Severely Abnormal,Chronic Uncontrolled,21.921141116776862,4
+PAT007202,Diabetes,1,Male,112,13,140,Fatigue,Normal,Chronic Controlled,8.877115920013996,2
+PAT003173,Asthma,1,Other,39,11,301,Fatigue,Slightly Abnormal,Stable,6.4575854620206465,1
+PAT008409,Kidney Disease,1,Male,10,8,333,Severe Pain,Normal,Stable,7.509625508439818,2
+PAT015828,Migraine,5,Female,93,9,337,Dizziness,Severely Abnormal,Needs Follow-up,27.053668893842744,5
+PAT005449,Arthritis,3,Female,0,8,243,Fatigue,Moderately Abnormal,Needs Follow-up,16.806652409557497,3
+PAT011524,Kidney Disease,1,Female,98,6,200,Confusion,Normal,Stable,8.99811020479761,2
+PAT007570,Kidney Disease,4,Other,84,10,157,Nausea,Severely Abnormal,Acute,29.39575268424381,5
+PAT019180,Migraine,1,Female,29,1,238,Headache,Normal,Stable,2.44470726079319,1
+PAT014658,Heart Disease,1,Female,39,14,45,Dizziness,Normal,Chronic Controlled,9.940480505267775,2
+PAT000198,Cancer,5,Male,43,3,33,Fatigue,Severely Abnormal,Acute,24.945988311454318,4
+PAT012138,COPD,5,Female,91,11,114,Fatigue,Moderately Abnormal,Critical,30.73321636175305,5
+PAT005573,Gastroenteritis,3,Other,103,11,276,Abdominal Pain,Moderately Abnormal,Stable,12.372554975607697,2
+PAT015602,Migraine,1,Male,120,8,107,Nausea,Normal,Needs Follow-up,7.5188919494213975,2
+PAT000440,Heart Disease,2,Other,112,9,233,Confusion,Normal,Needs Follow-up,15.901268790744439,3
+PAT014358,Cancer,3,Male,49,14,54,Fatigue,Moderately Abnormal,Acute,20.974382589214535,3
+PAT000356,Stroke,1,Male,64,12,359,Chest Pain,Normal,Stable,6.09785531929455,1
+PAT011795,Arthritis,2,Female,99,12,77,None/Mild,Normal,Needs Follow-up,9.558182069696473,2
+PAT006071,Pneumonia,2,Male,13,14,320,Fatigue,Normal,Chronic Controlled,7.222918631913151,1
+PAT009481,Common Cold,5,Male,98,5,288,Fatigue,Slightly Abnormal,Acute,17.360933257687034,3
+PAT001695,Pneumonia,3,Female,88,13,128,Cough,Slightly Abnormal,Stable,13.239028893313023,3
+PAT007862,Asthma,5,Male,107,12,60,Cough,Moderately Abnormal,Acute,22.812496344260172,4
+PAT006273,COPD,1,Male,74,9,197,Fatigue,Slightly Abnormal,Stable,7.817827111432856,2
+PAT002761,Hypertension,4,Other,25,6,24,Headache,Severely Abnormal,Chronic Uncontrolled,21.726212809994877,4
+PAT002941,Fracture,5,Female,16,3,189,None/Mild,Severely Abnormal,Critical,30.78977974923939,5
+PAT009881,Pneumonia,2,Female,85,5,283,Cough,Normal,Chronic Controlled,8.535843473645592,2
+PAT009223,Fracture,1,Female,28,2,248,Severe Pain,Normal,Chronic Controlled,9.323882039593235,2
+PAT018279,Common Cold,1,Female,81,6,12,Fever,Slightly Abnormal,Chronic Controlled,7.316277541782246,1
+PAT010076,Gastroenteritis,3,Male,76,11,230,Vomiting,Slightly Abnormal,Chronic Controlled,14.19172159497264,3
+PAT015995,Pneumonia,4,Female,110,4,64,Cough,Severely Abnormal,Chronic Uncontrolled,21.3937508620728,4
+PAT017677,Diabetes,2,Male,60,13,215,Weakness,Normal,Stable,5.330777989439799,1
+PAT010125,Stroke,1,Female,123,11,282,Shortness of Breath,Normal,Stable,9.798897978083335,2
+PAT011920,COPD,5,Female,65,4,319,Fatigue,Severely Abnormal,Acute,28.952033703966247,5
+PAT007091,UTI,3,Other,7,13,345,Abdominal Pain,Slightly Abnormal,Needs Follow-up,14.167720530850826,3
+PAT009557,Migraine,1,Male,63,0,343,Dizziness,Slightly Abnormal,Needs Follow-up,12.124766048231477,2
+PAT000827,COPD,3,Female,54,9,285,Fever,Normal,Acute,15.330454460608255,3
+PAT000024,Gastroenteritis,3,Male,84,7,199,Abdominal Pain,Slightly Abnormal,Acute,18.129145291603763,3
+PAT019307,Cancer,1,Female,61,3,325,Severe Pain,Slightly Abnormal,Chronic Controlled,12.463947565607414,2
+PAT012020,Cancer,4,Male,128,8,186,Bleeding,Moderately Abnormal,Chronic Uncontrolled,22.92780102950131,4
+PAT003431,Stroke,1,Female,54,13,5,Dizziness,Slightly Abnormal,Chronic Controlled,9.265099996961403,2
+PAT018561,UTI,4,Other,99,3,206,Abdominal Pain,Moderately Abnormal,Chronic Uncontrolled,19.816685513625362,3
+PAT008953,Heart Disease,3,Female,2,9,97,Chest Pain,Slightly Abnormal,Stable,14.420808092125863,3
+PAT000878,Diabetes,5,Male,119,10,184,Fatigue,Severely Abnormal,Acute,26.677491416219702,4
+PAT017936,Arthritis,5,Other,52,13,17,None/Mild,Severely Abnormal,Critical,28.42205495379216,5
+PAT002892,Stroke,1,Female,62,12,166,Chest Pain,Slightly Abnormal,Needs Follow-up,11.563060126868837,2
+PAT005596,COPD,2,Female,48,13,204,Fatigue,Normal,Chronic Controlled,5.4582157958793065,1
+PAT004301,Heart Disease,2,Other,98,7,15,Weakness,Slightly Abnormal,Needs Follow-up,12.079916821710448,2
+PAT019983,Heart Disease,2,Male,108,0,137,Shortness of Breath,Slightly Abnormal,Stable,13.662217297862114,3
+PAT017655,Stroke,3,Other,98,11,127,Confusion,Moderately Abnormal,Needs Follow-up,20.510982429787454,3
+PAT005042,Pneumonia,4,Male,77,14,331,Vomiting,Severely Abnormal,Chronic Uncontrolled,26.42513998376861,4
+PAT014553,Diabetes,2,Male,61,11,95,Confusion,Slightly Abnormal,Stable,12.391907150641186,2
+PAT012500,Stroke,1,Female,16,11,141,Shortness of Breath,Normal,Stable,7.5467886842550795,2
+PAT012204,Kidney Disease,1,Male,35,2,84,Confusion,Normal,Chronic Controlled,10.429064278707342,2
+PAT002631,Common Cold,1,Male,47,7,64,Fatigue,Normal,Chronic Controlled,5.2180098251208396,1
+PAT018487,Pneumonia,4,Male,101,2,294,Fever,Slightly Abnormal,Needs Follow-up,14.264096944495783,3
+PAT001750,Diabetes,3,Male,27,5,267,Nausea,Slightly Abnormal,Acute,15.868358550933802,3
+PAT012827,Heart Disease,5,Male,122,0,121,Weakness,Moderately Abnormal,Acute,25.57619757422272,4
+PAT015644,Pneumonia,3,Other,72,0,37,Fever,Slightly Abnormal,Acute,17.377670240204736,3
+PAT003830,Asthma,5,Female,87,11,285,Shortness of Breath,Moderately Abnormal,Needs Follow-up,28.408757681419154,5
+PAT007706,Common Cold,1,Female,0,1,97,Cough,Slightly Abnormal,Stable,6.426292397301228,1
+PAT011545,UTI,3,Male,9,1,132,Fever,Slightly Abnormal,Chronic Controlled,15.057236763904385,3
+PAT012529,Stroke,2,Male,25,6,146,Confusion,Normal,Chronic Controlled,13.522968810699227,3
+PAT005116,UTI,4,Male,8,6,95,Nausea,Moderately Abnormal,Acute,20.990526090080344,3
+PAT006674,Arthritis,5,Other,77,14,107,Chest Pain,Severely Abnormal,Acute,32.16238894054743,5
+PAT000866,Gastroenteritis,4,Other,4,8,202,Fever,Slightly Abnormal,Chronic Uncontrolled,17.15342043790429,3
+PAT006492,Diabetes,1,Other,75,9,248,Nausea,Slightly Abnormal,Needs Follow-up,9.65313858987236,2
+PAT000105,Hypertension,5,Female,120,0,115,Headache,Severely Abnormal,Critical,30.816867866104197,5
+PAT017792,Migraine,4,Male,126,11,151,Headache,Slightly Abnormal,Acute,20.622443822702444,3
+PAT014030,Arthritis,1,Other,53,2,124,Headache,Normal,Stable,3.0660924084107126,1
+PAT019404,Diabetes,3,Female,107,7,171,Weakness,Moderately Abnormal,Stable,13.043096578026708,3
+PAT008337,Kidney Disease,4,Other,74,3,270,Weakness,Severely Abnormal,Acute,24.937445118700605,4
+PAT002933,Diabetes,5,Other,111,11,301,Bleeding,Severely Abnormal,Needs Follow-up,29.056127464637843,5
+PAT002689,Pneumonia,1,Other,26,12,223,Severe Pain,Normal,Chronic Controlled,11.743773245324636,2
+PAT018428,Fracture,2,Other,109,5,89,Severe Pain,Normal,Needs Follow-up,12.89448352410819,2
+PAT010496,Pneumonia,2,Other,11,8,6,Shortness of Breath,Normal,Chronic Controlled,12.288447765758965,2
+PAT005193,Arthritis,4,Other,46,6,273,Fatigue,Severely Abnormal,Needs Follow-up,20.353371969345954,3
+PAT011623,Pneumonia,2,Male,115,0,214,Shortness of Breath,Slightly Abnormal,Needs Follow-up,18.982684793669026,3
+PAT003749,UTI,3,Female,31,8,246,Abdominal Pain,Moderately Abnormal,Acute,21.30811848146474,4
+PAT004414,Gastroenteritis,3,Male,50,4,278,Abdominal Pain,Slightly Abnormal,Acute,16.976182024063277,3
+PAT014831,Asthma,3,Other,20,0,351,Cough,Normal,Needs Follow-up,12.76187812113981,2
+PAT002499,Cancer,1,Male,43,3,172,Severe Pain,Normal,Needs Follow-up,12.557916008943293,2
+PAT018364,Arthritis,4,Other,112,9,358,None/Mild,Moderately Abnormal,Needs Follow-up,17.281241486985603,3
+PAT002552,Stroke,2,Other,42,7,110,Confusion,Slightly Abnormal,Chronic Controlled,13.438737687454754,3
+PAT015333,Fracture,1,Other,96,7,215,Severe Pain,Normal,Chronic Controlled,10.815765354897326,2
+PAT014772,Heart Disease,2,Other,18,14,283,Confusion,Slightly Abnormal,Stable,11.36726655188546,2
+PAT004659,Common Cold,3,Male,41,2,149,Fatigue,Normal,Chronic Controlled,11.907261320390807,2
+PAT008999,Fracture,4,Female,13,7,326,Severe Pain,Severely Abnormal,Acute,28.307653130639896,5
+PAT014185,UTI,5,Other,1,6,300,Vomiting,Severely Abnormal,Acute,28.899031033545196,5
+PAT012953,Fracture,5,Male,84,8,183,Severe Pain,Moderately Abnormal,Needs Follow-up,26.510812848823495,4
+PAT002000,Arthritis,3,Other,102,11,242,Headache,Slightly Abnormal,Needs Follow-up,14.159286901390766,3
+PAT001394,UTI,1,Other,70,12,55,Fever,Slightly Abnormal,Chronic Controlled,8.300366001084534,2
+PAT000013,Migraine,1,Female,10,3,339,Headache,Normal,Stable,4.810257231389941,1
+PAT014876,COPD,2,Other,109,6,157,Weakness,Slightly Abnormal,Needs Follow-up,11.801316770512422,2
+PAT002335,Common Cold,5,Male,45,3,63,Fatigue,Moderately Abnormal,Critical,26.743083521469266,4
+PAT003006,Gastroenteritis,4,Female,95,13,354,Nausea,Slightly Abnormal,Chronic Uncontrolled,19.295461558488633,3
+PAT011743,Migraine,1,Male,18,3,205,Headache,Slightly Abnormal,Chronic Controlled,11.247876701962031,2
+PAT012544,Gastroenteritis,1,Other,26,5,139,Abdominal Pain,Slightly Abnormal,Stable,4.043749847327137,1
+PAT013084,Hypertension,3,Other,46,7,320,Headache,Slightly Abnormal,Needs Follow-up,10.876558259536598,2
+PAT006367,Pneumonia,4,Female,36,3,239,Shortness of Breath,Moderately Abnormal,Critical,31.941960109888416,5
+PAT003438,COPD,1,Male,116,14,137,Fatigue,Slightly Abnormal,Needs Follow-up,11.004620330203656,2
+PAT018918,Heart Disease,3,Other,72,2,351,Weakness,Slightly Abnormal,Stable,8.805307773478074,2
+PAT018492,Cancer,2,Male,78,8,323,Fatigue,Normal,Stable,6.959618667279365,1
+PAT000982,Heart Disease,2,Male,76,14,178,Dizziness,Normal,Needs Follow-up,12.535886225266252,2
+PAT008644,Asthma,2,Other,56,4,109,Shortness of Breath,Normal,Needs Follow-up,14.90138904160519,3
+PAT004295,Kidney Disease,2,Female,96,9,169,Fatigue,Normal,Needs Follow-up,9.271023750409302,2
+PAT002394,UTI,3,Female,126,8,165,Abdominal Pain,Moderately Abnormal,Chronic Controlled,14.777109840574779,3
+PAT015793,COPD,2,Female,29,6,186,Fatigue,Normal,Chronic Controlled,6.2010948934978884,1
+PAT004096,Heart Disease,3,Other,28,11,137,Severe Pain,Moderately Abnormal,Chronic Controlled,15.005846373438711,3
+PAT002150,Hypertension,4,Female,66,4,276,Fatigue,Moderately Abnormal,Acute,22.12862337675805,4
+PAT012388,Hypertension,5,Female,3,4,0,Headache,Slightly Abnormal,Needs Follow-up,17.66087715309789,3
+PAT004408,COPD,3,Other,33,2,251,Fatigue,Moderately Abnormal,Stable,13.968268883563374,3
+PAT011154,Hypertension,3,Male,122,8,92,Fatigue,Slightly Abnormal,Chronic Controlled,12.667686218028852,2
+PAT007949,Hypertension,3,Other,43,1,292,Fatigue,Moderately Abnormal,Acute,20.565155653885924,3
+PAT014823,Asthma,5,Male,47,4,290,Shortness of Breath,Severely Abnormal,Acute,32.42610083254192,5
+PAT016394,Cancer,1,Male,112,14,3,Severe Pain,Normal,Stable,3.587182177432764,1
+PAT015618,Asthma,3,Other,33,2,348,Cough,Normal,Acute,15.054953878172485,3
+PAT000162,Kidney Disease,5,Male,78,2,333,Fatigue,Severely Abnormal,Chronic Uncontrolled,24.526069745775956,4
+PAT006597,Fracture,1,Male,34,12,184,None/Mild,Normal,Stable,4.271314837851812,1
+PAT017514,COPD,5,Female,118,2,302,Fatigue,Slightly Abnormal,Acute,22.598355778736558,4
+PAT007785,Stroke,5,Female,111,12,215,Weakness,Moderately Abnormal,Critical,29.107021501503937,5
+PAT015804,Migraine,2,Male,41,5,73,Dizziness,Slightly Abnormal,Chronic Controlled,11.544057263449066,2
+PAT019456,Migraine,3,Male,22,2,194,Headache,Moderately Abnormal,Chronic Controlled,13.609772537794749,3
+PAT000112,UTI,1,Male,8,11,329,Fever,Slightly Abnormal,Needs Follow-up,13.36366703338933,3
+PAT014573,Asthma,2,Female,35,10,303,Fever,Slightly Abnormal,Chronic Controlled,11.321773509778778,2
+PAT015057,Hypertension,5,Male,125,3,300,Fatigue,Slightly Abnormal,Critical,28.122039984456872,5
+PAT002776,UTI,1,Female,114,4,181,Vomiting,Normal,Needs Follow-up,8.528320978319158,2
+PAT000167,Common Cold,3,Other,116,11,349,Fever,Slightly Abnormal,Acute,18.146115938693296,3
+PAT014999,UTI,5,Female,73,8,265,Vomiting,Severely Abnormal,Chronic Uncontrolled,26.00520122236074,4
+PAT003100,Hypertension,1,Other,127,13,229,Fatigue,Slightly Abnormal,Chronic Controlled,9.332342304482147,2
+PAT001742,Hypertension,2,Male,63,4,39,None/Mild,Slightly Abnormal,Chronic Controlled,6.004964186347524,1
+PAT007809,Migraine,2,Male,91,13,57,Shortness of Breath,Normal,Chronic Controlled,13.51392986199266,3
+PAT001158,Gastroenteritis,3,Female,19,9,167,Fever,Slightly Abnormal,Acute,14.882648503249374,3
+PAT007337,COPD,1,Male,43,3,84,Shortness of Breath,Normal,Needs Follow-up,12.56743683161746,2
+PAT006672,Arthritis,1,Other,85,4,216,None/Mild,Slightly Abnormal,Chronic Controlled,1.5695954364891476,1
+PAT010070,COPD,5,Female,50,10,165,Fatigue,Severely Abnormal,Acute,25.698841183345273,4
+PAT002375,Pneumonia,2,Male,108,14,162,Fever,Normal,Needs Follow-up,11.232458365852759,2
+PAT001171,Gastroenteritis,2,Male,42,10,134,Abdominal Pain,Normal,Chronic Controlled,7.697049778444923,2
+PAT000386,UTI,4,Male,34,4,85,Fever,Moderately Abnormal,Needs Follow-up,18.508823272618805,3
+PAT003638,Fracture,5,Other,47,2,91,None/Mild,Moderately Abnormal,Chronic Uncontrolled,18.286988798338346,3
+PAT018735,Stroke,3,Male,42,13,283,Shortness of Breath,Moderately Abnormal,Chronic Controlled,20.684578430407733,3
+PAT013773,Pneumonia,1,Other,93,1,14,Fatigue,Normal,Needs Follow-up,7.509629084387159,2
+PAT004503,Fracture,3,Female,51,12,62,None/Mild,Slightly Abnormal,Acute,15.328180731402158,3
+PAT001168,Fracture,2,Other,107,5,360,None/Mild,Slightly Abnormal,Needs Follow-up,10.979485336245155,2
+PAT000306,Pneumonia,3,Other,58,10,336,Fever,Slightly Abnormal,Stable,7.933643547572617,2
+PAT003873,UTI,2,Other,125,8,280,Abdominal Pain,Slightly Abnormal,Needs Follow-up,12.596924006512266,2
+PAT003571,Hypertension,1,Other,29,4,142,None/Mild,Slightly Abnormal,Needs Follow-up,9.462115633183068,2
+PAT016689,Pneumonia,2,Male,72,10,154,Fever,Normal,Stable,6.105812286866176,1
+PAT005254,Heart Disease,2,Male,33,3,363,Weakness,Normal,Needs Follow-up,11.316132155655072,2
+PAT004747,Hypertension,1,Female,17,7,301,Headache,Normal,Stable,5.016116113080808,1
+PAT000099,Fracture,4,Male,46,3,289,None/Mild,Slightly Abnormal,Acute,17.022967249590756,3
+PAT001313,Stroke,3,Female,49,10,106,Confusion,Moderately Abnormal,Chronic Controlled,22.097543604397746,4
+PAT012637,Cancer,1,Other,101,0,221,Severe Pain,Slightly Abnormal,Chronic Controlled,9.040794423355333,2
+PAT012996,Diabetes,4,Female,66,0,351,Weakness,Moderately Abnormal,Critical,27.839189252522687,5
+PAT005315,Diabetes,1,Female,108,1,305,Fatigue,Normal,Needs Follow-up,9.813073337566344,2
+PAT009541,Stroke,3,Female,59,5,103,Shortness of Breath,Normal,Acute,20.22336185708206,3
+PAT002731,Heart Disease,1,Other,49,6,219,Weakness,Normal,Needs Follow-up,9.803051220807454,2
+PAT014854,Migraine,2,Male,41,2,314,Dizziness,Normal,Stable,7.61558830329721,2
+PAT008522,Cancer,5,Female,3,7,23,Fatigue,Severely Abnormal,Acute,28.840130642081796,5
+PAT011059,Heart Disease,3,Other,111,5,209,Shortness of Breath,Slightly Abnormal,Needs Follow-up,19.20094488260738,3
+PAT004885,Stroke,2,Other,105,14,22,Chest Pain,Normal,Needs Follow-up,14.577631505816314,3
+PAT002830,Pneumonia,1,Male,7,14,180,Cough,Normal,Stable,0.9364672114594468,1
+PAT018081,Pneumonia,3,Female,95,14,106,Shortness of Breath,Slightly Abnormal,Needs Follow-up,17.49346520010437,3
+PAT010310,Kidney Disease,3,Other,21,3,218,Confusion,Slightly Abnormal,Needs Follow-up,18.67474680282151,3
+PAT016085,Diabetes,1,Female,11,0,327,Fatigue,Slightly Abnormal,Needs Follow-up,8.426140114080642,2
+PAT000258,Arthritis,4,Female,94,7,189,Headache,Severely Abnormal,Chronic Uncontrolled,21.36725018634735,4
+PAT007549,COPD,2,Other,110,0,247,Shortness of Breath,Slightly Abnormal,Stable,12.841252834305912,2
+PAT002229,Common Cold,2,Female,122,13,230,None/Mild,Normal,Chronic Controlled,7.33397984540605,1
+PAT006810,Arthritis,4,Female,4,12,72,Fatigue,Moderately Abnormal,Chronic Uncontrolled,20.042916384645164,3
+PAT002297,Diabetes,3,Female,19,5,157,Confusion,Normal,Stable,12.088789043993723,2
+PAT013554,UTI,2,Other,41,11,342,Vomiting,Slightly Abnormal,Needs Follow-up,13.63371796675955,3
+PAT003798,Stroke,1,Other,88,12,338,Chest Pain,Normal,Chronic Controlled,9.585375876419747,2
+PAT006177,Heart Disease,1,Other,56,14,246,Weakness,Normal,Needs Follow-up,7.5877309868328116,2
+PAT007154,Fracture,5,Other,43,11,174,None/Mild,Slightly Abnormal,Critical,24.157928595662295,4
+PAT000581,Kidney Disease,1,Other,87,13,240,Confusion,Normal,Chronic Controlled,12.175300265808149,2
+PAT005527,Arthritis,5,Male,61,12,291,Fatigue,Severely Abnormal,Critical,33.78435728257393,5
+PAT003040,Gastroenteritis,2,Male,109,7,18,Abdominal Pain,Normal,Stable,6.361254335617078,1
+PAT005421,Arthritis,1,Female,105,4,202,None/Mild,Normal,Stable,0.5635345545669184,1
+PAT000152,Fracture,3,Male,43,8,43,None/Mild,Slightly Abnormal,Needs Follow-up,13.354473347429794,3
+PAT011233,Hypertension,4,Female,5,9,156,None/Mild,Severely Abnormal,Chronic Uncontrolled,19.34323979472633,3
+PAT010063,Cancer,5,Male,101,2,113,Severe Pain,Severely Abnormal,Critical,33.50130261641258,5
+PAT008931,Stroke,3,Other,117,9,264,Dizziness,Moderately Abnormal,Chronic Controlled,16.419976268406835,3
+PAT005612,COPD,4,Other,16,14,215,Fever,Moderately Abnormal,Needs Follow-up,18.74814942795481,3
+PAT000932,COPD,4,Male,31,14,346,Fever,Severely Abnormal,Critical,31.489002226759705,5
+PAT004505,UTI,1,Female,74,4,179,Vomiting,Normal,Stable,4.383183319563093,1
+PAT005831,Heart Disease,2,Female,32,13,296,Confusion,Normal,Needs Follow-up,13.238865968851915,3
+PAT007983,Arthritis,3,Female,96,7,86,Headache,Moderately Abnormal,Stable,14.61438889962156,3
+PAT008631,Diabetes,5,Male,43,11,306,Confusion,Severely Abnormal,Chronic Uncontrolled,27.956473070510402,5
+PAT006028,Fracture,5,Female,24,8,144,Severe Pain,Moderately Abnormal,Needs Follow-up,23.747156108217702,4
+PAT018778,Stroke,3,Male,62,1,130,Weakness,Slightly Abnormal,Stable,10.466573223520847,2
+PAT002964,Heart Disease,1,Female,1,8,281,Dizziness,Normal,Stable,5.328952891506579,1
+PAT010421,Cancer,2,Male,104,9,57,Fatigue,Slightly Abnormal,Stable,7.915840492763054,2
+PAT003233,Stroke,1,Other,88,11,71,Dizziness,Normal,Needs Follow-up,10.375222930584084,2
+PAT006699,Arthritis,5,Other,38,6,212,None/Mild,Severely Abnormal,Acute,22.35615439923339,4
+PAT007393,Asthma,4,Female,30,10,258,Shortness of Breath,Severely Abnormal,Needs Follow-up,24.860903325448774,4
+PAT002415,Fracture,5,Other,91,6,310,Severe Pain,Slightly Abnormal,Critical,28.093169062584973,5
+PAT011870,Diabetes,4,Male,118,4,6,Confusion,Severely Abnormal,Critical,33.42197068596115,5
+PAT000142,Asthma,2,Male,108,14,20,Fatigue,Normal,Needs Follow-up,8.585273911229965,2
+PAT013203,UTI,5,Male,81,12,64,Vomiting,Severely Abnormal,Critical,34.05904931002553,5
+PAT003768,Fracture,3,Other,120,1,61,Severe Pain,Slightly Abnormal,Needs Follow-up,17.07754240327451,3
+PAT016530,Hypertension,3,Other,26,5,59,None/Mild,Moderately Abnormal,Stable,11.565195359487921,2
+PAT018188,Migraine,1,Female,71,11,226,Nausea,Slightly Abnormal,Stable,4.169100314230269,1
+PAT009230,Cancer,3,Other,61,0,19,Shortness of Breath,Moderately Abnormal,Chronic Controlled,18.460196953333675,3
+PAT003699,Common Cold,5,Female,88,11,320,Cough,Moderately Abnormal,Chronic Uncontrolled,21.06222447178645,3
+PAT006586,Gastroenteritis,2,Other,37,0,96,Abdominal Pain,Normal,Stable,4.212001016321171,1
+PAT017854,Fracture,5,Female,58,14,212,Severe Pain,Moderately Abnormal,Needs Follow-up,26.71184167289485,4
+PAT014723,Diabetes,2,Male,64,11,141,Confusion,Slightly Abnormal,Stable,13.453902433096305,3
+PAT007358,Heart Disease,5,Other,1,1,126,Chest Pain,Severely Abnormal,Acute,32.191297600294,5
+PAT008730,Gastroenteritis,1,Other,123,9,131,Vomiting,Normal,Chronic Controlled,8.34734010249924,2
+PAT016661,Hypertension,4,Female,96,8,160,Fatigue,Slightly Abnormal,Acute,21.778971272194124,4
+PAT004690,Heart Disease,1,Female,50,6,312,Shortness of Breath,Normal,Chronic Controlled,9.63790788621819,2
+PAT009021,Common Cold,4,Male,47,1,133,Cough,Severely Abnormal,Acute,26.686353356225105,4
+PAT000578,Fracture,1,Male,81,13,190,Severe Pain,Normal,Needs Follow-up,13.680575084870636,3
+PAT013697,Heart Disease,4,Male,80,9,121,Chest Pain,Severely Abnormal,Needs Follow-up,26.35408562106909,4
+PAT017059,COPD,5,Other,124,8,335,Cough,Severely Abnormal,Acute,26.825142464232652,4
+PAT000311,Migraine,4,Other,64,3,175,Nausea,Slightly Abnormal,Acute,20.167022876407135,3
+PAT000337,Gastroenteritis,5,Female,106,14,306,Nausea,Severely Abnormal,Critical,33.07158216880765,5
+PAT005182,Fracture,1,Female,28,11,162,Severe Pain,Slightly Abnormal,Stable,5.870434912296583,1
+PAT001451,Gastroenteritis,1,Other,51,12,321,Abdominal Pain,Normal,Chronic Controlled,7.482553897818049,2
+PAT000148,Migraine,5,Male,16,8,206,Nausea,Severely Abnormal,Needs Follow-up,23.79727304160687,4
+PAT002920,Diabetes,1,Other,118,8,347,Fatigue,Slightly Abnormal,Chronic Controlled,4.9374788021551534,1
+PAT017113,Kidney Disease,1,Other,120,13,355,Fatigue,Normal,Stable,1.1917765745190345,1
+PAT001421,Kidney Disease,4,Male,39,10,326,Weakness,Severely Abnormal,Needs Follow-up,22.259455800766055,4
+PAT014399,Fracture,2,Other,41,6,183,None/Mild,Normal,Chronic Controlled,7.543174430394854,2
+PAT015243,COPD,4,Female,128,0,137,Fever,Severely Abnormal,Critical,30.598946239227825,5
+PAT014192,Gastroenteritis,2,Male,85,7,357,Fever,Slightly Abnormal,Needs Follow-up,13.062026446153299,3
+PAT000560,Kidney Disease,1,Male,124,13,148,Weakness,Slightly Abnormal,Stable,5.347382227907729,1
+PAT002057,COPD,1,Male,109,6,153,Fatigue,Normal,Chronic Controlled,5.629125443525073,1
+PAT000342,UTI,2,Other,104,7,296,Abdominal Pain,Slightly Abnormal,Needs Follow-up,12.363488157351178,2
+PAT014348,Heart Disease,1,Male,3,2,158,Shortness of Breath,Normal,Needs Follow-up,15.128548677619175,3
+PAT010558,Pneumonia,4,Female,129,13,135,Cough,Moderately Abnormal,Needs Follow-up,18.852175491560484,3
+PAT008149,Asthma,2,Other,29,14,253,Fatigue,Slightly Abnormal,Chronic Controlled,9.368475887495501,2
+PAT009410,Arthritis,4,Female,21,11,223,Headache,Severely Abnormal,Acute,26.958192301123102,4
+PAT015413,Asthma,5,Female,108,5,301,Fatigue,Severely Abnormal,Acute,28.46649618122581,5
+PAT001236,UTI,2,Male,75,5,138,Fever,Slightly Abnormal,Needs Follow-up,10.922412497616804,2
+PAT001914,Heart Disease,5,Other,56,14,231,Weakness,Severely Abnormal,Critical,32.86312584434737,5
+PAT004735,Heart Disease,1,Male,21,4,205,Weakness,Slightly Abnormal,Chronic Controlled,7.914256725536535,2
+PAT002275,Kidney Disease,5,Male,51,5,59,Nausea,Moderately Abnormal,Acute,25.821795703854743,4
+PAT004818,Cancer,3,Male,19,3,86,Severe Pain,Normal,Needs Follow-up,16.088876787768918,3
+PAT017085,Arthritis,3,Female,35,13,256,None/Mild,Moderately Abnormal,Needs Follow-up,15.348526284438119,3
+PAT005688,Diabetes,4,Other,100,13,287,Weakness,Moderately Abnormal,Acute,20.555836714518893,3
+PAT000894,Arthritis,4,Female,40,1,103,Cough,Moderately Abnormal,Critical,26.52163189851595,4
+PAT000507,Kidney Disease,4,Female,90,7,145,Nausea,Severely Abnormal,Needs Follow-up,21.538040103297625,4
+PAT014780,COPD,3,Male,90,12,299,Cough,Moderately Abnormal,Acute,19.607928136772298,3
+PAT002801,Pneumonia,4,Female,88,6,134,Fatigue,Severely Abnormal,Critical,29.487022974959046,5
+PAT015063,Gastroenteritis,2,Female,17,14,70,Nausea,Normal,Chronic Controlled,8.028665498228307,2
+PAT006414,Migraine,5,Other,85,8,122,Headache,Severely Abnormal,Chronic Uncontrolled,24.351616239500512,4
+PAT010866,Fracture,1,Male,110,13,217,None/Mild,Normal,Chronic Controlled,4.457908569310926,1
+PAT011767,Common Cold,3,Other,83,14,39,None/Mild,Moderately Abnormal,Acute,19.654444481380768,3
+PAT009682,Asthma,5,Female,82,5,331,Fever,Slightly Abnormal,Acute,20.31917795381023,3
+PAT015023,Cancer,2,Female,85,1,147,Weakness,Normal,Needs Follow-up,10.248688452487741,2
+PAT001201,UTI,5,Female,76,9,138,Nausea,Moderately Abnormal,Acute,22.99589423332432,4
+PAT013421,Cancer,2,Other,27,11,238,Bleeding,Slightly Abnormal,Chronic Controlled,13.935231259243686,3
+PAT011390,Asthma,1,Female,43,12,137,Shortness of Breath,Slightly Abnormal,Chronic Controlled,13.660815224804889,3
+PAT005932,Kidney Disease,1,Other,58,5,36,Fatigue,Normal,Needs Follow-up,5.8507582176153665,1
+PAT002317,Migraine,4,Male,126,4,114,Nausea,Severely Abnormal,Critical,30.493344080275598,5
+PAT003364,Common Cold,4,Other,72,7,233,Fever,Severely Abnormal,Acute,24.50372005128361,4
+PAT003501,Pneumonia,1,Male,96,10,242,Cough,Slightly Abnormal,Needs Follow-up,8.88708180258441,2
+PAT012975,Hypertension,3,Other,25,4,88,None/Mild,Slightly Abnormal,Acute,13.994102869219915,3
+PAT006428,Migraine,2,Other,89,10,267,Dizziness,Normal,Needs Follow-up,13.804682814338445,3
+PAT011082,Fracture,5,Female,122,2,300,Severe Pain,Moderately Abnormal,Chronic Uncontrolled,24.806382001822385,4
+PAT010069,Common Cold,1,Male,102,3,56,Cough,Normal,Stable,5.650180083024324,1
+PAT001022,Stroke,4,Female,72,9,207,Confusion,Moderately Abnormal,Chronic Uncontrolled,23.228488586953326,4
+PAT008601,Common Cold,4,Male,23,6,42,Fatigue,Severely Abnormal,Chronic Uncontrolled,23.185882388142367,4
+PAT004830,Stroke,2,Male,2,3,288,Weakness,Normal,Chronic Controlled,11.008440060777431,2
+PAT011514,Fracture,4,Other,78,0,201,Severe Pain,Moderately Abnormal,Needs Follow-up,22.48361291197382,4
+PAT005039,Diabetes,1,Female,16,6,42,Fatigue,Slightly Abnormal,Needs Follow-up,14.08672755589468,3
+PAT015734,Common Cold,1,Other,115,3,319,None/Mild,Slightly Abnormal,Chronic Controlled,5.9791023745887415,1
+PAT019542,Stroke,2,Female,75,10,286,Dizziness,Normal,Stable,5.442528171607109,1
+PAT017765,Cancer,2,Male,127,6,98,Fatigue,Normal,Needs Follow-up,11.733998801324477,2
+PAT001727,Fracture,4,Male,89,2,215,None/Mild,Severely Abnormal,Critical,30.52164526253361,5
+PAT013956,Migraine,1,Male,92,13,292,Nausea,Normal,Stable,5.3774196998696375,1
+PAT003545,Cancer,5,Other,102,11,215,Severe Pain,Severely Abnormal,Acute,29.741417345128152,5
+PAT008937,Stroke,1,Female,127,11,208,Shortness of Breath,Slightly Abnormal,Needs Follow-up,14.309342595461693,3
+PAT019891,Asthma,4,Male,84,3,308,Shortness of Breath,Severely Abnormal,Needs Follow-up,28.219790091712607,5
+PAT002605,Migraine,2,Male,82,14,5,Headache,Normal,Stable,7.334421433497997,1
+PAT007541,Stroke,4,Other,125,12,8,Weakness,Severely Abnormal,Needs Follow-up,20.533301458661203,3
+PAT013448,Cancer,5,Male,93,14,323,Weakness,Moderately Abnormal,Critical,27.321397165441695,5
+PAT015583,Asthma,3,Male,101,1,172,Fatigue,Normal,Acute,16.15248864234905,3
+PAT018714,Asthma,2,Other,121,1,105,Fatigue,Normal,Needs Follow-up,12.583037669437072,2
+PAT006698,Kidney Disease,1,Male,91,12,356,Weakness,Slightly Abnormal,Chronic Controlled,6.6041071361761166,1
+PAT018590,UTI,4,Other,88,9,30,Fever,Moderately Abnormal,Acute,21.07140590735164,3
+PAT014411,Kidney Disease,3,Male,97,11,57,Weakness,Slightly Abnormal,Acute,16.950428410577175,3
+PAT016390,Stroke,5,Other,109,1,142,Confusion,Moderately Abnormal,Needs Follow-up,24.846718515910933,4
+PAT003810,Arthritis,3,Male,41,3,13,None/Mild,Slightly Abnormal,Chronic Controlled,13.254592427891904,3
+PAT007902,Cancer,4,Other,121,3,128,Fatigue,Severely Abnormal,Acute,25.245483134239457,4
+PAT000709,COPD,5,Male,81,1,77,Shortness of Breath,Severely Abnormal,Acute,33.18340844418145,5
+PAT012227,Stroke,1,Female,48,2,156,Shortness of Breath,Normal,Chronic Controlled,10.094431929640534,2
+PAT015842,Hypertension,1,Female,130,7,58,None/Mild,Slightly Abnormal,Needs Follow-up,11.00315636333436,2
+PAT000292,Pneumonia,4,Female,17,4,5,Fatigue,Severely Abnormal,Acute,26.26851058278292,4
+PAT001141,Gastroenteritis,2,Other,51,7,246,Fever,Normal,Chronic Controlled,5.521930416145772,1
+PAT006341,Hypertension,4,Other,109,11,301,Headache,Severely Abnormal,Chronic Uncontrolled,21.458137423823743,4
+PAT003682,Arthritis,3,Male,29,5,334,None/Mild,Moderately Abnormal,Needs Follow-up,15.215504540591219,3
+PAT002880,COPD,5,Male,101,5,204,Fatigue,Moderately Abnormal,Acute,24.659713871501136,4
+PAT011745,Fracture,1,Other,85,6,162,None/Mild,Slightly Abnormal,Chronic Controlled,6.515449209103395,1
+PAT010833,COPD,1,Male,77,9,168,Fatigue,Slightly Abnormal,Chronic Controlled,9.217260010535979,2
+PAT017153,Stroke,1,Female,36,11,242,Chest Pain,Normal,Needs Follow-up,11.24608639490177,2
+PAT001448,Cancer,5,Male,25,12,317,Severe Pain,Severely Abnormal,Acute,32.44746578366424,5
+PAT005010,Cancer,5,Male,26,3,142,Severe Pain,Moderately Abnormal,Acute,27.318376216371803,5
+PAT018811,Hypertension,3,Male,121,12,277,Headache,Normal,Needs Follow-up,9.617012715585329,2
+PAT012188,Kidney Disease,4,Female,120,4,278,Weakness,Severely Abnormal,Needs Follow-up,23.950802278663648,4
+PAT014818,Pneumonia,3,Female,83,7,215,Cough,Moderately Abnormal,Needs Follow-up,18.42408251240576,3
+PAT002076,Pneumonia,2,Other,101,13,140,Fever,Slightly Abnormal,Needs Follow-up,10.178375478055106,2
+PAT011557,Migraine,4,Other,86,8,244,Dizziness,Severely Abnormal,Critical,32.42226096104732,5
+PAT014599,Gastroenteritis,3,Other,38,8,284,Abdominal Pain,Normal,Acute,13.856327593783694,3
+PAT014023,Diabetes,1,Male,11,6,253,Weakness,Normal,Stable,5.079434377077668,1
+PAT008684,Stroke,3,Male,17,6,322,Confusion,Moderately Abnormal,Needs Follow-up,23.202146532180105,4
+PAT013580,Heart Disease,5,Male,6,8,322,Weakness,Severely Abnormal,Critical,32.84785777650369,5
+PAT008540,Cancer,2,Male,45,3,350,Severe Pain,Slightly Abnormal,Stable,8.304354176592645,2
+PAT002019,Stroke,2,Male,4,12,113,Confusion,Normal,Needs Follow-up,16.021949126980548,3
+PAT015267,Cancer,5,Male,43,11,311,Severe Pain,Severely Abnormal,Needs Follow-up,28.3688788613863,5
+PAT007853,Cancer,1,Female,24,6,270,Weakness,Slightly Abnormal,Chronic Controlled,8.59663752627916,2
+PAT007979,Kidney Disease,3,Other,43,11,208,Confusion,Slightly Abnormal,Needs Follow-up,18.83327128551089,3
+PAT004411,Asthma,2,Other,108,14,272,Fatigue,Slightly Abnormal,Chronic Controlled,10.66589541261344,2
+PAT002777,Migraine,4,Male,21,13,123,Nausea,Moderately Abnormal,Acute,20.366274851566615,3
+PAT001244,COPD,2,Female,12,10,364,Fever,Normal,Stable,4.132929512019622,1
+PAT013075,Stroke,3,Female,24,5,25,Dizziness,Moderately Abnormal,Acute,20.775698973049202,3
+PAT002748,Gastroenteritis,3,Male,10,2,165,Abdominal Pain,Normal,Needs Follow-up,16.025607563119237,3
+PAT001162,Common Cold,1,Female,92,0,283,Fever,Slightly Abnormal,Needs Follow-up,8.860926348043861,2
+PAT018444,Pneumonia,1,Other,49,6,98,Fever,Normal,Chronic Controlled,7.281451979872177,1
+PAT013613,Fracture,1,Female,53,7,86,None/Mild,Normal,Needs Follow-up,8.780940487775085,2
+PAT006143,Fracture,3,Female,7,4,93,Dizziness,Moderately Abnormal,Acute,22.108620960927826,4
+PAT004355,Asthma,4,Other,35,0,78,Cough,Severely Abnormal,Needs Follow-up,19.768735162943575,3
+PAT016541,Kidney Disease,1,Male,12,5,157,Nausea,Normal,Stable,2.1090794843190954,1
+PAT011919,COPD,5,Female,102,10,189,Fever,Moderately Abnormal,Chronic Uncontrolled,21.510374968557798,4
+PAT002628,Fracture,1,Male,34,0,142,Severe Pain,Slightly Abnormal,Chronic Controlled,13.350613358804965,3
+PAT001056,Stroke,1,Female,34,7,118,Weakness,Slightly Abnormal,Stable,5.806004023975969,1
+PAT009944,UTI,2,Male,28,6,227,Fever,Normal,Stable,5.3205793019130985,1
+PAT005280,Diabetes,4,Other,31,5,196,Fatigue,Severely Abnormal,Critical,30.719481881984954,5
+PAT006189,Cancer,1,Male,4,1,26,Bleeding,Slightly Abnormal,Stable,11.32816351471687,2
+PAT004601,Diabetes,1,Male,114,5,92,Fatigue,Normal,Chronic Controlled,5.393291983731005,1
+PAT012012,Common Cold,4,Other,43,0,114,Fatigue,Moderately Abnormal,Chronic Uncontrolled,17.31322368164402,3
+PAT001349,UTI,1,Other,98,12,137,Abdominal Pain,Normal,Chronic Controlled,5.407472103198638,1
+PAT015160,Fracture,3,Female,83,3,155,Severe Pain,Moderately Abnormal,Needs Follow-up,21.629689887144288,4
+PAT014530,Stroke,2,Other,80,12,296,Weakness,Normal,Needs Follow-up,10.075686366948856,2
+PAT007170,Kidney Disease,3,Female,111,8,36,Weakness,Normal,Stable,7.227303362688011,1
+PAT001550,Arthritis,5,Other,39,6,82,Headache,Moderately Abnormal,Acute,25.528565245938104,4
+PAT013933,COPD,5,Female,74,14,361,Cough,Moderately Abnormal,Chronic Uncontrolled,22.787767398541618,4
+PAT009267,Asthma,4,Other,116,12,307,Shortness of Breath,Severely Abnormal,Acute,33.14420710130834,5
+PAT012955,Fracture,4,Other,74,10,67,Severe Pain,Severely Abnormal,Chronic Uncontrolled,26.44417148740123,4
+PAT014583,Cancer,4,Female,68,1,184,Bleeding,Severely Abnormal,Critical,34.01180051175471,5
+PAT008851,Fracture,4,Female,39,4,141,Severe Pain,Slightly Abnormal,Chronic Uncontrolled,20.103609991037114,3
+PAT015783,Common Cold,4,Other,22,3,277,Cough,Severely Abnormal,Acute,24.407981740885155,4
+PAT008842,Pneumonia,4,Female,2,5,226,Fatigue,Moderately Abnormal,Acute,21.47912305474228,4
+PAT012150,Fracture,1,Other,62,6,343,Severe Pain,Normal,Needs Follow-up,10.082157509872998,2
+PAT001295,COPD,5,Male,92,10,67,Shortness of Breath,Moderately Abnormal,Needs Follow-up,24.13411046382552,4
+PAT009783,Migraine,2,Female,62,0,14,Dizziness,Slightly Abnormal,Stable,10.7962812058638,2
+PAT005512,Pneumonia,5,Female,115,9,241,Cough,Slightly Abnormal,Critical,26.09729226421634,4
+PAT014295,Cancer,1,Male,85,12,284,Fatigue,Slightly Abnormal,Stable,6.255248273996734,1
+PAT016457,Migraine,2,Female,39,12,15,Dizziness,Normal,Stable,8.592579704410893,2
+PAT007294,Diabetes,2,Male,93,9,235,Fatigue,Normal,Chronic Controlled,6.283826418817828,1
+PAT019371,COPD,2,Other,51,1,225,Fatigue,Normal,Chronic Controlled,6.0178876556329275,1
+PAT015703,UTI,2,Male,96,7,211,Nausea,Slightly Abnormal,Stable,7.901942445497469,2
+PAT003102,COPD,4,Other,59,8,205,Fatigue,Severely Abnormal,Critical,29.564292831096402,5
+PAT001895,Heart Disease,1,Male,10,13,288,Shortness of Breath,Normal,Needs Follow-up,13.621240370760649,3
+PAT011052,Kidney Disease,4,Other,7,13,101,Weakness,Moderately Abnormal,Critical,26.966303705741257,4
+PAT014443,Fracture,5,Male,85,2,97,Severe Pain,Moderately Abnormal,Needs Follow-up,24.334036863474697,4
+PAT006236,Gastroenteritis,4,Male,78,7,234,Vomiting,Severely Abnormal,Critical,30.8169979391932,5
+PAT013023,Asthma,2,Male,117,0,152,Chest Pain,Normal,Needs Follow-up,14.10618133585701,3
+PAT002390,Arthritis,4,Female,99,8,69,None/Mild,Moderately Abnormal,Needs Follow-up,16.76166065515071,3
+PAT008203,Kidney Disease,5,Male,4,10,364,Fatigue,Severely Abnormal,Needs Follow-up,23.0536913881248,4
+PAT017639,Heart Disease,1,Female,112,6,167,Confusion,Normal,Chronic Controlled,14.457554831805016,3
+PAT002180,Migraine,5,Male,44,11,326,Nausea,Severely Abnormal,Critical,31.09545628835284,5
+PAT015559,Common Cold,2,Male,51,3,104,None/Mild,Slightly Abnormal,Chronic Controlled,11.397901870119188,2
+PAT002264,Common Cold,5,Other,119,0,236,None/Mild,Slightly Abnormal,Critical,26.480846910455675,4
+PAT006099,Hypertension,4,Other,128,13,114,Fatigue,Moderately Abnormal,Needs Follow-up,21.09012407672854,3
+PAT019574,Kidney Disease,5,Other,21,1,6,Fatigue,Slightly Abnormal,Critical,23.95016279907108,4
+PAT006666,Fracture,2,Male,68,2,98,Severe Pain,Normal,Needs Follow-up,16.130833424866314,3
+PAT012441,Heart Disease,4,Male,84,12,145,Confusion,Severely Abnormal,Critical,34.712999938219525,5
+PAT019965,UTI,4,Other,68,12,247,Vomiting,Severely Abnormal,Chronic Uncontrolled,25.16530180196638,4
+PAT001717,Pneumonia,5,Male,44,14,291,Fatigue,Moderately Abnormal,Acute,22.36709626355205,4
+PAT014516,Fracture,3,Female,119,13,246,None/Mild,Moderately Abnormal,Needs Follow-up,15.757601373837984,3
+PAT008977,Heart Disease,1,Female,79,2,346,Bleeding,Normal,Needs Follow-up,12.378769194000132,2
+PAT019272,Diabetes,5,Male,103,8,249,Confusion,Severely Abnormal,Critical,36.36255234282279,5
+PAT006740,Common Cold,3,Female,36,11,78,Fever,Slightly Abnormal,Acute,19.623837191615998,3
+PAT000654,Stroke,4,Female,46,4,138,Chest Pain,Slightly Abnormal,Critical,25.669757735070327,4
+PAT012035,Cancer,4,Other,128,3,207,Fatigue,Severely Abnormal,Needs Follow-up,23.058756784218158,4
+PAT013504,UTI,1,Other,2,13,248,Abdominal Pain,Slightly Abnormal,Chronic Controlled,8.305842695832343,2
+PAT008406,Diabetes,2,Male,90,1,23,Fatigue,Slightly Abnormal,Chronic Controlled,11.537930168435553,2
+PAT019352,COPD,3,Male,38,5,64,Shortness of Breath,Moderately Abnormal,Acute,25.657337511250134,4
+PAT019680,COPD,5,Female,20,1,140,Shortness of Breath,Moderately Abnormal,Needs Follow-up,26.661352317594144,4
+PAT011562,Migraine,1,Other,7,14,155,Headache,Normal,Needs Follow-up,9.962613102732362,2
+PAT004550,Heart Disease,4,Other,114,10,15,Dizziness,Moderately Abnormal,Chronic Uncontrolled,20.635441848260765,3
+PAT009534,Pneumonia,2,Female,34,6,268,Cough,Slightly Abnormal,Chronic Controlled,13.100722546321743,3
+PAT016846,Gastroenteritis,2,Male,82,9,302,Fever,Slightly Abnormal,Chronic Controlled,13.178628601772385,3
+PAT001987,Kidney Disease,3,Male,61,6,61,Weakness,Normal,Needs Follow-up,12.165511898695957,2
+PAT016785,Heart Disease,1,Male,105,5,184,Chest Pain,Normal,Chronic Controlled,10.375932917950252,2
+PAT009361,COPD,4,Female,129,9,206,Fever,Slightly Abnormal,Needs Follow-up,16.06973576702627,3
+PAT008037,Heart Disease,2,Female,87,14,16,Confusion,Normal,Stable,14.749418926160125,3
+PAT014605,Gastroenteritis,3,Male,59,4,209,Vomiting,Moderately Abnormal,Needs Follow-up,18.280721673420533,3
+PAT005067,Diabetes,1,Female,101,0,265,Confusion,Slightly Abnormal,Needs Follow-up,13.218887911290947,3
+PAT010585,Cancer,5,Other,35,1,191,Weakness,Moderately Abnormal,Critical,31.39299911089022,5
+PAT003564,Asthma,3,Male,68,11,334,Fever,Moderately Abnormal,Acute,20.789417562919876,3
+PAT017867,UTI,5,Other,48,1,293,Vomiting,Moderately Abnormal,Chronic Uncontrolled,24.253104840432147,4
+PAT010087,Gastroenteritis,3,Male,35,14,277,Vomiting,Slightly Abnormal,Needs Follow-up,17.50486887251921,3
+PAT016231,Common Cold,4,Male,97,12,351,Fatigue,Moderately Abnormal,Critical,26.75904761400538,4
+PAT019846,Common Cold,5,Male,19,13,64,Cough,Slightly Abnormal,Critical,25.734208204613903,4
+PAT002353,Common Cold,3,Other,116,12,163,Fever,Slightly Abnormal,Chronic Controlled,13.33216187231485,3
+PAT003213,Cancer,5,Other,110,14,54,Bleeding,Slightly Abnormal,Critical,29.70430840729328,5
+PAT019751,Stroke,4,Female,120,9,343,Chest Pain,Severely Abnormal,Chronic Uncontrolled,29.117911908658417,5
+PAT006777,Common Cold,4,Other,40,14,353,Cough,Severely Abnormal,Acute,21.879061578524855,4
+PAT011007,Gastroenteritis,4,Male,55,12,290,Fever,Severely Abnormal,Critical,32.04438860376719,5
+PAT015908,COPD,2,Other,63,0,243,Fever,Normal,Needs Follow-up,8.354819701008221,2
+PAT014774,Arthritis,2,Female,120,4,166,None/Mild,Normal,Needs Follow-up,10.894272641672714,2
+PAT018685,Pneumonia,3,Other,62,1,331,Cough,Slightly Abnormal,Acute,18.175576074545074,3
+PAT007145,Fracture,4,Male,59,5,281,Severe Pain,Severely Abnormal,Needs Follow-up,27.50376494830175,5
+PAT014277,Diabetes,2,Female,5,7,168,Confusion,Normal,Chronic Controlled,12.252918675410214,2
+PAT017336,Cancer,2,Female,116,6,245,Severe Pain,Normal,Chronic Controlled,12.533585623963358,2
+PAT010970,Kidney Disease,1,Other,97,8,275,Confusion,Slightly Abnormal,Chronic Controlled,11.760072399152685,2
+PAT018819,Cancer,3,Male,109,8,280,Severe Pain,Moderately Abnormal,Stable,16.68539951517559,3
+PAT007592,UTI,4,Male,86,13,294,Abdominal Pain,Slightly Abnormal,Needs Follow-up,15.805892688856868,3
+PAT002730,Stroke,5,Male,34,10,63,Dizziness,Slightly Abnormal,Acute,24.08220434188595,4
+PAT012126,Migraine,3,Female,65,1,321,Headache,Moderately Abnormal,Needs Follow-up,15.108387528096037,3
+PAT006445,Heart Disease,2,Other,45,1,107,Shortness of Breath,Slightly Abnormal,Stable,10.1767257566236,2
+PAT017525,Heart Disease,3,Other,64,5,182,Confusion,Moderately Abnormal,Chronic Controlled,19.18551962065773,3
+PAT003743,Kidney Disease,1,Other,72,9,339,Fatigue,Normal,Needs Follow-up,9.273556731420701,2
+PAT001968,Stroke,3,Other,83,13,146,Shortness of Breath,Moderately Abnormal,Chronic Controlled,20.444377985880735,3
+PAT018981,COPD,5,Male,77,7,167,Fever,Moderately Abnormal,Chronic Uncontrolled,23.724570705235493,4
+PAT000884,Asthma,2,Other,118,8,339,Fatigue,Normal,Needs Follow-up,10.307016215922204,2
+PAT017736,Cancer,5,Female,79,0,231,Severe Pain,Moderately Abnormal,Critical,33.02478277154107,5
+PAT017042,Gastroenteritis,4,Other,97,10,100,Fever,Severely Abnormal,Chronic Uncontrolled,22.5547251624562,4
+PAT011242,Stroke,1,Female,109,9,73,Shortness of Breath,Slightly Abnormal,Chronic Controlled,12.118510030655631,2
+PAT002247,Diabetes,5,Male,106,2,331,Weakness,Severely Abnormal,Needs Follow-up,23.25421484823489,4
+PAT002650,Common Cold,2,Male,11,4,305,Fever,Normal,Stable,5.647552818625586,1
+PAT008489,Asthma,3,Female,109,4,155,Fever,Moderately Abnormal,Needs Follow-up,16.091074547660494,3
+PAT017960,Gastroenteritis,2,Male,6,5,6,Vomiting,Normal,Stable,8.562745696527593,2
+PAT014627,Asthma,2,Other,115,5,318,Shortness of Breath,Normal,Needs Follow-up,17.335820959263827,3
+PAT010309,COPD,1,Female,128,10,196,Cough,Slightly Abnormal,Needs Follow-up,10.19401803096507,2
+PAT004351,UTI,4,Male,83,3,242,Abdominal Pain,Slightly Abnormal,Acute,18.531488432201048,3
+PAT012339,Fracture,4,Other,43,7,72,Severe Pain,Severely Abnormal,Needs Follow-up,23.867515042791943,4
+PAT005232,Diabetes,4,Female,35,10,305,Fatigue,Severely Abnormal,Critical,26.561789869623816,4
+PAT011415,Asthma,3,Other,12,0,284,Shortness of Breath,Moderately Abnormal,Needs Follow-up,23.486123567630127,4
+PAT001629,Hypertension,3,Other,7,4,31,Headache,Moderately Abnormal,Chronic Controlled,15.648082810982935,3
+PAT017601,Migraine,5,Male,99,2,289,Dizziness,Moderately Abnormal,Acute,25.61255919815222,4
+PAT001125,Common Cold,2,Male,21,13,116,Cough,Normal,Needs Follow-up,13.576351534491224,3
+PAT013948,Gastroenteritis,1,Male,42,13,220,Vomiting,Slightly Abnormal,Stable,5.069002952294686,1
+PAT000596,Cancer,1,Male,118,12,21,Bleeding,Normal,Stable,9.6843177026281,2
+PAT002254,Stroke,2,Female,55,12,241,Dizziness,Normal,Needs Follow-up,11.99155116125062,2
+PAT009849,Fracture,3,Other,108,6,324,None/Mild,Slightly Abnormal,Acute,15.886684357939636,3
+PAT013990,UTI,1,Other,36,8,94,Fever,Slightly Abnormal,Chronic Controlled,7.5934323628223,2
+PAT010784,Arthritis,1,Other,121,4,278,Fatigue,Normal,Needs Follow-up,10.646828365174873,2
+PAT004461,Kidney Disease,5,Female,70,7,158,Confusion,Severely Abnormal,Critical,36.7320515404821,5
+PAT017244,Common Cold,3,Female,78,1,2,Fatigue,Slightly Abnormal,Acute,16.044915914161212,3
+PAT012017,Kidney Disease,2,Female,98,11,73,Confusion,Normal,Chronic Controlled,13.990960653231362,3
+PAT004713,Stroke,5,Other,4,11,120,Chest Pain,Severely Abnormal,Critical,34.87269835263652,5
+PAT005127,COPD,1,Male,6,8,239,Fatigue,Slightly Abnormal,Chronic Controlled,7.872610513871034,2
+PAT003608,COPD,4,Male,33,4,283,Shortness of Breath,Severely Abnormal,Critical,34.687982968030724,5
+PAT009268,Stroke,2,Female,17,5,155,Chest Pain,Slightly Abnormal,Chronic Controlled,10.314991684918695,2
+PAT002809,Asthma,5,Female,1,1,190,Fever,Severely Abnormal,Needs Follow-up,22.979860622996046,4
+PAT006320,Common Cold,3,Male,18,0,267,Fatigue,Slightly Abnormal,Needs Follow-up,12.988953679079975,3
+PAT009420,Migraine,5,Other,17,6,300,Dizziness,Severely Abnormal,Needs Follow-up,25.64888498100126,4
+PAT019914,Arthritis,2,Other,85,0,350,None/Mild,Normal,Needs Follow-up,7.920728639254441,2
+PAT009193,Gastroenteritis,1,Male,70,9,65,Vomiting,Slightly Abnormal,Needs Follow-up,11.827220942837025,2
+PAT001118,Cancer,1,Female,75,10,120,Weakness,Normal,Chronic Controlled,5.225115125681324,1
+PAT005762,Common Cold,3,Female,8,12,101,Cough,Slightly Abnormal,Stable,10.094624201396373,2
+PAT004938,Heart Disease,4,Male,51,14,103,Confusion,Severely Abnormal,Needs Follow-up,24.638192976786822,4
+PAT001544,COPD,4,Other,51,14,336,Chest Pain,Severely Abnormal,Needs Follow-up,26.55881997126468,4
+PAT003594,COPD,3,Female,78,8,218,Fever,Normal,Needs Follow-up,12.662735029980478,2
+PAT011115,Fracture,1,Female,110,6,232,Severe Pain,Normal,Needs Follow-up,12.67733381078777,2
+PAT004109,Pneumonia,5,Male,124,13,117,Fever,Moderately Abnormal,Chronic Uncontrolled,19.60226561863867,3
+PAT003448,Fracture,5,Other,66,9,259,None/Mild,Slightly Abnormal,Chronic Uncontrolled,14.914444427188227,3
+PAT018843,Pneumonia,4,Other,108,9,98,Fever,Moderately Abnormal,Acute,21.03777937226214,3
+PAT000873,Cancer,1,Female,56,9,63,Severe Pain,Slightly Abnormal,Needs Follow-up,12.189441626510398,2
+PAT007445,Stroke,1,Male,13,0,351,Weakness,Normal,Needs Follow-up,6.642863346889536,1
+PAT005686,Common Cold,1,Male,28,8,357,Cough,Normal,Chronic Controlled,4.586571483484305,1
+PAT015272,Fracture,2,Male,23,3,217,Severe Pain,Normal,Needs Follow-up,13.836779834722103,3
+PAT001251,Gastroenteritis,1,Female,68,13,139,Fever,Normal,Chronic Controlled,6.5504896504459715,1
+PAT011391,Gastroenteritis,3,Male,127,11,242,Vomiting,Slightly Abnormal,Needs Follow-up,17.795003902881792,3
+PAT008806,COPD,1,Other,47,8,290,Cough,Normal,Stable,6.97647596883002,1
+PAT003910,Hypertension,4,Male,70,8,305,Fatigue,Severely Abnormal,Needs Follow-up,22.1820188241084,4
+PAT007636,Fracture,5,Other,111,1,250,Severe Pain,Severely Abnormal,Acute,31.53803252345973,5
+PAT010191,Stroke,2,Male,121,3,223,Weakness,Normal,Needs Follow-up,12.686906037797767,2
+PAT002711,Hypertension,2,Other,115,10,260,None/Mild,Slightly Abnormal,Stable,6.4966667476375415,1
+PAT000928,Heart Disease,2,Male,4,7,313,Confusion,Normal,Stable,10.051332472715831,2
+PAT008787,Arthritis,4,Male,98,1,74,None/Mild,Severely Abnormal,Acute,22.408022371371914,4
+PAT001846,Migraine,2,Male,43,0,117,Headache,Slightly Abnormal,Chronic Controlled,11.005910629507085,2
+PAT009355,Cancer,1,Other,110,0,330,Bleeding,Normal,Chronic Controlled,12.33373786047844,2
+PAT011444,Stroke,4,Other,25,2,77,Weakness,Severely Abnormal,Needs Follow-up,23.476161578446582,4
+PAT012886,Fracture,3,Male,51,4,265,None/Mild,Moderately Abnormal,Acute,17.024016198434147,3
+PAT010693,Arthritis,5,Female,127,13,317,None/Mild,Slightly Abnormal,Acute,17.085655277564175,3
+PAT015711,Migraine,5,Other,91,3,243,Dizziness,Moderately Abnormal,Needs Follow-up,22.63383101234251,4
+PAT012066,Pneumonia,1,Female,27,2,126,Fatigue,Normal,Needs Follow-up,10.613278553269732,2
+PAT009363,Migraine,4,Other,44,9,116,Headache,Moderately Abnormal,Needs Follow-up,19.960922970576526,3
+PAT003007,Common Cold,5,Female,37,10,249,None/Mild,Slightly Abnormal,Chronic Uncontrolled,16.215114130831736,3
+PAT006578,Kidney Disease,1,Male,68,5,75,Nausea,Normal,Needs Follow-up,8.036164928062169,2
+PAT005739,Diabetes,4,Male,54,13,179,Confusion,Moderately Abnormal,Acute,28.649017095135015,5
+PAT000345,Arthritis,2,Female,57,6,268,None/Mild,Normal,Stable,1.5721205783085024,1
+PAT009573,Arthritis,5,Other,55,1,87,None/Mild,Severely Abnormal,Critical,28.47787683708844,5
+PAT018426,Heart Disease,3,Other,87,0,330,Weakness,Slightly Abnormal,Stable,7.2535739161591515,1
+PAT019277,Diabetes,4,Male,66,10,99,Fatigue,Slightly Abnormal,Acute,19.725968524693904,3
+PAT013194,Arthritis,3,Female,45,3,147,None/Mild,Moderately Abnormal,Needs Follow-up,15.49198704770613,3
+PAT015952,Cancer,1,Female,121,2,234,Severe Pain,Normal,Chronic Controlled,8.077619860182757,2
+PAT015219,Hypertension,1,Other,43,9,203,Fatigue,Normal,Needs Follow-up,12.263847266038631,2
+PAT014990,Arthritis,1,Female,25,12,213,Fatigue,Normal,Chronic Controlled,6.92291876178089,1
+PAT013383,Heart Disease,3,Female,89,8,34,Weakness,Moderately Abnormal,Stable,12.926044938976336,2
+PAT000194,Arthritis,1,Other,96,13,149,Headache,Normal,Needs Follow-up,6.5362734581886475,1
+PAT005746,Stroke,1,Other,43,10,8,Dizziness,Normal,Chronic Controlled,8.189393634799558,2
+PAT019312,Common Cold,3,Male,108,11,259,Fever,Moderately Abnormal,Needs Follow-up,16.11097829978879,3
+PAT007107,Gastroenteritis,4,Female,94,5,79,Fever,Moderately Abnormal,Chronic Uncontrolled,19.307179576816058,3
+PAT017366,Migraine,2,Other,97,12,70,Dizziness,Normal,Chronic Controlled,11.053884456932598,2
+PAT008152,Stroke,4,Male,54,10,89,Dizziness,Severely Abnormal,Chronic Uncontrolled,21.560963485560592,4
+PAT011264,Stroke,1,Female,54,4,133,Dizziness,Slightly Abnormal,Stable,8.022223063782015,2
+PAT012690,Common Cold,5,Female,42,1,244,Cough,Severely Abnormal,Acute,24.390342803129066,4
+PAT016310,Common Cold,1,Male,110,4,226,None/Mild,Normal,Stable,2.89849869276084,1
+PAT010051,Heart Disease,4,Female,10,1,145,Shortness of Breath,Moderately Abnormal,Acute,26.755208602872056,4
+PAT011570,Stroke,4,Male,114,0,126,Weakness,Slightly Abnormal,Chronic Uncontrolled,18.365699302590677,3
+PAT016858,Heart Disease,3,Male,57,11,290,Weakness,Moderately Abnormal,Chronic Controlled,15.964384725119732,3
+PAT004012,Kidney Disease,3,Other,38,9,8,Confusion,Moderately Abnormal,Acute,25.490568864520977,4
+PAT007596,Asthma,5,Female,32,3,244,Cough,Severely Abnormal,Chronic Uncontrolled,25.75469045393806,4
+PAT000045,Arthritis,1,Other,1,1,116,Fatigue,Normal,Needs Follow-up,10.303656315156557,2
+PAT000216,Fracture,4,Male,113,14,322,Severe Pain,Severely Abnormal,Needs Follow-up,27.583137541990006,5
+PAT004314,Cancer,2,Female,117,10,360,Fatigue,Slightly Abnormal,Stable,8.064481816309241,2
+PAT013271,Stroke,4,Other,130,14,337,Chest Pain,Severely Abnormal,Acute,29.927963325118426,5
+PAT003080,Common Cold,2,Male,35,2,5,Fatigue,Normal,Chronic Controlled,7.307366064017135,1
+PAT016218,Stroke,3,Female,57,14,32,Shortness of Breath,Moderately Abnormal,Stable,14.499031160034907,3
+PAT012861,Fracture,2,Male,57,5,291,None/Mild,Normal,Stable,4.620075093037234,1
+PAT011931,Common Cold,1,Male,3,14,217,Fever,Normal,Chronic Controlled,3.3571652478625227,1
+PAT012002,Diabetes,3,Male,110,14,8,Confusion,Slightly Abnormal,Needs Follow-up,21.76608890349583,4
+PAT002091,Stroke,1,Male,107,14,101,Confusion,Normal,Chronic Controlled,10.349441898264121,2
+PAT006645,Gastroenteritis,2,Male,119,13,32,Vomiting,Normal,Needs Follow-up,12.43499591435702,2
+PAT003075,Fracture,2,Female,45,6,92,None/Mild,Normal,Needs Follow-up,8.8840796722292,2
+PAT014282,Pneumonia,5,Female,98,3,69,Fever,Slightly Abnormal,Acute,21.78801233742272,4
+PAT008494,Cancer,5,Female,114,0,129,Bleeding,Moderately Abnormal,Acute,28.73175455127915,5
+PAT006477,Kidney Disease,5,Female,115,1,172,Confusion,Severely Abnormal,Acute,32.7869212308507,5
+PAT000604,Cancer,3,Other,1,9,337,Bleeding,Moderately Abnormal,Stable,18.718580826871236,3
+PAT006945,UTI,2,Female,11,0,34,Fever,Normal,Needs Follow-up,10.603790428126393,2
+PAT002373,Diabetes,2,Male,109,4,28,Fatigue,Slightly Abnormal,Needs Follow-up,13.374268589802583,3
+PAT012524,COPD,3,Female,3,11,225,Fever,Moderately Abnormal,Needs Follow-up,17.127229443613786,3
+PAT014456,COPD,2,Female,32,13,254,Fever,Slightly Abnormal,Needs Follow-up,14.68640397623651,3
+PAT009257,COPD,3,Other,82,2,123,Fever,Slightly Abnormal,Acute,16.519943438382278,3
+PAT014336,UTI,4,Female,50,7,273,Fever,Severely Abnormal,Critical,29.280426127058686,5
+PAT018397,Kidney Disease,4,Male,96,11,52,Fatigue,Slightly Abnormal,Critical,24.51753581787413,4
+PAT005389,COPD,3,Other,106,0,200,Fatigue,Moderately Abnormal,Chronic Controlled,14.955260387774974,3
+PAT008302,Common Cold,2,Female,36,1,132,None/Mild,Normal,Stable,5.442048200983668,1
+PAT001867,Pneumonia,1,Male,36,3,104,Weakness,Normal,Chronic Controlled,6.0169766067603625,1
+PAT011300,Diabetes,1,Female,17,4,163,Confusion,Slightly Abnormal,Stable,10.86555907909794,2
+PAT016136,Fracture,2,Female,11,4,316,None/Mild,Normal,Chronic Controlled,7.485434443796823,2
+PAT006087,Hypertension,5,Female,14,9,173,Headache,Severely Abnormal,Needs Follow-up,25.179306151235725,4
+PAT016144,Arthritis,5,Female,47,11,246,Headache,Moderately Abnormal,Acute,25.421734076165272,4
+PAT005391,Kidney Disease,5,Other,83,8,169,Confusion,Severely Abnormal,Acute,29.835748350116067,5
+PAT011701,UTI,5,Other,110,2,273,Fever,Slightly Abnormal,Acute,19.542545822182145,3
+PAT007661,COPD,1,Male,22,6,11,Cough,Normal,Stable,6.265486257795882,1
+PAT017919,Migraine,4,Female,0,12,330,Dizziness,Moderately Abnormal,Chronic Uncontrolled,20.232991707843265,3
+PAT017267,Asthma,3,Male,128,1,320,Shortness of Breath,Slightly Abnormal,Needs Follow-up,17.260981778769505,3
+PAT005923,Asthma,1,Other,89,12,85,Shortness of Breath,Slightly Abnormal,Chronic Controlled,12.597610678614604,2
+PAT008098,Arthritis,3,Female,88,11,280,Headache,Normal,Acute,18.70549275895822,3
+PAT011076,Fracture,2,Other,52,8,80,None/Mild,Normal,Needs Follow-up,7.755195148938057,2
+PAT004975,Cancer,1,Male,103,13,20,Fatigue,Normal,Chronic Controlled,6.2120514687575055,1
+PAT011293,Common Cold,2,Other,53,12,109,Fatigue,Slightly Abnormal,Stable,6.986620539570243,1
+PAT014347,COPD,1,Male,108,6,78,Cough,Normal,Needs Follow-up,9.337877367756901,2
+PAT000503,Gastroenteritis,2,Other,0,3,134,Nausea,Slightly Abnormal,Stable,7.642549307260375,2
+PAT002581,Common Cold,2,Male,25,8,241,None/Mild,Slightly Abnormal,Chronic Controlled,9.79403373169685,2
+PAT015659,Gastroenteritis,4,Female,13,11,364,Fever,Slightly Abnormal,Chronic Uncontrolled,15.2050789916921,3
+PAT000442,Common Cold,2,Female,38,8,146,None/Mild,Slightly Abnormal,Stable,6.60843181071053,1
+PAT007946,Common Cold,1,Male,48,4,351,Fever,Normal,Needs Follow-up,8.597344689508848,2
+PAT000271,Kidney Disease,1,Female,108,0,352,Fatigue,Normal,Chronic Controlled,6.655401307486878,1
+PAT019093,Pneumonia,1,Male,44,8,271,Shortness of Breath,Slightly Abnormal,Stable,10.115995205912991,2
+PAT006104,Arthritis,5,Female,47,4,210,None/Mild,Severely Abnormal,Critical,29.796590899052582,5
+PAT011630,Arthritis,4,Male,55,4,44,Headache,Severely Abnormal,Acute,24.686871789042527,4
+PAT012221,Fracture,2,Female,50,13,355,Severe Pain,Slightly Abnormal,Chronic Controlled,13.013616699765464,3
+PAT015056,Asthma,4,Male,107,12,280,Shortness of Breath,Severely Abnormal,Needs Follow-up,24.59421067305364,4
+PAT004499,Arthritis,1,Female,48,8,176,Fatigue,Normal,Needs Follow-up,9.235489861171867,2
+PAT003329,Fracture,5,Female,88,4,30,None/Mild,Slightly Abnormal,Needs Follow-up,18.148575212951535,3
+PAT006431,Asthma,5,Other,78,11,322,Fatigue,Moderately Abnormal,Chronic Uncontrolled,22.440128053675743,4
+PAT013141,Heart Disease,4,Female,87,1,75,Shortness of Breath,Severely Abnormal,Acute,32.04394778904188,5
+PAT008893,Heart Disease,2,Other,1,12,10,Confusion,Normal,Needs Follow-up,11.49181059237754,2
+PAT018023,UTI,4,Other,49,3,123,Vomiting,Severely Abnormal,Critical,32.34520759751295,5
+PAT018585,Pneumonia,1,Male,19,13,192,Cough,Normal,Needs Follow-up,8.66931697839041,2
+PAT013875,Arthritis,4,Other,3,8,8,None/Mild,Moderately Abnormal,Chronic Uncontrolled,17.0106471330173,3
+PAT010734,Pneumonia,1,Male,60,12,291,Fatigue,Normal,Stable,1.7010009943242337,1
+PAT017347,Arthritis,4,Male,73,5,282,None/Mild,Severely Abnormal,Critical,31.529421735135713,5
+PAT014505,Diabetes,3,Male,33,0,189,Nausea,Slightly Abnormal,Acute,17.08758264914185,3
+PAT012496,Stroke,1,Other,49,14,31,Confusion,Normal,Chronic Controlled,11.003255886737207,2
+PAT007992,Hypertension,4,Female,40,4,269,Headache,Severely Abnormal,Acute,24.299979443304377,4
+PAT000377,Heart Disease,3,Other,125,3,25,Confusion,Slightly Abnormal,Acute,21.412690114374985,4
+PAT012653,COPD,1,Other,30,12,157,Fever,Normal,Chronic Controlled,8.750180532264308,2
+PAT018311,Stroke,3,Other,0,5,183,Confusion,Moderately Abnormal,Chronic Controlled,20.680717541890832,3
+PAT001870,Asthma,3,Male,73,0,41,Cough,Normal,Chronic Controlled,8.870434455222902,2
+PAT000116,Cancer,4,Female,58,1,199,Fatigue,Severely Abnormal,Needs Follow-up,21.899430735196393,4
+PAT018110,Diabetes,1,Female,54,10,15,Fatigue,Slightly Abnormal,Chronic Controlled,7.907476496028716,2
+PAT018451,UTI,2,Female,55,5,258,Fever,Slightly Abnormal,Needs Follow-up,11.252794328240002,2
+PAT001120,Pneumonia,2,Other,20,3,189,Fatigue,Normal,Stable,3.693961868757001,1
+PAT001850,Stroke,1,Male,34,12,110,Weakness,Normal,Chronic Controlled,3.6248916414520806,1
+PAT007155,Hypertension,3,Male,79,1,317,Headache,Slightly Abnormal,Chronic Controlled,13.718666883593517,3
+PAT000557,Hypertension,3,Female,25,12,186,Fatigue,Normal,Stable,7.577667913118428,2
+PAT001700,Cancer,1,Female,90,12,209,Severe Pain,Slightly Abnormal,Chronic Controlled,14.446924617038565,3
+PAT019483,Gastroenteritis,2,Male,13,7,198,Fever,Normal,Stable,3.2801328194491335,1
+PAT018902,Kidney Disease,4,Male,35,7,63,Weakness,Slightly Abnormal,Needs Follow-up,15.104700168753414,3
+PAT001019,Diabetes,3,Male,107,2,277,Confusion,Moderately Abnormal,Stable,19.679697648194434,3
+PAT005664,Gastroenteritis,2,Male,99,3,311,Abdominal Pain,Normal,Chronic Controlled,8.412626872393329,2
+PAT000192,Cancer,1,Female,73,2,34,Severe Pain,Slightly Abnormal,Stable,8.035030058975014,2
+PAT002290,Cancer,5,Male,30,9,351,Fatigue,Moderately Abnormal,Chronic Uncontrolled,23.341839338318326,4
+PAT005508,Arthritis,5,Female,16,9,318,Fatigue,Moderately Abnormal,Needs Follow-up,24.456995761766127,4
+PAT000250,UTI,2,Female,130,5,254,Abdominal Pain,Normal,Chronic Controlled,9.960398465207538,2
+PAT018726,UTI,3,Other,31,1,155,Abdominal Pain,Normal,Needs Follow-up,12.294739490319614,2
+PAT002305,Common Cold,4,Other,93,9,266,Cough,Moderately Abnormal,Chronic Uncontrolled,20.573615274672683,3
+PAT014064,Gastroenteritis,4,Other,7,12,162,Nausea,Severely Abnormal,Chronic Uncontrolled,22.19222593211335,4
+PAT015429,Fracture,1,Male,69,9,1,None/Mild,Normal,Stable,4.3410303275325415,1
+PAT019055,Hypertension,4,Other,105,3,46,Abdominal Pain,Severely Abnormal,Acute,26.913083981922213,4
+PAT000933,Cancer,3,Other,27,2,171,Weakness,Moderately Abnormal,Needs Follow-up,18.73123538078583,3
+PAT017928,Migraine,3,Female,98,1,302,Headache,Moderately Abnormal,Stable,14.164092456816915,3
+PAT002211,Heart Disease,1,Other,11,13,127,Chest Pain,Normal,Needs Follow-up,13.158052587328433,3
+PAT008120,Hypertension,1,Female,110,12,291,None/Mild,Normal,Chronic Controlled,5.513775180541367,1
+PAT012921,Pneumonia,3,Male,53,0,118,Shortness of Breath,Moderately Abnormal,Acute,21.85704875252062,4
+PAT007855,Diabetes,2,Male,26,3,73,Fatigue,Slightly Abnormal,Needs Follow-up,12.673198016094805,2
+PAT004258,Hypertension,4,Other,125,0,162,None/Mild,Moderately Abnormal,Acute,20.7936811765954,3
+PAT004097,Gastroenteritis,2,Male,61,7,263,Nausea,Normal,Needs Follow-up,9.71142410302462,2
+PAT008038,Common Cold,2,Other,53,10,207,Fever,Normal,Chronic Controlled,6.177389024687064,1
+PAT002913,Fracture,4,Other,36,7,189,None/Mild,Severely Abnormal,Acute,25.861815927766568,4
+PAT011208,COPD,3,Female,128,14,278,Cough,Moderately Abnormal,Acute,19.689853959396245,3
+PAT008001,COPD,4,Female,28,9,342,Fatigue,Severely Abnormal,Needs Follow-up,23.166650016945457,4
+PAT013124,Cancer,4,Male,20,8,162,Weakness,Moderately Abnormal,Needs Follow-up,19.429807605448698,3
+PAT002769,UTI,4,Male,52,8,356,Abdominal Pain,Moderately Abnormal,Needs Follow-up,20.12221291843862,3
+PAT008261,Gastroenteritis,3,Other,109,4,145,Abdominal Pain,Slightly Abnormal,Acute,17.26879660658892,3
+PAT006149,Heart Disease,3,Male,37,0,345,Weakness,Moderately Abnormal,Needs Follow-up,16.933204104496316,3
+PAT019389,Hypertension,4,Male,69,13,36,Headache,Moderately Abnormal,Acute,21.500786605269898,4
+PAT009923,Fracture,4,Female,55,0,339,None/Mild,Severely Abnormal,Needs Follow-up,19.005852832946427,3

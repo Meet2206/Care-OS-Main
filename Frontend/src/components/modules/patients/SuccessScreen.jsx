@@ -3,8 +3,9 @@ import PatientCard from "./PatientCard"
 
 const CONFETTI_COLORS = ["#3f78c8", "#0f9fb4", "#8fd1af", "#f59e0b", "#ec4899", "#6366f1"]
 
-function SuccessScreen({ formData, patientId, verificationCode, accountLoginId, temporaryPassword, onRegisterAnother, onViewPatient }) {
+function SuccessScreen({ formData, patientId, verificationCode, accountLoginId, temporaryPassword, onDismissCredentials, onRegisterAnother, onViewPatient }) {
     const [showCard, setShowCard] = useState(false)
+    const [copiedField, setCopiedField] = useState("")
     const fullName = `${formData.firstName} ${formData.lastName}`.trim()
 
     const cardData = {
@@ -68,6 +69,16 @@ function SuccessScreen({ formData, patientId, verificationCode, accountLoginId, 
         doc.save(`CareOS-${patientId}.pdf`)
     }
 
+    const copyCredential = async (field, value) => {
+        try {
+            await navigator.clipboard.writeText(value)
+            setCopiedField(field)
+            window.setTimeout(() => setCopiedField(""), 1800)
+        } catch {
+            setCopiedField("")
+        }
+    }
+
     return (
         <div className="anim-fade-in-up space-y-8">
             {/* Confetti animation */}
@@ -105,11 +116,26 @@ function SuccessScreen({ formData, patientId, verificationCode, accountLoginId, 
             </div>
 
             {accountLoginId && temporaryPassword ? (
-                <div className="rounded-2xl border border-[#cfe3f2] bg-[#eef7fc] px-5 py-4 text-left">
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">Patient login created</p>
-                    <p className="mt-3 text-sm text-[var(--muted)]">Give these temporary credentials to the patient. The password is shown only on this registration screen.</p>
-                    <div className="mt-3 grid gap-3 sm:grid-cols-2"><div className="rounded-xl bg-white px-4 py-3"><p className="text-xs text-[var(--muted)]">Login ID</p><p className="mt-1 font-semibold text-[var(--ink)]">{accountLoginId}</p></div><div className="rounded-xl bg-white px-4 py-3"><p className="text-xs text-[var(--muted)]">Temporary password</p><p className="mt-1 font-semibold text-[var(--ink)]">{temporaryPassword}</p></div></div>
-                </div>
+                <section className="rounded-[28px] border border-[#b9dbe8] bg-[linear-gradient(135deg,#f0f9fc_0%,#fffdf8_100%)] p-5 text-left shadow-sm sm:p-6" aria-label="Patient account credential ticket">
+                    <div className="flex flex-col gap-4 border-b border-[#cfe3f2] pb-5 sm:flex-row sm:items-start sm:justify-between">
+                        <div>
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--primary-blue)]">CARE-OS</p>
+                            <h3 className="mt-2 font-display text-2xl text-[var(--ink)]">Patient Account Created Successfully</h3>
+                            <p className="mt-2 text-sm leading-6 text-[var(--muted)]">Please provide this credential ticket to the patient. They should change the temporary password after their first sign-in.</p>
+                        </div>
+                        <span className="inline-flex w-fit items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">Patient Portal</span>
+                    </div>
+                    <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                        <CredentialRow label="Patient Name" value={fullName} />
+                        <CredentialRow label="Patient ID" value={patientId} />
+                        <CredentialRow label="Login ID" value={accountLoginId} copyLabel="Copy login ID" copied={copiedField === "login"} onCopy={() => copyCredential("login", accountLoginId)} />
+                        <CredentialRow label="Temporary Password" value={temporaryPassword} copyLabel="Copy temporary password" copied={copiedField === "password"} onCopy={() => copyCredential("password", temporaryPassword)} sensitive />
+                    </div>
+                    <div className="mt-5 flex flex-col gap-3 border-t border-[#cfe3f2] pt-5 sm:flex-row sm:items-center sm:justify-between">
+                        <p className="text-xs leading-5 text-[var(--muted)]">For security, this password will not be available again after you close this ticket.</p>
+                        <button type="button" onClick={onDismissCredentials} className="inline-flex min-h-10 items-center justify-center rounded-full bg-[var(--primary-blue)] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[var(--primary-blue)]/90">Close Ticket</button>
+                    </div>
+                </section>
             ) : null}
 
             {/* ID Cards */}
@@ -211,6 +237,18 @@ function SuccessScreen({ formData, patientId, verificationCode, accountLoginId, 
                     </svg>
                     Register Another Patient
                 </button>
+            </div>
+        </div>
+    )
+}
+
+function CredentialRow({ label, value, copyLabel, copied, onCopy, sensitive = false }) {
+    return (
+        <div className="rounded-2xl border border-[#d9e9ee] bg-white/90 px-4 py-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">{label}</p>
+            <div className="mt-2 flex items-center justify-between gap-3">
+                <p className={`min-w-0 break-all font-semibold text-[var(--ink)] ${sensitive ? "font-mono tracking-[0.08em]" : ""}`}>{value}</p>
+                {onCopy ? <button type="button" onClick={onCopy} className="shrink-0 rounded-full border border-[var(--line)] px-3 py-1.5 text-xs font-semibold text-[var(--primary-blue)] hover:bg-[var(--panel-muted)]">{copied ? "Copied" : copyLabel}</button> : null}
             </div>
         </div>
     )

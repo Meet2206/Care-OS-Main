@@ -296,6 +296,19 @@ function PatientDashboard() {
                     actions={<Button variant="subtle" onClick={() => setShowBookingModal(true)}>Book Appointment</Button>}
                 />
 
+                <div className="flex flex-col gap-3 rounded-[24px] border border-[#cfe3f2] bg-[#eef7fc] px-5 py-4 sm:flex-row sm:items-start sm:gap-4" role="note" aria-label="Account inactivity notice">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-white text-[var(--primary-blue)] shadow-sm" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M12 7v5l3 2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p className="font-semibold text-[var(--ink)]">Account Inactivity Notice</p>
+                        <p className="mt-1 text-sm leading-6 text-[var(--muted)]">Your CARE-OS account may be deleted if there is no account activity for 2 months or more. Please sign in regularly or contact reception if you need help keeping your account active.</p>
+                    </div>
+                </div>
+
                 {patientLoadError ? <div className="rounded-2xl border border-[#f0c7c2] bg-[#fff4f2] px-4 py-3 text-sm text-[#9b5148]">{patientLoadError}</div> : null}
                 <PatientIdCard profile={patientProfileData} />
 

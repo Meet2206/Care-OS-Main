@@ -1,0 +1,501 @@
+Patient_ID,Patient_Name,Disease,Severity,Visit_Date,Gender,Age,Number_of_Visits,Abnormal_Result,Diagnosis,Symptoms,Symptom_Count,Chronic_Condition,Severity_Score,Estimated_Time_Min
+P10362,Patient_362,Bronchitis,Low,2025-12-23,Female,67,3,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",2,No,1,16
+P10074,Patient_074,Diabetes,Low,2026-05-03,Female,71,4,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",2,Yes,1,16
+P10375,Patient_375,Gastritis,High,2025-01-26,Male,90,5,Yes,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",6,No,3,33
+P10156,Patient_156,Migraine,Moderate,2024-07-01,Male,59,4,Yes,Migraine Headache,"Headache, Nausea, Light Sensitivity",4,No,2,25
+P10105,Patient_105,Skin Infection,Moderate,2024-11-13,Female,59,7,No,Bacterial Skin Infection,"Redness, Swelling, Pain",3,No,2,21
+P10395,Patient_395,Back Pain,Moderate,2024-11-29,Female,38,3,Yes,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",5,No,2,23
+P10378,Patient_378,Urinary Tract Infection,Low,2025-08-04,Male,66,2,No,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",3,No,1,13
+P10125,Patient_125,Allergy,Moderate,2025-03-14,Male,57,5,No,Allergic Reaction,"Sneezing, Itching, Rash",4,No,2,21
+P10069,Patient_069,Arthritis,Low,2024-01-18,Female,45,5,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",2,Yes,1,16
+P10451,Patient_451,Pneumonia,Low,2025-05-25,Male,63,4,No,Lower Respiratory Infection,"Fever, Cough, Breathlessness",2,No,1,18
+P10010,Patient_010,Allergy,Critical,2025-10-07,Female,62,3,Yes,Allergic Reaction,"Sneezing, Itching, Rash",4,No,4,31
+P10195,Patient_195,Diabetes,High,2025-10-07,Male,17,7,Yes,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",2,Yes,3,29
+P10407,Patient_407,Bronchitis,Low,2024-10-05,Male,31,2,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",5,No,1,14
+P10085,Patient_085,Migraine,Low,2025-01-11,Male,90,5,No,Migraine Headache,"Headache, Nausea, Light Sensitivity",2,No,1,14
+P10372,Patient_372,Urinary Tract Infection,Moderate,2025-04-28,Male,36,8,No,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",4,No,2,23
+P10389,Patient_389,Bronchitis,Moderate,2024-07-05,Male,62,3,Yes,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",4,No,2,22
+P10496,Patient_496,Hypertension,High,2026-01-04,Female,1,4,Yes,Essential Hypertension,"Headache, Dizziness, Fatigue",5,Yes,3,29
+P10031,Patient_031,Gastritis,Low,2025-02-21,Male,63,4,Yes,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",2,No,1,18
+P10317,Patient_317,Migraine,Low,2025-03-06,Female,42,4,No,Migraine Headache,"Headache, Nausea, Light Sensitivity",2,No,1,18
+P10409,Patient_409,Diabetes,Moderate,2024-03-28,Female,50,2,Yes,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",3,Yes,2,24
+P10491,Patient_491,Diabetes,Low,2025-07-08,Male,48,3,Yes,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",2,Yes,1,16
+P10492,Patient_492,Skin Infection,Moderate,2025-10-08,Male,61,2,No,Bacterial Skin Infection,"Redness, Swelling, Pain",3,No,2,18
+P10281,Patient_281,Back Pain,Low,2026-03-12,Male,32,2,Yes,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",2,No,1,19
+P10357,Patient_357,Hypertension,Moderate,2025-02-22,Male,49,3,Yes,Essential Hypertension,"Headache, Dizziness, Fatigue",3,Yes,2,27
+P10077,Patient_077,Bronchitis,Moderate,2025-12-02,Male,69,2,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",3,No,2,22
+P10462,Patient_462,Gastritis,Low,2024-11-08,Male,33,7,No,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",1,No,1,13
+P10498,Patient_498,Skin Infection,Low,2024-07-09,Male,48,2,Yes,Bacterial Skin Infection,"Redness, Swelling, Pain",2,No,1,19
+P10212,Patient_212,Gastritis,Moderate,2024-10-29,Male,36,4,Yes,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",3,No,2,20
+P10102,Patient_102,Pneumonia,Low,2024-03-12,Male,11,7,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",3,No,1,24
+P10335,Patient_335,Back Pain,High,2024-04-20,Male,68,4,Yes,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",5,No,3,37
+P10476,Patient_476,Diabetes,Low,2024-12-06,Female,56,3,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",4,Yes,1,18
+P10337,Patient_337,Heart Disease,Low,2024-08-07,Female,77,7,No,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",1,Yes,1,25
+P10441,Patient_441,Back Pain,High,2024-03-04,Male,41,4,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",3,No,3,25
+P10174,Patient_174,Hypertension,High,2026-05-11,Female,71,5,Yes,Essential Hypertension,"Headache, Dizziness, Fatigue",3,Yes,3,33
+P10003,Patient_003,Skin Infection,Moderate,2025-04-29,Male,48,3,Yes,Bacterial Skin Infection,"Redness, Swelling, Pain",3,Yes,2,24
+P10334,Patient_334,Back Pain,Moderate,2024-07-06,Male,68,4,Yes,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",3,No,2,27
+P10410,Patient_410,Back Pain,Moderate,2026-04-24,Female,54,4,Yes,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",1,No,2,20
+P10071,Patient_071,Pneumonia,Low,2024-09-20,Female,35,2,No,Lower Respiratory Infection,"Fever, Cough, Breathlessness",3,No,1,16
+P10210,Patient_210,Common Cold,Low,2025-11-04,Female,39,6,Yes,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",3,No,1,16
+P10064,Patient_064,Bronchitis,Low,2025-11-13,Female,90,6,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",1,No,1,21
+P10385,Patient_385,Migraine,High,2024-05-29,Female,41,4,No,Migraine Headache,"Headache, Nausea, Light Sensitivity",2,No,3,22
+P10094,Patient_094,Arthritis,High,2024-09-14,Male,29,3,Yes,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",4,Yes,3,31
+P10486,Patient_486,Pneumonia,Critical,2024-01-25,Female,45,2,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",4,No,4,38
+P10186,Patient_186,Allergy,High,2024-04-18,Female,8,6,Yes,Allergic Reaction,"Sneezing, Itching, Rash",4,No,3,27
+P10034,Patient_034,Allergy,Critical,2026-04-30,Female,65,2,Yes,Allergic Reaction,"Sneezing, Itching, Rash",6,No,4,39
+P10078,Patient_078,Urinary Tract Infection,Low,2024-01-11,Female,30,4,No,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",3,No,1,15
+P10001,Patient_001,Gastritis,High,2024-05-01,Female,56,2,Yes,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",3,No,3,25
+P10012,Patient_012,Pneumonia,Critical,2025-08-30,Male,64,3,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",5,No,4,35
+P10416,Patient_416,Asthma,Low,2024-06-15,Male,41,5,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",3,No,1,12
+P10023,Patient_023,Heart Disease,High,2026-03-28,Male,9,10,Yes,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",4,Yes,3,39
+P10073,Patient_073,Allergy,High,2025-01-20,Male,50,2,Yes,Allergic Reaction,"Sneezing, Itching, Rash",5,No,3,26
+P10183,Patient_183,Pneumonia,Moderate,2026-02-18,Male,43,5,No,Lower Respiratory Infection,"Fever, Cough, Breathlessness",3,No,2,18
+P10132,Patient_132,Asthma,High,2025-04-25,Male,90,3,Yes,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",4,No,3,27
+P10411,Patient_411,Asthma,High,2025-02-24,Female,15,5,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",4,Yes,3,29
+P10194,Patient_194,Hypertension,Critical,2025-07-16,Male,43,1,Yes,Essential Hypertension,"Headache, Dizziness, Fatigue",3,Yes,4,32
+P10056,Patient_056,Urinary Tract Infection,High,2026-06-12,Male,39,3,No,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",3,No,3,23
+P10149,Patient_149,Allergy,High,2024-10-28,Male,62,5,Yes,Allergic Reaction,"Sneezing, Itching, Rash",3,Yes,3,30
+P10019,Patient_019,Pneumonia,Moderate,2025-04-04,Female,54,4,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",4,No,2,27
+P10205,Patient_205,Common Cold,Moderate,2025-03-25,Male,59,5,No,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",4,No,2,21
+P10079,Patient_079,Common Cold,Low,2026-04-28,Female,21,5,No,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",3,No,1,17
+P10495,Patient_495,Diabetes,High,2025-04-20,Male,27,1,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",4,Yes,3,27
+P10263,Patient_263,Hypertension,Moderate,2026-04-04,Male,55,6,No,Essential Hypertension,"Headache, Dizziness, Fatigue",3,Yes,2,21
+P10324,Patient_324,Common Cold,Moderate,2025-02-26,Female,30,6,Yes,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",4,No,2,22
+P10484,Patient_484,Bronchitis,Moderate,2025-10-26,Male,27,3,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",2,No,2,22
+P10080,Patient_080,Urinary Tract Infection,Moderate,2025-05-12,Male,45,5,No,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",3,No,2,21
+P10040,Patient_040,Asthma,Moderate,2024-06-26,Male,36,3,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",5,No,2,18
+P10452,Patient_452,Flu,Moderate,2024-04-24,Female,64,4,Yes,Influenza,"Fever, Body Ache, Fatigue",3,No,2,25
+P10047,Patient_047,Asthma,Moderate,2026-01-16,Male,45,4,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",4,No,2,19
+P10239,Patient_239,Flu,High,2024-05-05,Female,38,3,Yes,Influenza,"Fever, Body Ache, Fatigue",4,No,3,28
+P10392,Patient_392,Back Pain,High,2025-12-24,Female,65,5,Yes,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",4,Yes,3,37
+P10353,Patient_353,Back Pain,Low,2024-04-01,Male,65,5,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",1,No,1,19
+P10342,Patient_342,Common Cold,Low,2025-05-30,Female,25,3,No,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",3,No,1,13
+P10278,Patient_278,Asthma,Low,2026-05-25,Female,56,2,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",2,No,1,13
+P10291,Patient_291,Back Pain,Moderate,2024-01-02,Male,77,7,Yes,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",3,No,2,27
+P10318,Patient_318,Pneumonia,High,2025-07-28,Male,72,2,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",3,No,3,34
+P10305,Patient_305,Hypertension,High,2025-08-24,Male,36,3,Yes,Essential Hypertension,"Headache, Dizziness, Fatigue",4,Yes,3,27
+P10269,Patient_269,Arthritis,Moderate,2024-05-08,Female,47,5,Yes,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",3,Yes,2,26
+P10070,Patient_070,Pneumonia,High,2026-03-10,Female,50,8,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",3,No,3,32
+P10456,Patient_456,Migraine,High,2025-01-22,Female,48,4,Yes,Migraine Headache,"Headache, Nausea, Light Sensitivity",4,No,3,28
+P10466,Patient_466,Flu,Low,2024-05-23,Female,47,4,No,Influenza,"Fever, Body Ache, Fatigue",3,No,1,17
+P10155,Patient_155,Flu,Moderate,2024-11-14,Male,39,2,No,Influenza,"Fever, Body Ache, Fatigue",3,No,2,20
+P10083,Patient_083,Gastritis,High,2025-06-09,Female,73,3,No,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",1,No,3,26
+P10478,Patient_478,Migraine,Moderate,2024-03-09,Female,33,3,No,Migraine Headache,"Headache, Nausea, Light Sensitivity",2,No,2,18
+P10173,Patient_173,Arthritis,Low,2025-11-05,Male,62,2,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",3,Yes,1,18
+P10322,Patient_322,Skin Infection,High,2024-10-14,Male,35,4,Yes,Bacterial Skin Infection,"Redness, Swelling, Pain",3,No,3,30
+P10091,Patient_091,Heart Disease,Low,2024-06-24,Male,11,2,No,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",1,Yes,1,19
+P10181,Patient_181,Bronchitis,Moderate,2024-11-27,Male,59,4,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",6,No,2,23
+P10415,Patient_415,Diabetes,Moderate,2024-03-03,Female,41,5,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",3,Yes,2,24
+P10313,Patient_313,Bronchitis,Low,2024-07-11,Male,51,5,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",3,No,1,15
+P10279,Patient_279,Asthma,Low,2024-08-26,Female,62,5,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",4,No,1,18
+P10382,Patient_382,Back Pain,High,2025-02-16,Female,21,7,Yes,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",3,No,3,31
+P10473,Patient_473,Bronchitis,Low,2025-07-09,Female,44,4,Yes,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",2,No,1,17
+P10363,Patient_363,Flu,Low,2026-05-13,Male,88,6,No,Influenza,"Fever, Body Ache, Fatigue",4,No,1,15
+P10325,Patient_325,Pneumonia,Moderate,2024-11-26,Male,43,6,No,Lower Respiratory Infection,"Fever, Cough, Breathlessness",3,No,2,26
+P10432,Patient_432,Arthritis,Moderate,2024-11-21,Female,58,4,Yes,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",4,Yes,2,24
+P10348,Patient_348,Diabetes,Moderate,2025-11-09,Female,15,4,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",3,Yes,2,21
+P10087,Patient_087,Gastritis,High,2024-06-01,Female,45,2,Yes,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",4,No,3,28
+P10076,Patient_076,Diabetes,High,2024-02-03,Female,56,5,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",5,Yes,3,32
+P10439,Patient_439,Heart Disease,Moderate,2024-06-11,Male,35,4,Yes,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",4,Yes,2,30
+P10016,Patient_016,Skin Infection,Low,2026-03-30,Female,26,7,No,Bacterial Skin Infection,"Redness, Swelling, Pain",1,No,1,16
+P10250,Patient_250,Heart Disease,Moderate,2025-05-04,Male,47,4,Yes,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",4,Yes,2,31
+P10434,Patient_434,Allergy,Moderate,2026-03-24,Male,28,5,Yes,Allergic Reaction,"Sneezing, Itching, Rash",3,No,2,22
+P10020,Patient_020,Diabetes,Moderate,2025-04-25,Female,63,3,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",2,Yes,2,22
+P10323,Patient_323,Urinary Tract Infection,Moderate,2024-06-07,Male,25,5,Yes,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",3,No,2,20
+P10333,Patient_333,Heart Disease,High,2025-06-11,Male,44,5,Yes,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",4,Yes,3,39
+P10057,Patient_057,Allergy,Low,2024-11-24,Male,34,5,Yes,Allergic Reaction,"Sneezing, Itching, Rash",3,No,1,17
+P10302,Patient_302,Common Cold,Low,2024-07-10,Male,26,3,No,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",3,No,1,11
+P10230,Patient_230,Asthma,Low,2025-01-02,Male,1,4,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",2,No,1,16
+P10332,Patient_332,Hypertension,Low,2024-09-07,Female,30,8,No,Essential Hypertension,"Headache, Dizziness, Fatigue",1,Yes,1,17
+P10133,Patient_133,Arthritis,Moderate,2024-05-22,Female,53,5,Yes,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",6,Yes,2,30
+P10138,Patient_138,Diabetes,Low,2026-06-01,Male,40,4,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",2,Yes,1,15
+P10424,Patient_424,Gastritis,Moderate,2025-05-11,Male,67,2,Yes,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",3,No,2,23
+P10336,Patient_336,Allergy,High,2026-01-21,Female,33,3,No,Allergic Reaction,"Sneezing, Itching, Rash",5,No,3,25
+P10026,Patient_026,Back Pain,Critical,2025-10-20,Female,62,4,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",4,No,4,34
+P10465,Patient_465,Common Cold,Low,2025-10-06,Male,53,2,No,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",4,No,1,12
+P10282,Patient_282,Diabetes,High,2024-10-22,Female,1,1,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",4,Yes,3,24
+P10248,Patient_248,Diabetes,High,2024-02-16,Female,23,1,Yes,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",4,Yes,3,31
+P10238,Patient_238,Arthritis,Moderate,2026-06-09,Male,51,7,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",4,Yes,2,24
+P10118,Patient_118,Skin Infection,High,2025-01-15,Female,50,8,Yes,Bacterial Skin Infection,"Redness, Swelling, Pain",2,No,3,31
+P10043,Patient_043,Diabetes,Critical,2025-04-02,Female,76,3,Yes,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",5,Yes,4,37
+P10221,Patient_221,Pneumonia,High,2026-03-04,Female,31,2,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",4,No,3,28
+P10177,Patient_177,Migraine,Moderate,2025-02-27,Male,44,5,Yes,Migraine Headache,"Headache, Nausea, Light Sensitivity",5,No,2,26
+P10321,Patient_321,Diabetes,High,2025-03-02,Female,10,5,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",5,Yes,3,26
+P10154,Patient_154,Bronchitis,Moderate,2025-08-05,Male,71,3,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",5,No,2,28
+P10232,Patient_232,Urinary Tract Infection,Low,2024-03-25,Male,46,3,No,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",4,No,1,17
+P10228,Patient_228,Flu,High,2025-02-07,Female,21,3,No,Influenza,"Fever, Body Ache, Fatigue",3,Yes,3,27
+P10418,Patient_418,Arthritis,Moderate,2024-08-01,Female,44,5,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",4,Yes,2,24
+P10204,Patient_204,Arthritis,High,2024-10-16,Female,8,1,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",4,Yes,3,28
+P10127,Patient_127,Urinary Tract Infection,Moderate,2025-11-30,Other,65,6,Yes,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",4,No,2,24
+P10330,Patient_330,Asthma,Low,2026-01-12,Male,31,1,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",4,No,1,12
+P10032,Patient_032,Asthma,Low,2024-07-10,Female,44,4,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",3,No,1,17
+P10114,Patient_114,Back Pain,Moderate,2025-04-29,Male,47,4,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",4,No,2,21
+P10471,Patient_471,Hypertension,Low,2026-01-24,Female,30,2,No,Essential Hypertension,"Headache, Dizziness, Fatigue",2,Yes,1,14
+P10272,Patient_272,Back Pain,Low,2024-10-02,Male,57,5,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",1,No,1,15
+P10141,Patient_141,Diabetes,Critical,2025-12-03,Female,26,3,Yes,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",4,Yes,4,35
+P10058,Patient_058,Allergy,Moderate,2024-11-15,Female,47,5,No,Allergic Reaction,"Sneezing, Itching, Rash",3,No,2,17
+P10193,Patient_193,Flu,High,2025-09-16,Male,76,3,Yes,Influenza,"Fever, Body Ache, Fatigue",6,Yes,3,33
+P10025,Patient_025,Allergy,Low,2024-04-12,Female,35,2,No,Allergic Reaction,"Sneezing, Itching, Rash",3,No,1,15
+P10018,Patient_018,Arthritis,Critical,2026-06-14,Female,81,5,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",3,Yes,4,34
+P10266,Patient_266,Arthritis,High,2025-12-21,Female,90,1,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",3,Yes,3,31
+P10067,Patient_067,Asthma,Moderate,2025-10-23,Female,41,2,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",4,Yes,2,27
+P10209,Patient_209,Urinary Tract Infection,High,2026-02-14,Female,63,1,No,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",4,No,3,23
+P10480,Patient_480,Common Cold,Moderate,2024-06-17,Male,57,5,No,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",2,No,2,17
+P10095,Patient_095,Common Cold,Low,2025-03-30,Male,41,6,Yes,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",3,No,1,17
+P10254,Patient_254,Back Pain,Moderate,2024-06-01,Female,53,6,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",2,Yes,2,20
+P10267,Patient_267,Allergy,Low,2025-12-27,Female,51,7,No,Allergic Reaction,"Sneezing, Itching, Rash",3,No,1,17
+P10024,Patient_024,Hypertension,Low,2024-07-08,Male,28,3,No,Essential Hypertension,"Headache, Dizziness, Fatigue",2,Yes,1,17
+P10223,Patient_223,Heart Disease,Moderate,2025-11-11,Female,1,7,No,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",4,Yes,2,28
+P10262,Patient_262,Migraine,High,2026-06-17,Female,90,1,Yes,Migraine Headache,"Headache, Nausea, Light Sensitivity",3,No,3,26
+P10427,Patient_427,Pneumonia,Low,2025-10-21,Male,74,3,No,Lower Respiratory Infection,"Fever, Cough, Breathlessness",2,No,1,19
+P10006,Patient_006,Bronchitis,Critical,2025-10-09,Female,35,1,Yes,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",6,No,4,37
+P10117,Patient_117,Common Cold,Low,2024-05-26,Female,49,6,No,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",3,No,1,13
+P10046,Patient_046,Migraine,High,2024-06-14,Male,87,5,Yes,Migraine Headache,"Headache, Nausea, Light Sensitivity",5,No,3,31
+P10017,Patient_017,Bronchitis,Moderate,2024-01-09,Female,47,7,Yes,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",4,No,2,28
+P10463,Patient_463,Arthritis,Moderate,2025-01-15,Male,38,3,Yes,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",1,Yes,2,27
+P10358,Patient_358,Heart Disease,High,2025-08-11,Female,22,4,Yes,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",2,Yes,3,35
+P10004,Patient_004,Diabetes,Low,2025-03-30,Male,64,4,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",2,Yes,1,20
+P10219,Patient_219,Skin Infection,Low,2025-09-22,Other,62,5,No,Bacterial Skin Infection,"Redness, Swelling, Pain",4,No,1,15
+P10406,Patient_406,Asthma,Moderate,2026-01-27,Female,29,5,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",4,No,2,27
+P10061,Patient_061,Asthma,High,2024-10-15,Female,62,1,Yes,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",5,No,3,28
+P10111,Patient_111,Gastritis,Moderate,2024-01-28,Male,22,4,No,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",3,Yes,2,18
+P10319,Patient_319,Diabetes,Low,2025-10-24,Male,48,3,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",2,Yes,1,12
+P10429,Patient_429,Skin Infection,Moderate,2025-08-16,Female,33,5,No,Bacterial Skin Infection,"Redness, Swelling, Pain",3,No,2,18
+P10030,Patient_030,Flu,Moderate,2025-11-21,Male,59,6,No,Influenza,"Fever, Body Ache, Fatigue",3,No,2,19
+P10438,Patient_438,Skin Infection,Moderate,2025-11-07,Female,61,4,Yes,Bacterial Skin Infection,"Redness, Swelling, Pain",1,No,2,22
+P10472,Patient_472,Migraine,Moderate,2024-10-30,Female,51,1,Yes,Migraine Headache,"Headache, Nausea, Light Sensitivity",2,No,2,17
+P10027,Patient_027,Common Cold,Moderate,2024-08-24,Male,39,6,No,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",3,No,2,18
+P10008,Patient_008,Pneumonia,Low,2026-01-08,Female,28,4,No,Lower Respiratory Infection,"Fever, Cough, Breathlessness",6,No,1,19
+P10454,Patient_454,Urinary Tract Infection,Moderate,2024-11-02,Male,9,3,No,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",3,No,2,21
+P10109,Patient_109,Asthma,Moderate,2024-09-24,Female,59,4,Yes,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",2,No,2,26
+P10038,Patient_038,Diabetes,Critical,2025-11-02,Male,29,3,Yes,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",4,Yes,4,36
+P10158,Patient_158,Heart Disease,Low,2025-03-01,Female,60,4,No,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",3,Yes,1,22
+P10490,Patient_490,Bronchitis,High,2024-07-29,Female,47,4,Yes,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",2,No,3,28
+P10119,Patient_119,Urinary Tract Infection,Moderate,2024-10-31,Male,28,3,No,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",5,No,2,23
+P10115,Patient_115,Skin Infection,Moderate,2025-09-29,Male,54,3,Yes,Bacterial Skin Infection,"Redness, Swelling, Pain",1,Yes,2,24
+P10176,Patient_176,Back Pain,High,2025-10-07,Female,59,3,Yes,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",5,No,3,29
+P10374,Patient_374,Back Pain,Low,2024-12-17,Female,75,5,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",1,No,1,16
+P10182,Patient_182,Bronchitis,High,2025-03-30,Male,58,2,Yes,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",4,Yes,3,28
+P10145,Patient_145,Heart Disease,Critical,2024-12-17,Female,24,2,Yes,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",3,Yes,4,41
+P10370,Patient_370,Migraine,Low,2024-03-15,Male,90,4,No,Migraine Headache,"Headache, Nausea, Light Sensitivity",3,Yes,1,20
+P10391,Patient_391,Flu,Moderate,2024-09-29,Male,60,3,Yes,Influenza,"Fever, Body Ache, Fatigue",3,No,2,22
+P10196,Patient_196,Common Cold,Moderate,2026-03-31,Male,48,4,No,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",3,No,2,17
+P10405,Patient_405,Allergy,Low,2025-06-27,Female,46,6,No,Allergic Reaction,"Sneezing, Itching, Rash",1,No,1,12
+P10276,Patient_276,Gastritis,Critical,2024-12-08,Female,75,5,Yes,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",3,No,4,35
+P10455,Patient_455,Hypertension,Low,2024-08-30,Female,40,8,No,Essential Hypertension,"Headache, Dizziness, Fatigue",1,Yes,1,16
+P10142,Patient_142,Flu,Moderate,2025-03-11,Male,57,4,No,Influenza,"Fever, Body Ache, Fatigue",4,No,2,20
+P10366,Patient_366,Allergy,High,2024-05-09,Female,24,5,Yes,Allergic Reaction,"Sneezing, Itching, Rash",5,No,3,28
+P10068,Patient_068,Hypertension,Low,2025-07-14,Other,13,3,No,Essential Hypertension,"Headache, Dizziness, Fatigue",2,Yes,1,18
+P10211,Patient_211,Common Cold,Critical,2025-12-25,Male,55,8,Yes,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",5,No,4,34
+P10169,Patient_169,Diabetes,Low,2024-07-28,Female,23,4,Yes,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",3,Yes,1,20
+P10494,Patient_494,Urinary Tract Infection,Low,2025-04-10,Male,30,7,No,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",5,No,1,20
+P10376,Patient_376,Heart Disease,Moderate,2024-05-09,Male,63,6,No,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",4,Yes,2,25
+P10401,Patient_401,Bronchitis,Critical,2026-05-15,Female,53,3,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",5,No,4,28
+P10273,Patient_273,Migraine,Low,2025-05-22,Female,70,3,No,Migraine Headache,"Headache, Nausea, Light Sensitivity",2,No,1,16
+P10110,Patient_110,Arthritis,Critical,2026-04-16,Male,71,2,Yes,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",6,Yes,4,36
+P10249,Patient_249,Flu,High,2024-10-30,Male,78,5,Yes,Influenza,"Fever, Body Ache, Fatigue",5,No,3,28
+P10146,Patient_146,Pneumonia,High,2025-04-07,Female,46,2,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",4,No,3,33
+P10093,Patient_093,Heart Disease,Low,2024-12-21,Female,22,6,Yes,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",2,Yes,1,25
+P10153,Patient_153,Migraine,High,2025-09-14,Male,50,6,Yes,Migraine Headache,"Headache, Nausea, Light Sensitivity",1,No,3,23
+P10368,Patient_368,Allergy,Low,2024-05-23,Male,79,6,No,Allergic Reaction,"Sneezing, Itching, Rash",2,No,1,15
+P10468,Patient_468,Bronchitis,Low,2025-06-04,Male,29,4,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",2,Yes,1,18
+P10084,Patient_084,Allergy,Moderate,2025-05-30,Female,28,6,No,Allergic Reaction,"Sneezing, Itching, Rash",3,Yes,2,23
+P10246,Patient_246,Bronchitis,Moderate,2025-02-23,Female,42,5,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",2,Yes,2,25
+P10166,Patient_166,Skin Infection,Moderate,2024-10-03,Male,44,3,No,Bacterial Skin Infection,"Redness, Swelling, Pain",3,No,2,19
+P10164,Patient_164,Gastritis,Moderate,2025-07-26,Other,37,3,Yes,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",2,No,2,21
+P10200,Patient_200,Common Cold,Moderate,2025-12-15,Male,29,6,Yes,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",4,No,2,24
+P10229,Patient_229,Diabetes,High,2026-06-01,Male,7,6,Yes,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",5,Yes,3,32
+P10075,Patient_075,Common Cold,Low,2026-01-27,Male,89,3,Yes,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",3,No,1,20
+P10479,Patient_479,Back Pain,Low,2025-05-12,Male,43,1,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",2,Yes,1,16
+P10359,Patient_359,Migraine,High,2024-12-12,Male,42,6,Yes,Migraine Headache,"Headache, Nausea, Light Sensitivity",2,No,3,26
+P10251,Patient_251,Heart Disease,High,2025-07-02,Female,13,6,Yes,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",2,Yes,3,34
+P10120,Patient_120,Bronchitis,Moderate,2026-03-26,Female,59,5,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",3,No,2,18
+P10311,Patient_311,Diabetes,High,2025-10-24,Female,22,7,Yes,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",2,Yes,3,36
+P10300,Patient_300,Hypertension,Low,2025-01-12,Male,39,5,No,Essential Hypertension,"Headache, Dizziness, Fatigue",3,Yes,1,17
+P10256,Patient_256,Arthritis,Moderate,2024-02-14,Male,24,2,Yes,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",3,Yes,2,28
+P10355,Patient_355,Allergy,Low,2024-02-04,Female,28,6,No,Allergic Reaction,"Sneezing, Itching, Rash",1,No,1,11
+P10400,Patient_400,Gastritis,Low,2025-09-25,Male,58,4,No,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",3,No,1,12
+P10226,Patient_226,Pneumonia,High,2025-07-20,Male,20,3,No,Lower Respiratory Infection,"Fever, Cough, Breathlessness",6,No,3,29
+P10354,Patient_354,Gastritis,Moderate,2025-06-20,Male,59,2,No,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",2,No,2,18
+P10235,Patient_235,Bronchitis,Low,2026-02-21,Male,45,7,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",3,No,1,15
+P10383,Patient_383,Flu,High,2024-11-16,Female,55,4,Yes,Influenza,"Fever, Body Ache, Fatigue",3,No,3,30
+P10275,Patient_275,Gastritis,Moderate,2025-07-15,Male,35,5,No,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",5,No,2,19
+P10037,Patient_037,Urinary Tract Infection,High,2024-08-07,Male,45,7,Yes,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",3,No,3,30
+P10197,Patient_197,Allergy,High,2025-09-28,Female,21,6,Yes,Allergic Reaction,"Sneezing, Itching, Rash",4,No,3,25
+P10140,Patient_140,Gastritis,Moderate,2024-09-02,Male,43,5,No,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",4,No,2,22
+P10365,Patient_365,Back Pain,Critical,2024-12-31,Male,58,2,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",4,Yes,4,28
+P10245,Patient_245,Heart Disease,High,2025-09-01,Female,41,2,Yes,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",4,Yes,3,37
+P10440,Patient_440,Asthma,Moderate,2024-11-09,Male,42,5,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",4,No,2,15
+P10287,Patient_287,Pneumonia,Low,2025-08-29,Male,84,6,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",4,No,1,25
+P10060,Patient_060,Gastritis,Moderate,2024-04-13,Male,41,4,No,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",3,No,2,18
+P10112,Patient_112,Migraine,Moderate,2025-08-27,Male,40,4,Yes,Migraine Headache,"Headache, Nausea, Light Sensitivity",2,No,2,23
+P10090,Patient_090,Pneumonia,Low,2025-10-10,Male,68,1,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",2,Yes,1,23
+P10437,Patient_437,Asthma,Low,2025-10-18,Male,41,3,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",1,No,1,13
+P10007,Patient_007,Diabetes,Critical,2026-02-18,Female,59,2,Yes,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",5,Yes,4,38
+P10361,Patient_361,Arthritis,Low,2025-06-14,Male,50,6,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",1,Yes,1,17
+P10347,Patient_347,Hypertension,Low,2025-08-02,Female,33,3,No,Essential Hypertension,"Headache, Dizziness, Fatigue",2,Yes,1,10
+P10339,Patient_339,Hypertension,Moderate,2024-12-13,Male,50,3,No,Essential Hypertension,"Headache, Dizziness, Fatigue",4,Yes,2,21
+P10159,Patient_159,Asthma,Low,2025-10-02,Female,50,2,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",2,No,1,13
+P10151,Patient_151,Skin Infection,High,2025-08-06,Female,22,4,Yes,Bacterial Skin Infection,"Redness, Swelling, Pain",4,No,3,29
+P10178,Patient_178,Allergy,Moderate,2024-04-29,Male,35,3,No,Allergic Reaction,"Sneezing, Itching, Rash",3,No,2,17
+P10394,Patient_394,Common Cold,Low,2024-02-18,Female,53,9,No,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",4,No,1,14
+P10185,Patient_185,Arthritis,Moderate,2026-02-27,Female,34,7,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",4,Yes,2,22
+P10450,Patient_450,Flu,Low,2024-04-12,Female,34,3,No,Influenza,"Fever, Body Ache, Fatigue",3,No,1,12
+P10011,Patient_011,Arthritis,Low,2026-01-14,Female,38,3,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",1,Yes,1,13
+P10381,Patient_381,Pneumonia,High,2024-03-05,Male,66,4,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",3,No,3,32
+P10104,Patient_104,Gastritis,Low,2025-11-16,Female,67,3,No,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",3,No,1,17
+P10082,Patient_082,Gastritis,Moderate,2025-01-25,Male,50,1,Yes,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",4,Yes,2,24
+P10039,Patient_039,Migraine,Critical,2025-02-18,Female,90,7,Yes,Migraine Headache,"Headache, Nausea, Light Sensitivity",5,No,4,35
+P10315,Patient_315,Bronchitis,High,2025-09-30,Male,64,1,Yes,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",5,No,3,28
+P10168,Patient_168,Asthma,High,2026-03-01,Male,63,5,Yes,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",5,No,3,29
+P10470,Patient_470,Skin Infection,Moderate,2024-10-23,Male,68,4,Yes,Bacterial Skin Infection,"Redness, Swelling, Pain",2,No,2,26
+P10297,Patient_297,Urinary Tract Infection,Low,2024-07-28,Female,37,6,No,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",2,No,1,13
+P10475,Patient_475,Arthritis,Moderate,2025-01-11,Female,46,1,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",3,Yes,2,21
+P10199,Patient_199,Allergy,Low,2025-08-04,Male,38,4,Yes,Allergic Reaction,"Sneezing, Itching, Rash",4,No,1,14
+P10298,Patient_298,Gastritis,Critical,2026-03-12,Male,64,2,No,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",5,No,4,31
+P10417,Patient_417,Common Cold,Moderate,2024-06-16,Male,40,5,No,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",3,No,2,20
+P10147,Patient_147,Arthritis,High,2026-02-08,Male,30,6,Yes,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",3,Yes,3,29
+P10393,Patient_393,Bronchitis,Low,2026-05-07,Female,15,6,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",2,Yes,1,22
+P10148,Patient_148,Allergy,Moderate,2025-02-17,Male,6,4,Yes,Allergic Reaction,"Sneezing, Itching, Rash",2,No,2,23
+P10448,Patient_448,Diabetes,Low,2025-05-25,Male,41,7,Yes,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",1,Yes,1,23
+P10288,Patient_288,Hypertension,High,2025-02-25,Male,69,4,Yes,Essential Hypertension,"Headache, Dizziness, Fatigue",3,Yes,3,31
+P10124,Patient_124,Hypertension,Moderate,2026-02-21,Female,53,6,Yes,Essential Hypertension,"Headache, Dizziness, Fatigue",4,Yes,2,25
+P10369,Patient_369,Skin Infection,Low,2024-06-21,Female,38,7,No,Bacterial Skin Infection,"Redness, Swelling, Pain",5,No,1,18
+P10097,Patient_097,Gastritis,Low,2025-04-03,Female,37,5,No,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",4,No,1,17
+P10144,Patient_144,Diabetes,Low,2024-03-27,Male,80,3,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",1,Yes,1,16
+P10240,Patient_240,Pneumonia,High,2026-05-29,Male,64,3,No,Lower Respiratory Infection,"Fever, Cough, Breathlessness",4,No,3,28
+P10443,Patient_443,Urinary Tract Infection,Low,2024-01-10,Female,24,4,Yes,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",1,Yes,1,21
+P10098,Patient_098,Asthma,High,2024-03-24,Female,65,4,Yes,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",4,No,3,32
+P10408,Patient_408,Hypertension,Low,2024-03-30,Male,49,3,Yes,Essential Hypertension,"Headache, Dizziness, Fatigue",3,Yes,1,23
+P10123,Patient_123,Allergy,Low,2025-03-20,Male,82,6,No,Allergic Reaction,"Sneezing, Itching, Rash",3,Yes,1,21
+P10184,Patient_184,Asthma,Low,2024-02-18,Female,17,1,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",3,No,1,12
+P10203,Patient_203,Skin Infection,Low,2024-05-06,Female,62,4,No,Bacterial Skin Infection,"Redness, Swelling, Pain",3,No,1,16
+P10247,Patient_247,Diabetes,High,2024-03-13,Male,13,5,Yes,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",3,Yes,3,32
+P10306,Patient_306,Pneumonia,High,2026-03-05,Female,51,3,No,Lower Respiratory Infection,"Fever, Cough, Breathlessness",3,No,3,28
+P10299,Patient_299,Migraine,High,2024-09-27,Male,57,6,Yes,Migraine Headache,"Headache, Nausea, Light Sensitivity",4,No,3,28
+P10352,Patient_352,Allergy,Critical,2025-05-08,Female,41,3,Yes,Allergic Reaction,"Sneezing, Itching, Rash",5,No,4,32
+P10387,Patient_387,Gastritis,High,2024-06-02,Male,90,7,Yes,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",4,Yes,3,34
+P10396,Patient_396,Allergy,Critical,2025-08-12,Female,1,3,Yes,Allergic Reaction,"Sneezing, Itching, Rash",5,No,4,33
+P10285,Patient_285,Skin Infection,Low,2025-11-18,Female,22,5,No,Bacterial Skin Infection,"Redness, Swelling, Pain",1,No,1,14
+P10126,Patient_126,Heart Disease,Low,2025-05-23,Male,78,2,No,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",4,Yes,1,26
+P10303,Patient_303,Allergy,Moderate,2025-12-17,Female,38,6,Yes,Allergic Reaction,"Sneezing, Itching, Rash",4,No,2,22
+P10224,Patient_224,Hypertension,Low,2025-09-11,Male,49,8,No,Essential Hypertension,"Headache, Dizziness, Fatigue",1,Yes,1,18
+P10419,Patient_419,Urinary Tract Infection,High,2024-06-13,Female,33,6,Yes,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",4,No,3,32
+P10220,Patient_220,Urinary Tract Infection,High,2024-12-04,Male,39,4,Yes,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",3,Yes,3,28
+P10130,Patient_130,Skin Infection,Low,2025-03-21,Female,53,3,No,Bacterial Skin Infection,"Redness, Swelling, Pain",2,No,1,15
+P10421,Patient_421,Diabetes,Low,2024-06-19,Female,38,1,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",1,Yes,1,14
+P10290,Patient_290,Asthma,Moderate,2025-04-25,Male,53,3,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",4,No,2,21
+P10445,Patient_445,Back Pain,Moderate,2025-11-08,Female,29,3,Yes,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",3,No,2,27
+P10377,Patient_377,Bronchitis,Moderate,2026-05-27,Male,31,5,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",4,No,2,24
+P10292,Patient_292,Migraine,Moderate,2025-12-14,Female,37,4,Yes,Migraine Headache,"Headache, Nausea, Light Sensitivity",4,No,2,25
+P10356,Patient_356,Allergy,Moderate,2026-06-09,Female,62,2,Yes,Allergic Reaction,"Sneezing, Itching, Rash",3,No,2,22
+P10295,Patient_295,Migraine,Moderate,2024-04-13,Male,26,5,Yes,Migraine Headache,"Headache, Nausea, Light Sensitivity",2,Yes,2,25
+P10397,Patient_397,Asthma,High,2025-05-26,Female,45,5,Yes,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",5,No,3,32
+P10341,Patient_341,Pneumonia,Critical,2024-11-15,Male,29,6,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",6,No,4,36
+P10113,Patient_113,Bronchitis,Moderate,2025-09-23,Female,56,5,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",1,No,2,21
+P10180,Patient_180,Heart Disease,Critical,2026-02-05,Female,12,3,Yes,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",5,Yes,4,45
+P10308,Patient_308,Asthma,Moderate,2025-03-07,Male,72,1,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",4,Yes,2,23
+P10433,Patient_433,Pneumonia,High,2025-12-23,Male,51,4,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",3,Yes,3,31
+P10488,Patient_488,Heart Disease,Low,2024-09-27,Male,41,4,No,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",3,Yes,1,22
+P10482,Patient_482,Arthritis,High,2025-06-13,Female,34,10,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",3,Yes,3,30
+P10423,Patient_423,Common Cold,Critical,2024-11-18,Male,48,3,No,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",4,No,4,28
+P10234,Patient_234,Bronchitis,Low,2025-12-26,Female,34,3,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",2,No,1,15
+P10312,Patient_312,Diabetes,High,2025-01-10,Male,1,1,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",4,Yes,3,27
+P10165,Patient_165,Common Cold,Moderate,2026-04-21,Male,54,5,No,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",2,No,2,16
+P10137,Patient_137,Arthritis,Moderate,2026-02-16,Female,19,4,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",2,Yes,2,19
+P10198,Patient_198,Diabetes,Low,2025-09-04,Female,55,6,Yes,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",3,Yes,1,21
+P10259,Patient_259,Arthritis,High,2024-12-19,Female,29,5,Yes,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",6,Yes,3,33
+P10233,Patient_233,Gastritis,Moderate,2025-05-10,Male,28,8,No,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",2,No,2,21
+P10116,Patient_116,Hypertension,High,2026-03-12,Male,32,4,No,Essential Hypertension,"Headache, Dizziness, Fatigue",4,Yes,3,27
+P10121,Patient_121,Gastritis,High,2026-02-21,Female,40,3,No,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",4,No,3,28
+P10350,Patient_350,Back Pain,Critical,2025-06-03,Female,34,4,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",6,No,4,36
+P10225,Patient_225,Common Cold,Moderate,2025-02-24,Female,57,1,No,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",4,Yes,2,21
+P10403,Patient_403,Arthritis,Critical,2025-02-25,Male,46,5,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",5,Yes,4,33
+P10398,Patient_398,Arthritis,Low,2025-04-24,Male,35,4,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",2,Yes,1,17
+P10128,Patient_128,Hypertension,Moderate,2025-07-14,Male,20,3,Yes,Essential Hypertension,"Headache, Dizziness, Fatigue",4,Yes,2,22
+P10286,Patient_286,Back Pain,High,2025-03-03,Female,38,4,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",3,No,3,28
+P10412,Patient_412,Urinary Tract Infection,Low,2024-12-22,Male,54,2,No,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",4,No,1,12
+P10108,Patient_108,Diabetes,Low,2025-06-15,Male,40,5,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",4,Yes,1,22
+P10371,Patient_371,Hypertension,High,2024-11-07,Female,54,7,No,Essential Hypertension,"Headache, Dizziness, Fatigue",3,Yes,3,28
+P10326,Patient_326,Back Pain,Moderate,2026-01-06,Female,30,4,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",4,No,2,21
+P10134,Patient_134,Arthritis,High,2024-01-07,Male,40,2,Yes,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",4,Yes,3,29
+P10453,Patient_453,Common Cold,High,2025-03-30,Female,51,4,Yes,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",3,No,3,28
+P10045,Patient_045,Common Cold,Moderate,2025-09-15,Male,66,7,Yes,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",3,No,2,26
+P10461,Patient_461,Bronchitis,Moderate,2026-04-24,Male,63,5,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",4,No,2,22
+P10066,Patient_066,Bronchitis,Low,2025-07-28,Male,59,7,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",2,No,1,17
+P10284,Patient_284,Arthritis,Low,2025-02-27,Female,76,3,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",2,Yes,1,20
+P10086,Patient_086,Arthritis,Moderate,2025-08-07,Male,24,2,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",4,Yes,2,19
+P10243,Patient_243,Pneumonia,Moderate,2025-10-30,Male,47,3,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",3,No,2,26
+P10187,Patient_187,Flu,Moderate,2026-01-20,Male,57,3,No,Influenza,"Fever, Body Ache, Fatigue",4,No,2,19
+P10384,Patient_384,Urinary Tract Infection,Moderate,2025-11-29,Male,47,4,No,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",4,No,2,16
+P10160,Patient_160,Asthma,Moderate,2025-02-11,Female,26,2,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",3,No,2,18
+P10013,Patient_013,Diabetes,Low,2025-07-19,Female,48,1,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",2,Yes,1,18
+P10036,Patient_036,Flu,Low,2024-12-04,Male,41,7,No,Influenza,"Fever, Body Ache, Fatigue",1,No,1,13
+P10029,Patient_029,Urinary Tract Infection,Critical,2024-01-16,Female,90,2,No,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",5,No,4,32
+P10171,Patient_171,Skin Infection,Moderate,2024-04-11,Male,53,5,No,Bacterial Skin Infection,"Redness, Swelling, Pain",2,No,2,18
+P10143,Patient_143,Back Pain,Low,2024-10-10,Female,44,6,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",3,No,1,16
+P10399,Patient_399,Migraine,Low,2024-04-02,Female,52,7,No,Migraine Headache,"Headache, Nausea, Light Sensitivity",4,No,1,14
+P10343,Patient_343,Back Pain,Low,2025-06-27,Female,51,4,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",1,No,1,12
+P10222,Patient_222,Back Pain,Critical,2025-01-24,Female,49,5,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",4,No,4,28
+P10096,Patient_096,Common Cold,High,2026-06-04,Female,37,3,Yes,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",3,No,3,26
+P10052,Patient_052,Back Pain,Moderate,2024-03-07,Female,50,6,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",2,Yes,2,20
+P10241,Patient_241,Gastritis,Moderate,2026-01-29,Female,38,5,No,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",2,Yes,2,21
+P10485,Patient_485,Hypertension,High,2025-05-20,Female,24,6,No,Essential Hypertension,"Headache, Dizziness, Fatigue",6,Yes,3,28
+P10379,Patient_379,Hypertension,Low,2024-03-19,Female,84,3,No,Essential Hypertension,"Headache, Dizziness, Fatigue",2,Yes,1,19
+P10179,Patient_179,Heart Disease,Low,2024-03-08,Female,60,7,Yes,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",2,Yes,1,25
+P10042,Patient_042,Heart Disease,High,2025-09-01,Female,74,1,No,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",4,Yes,3,37
+P10499,Patient_499,Diabetes,Critical,2025-09-10,Other,46,7,Yes,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",6,Yes,4,40
+P10422,Patient_422,Common Cold,Critical,2024-04-04,Male,64,8,Yes,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",3,No,4,34
+P10207,Patient_207,Hypertension,Low,2024-02-22,Female,23,4,No,Essential Hypertension,"Headache, Dizziness, Fatigue",3,Yes,1,16
+P10283,Patient_283,Back Pain,Low,2025-09-28,Male,38,4,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",2,No,1,16
+P10255,Patient_255,Hypertension,Moderate,2025-03-01,Female,17,5,No,Essential Hypertension,"Headache, Dizziness, Fatigue",3,Yes,2,17
+P10413,Patient_413,Migraine,Low,2024-02-11,Male,49,4,Yes,Migraine Headache,"Headache, Nausea, Light Sensitivity",3,Yes,1,18
+P10005,Patient_005,Hypertension,Moderate,2025-03-31,Female,50,9,No,Essential Hypertension,"Headache, Dizziness, Fatigue",4,Yes,2,22
+P10257,Patient_257,Hypertension,Moderate,2025-05-13,Female,26,3,No,Essential Hypertension,"Headache, Dizziness, Fatigue",1,Yes,2,24
+P10449,Patient_449,Urinary Tract Infection,Low,2026-04-21,Female,63,4,No,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",3,No,1,15
+P10101,Patient_101,Asthma,High,2024-08-23,Male,25,3,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",4,No,3,27
+P10227,Patient_227,Bronchitis,Low,2026-04-14,Male,90,7,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",1,No,1,21
+P10430,Patient_430,Asthma,Low,2025-04-07,Male,64,3,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",1,No,1,12
+P10214,Patient_214,Diabetes,Moderate,2024-03-05,Male,18,4,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",1,Yes,2,21
+P10172,Patient_172,Migraine,Low,2025-01-06,Female,20,6,No,Migraine Headache,"Headache, Nausea, Light Sensitivity",3,No,1,14
+P10099,Patient_099,Hypertension,High,2025-06-10,Male,9,6,Yes,Essential Hypertension,"Headache, Dizziness, Fatigue",3,Yes,3,30
+P10293,Patient_293,Skin Infection,Moderate,2025-10-28,Male,48,4,Yes,Bacterial Skin Infection,"Redness, Swelling, Pain",3,No,2,22
+P10216,Patient_216,Pneumonia,High,2025-01-12,Female,61,6,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",4,No,3,34
+P10062,Patient_062,Hypertension,Moderate,2026-05-26,Male,62,3,No,Essential Hypertension,"Headache, Dizziness, Fatigue",4,Yes,2,20
+P10048,Patient_048,Asthma,Low,2024-07-13,Female,57,6,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",2,No,1,14
+P10033,Patient_033,Gastritis,High,2024-03-02,Female,37,4,No,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",4,Yes,3,26
+P10268,Patient_268,Bronchitis,Low,2025-08-28,Male,10,6,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",3,No,1,17
+P10328,Patient_328,Common Cold,Moderate,2025-01-20,Female,40,3,Yes,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",5,No,2,26
+P10201,Patient_201,Skin Infection,Low,2026-05-13,Female,42,3,No,Bacterial Skin Infection,"Redness, Swelling, Pain",4,Yes,1,19
+P10447,Patient_447,Bronchitis,Low,2024-03-24,Male,55,4,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",4,No,1,16
+P10028,Patient_028,Urinary Tract Infection,High,2025-09-03,Female,83,3,Yes,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",3,No,3,30
+P10425,Patient_425,Skin Infection,Moderate,2026-01-27,Female,30,4,Yes,Bacterial Skin Infection,"Redness, Swelling, Pain",4,No,2,29
+P10231,Patient_231,Pneumonia,High,2024-10-16,Female,32,5,No,Lower Respiratory Infection,"Fever, Cough, Breathlessness",5,No,3,28
+P10261,Patient_261,Hypertension,High,2024-12-01,Female,70,2,Yes,Essential Hypertension,"Headache, Dizziness, Fatigue",4,Yes,3,34
+P10289,Patient_289,Common Cold,High,2024-05-06,Other,8,2,Yes,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",5,No,3,27
+P10163,Patient_163,Flu,Low,2025-01-05,Male,29,4,No,Influenza,"Fever, Body Ache, Fatigue",3,No,1,15
+P10426,Patient_426,Bronchitis,Low,2026-04-16,Male,45,6,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",2,No,1,12
+P10139,Patient_139,Back Pain,Moderate,2025-09-19,Male,1,4,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",4,No,2,21
+P10063,Patient_063,Flu,Low,2024-10-09,Female,72,4,No,Influenza,"Fever, Body Ache, Fatigue",4,No,1,17
+P10136,Patient_136,Pneumonia,Moderate,2024-03-19,Female,26,6,No,Lower Respiratory Infection,"Fever, Cough, Breathlessness",3,No,2,22
+P10129,Patient_129,Migraine,Moderate,2025-12-27,Female,22,5,No,Migraine Headache,"Headache, Nausea, Light Sensitivity",2,No,2,19
+P10477,Patient_477,Hypertension,Low,2025-07-13,Female,49,4,No,Essential Hypertension,"Headache, Dizziness, Fatigue",4,Yes,1,19
+P10009,Patient_009,Urinary Tract Infection,Moderate,2024-04-05,Male,49,4,No,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",3,Yes,2,26
+P10327,Patient_327,Bronchitis,Critical,2024-03-13,Male,53,2,Yes,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",3,No,4,33
+P10464,Patient_464,Pneumonia,Moderate,2024-01-26,Female,35,3,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",2,No,2,26
+P10065,Patient_065,Pneumonia,High,2026-04-04,Male,33,3,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",3,No,3,29
+P10301,Patient_301,Arthritis,Moderate,2024-03-10,Male,21,8,Yes,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",3,Yes,2,24
+P10015,Patient_015,Diabetes,Moderate,2025-08-31,Male,57,4,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",5,Yes,2,25
+P10157,Patient_157,Common Cold,Moderate,2025-12-10,Male,70,8,Yes,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",4,No,2,29
+P10041,Patient_041,Back Pain,High,2026-04-03,Male,60,4,Yes,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",5,No,3,28
+P10380,Patient_380,Hypertension,Low,2025-05-08,Female,8,4,Yes,Essential Hypertension,"Headache, Dizziness, Fatigue",3,Yes,1,20
+P10469,Patient_469,Hypertension,Moderate,2024-11-24,Male,74,3,Yes,Essential Hypertension,"Headache, Dizziness, Fatigue",4,Yes,2,29
+P10404,Patient_404,Migraine,Low,2024-09-04,Female,49,3,No,Migraine Headache,"Headache, Nausea, Light Sensitivity",3,No,1,15
+P10217,Patient_217,Hypertension,Moderate,2025-06-02,Female,21,3,No,Essential Hypertension,"Headache, Dizziness, Fatigue",2,Yes,2,20
+P10280,Patient_280,Bronchitis,Moderate,2026-01-03,Female,78,2,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",5,Yes,2,24
+P10435,Patient_435,Heart Disease,High,2025-03-19,Female,24,6,Yes,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",4,Yes,3,38
+P10431,Patient_431,Allergy,Moderate,2024-01-17,Female,48,5,Yes,Allergic Reaction,"Sneezing, Itching, Rash",5,No,2,26
+P10338,Patient_338,Heart Disease,Critical,2026-03-31,Female,81,2,Yes,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",3,Yes,4,44
+P10237,Patient_237,Asthma,Low,2026-01-28,Female,55,6,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",4,No,1,16
+P10208,Patient_208,Arthritis,High,2025-09-30,Female,10,2,Yes,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",4,Yes,3,30
+P10213,Patient_213,Flu,Low,2024-04-09,Female,38,4,No,Influenza,"Fever, Body Ache, Fatigue",5,No,1,18
+P10296,Patient_296,Urinary Tract Infection,High,2024-09-25,Male,56,1,Yes,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",5,Yes,3,34
+P10458,Patient_458,Heart Disease,Moderate,2024-03-02,Male,39,2,No,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",3,Yes,2,25
+P10252,Patient_252,Pneumonia,Critical,2026-04-02,Male,1,2,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",6,Yes,4,40
+P10489,Patient_489,Pneumonia,High,2024-04-27,Female,34,4,No,Lower Respiratory Infection,"Fever, Cough, Breathlessness",4,No,3,32
+P10487,Patient_487,Pneumonia,Low,2026-05-16,Male,38,6,No,Lower Respiratory Infection,"Fever, Cough, Breathlessness",3,No,1,19
+P10304,Patient_304,Asthma,Low,2024-10-04,Female,43,3,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",3,No,1,14
+P10351,Patient_351,Allergy,Low,2024-04-22,Female,58,2,Yes,Allergic Reaction,"Sneezing, Itching, Rash",3,No,1,15
+P10270,Patient_270,Gastritis,Low,2026-05-18,Male,72,3,No,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",2,Yes,1,14
+P10202,Patient_202,Flu,Moderate,2025-11-13,Female,28,7,No,Influenza,"Fever, Body Ache, Fatigue",3,No,2,19
+P10162,Patient_162,Gastritis,Low,2025-11-02,Male,63,5,No,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",3,Yes,1,15
+P10044,Patient_044,Common Cold,Moderate,2024-12-13,Female,32,2,No,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",4,No,2,18
+P10218,Patient_218,Skin Infection,Moderate,2026-02-14,Female,47,5,No,Bacterial Skin Infection,"Redness, Swelling, Pain",2,No,2,18
+P10402,Patient_402,Allergy,Moderate,2024-07-30,Male,32,4,Yes,Allergic Reaction,"Sneezing, Itching, Rash",4,No,2,23
+P10191,Patient_191,Allergy,Moderate,2025-11-02,Female,38,5,No,Allergic Reaction,"Sneezing, Itching, Rash",3,No,2,16
+P10310,Patient_310,Back Pain,High,2024-05-15,Male,35,8,Yes,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",5,No,3,30
+P10260,Patient_260,Pneumonia,Moderate,2024-11-20,Male,30,9,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",4,Yes,2,30
+P10106,Patient_106,Flu,Low,2025-06-20,Male,21,5,No,Influenza,"Fever, Body Ache, Fatigue",2,No,1,18
+P10054,Patient_054,Skin Infection,Low,2026-06-17,Female,28,4,No,Bacterial Skin Infection,"Redness, Swelling, Pain",2,No,1,16
+P10390,Patient_390,Urinary Tract Infection,High,2024-04-26,Male,68,2,No,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",3,Yes,3,28
+P10002,Patient_002,Diabetes,Moderate,2024-09-09,Female,35,4,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",2,Yes,2,17
+P10442,Patient_442,Heart Disease,Moderate,2025-11-01,Male,33,5,No,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",3,Yes,2,26
+P10483,Patient_483,Arthritis,Low,2025-02-27,Female,44,2,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",2,Yes,1,13
+P10050,Patient_050,Common Cold,Low,2025-09-16,Female,24,7,No,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",3,No,1,13
+P10420,Patient_420,Gastritis,Critical,2024-08-18,Male,37,5,Yes,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",4,No,4,35
+P10081,Patient_081,Arthritis,Critical,2025-04-29,Female,59,5,Yes,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",6,Yes,4,39
+P10206,Patient_206,Common Cold,Moderate,2025-06-16,Female,51,4,Yes,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",3,No,2,23
+P10035,Patient_035,Diabetes,High,2024-05-12,Female,32,9,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",4,Yes,3,31
+P10264,Patient_264,Arthritis,Moderate,2025-07-27,Male,44,3,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",3,Yes,2,23
+P10428,Patient_428,Flu,High,2026-01-01,Male,89,5,Yes,Influenza,"Fever, Body Ache, Fatigue",3,No,3,29
+P10367,Patient_367,Skin Infection,Critical,2024-01-13,Female,26,5,Yes,Bacterial Skin Infection,"Redness, Swelling, Pain",4,No,4,32
+P10092,Patient_092,Common Cold,Low,2024-11-13,Female,50,6,Yes,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",3,No,1,20
+P10340,Patient_340,Hypertension,Moderate,2026-02-20,Male,52,4,No,Essential Hypertension,"Headache, Dizziness, Fatigue",2,Yes,2,20
+P10474,Patient_474,Hypertension,Critical,2024-03-25,Male,57,2,Yes,Essential Hypertension,"Headache, Dizziness, Fatigue",6,Yes,4,38
+P10053,Patient_053,Flu,Low,2025-03-12,Female,4,2,No,Influenza,"Fever, Body Ache, Fatigue",2,No,1,11
+P10346,Patient_346,Gastritis,Critical,2026-01-28,Male,71,3,Yes,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",4,No,4,34
+P10265,Patient_265,Flu,Moderate,2024-11-12,Female,41,2,No,Influenza,"Fever, Body Ache, Fatigue",3,No,2,20
+P10242,Patient_242,Allergy,Moderate,2025-04-18,Female,27,4,Yes,Allergic Reaction,"Sneezing, Itching, Rash",5,No,2,23
+P10014,Patient_014,Diabetes,Moderate,2025-02-19,Other,67,2,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",4,Yes,2,23
+P10316,Patient_316,Heart Disease,High,2025-05-17,Female,33,3,No,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",4,Yes,3,32
+P10089,Patient_089,Hypertension,Critical,2024-08-03,Female,74,5,Yes,Essential Hypertension,"Headache, Dizziness, Fatigue",4,Yes,4,37
+P10388,Patient_388,Asthma,Moderate,2025-08-05,Male,71,5,Yes,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",4,Yes,2,33
+P10274,Patient_274,Migraine,Critical,2024-05-04,Male,67,7,Yes,Migraine Headache,"Headache, Nausea, Light Sensitivity",5,Yes,4,40
+P10167,Patient_167,Allergy,Low,2026-05-30,Female,47,1,No,Allergic Reaction,"Sneezing, Itching, Rash",3,No,1,12
+P10329,Patient_329,Urinary Tract Infection,Moderate,2025-03-29,Male,53,7,Yes,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",3,Yes,2,25
+P10493,Patient_493,Pneumonia,Moderate,2025-07-09,Male,28,4,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",4,No,2,29
+P10135,Patient_135,Flu,Critical,2024-09-09,Female,60,6,Yes,Influenza,"Fever, Body Ache, Fatigue",5,No,4,34
+P10307,Patient_307,Flu,Low,2025-03-23,Male,1,5,No,Influenza,"Fever, Body Ache, Fatigue",2,No,1,16
+P10481,Patient_481,Diabetes,Low,2024-02-26,Female,73,4,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",2,Yes,1,21
+P10320,Patient_320,Asthma,Moderate,2025-04-05,Female,32,5,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",2,No,2,16
+P10244,Patient_244,Diabetes,Low,2025-12-19,Female,28,6,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",5,Yes,1,18
+P10055,Patient_055,Migraine,High,2024-06-21,Male,51,3,Yes,Migraine Headache,"Headache, Nausea, Light Sensitivity",6,No,3,28
+P10364,Patient_364,Pneumonia,Moderate,2025-01-22,Female,75,3,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",4,Yes,2,32
+P10051,Patient_051,Heart Disease,Moderate,2024-01-15,Female,43,3,No,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",2,Yes,2,23
+P10457,Patient_457,Common Cold,Moderate,2024-04-23,Male,38,4,No,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",4,No,2,19
+P10175,Patient_175,Pneumonia,Low,2026-03-25,Female,41,3,No,Lower Respiratory Infection,"Fever, Cough, Breathlessness",2,No,1,18
+P10446,Patient_446,Hypertension,Low,2026-05-02,Female,33,2,Yes,Essential Hypertension,"Headache, Dizziness, Fatigue",1,Yes,1,16
+P10190,Patient_190,Bronchitis,Low,2024-04-16,Male,28,4,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",4,No,1,16
+P10497,Patient_497,Gastritis,Low,2024-07-28,Female,79,2,No,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",3,No,1,17
+P10188,Patient_188,Bronchitis,Moderate,2024-09-22,Female,54,3,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",4,No,2,19
+P10170,Patient_170,Pneumonia,Moderate,2025-06-03,Female,55,4,Yes,Lower Respiratory Infection,"Fever, Cough, Breathlessness",3,Yes,2,32
+P10059,Patient_059,Urinary Tract Infection,High,2026-04-19,Female,62,4,Yes,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",2,No,3,28
+P10049,Patient_049,Allergy,Low,2024-03-13,Female,47,2,No,Allergic Reaction,"Sneezing, Itching, Rash",1,No,1,10
+P10345,Patient_345,Back Pain,Low,2025-08-20,Male,57,4,Yes,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",2,No,1,19
+P10236,Patient_236,Asthma,Low,2025-07-14,Male,21,6,No,Asthma Exacerbation,"Wheezing, Breathlessness, Chest Tightness",2,No,1,18
+P10253,Patient_253,Flu,High,2024-03-09,Male,57,1,Yes,Influenza,"Fever, Body Ache, Fatigue",5,No,3,24
+P10022,Patient_022,Skin Infection,High,2025-11-16,Female,21,4,Yes,Bacterial Skin Infection,"Redness, Swelling, Pain",4,No,3,30
+P10314,Patient_314,Bronchitis,Low,2024-05-04,Male,53,3,No,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",2,No,1,14
+P10460,Patient_460,Urinary Tract Infection,Moderate,2025-01-20,Male,32,4,Yes,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",3,No,2,25
+P10161,Patient_161,Hypertension,Moderate,2024-08-15,Male,36,1,No,Essential Hypertension,"Headache, Dizziness, Fatigue",4,Yes,2,16
+P10277,Patient_277,Hypertension,Moderate,2025-03-09,Male,58,9,No,Essential Hypertension,"Headache, Dizziness, Fatigue",3,Yes,2,20
+P10444,Patient_444,Diabetes,Moderate,2024-08-23,Female,56,2,Yes,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",4,Yes,2,24
+P10192,Patient_192,Back Pain,Moderate,2025-02-22,Male,37,2,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",4,No,2,17
+P10386,Patient_386,Urinary Tract Infection,Low,2024-01-27,Male,44,2,No,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",3,No,1,14
+P10294,Patient_294,Back Pain,High,2025-07-21,Female,61,2,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",4,No,3,27
+P10414,Patient_414,Hypertension,Low,2024-01-04,Male,13,2,No,Essential Hypertension,"Headache, Dizziness, Fatigue",1,Yes,1,13
+P10344,Patient_344,Arthritis,High,2025-10-05,Female,49,4,Yes,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",3,Yes,3,29
+P10258,Patient_258,Arthritis,Low,2024-05-06,Male,54,3,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",1,Yes,1,18
+P10309,Patient_309,Migraine,Moderate,2026-05-29,Female,80,3,No,Migraine Headache,"Headache, Nausea, Light Sensitivity",2,Yes,2,21
+P10150,Patient_150,Heart Disease,Critical,2025-02-10,Male,32,6,Yes,Cardiovascular Condition,"Chest Pain, Breathlessness, Fatigue",5,Yes,4,44
+P10131,Patient_131,Gastritis,Moderate,2024-05-28,Female,47,2,Yes,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",4,No,2,23
+P10152,Patient_152,Arthritis,Moderate,2024-04-21,Male,17,3,Yes,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",2,Yes,2,22
+P10360,Patient_360,Common Cold,Moderate,2024-02-27,Male,14,1,No,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",4,No,2,15
+P10100,Patient_100,Back Pain,High,2025-11-16,Female,36,2,Yes,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",4,Yes,3,30
+P10373,Patient_373,Allergy,High,2024-11-30,Female,41,2,Yes,Allergic Reaction,"Sneezing, Itching, Rash",3,No,3,27
+P10088,Patient_088,Arthritis,Low,2024-08-05,Male,35,1,Yes,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",3,Yes,1,21
+P10459,Patient_459,Common Cold,Critical,2025-01-08,Female,46,3,Yes,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",5,No,4,33
+P10331,Patient_331,Gastritis,Low,2026-03-05,Male,44,4,No,Acute Gastritis,"Abdominal Pain, Nausea, Heartburn",1,No,1,10
+P10215,Patient_215,Diabetes,Moderate,2026-04-28,Female,51,3,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",3,Yes,2,27
+P10467,Patient_467,Arthritis,Low,2025-10-13,Female,41,3,No,Inflammatory Arthritis,"Joint Pain, Swelling, Stiffness",3,Yes,1,18
+P10122,Patient_122,Back Pain,High,2024-05-23,Female,51,3,Yes,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",4,No,3,31
+P10500,Patient_500,Common Cold,High,2024-04-13,Male,72,3,Yes,Viral Upper Respiratory Infection,"Cough, Runny Nose, Sore Throat",3,No,3,27
+P10021,Patient_021,Allergy,Moderate,2024-02-06,Female,58,7,Yes,Allergic Reaction,"Sneezing, Itching, Rash",3,No,2,23
+P10189,Patient_189,Back Pain,Low,2024-09-24,Male,23,4,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",3,No,1,18
+P10072,Patient_072,Diabetes,Low,2026-04-02,Male,69,2,No,Type 2 Diabetes,"Fatigue, Increased Thirst, Frequent Urination",3,Yes,1,16
+P10107,Patient_107,Flu,Moderate,2025-12-14,Female,56,3,No,Influenza,"Fever, Body Ache, Fatigue",1,No,2,19
+P10271,Patient_271,Skin Infection,Moderate,2024-02-25,Male,47,4,Yes,Bacterial Skin Infection,"Redness, Swelling, Pain",3,No,2,25
+P10349,Patient_349,Urinary Tract Infection,Low,2024-05-02,Male,49,2,No,UTI,"Burning Urination, Urgency, Lower Abdominal Pain",4,No,1,15
+P10436,Patient_436,Back Pain,Low,2025-12-30,Male,77,6,No,Musculoskeletal Back Pain,"Lower Back Pain, Stiffness, Reduced Mobility",1,No,1,16
+P10103,Patient_103,Bronchitis,Low,2025-12-14,Female,90,4,Yes,Acute Bronchitis,"Cough, Chest Congestion, Fatigue",2,No,1,20

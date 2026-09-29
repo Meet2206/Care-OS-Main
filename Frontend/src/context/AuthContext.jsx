@@ -58,7 +58,12 @@ export function AuthProvider({ children }) {
         }
         let active = true
         getCurrentUser()
-            .then((nextUser) => { if (active) setUser(withDashboard(nextUser)) })
+            .then((nextUser) => {
+                if (active) {
+                    setUser(withDashboard(nextUser))
+                    setMustChangePassword(Boolean(nextUser.must_change_password))
+                }
+            })
             .catch(() => { if (active) setUser(null) })
             .finally(() => { if (active) setLoading(false) })
         return () => { active = false }

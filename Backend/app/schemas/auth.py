@@ -69,6 +69,7 @@ class UserResponse(BaseModel):
     patient_id: str | None = None
     doctor_id: str | None = None
     status: UserStatus = UserStatus.active
+    must_change_password: bool = False
 
 
 class RegisterResponse(BaseModel):

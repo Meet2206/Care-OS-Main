@@ -28,4 +28,5 @@ def user_document_to_response(user: dict[str, Any]) -> UserResponse:
         patient_id=user.get("patient_id"),
         doctor_id=user.get("doctor_id"),
         status=user.get("status", "Active"),
+        must_change_password=bool(user.get("must_change_password", False)),
     )

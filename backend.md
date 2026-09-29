@@ -53,7 +53,8 @@ unreviewable mixture of security, validation, database code, and formatting.
 1. loads settings from environment variables;
 2. connects to MongoDB;
 3. creates required indexes;
-4. seeds development demo users when development seeding is enabled;
+4. removes retired demo clinical records and seeds the hospital doctor directory plus linked
+   development doctor accounts when development seeding is enabled;
 5. exposes the API under `/api/v1`.
 
 Health endpoints are available at `/health` and `/ready`. Readiness is the more meaningful operational

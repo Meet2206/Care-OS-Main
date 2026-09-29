@@ -332,18 +332,29 @@ function DoctorDashboard() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredPatients.map((patient) => (
+                                {filteredPatients.map((patient) => {
+                                    const patientRecord = records.find((record) => record.patient_id === patient.patient_id)
+
+                                    return (
                                     <tr key={patient.patient_id} className="border-t border-[var(--line)] text-[var(--ink)]">
                                         <td data-label="Patient ID" className="px-4 py-4">{patient.patient_id}</td>
                                         <td data-label="Name" className="px-4 py-4">{patient.full_name}</td>
                                         <td data-label="Ward / Room" className="px-4 py-4 text-[var(--muted)]">{patient.address}</td>
                                         <td data-label="Action" className="px-4 py-4">
-                                            <Button variant="subtle" className="px-4 py-2" onClick={() => openReview(patient)}>
-                                                Review
-                                            </Button>
+                                            {patientRecord ? (
+                                                <div className="flex flex-wrap items-center gap-2">
+                                                    <StatusPill tone="green">Reviewed</StatusPill>
+                                                    <span className="text-xs text-[var(--muted)]">{patientRecord.record_id}</span>
+                                                </div>
+                                            ) : (
+                                                <Button variant="subtle" className="px-4 py-2" onClick={() => openReview(patient)}>
+                                                    Review
+                                                </Button>
+                                            )}
                                         </td>
                                     </tr>
-                                ))}
+                                    )
+                                })}
                                 {!filteredPatients.length ? (
                                     <tr className="border-t border-[var(--line)] text-[var(--muted)]">
                                         <td colSpan="4" className="px-4 py-6 text-center">No assigned patient matched that search.</td>

@@ -287,7 +287,7 @@ function Appointments() {
                                             </td>
                                             <td className="py-3" data-label="Actions">
                                                 <div className="flex flex-wrap gap-2">
-                                                    {isDoctor && !record ? (
+                                                    {isDoctor && !record && appointment.status === "Scheduled" ? (
                                                         <Button
                                                             className="px-4 py-1.5 text-xs"
                                                             onClick={() => { setConsultFor(appointment); setRecordForm(emptyRecord()); setRecordError("") }}

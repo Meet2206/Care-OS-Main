@@ -206,7 +206,7 @@ The backend:
 
 The token identity is resolved from the database on protected requests. Inactive or deleted users are rejected even if an old token exists.
 
-Demo accounts are seeded **only** when `ENVIRONMENT=development` and `SEED_DEMO_USERS=true`. The
+Development accounts are seeded **only** when `ENVIRONMENT=development` and `SEED_DEMO_USERS=true`. The
 settings model refuses to load if seeding is enabled in any other environment, or if `SECRET_KEY` is
 shorter than 32 characters outside development. No password appears in source: it comes from
 `DEMO_USER_PASSWORD`, or is generated per process and written to the startup log.
@@ -260,6 +260,10 @@ Stores:
 
 Appointment authorization is scoped by authenticated patient or doctor where applicable.
 
+Only scheduled appointments may start a new consultation. Cancelled and completed appointments do
+not expose the consultation-recording action. A completed appointment with an existing medical
+record displays that record instead of offering another consultation.
+
 ### Medical records
 
 Stores:
@@ -276,6 +280,10 @@ Stores:
 - follow-up date
 
 Medical records must be linked to real appointments, patients, and doctors.
+
+The doctor dashboard treats a patient as reviewed when a linked medical record exists and replaces the
+review action with the existing record identifier. This prevents duplicate review actions in the
+patient list while preserving the one-record-per-appointment rule enforced by the backend.
 
 ### Prescriptions
 
@@ -469,7 +477,9 @@ Backend startup creates indexes for the active domain collections. Important uni
 - unique pharmacy order ID
 - unique pharmacy order per prescription
 
-Demo-user and clinical-data seed operations are designed to be idempotent. Pharmacy-order creation is also idempotent by `prescription_id`.
+Development-account and hospital-doctor seed operations are designed to be idempotent. Retired demo
+clinical records are removed at startup so a new local instance begins without pre-existing patients,
+appointments, or prescriptions. Pharmacy-order creation is also idempotent by `prescription_id`.
 
 ## 16. Error behavior
 
@@ -489,8 +499,10 @@ Frontend error states should display safe user-facing messages and never reveal 
 
 - Presentation-only copy on the patient and pharmacy dashboards is still static (care-team contacts,
   assistance options, counter alerts, slot availability). No clinical or write path depends on it.
-- The demo accounts are linked to clinical records by `Backend/scripts/seed_demo_clinical_data.py`,
-  which must be run explicitly. Newly registered patients get their own linked login automatically.
+- Startup creates the seven hospital directory doctors and linked development doctor accounts, but
+  does not create patients, appointments, or clinical records. The legacy
+  `Backend/scripts/seed_demo_clinical_data.py` command remains available for isolated local testing.
+  Newly registered patients get their own linked login automatically.
 - AI fields absent from the clinical schema are supplied explicitly by the user from the model's
   vocabulary; they are never inferred from medicine names or unrelated fields.
 - Login throttling is in-process. A multi-worker or multi-instance deployment needs a shared store
@@ -504,7 +516,7 @@ Frontend error states should display safe user-facing messages and never reveal 
 
 The integrated system has been live-tested for:
 
-- all four demo-account logins
+- development-account logins, including the seven hospital doctor accounts
 - patient registration
 - patient → appointment → medical record
 - doctor → prescription

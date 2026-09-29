@@ -11,6 +11,7 @@ import PatientIdCard from "../../components/modules/patients/PatientIdCard"
 import PrescriptionOrdersPanel from "../../components/modules/patients/PrescriptionOrdersPanel"
 import { apiRequest } from "../../api/client"
 import { useAuth } from "../../context/AuthContext"
+import upiQrCode from "../../../../UPI.svg"
 import {
     appointmentUpdates,
     appointmentTimeSlots,
@@ -643,6 +644,15 @@ function PatientDashboard() {
 
                                 {paymentForm.method === "UPI ID" ? (
                                     <input className="form-input mt-4" value={paymentForm.upiId} onChange={(event) => updatePaymentField("upiId", event.target.value)} placeholder="Enter UPI ID, e.g. name@bank" autoComplete="off" />
+                                ) : null}
+                                {paymentForm.method === "UPI" ? (
+                                    <div className="mt-4 flex flex-col items-center gap-3 rounded-2xl bg-white px-4 py-4 text-center sm:flex-row sm:items-center sm:text-left">
+                                        <img src={upiQrCode} alt="UPI payment QR code" className="h-36 w-36 rounded-xl border border-[var(--line)] bg-white p-2" />
+                                        <div>
+                                            <p className="font-semibold text-[var(--ink)]">Scan to pay the advance</p>
+                                            <p className="mt-1 text-sm leading-6 text-[var(--muted)]">Scan this QR code with your UPI app, complete the simulated payment, then click Payment Done.</p>
+                                        </div>
+                                    </div>
                                 ) : null}
                                 {["Credit Card", "Debit Card"].includes(paymentForm.method) ? (
                                     <div className="mt-4 grid gap-3 sm:grid-cols-3">

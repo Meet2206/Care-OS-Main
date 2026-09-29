@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 300" role="img" aria-labelledby="title desc">
+  <title id="title">Animated CARE-OS clinical workflow</title>
+  <desc id="desc">A moving marker travels from a completed appointment through consultation, medical record, prescription, pharmacy, and patient visibility.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1"><stop stop-color="#fff8ee"/><stop offset="1" stop-color="#eef8f6"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-opacity=".14"/></filter>
+    <path id="route" d="M110 150 H285 H460 H635 H810"/>
+  </defs>
+  <rect width="960" height="300" rx="24" fill="url(#bg)"/>
+  <text x="36" y="38" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#173b45">Consultation → record → prescription → fulfilment</text>
+  <path d="M110 150 H810" fill="none" stroke="#c8d4d0" stroke-width="6" stroke-linecap="round"/>
+  <g font-family="Arial,sans-serif" text-anchor="middle">
+    <g filter="url(#shadow)"><circle cx="110" cy="150" r="43" fill="#fff" stroke="#4b83d1" stroke-width="3"/><text x="110" y="146" font-size="14" font-weight="700" fill="#173b45">Appointment</text><text x="110" y="166" font-size="12" fill="#527078">completed</text></g>
+    <g filter="url(#shadow)"><circle cx="285" cy="150" r="43" fill="#fff" stroke="#1b8795" stroke-width="3"/><text x="285" y="146" font-size="14" font-weight="700" fill="#173b45">Consult</text><text x="285" y="166" font-size="12" fill="#527078">doctor review</text></g>
+    <g filter="url(#shadow)"><circle cx="460" cy="150" r="43" fill="#fff" stroke="#31966b" stroke-width="3"/><text x="460" y="146" font-size="14" font-weight="700" fill="#173b45">Record</text><text x="460" y="166" font-size="12" fill="#527078">MR + diagnosis</text></g>
+    <g filter="url(#shadow)"><circle cx="635" cy="150" r="43" fill="#fff" stroke="#d39a2c" stroke-width="3"/><text x="635" y="146" font-size="14" font-weight="700" fill="#173b45">Prescribe</text><text x="635" y="166" font-size="12" fill="#527078">medicine search</text></g>
+    <g filter="url(#shadow)"><circle cx="810" cy="150" r="43" fill="#fff" stroke="#9a70c4" stroke-width="3"/><text x="810" y="146" font-size="14" font-weight="700" fill="#173b45">Pharmacy</text><text x="810" y="166" font-size="12" fill="#527078">patient orders</text></g>
+  </g>
+  <text x="480" y="243" font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#527078">A patient is shown as Reviewed once a linked medical record exists.</text>
+  <text x="480" y="265" font-family="Arial,sans-serif" font-size="12" text-anchor="middle" fill="#527078">Cancelled appointments stop before consultation; duplicate records are rejected.</text>
+  <circle r="9" fill="#31966b" stroke="#fff" stroke-width="3">
+    <animateMotion dur="5s" repeatCount="indefinite" rotate="auto"><mpath href="#route"/></animateMotion>
+  </circle>
+</svg>

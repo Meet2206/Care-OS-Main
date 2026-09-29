@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 260" role="img" aria-labelledby="title desc">
+  <title id="title">Animated CARE-OS appointment and payment flow</title>
+  <desc id="desc">A moving marker travels from patient booking through backend validation and advance payment to a scheduled appointment.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1"><stop stop-color="#eef8f6"/><stop offset="1" stop-color="#edf4fb"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-opacity=".14"/></filter>
+    <path id="route" d="M150 130 H330 H510 H690 H870"/>
+  </defs>
+  <rect width="960" height="260" rx="24" fill="url(#bg)"/>
+  <text x="36" y="38" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#173b45">Appointment booking → payment → schedule</text>
+  <path d="M150 130 H870" fill="none" stroke="#b8ccd0" stroke-width="6" stroke-linecap="round"/>
+  <g font-family="Arial,sans-serif" text-anchor="middle">
+    <g filter="url(#shadow)"><circle cx="150" cy="130" r="43" fill="#fff" stroke="#1b8795" stroke-width="3"/><text x="150" y="126" font-size="15" font-weight="700" fill="#173b45">Book</text><text x="150" y="146" font-size="12" fill="#527078">patient</text></g>
+    <g filter="url(#shadow)"><circle cx="330" cy="130" r="43" fill="#fff" stroke="#4b83d1" stroke-width="3"/><text x="330" y="126" font-size="15" font-weight="700" fill="#173b45">Validate</text><text x="330" y="146" font-size="12" fill="#527078">doctor + slot</text></g>
+    <g filter="url(#shadow)"><circle cx="510" cy="130" r="43" fill="#fff" stroke="#d39a2c" stroke-width="3"/><text x="510" y="126" font-size="15" font-weight="700" fill="#173b45">Pending</text><text x="510" y="146" font-size="12" fill="#527078">25% advance</text></g>
+    <g filter="url(#shadow)"><circle cx="690" cy="130" r="43" fill="#fff" stroke="#d39a2c" stroke-width="3"/><text x="690" y="126" font-size="15" font-weight="700" fill="#173b45">Pay</text><text x="690" y="146" font-size="12" fill="#527078">UPI / card</text></g>
+    <g filter="url(#shadow)"><circle cx="870" cy="130" r="43" fill="#fff" stroke="#31966b" stroke-width="3"/><text x="870" y="126" font-size="15" font-weight="700" fill="#173b45">Scheduled</text><text x="870" y="146" font-size="12" fill="#527078">ready to visit</text></g>
+  </g>
+  <text x="480" y="218" font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#527078">The animated marker represents the request moving through the API and MongoDB-backed state changes.</text>
+  <circle r="9" fill="#1b8795" stroke="#fff" stroke-width="3">
+    <animateMotion dur="5s" repeatCount="indefinite" rotate="auto"><mpath href="#route"/></animateMotion>
+  </circle>
+</svg>

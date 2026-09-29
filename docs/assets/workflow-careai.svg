@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 260" role="img" aria-labelledby="title desc">
+  <title id="title">Animated CARE-OS CareAI advisory flow</title>
+  <desc id="desc">A moving marker travels from validated patient inputs into priority and wait-time predictions and then to an advisory dashboard.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1"><stop stop-color="#f2effb"/><stop offset="1" stop-color="#edf6fb"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-opacity=".14"/></filter>
+    <path id="route" d="M150 135 H330 H510 H690 H870"/>
+  </defs>
+  <rect width="960" height="260" rx="24" fill="url(#bg)"/>
+  <text x="36" y="38" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#173b45">CareAI advisory data flow</text>
+  <path d="M150 135 H870" fill="none" stroke="#c5c9d8" stroke-width="6" stroke-linecap="round"/>
+  <g font-family="Arial,sans-serif" text-anchor="middle">
+    <g filter="url(#shadow)"><circle cx="150" cy="135" r="43" fill="#fff" stroke="#4b83d1" stroke-width="3"/><text x="150" y="131" font-size="14" font-weight="700" fill="#173b45">Inputs</text><text x="150" y="151" font-size="12" fill="#527078">validated</text></g>
+    <g filter="url(#shadow)"><circle cx="330" cy="135" r="43" fill="#fff" stroke="#9a70c4" stroke-width="3"/><text x="330" y="131" font-size="14" font-weight="700" fill="#173b45">Schema</text><text x="330" y="151" font-size="12" fill="#527078">vocabulary</text></g>
+    <g filter="url(#shadow)"><circle cx="510" cy="135" r="43" fill="#fff" stroke="#9a70c4" stroke-width="3"/><text x="510" y="131" font-size="14" font-weight="700" fill="#173b45">Models</text><text x="510" y="151" font-size="12" fill="#527078">priority + wait</text></g>
+    <g filter="url(#shadow)"><circle cx="690" cy="135" r="43" fill="#fff" stroke="#31966b" stroke-width="3"/><text x="690" y="131" font-size="14" font-weight="700" fill="#173b45">Prediction</text><text x="690" y="151" font-size="12" fill="#527078">advisory output</text></g>
+    <g filter="url(#shadow)"><circle cx="870" cy="135" r="43" fill="#fff" stroke="#d39a2c" stroke-width="3"/><text x="870" y="131" font-size="14" font-weight="700" fill="#173b45">Dashboard</text><text x="870" y="151" font-size="12" fill="#527078">human decision</text></g>
+  </g>
+  <text x="480" y="220" font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#527078">CareAI supports operations; it does not diagnose or replace clinical judgment.</text>
+  <circle r="9" fill="#9a70c4" stroke="#fff" stroke-width="3">
+    <animateMotion dur="5s" repeatCount="indefinite" rotate="auto"><mpath href="#route"/></animateMotion>
+  </circle>
+</svg>

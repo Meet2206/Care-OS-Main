@@ -2,11 +2,36 @@
 
 This document explains the current CARE-OS implementation: its architecture, data flow, security rules, clinical workflows, AI integration, pharmacy workflow, frontend behavior, configuration, and operational limits.
 
+## Current implementation update — September 2026
+
+The following points are the current source of truth where older sections below use shorter or
+historical wording:
+
+- CARE-OS has five application roles: `admin`, `doctor`, `pharmacy`, `patient`, and `receptionist`.
+- Receptionist patient registration creates both the patient record and a linked patient login account.
+  The response returns a one-time temporary password through the credential ticket; ordinary patient
+  reads never return that password.
+- A newly created patient must change the temporary password at first sign-in. The requirement is
+  returned by `/auth/login` and `/auth/me`, and the frontend restores the requirement after refresh.
+- The patient credential ticket can copy the login ID or temporary password and is cleared when the
+  ticket is closed. It is not a permanent password store.
+- The patient portal displays an inactivity notice. This is a notice only: there is no automatic
+  two-month deletion job in the current implementation.
+- The verified production CareAI scope is two models, as specified in `jenil.md`: patient priority
+  classification and estimated waiting-time regression. A duplicate priority artifact and an obsolete
+  wait-time artifact were removed; the current artifacts are documented in `AIML.md`.
+- The current model evaluation is based on held-out cross-validation rather than training-set accuracy.
+  The observed results are approximately 73.35% five-fold accuracy for priority classification and
+  2.04 minutes MAE / 2.59 minutes RMSE / 0.862 R² for wait-time estimation.
+
+Detailed companion documents are available in `Systemdesign.md`, `frontend.md`, `backend.md`, and
+`AIML.md`.
+
 ## 1. System purpose
 
 CARE-OS is a role-based clinical operations application. The current system supports:
 
-- Authentication with JWTs and four application roles.
+- Authentication with JWTs and five application roles: admin, doctor, pharmacy, patient, and receptionist.
 - Patient, doctor, appointment, and medical-record management.
 - Doctor prescriptions using the medicine catalog.
 - Automatic pharmacy-order creation and pharmacy status processing.
@@ -189,7 +214,8 @@ shorter than 32 characters outside development. No password appears in source: i
 Repeated failed sign-ins are throttled per login ID and per client address, returning `429` with
 `Retry-After`. Passwords are stored as bcrypt hashes and are never returned by APIs or logged.
 `POST /auth/change-password` lets a user rotate their own password; system-generated patient
-accounts are flagged `must_change_password` and the UI blocks until that is done.
+accounts are flagged `must_change_password` and the UI blocks until that is done. The flag is returned by
+both login and `/auth/me`, so the requirement survives a browser refresh.
 
 ## 7. Backend request flow
 

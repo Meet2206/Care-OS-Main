@@ -32,10 +32,16 @@ CARE-OS/
 ├── AI/ML/       AI model artifacts when present
 ├── Dataset/     Clinical and medicine datasets
 ├── README.md
-└── CARE-OS-SYSTEM-LOGIC.md
+├── CARE-OS-SYSTEM-LOGIC.md
+├── Systemdesign.md
+├── frontend.md
+├── backend.md
+└── AIML.md
 ```
 
 For a complete explanation of the application logic, read [CARE-OS-SYSTEM-LOGIC.md](./CARE-OS-SYSTEM-LOGIC.md).
+For audience-friendly detailed references, read [Systemdesign.md](./Systemdesign.md),
+[frontend.md](./frontend.md), [backend.md](./backend.md), and [AIML.md](./AIML.md).
 
 ## Requirements
 

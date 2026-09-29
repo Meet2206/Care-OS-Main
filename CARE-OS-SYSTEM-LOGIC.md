@@ -264,6 +264,11 @@ Only scheduled appointments may start a new consultation. Cancelled and complete
 not expose the consultation-recording action. A completed appointment with an existing medical
 record displays that record instead of offering another consultation.
 
+Appointment booking creates a payment-pending appointment until the simulated 25% advance succeeds.
+The payment UI supports UPI, UPI ID, credit card, and debit card. UPI uses the repository QR asset
+`UPI.svg`; card inputs are formatted and validated as 16 digits in four groups, `MM/YY` expiry, and
+three-digit CVV, including an explicit expired-card check.
+
 ### Medical records
 
 Stores:
@@ -291,6 +296,12 @@ A prescription is the clinical source. It stores:
 
 - `prescription_id`
 - `medical_record_id`
+
+### Clinical choice data
+
+Disease options are filtered to the selected doctor's specialty/department. The medicine catalog is
+loaded from the maintained medicine dataset and is available through search when a doctor prepares a
+prescription; medicine names are not used as AI model inputs.
 - `appointment_id`
 - `patient_id`
 - `doctor_id`

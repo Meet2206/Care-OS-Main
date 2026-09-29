@@ -16,6 +16,11 @@ The backend is the trusted coordinator of CARE-OS. It answers questions such as:
 
 The frontend can suggest an action, but only the backend can make it real.
 
+Appointment advance payments are persisted separately from appointments. A booking remains
+`Payment Pending` until the simulated 25% advance is recorded successfully; only then can the
+appointment move into the confirmed scheduling flow. Payment details are validated at the boundary
+and sensitive card values are not stored as plaintext.
+
 ## 2. Technology and layers
 
 - FastAPI provides HTTP routing and automatic request/response handling.

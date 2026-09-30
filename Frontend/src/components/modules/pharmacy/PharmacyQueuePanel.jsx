@@ -41,7 +41,19 @@ function PharmacyQueuePanel({ orders, onAccept, onPack, onDispense, onView, clas
                                         <Button variant="subtle" className="px-4 py-2" onClick={() => onView(order)}>
                                             View
                                         </Button>
-                                        {!onAccept ? null : order.status === "PENDING" ? (
+                                        {!onAccept ? null : order.status === "PENDING_PAYMENT" ? (
+                                            <Button variant="subtle" className="px-4 py-2" disabled>
+                                                Awaiting payment
+                                            </Button>
+                                        ) : order.status === "READY_FOR_PICKUP" ? (
+                                            <Button variant="subtle" className="px-4 py-2" onClick={() => onView(order)}>
+                                                Verify pickup
+                                            </Button>
+                                        ) : order.status === "COLLECTED" ? (
+                                            <Button variant="subtle" className="px-4 py-2" disabled>
+                                                Collected
+                                            </Button>
+                                        ) : order.status === "PENDING" ? (
                                             <Button variant="subtle" className="px-4 py-2" onClick={() => onAccept(order.token)}>
                                                 Accept
                                             </Button>

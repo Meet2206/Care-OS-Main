@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import QRCode from "qrcode"
 import Button from "../../components/common/Button"
 import Card from "../../components/common/Card"
 import Modal from "../../components/common/Modal"
@@ -15,7 +16,6 @@ import upiQrCode from "../../../../UPI.svg"
 import { getAppointmentScheduleError, getAppointmentTimeSlots } from "../../utils/appointmentSchedule"
 import {
     appointmentUpdates,
-    careTeam,
     patientProfile,
     patientSupportOptions,
 } from "../../data/mockData"
@@ -48,6 +48,12 @@ function getBookingValidationMessage(form) {
     return ""
 }
 
+function getPatientDashboardTitle(patient, user) {
+    const fullName = patient?.full_name?.trim() || user?.full_name?.trim()
+    const firstName = fullName?.split(/\s+/)[0]
+    return firstName ? `${firstName}'s Dashboard` : "Patient Dashboard"
+}
+
 function PatientDashboard() {
     const { user } = useAuth()
     const [patient, setPatient] = useState(null)
@@ -56,6 +62,12 @@ function PatientDashboard() {
     const [records, setRecords] = useState([])
     const [pharmacyOrders, setPharmacyOrders] = useState([])
     const [pharmacyOrderError, setPharmacyOrderError] = useState("")
+    const [pharmacyOrderMessage, setPharmacyOrderMessage] = useState("")
+    const [selectedPharmacyOrder, setSelectedPharmacyOrder] = useState(null)
+    const [pharmacyPaymentForm, setPharmacyPaymentForm] = useState({ method: "", upiId: "", cardNumber: "", expiry: "", cvv: "" })
+    const [pharmacyPaymentError, setPharmacyPaymentError] = useState("")
+    const [pharmacyPaymentBusy, setPharmacyPaymentBusy] = useState(false)
+    const [pickupQrCode, setPickupQrCode] = useState("")
     const [showBookingModal, setShowBookingModal] = useState(false)
     const [selectedSupport, setSelectedSupport] = useState("")
     const [bookingTicket, setBookingTicket] = useState(null)
@@ -76,9 +88,16 @@ function PatientDashboard() {
 
     useEffect(() => {
         if (!user?.patient_id) {
+            setPatient(null)
+            setAppointments([])
+            setRecords([])
+            setPharmacyOrders([])
             setPatientLoadError("This account is not linked to a patient profile yet.")
             return
         }
+        let active = true
+        setPatient(null)
+        setPatientLoadError("")
         Promise.all([
             apiRequest(`/patients/${user.patient_id}`),
             apiRequest("/appointments?limit=100"),
@@ -86,6 +105,7 @@ function PatientDashboard() {
             apiRequest("/pharmacy-orders"),
             apiRequest("/doctors?limit=100"),
         ]).then(([profile, appointmentResult, recordResult, orderResult, doctorResult]) => {
+            if (!active) return
             setPatient(profile)
             setAppointments(appointmentResult.data.map((item) => ({
                 ...item,
@@ -113,10 +133,24 @@ function PatientDashboard() {
                 consultationFee: Number(item.consultation_fee || 0),
             })))
         }).catch((error) => {
+            if (!active) return
             setPatientLoadError(error.message || "Unable to load your patient profile.")
             setPharmacyOrderError(error.message || "Unable to load pharmacy orders.")
         })
+        return () => { active = false }
     }, [user?.patient_id])
+
+    useEffect(() => {
+        let active = true
+        if (!selectedPharmacyOrder?.pickup_qr_payload) {
+            setPickupQrCode("")
+            return undefined
+        }
+        QRCode.toDataURL(selectedPharmacyOrder.pickup_qr_payload, { margin: 2, width: 240 })
+            .then((dataUrl) => { if (active) setPickupQrCode(dataUrl) })
+            .catch(() => { if (active) setPickupQrCode("") })
+        return () => { active = false }
+    }, [selectedPharmacyOrder?.pickup_qr_payload])
 
     useEffect(() => {
         if (!bookingForm.doctor_id || !bookingForm.date) {
@@ -137,6 +171,8 @@ function PatientDashboard() {
         bloodGroup: patient.blood_group || "Not provided",
         assistance: "Contact reception for assistance",
     } : patientProfile
+
+    const assignedDoctor = doctorDirectory.find((doctor) => doctor.id === patient?.assigned_doctor_id)
 
     const handleBookingChange = (key, value) => {
         setBookingForm((current) => ({
@@ -169,6 +205,63 @@ function PatientDashboard() {
     const updatePaymentField = (field, value) => {
         setPaymentForm((current) => ({ ...current, [field]: value }))
         setBookingError("")
+    }
+
+    const selectPharmacyFulfillment = async (order, choice) => {
+        setPharmacyOrderError("")
+        setPharmacyOrderMessage("")
+        try {
+            const updated = await apiRequest(`/pharmacy-orders/${order.order_id}/fulfillment`, {
+                method: "POST",
+                body: JSON.stringify({ fulfillment_choice: choice }),
+            })
+            setPharmacyOrders((current) => current.map((item) => item.order_id === updated.order_id ? updated : item))
+            setSelectedPharmacyOrder(updated)
+            setPharmacyPaymentError("")
+            setPharmacyOrderMessage(`${choice} quantity selected for ${updated.order_id}. Complete payment to release it for pickup.`)
+        } catch (error) {
+            setPharmacyOrderError(error.message || "Unable to save the fulfillment choice.")
+        }
+    }
+
+    const openPharmacyPayment = (order) => {
+        setSelectedPharmacyOrder(order)
+        setPharmacyPaymentForm({ method: "", upiId: "", cardNumber: "", expiry: "", cvv: "" })
+        setPharmacyPaymentError("")
+    }
+
+    const submitPharmacyPayment = async (event) => {
+        event.preventDefault()
+        const form = pharmacyPaymentForm
+        if (!form.method) return setPharmacyPaymentError("Choose a payment method.")
+        if (form.method === "UPI ID" && !/^[-a-zA-Z0-9._]{2,}@[a-zA-Z]{2,}$/.test(form.upiId.trim())) return setPharmacyPaymentError("Enter a valid UPI ID.")
+        if (["Credit Card", "Debit Card"].includes(form.method)) {
+            if (!/^\d{16}$/.test(form.cardNumber.replace(/\s/g, ""))) return setPharmacyPaymentError("Card number must contain exactly 16 digits.")
+            const expiry = /^(\d{2})\/(\d{2})$/.exec(form.expiry)
+            if (!expiry || Number(expiry[1]) < 1 || Number(expiry[1]) > 12) return setPharmacyPaymentError("Enter a valid card expiry as MM/YY.")
+            const now = new Date()
+            if (2000 + Number(expiry[2]) < now.getFullYear() || (2000 + Number(expiry[2]) === now.getFullYear() && Number(expiry[1]) < now.getMonth() + 1)) return setPharmacyPaymentError("This card has expired.")
+            if (!/^\d{3}$/.test(form.cvv)) return setPharmacyPaymentError("CVV must contain exactly 3 digits.")
+        }
+        setPharmacyPaymentBusy(true)
+        setPharmacyPaymentError("")
+        try {
+            const updated = await apiRequest(`/pharmacy-orders/${selectedPharmacyOrder.order_id}/payment`, {
+                method: "POST",
+                body: JSON.stringify({
+                    payment_method: form.method,
+                    ...(form.method === "UPI ID" ? { upi_id: form.upiId.trim() } : {}),
+                    ...(["Credit Card", "Debit Card"].includes(form.method) ? { card_last4: form.cardNumber.replace(/\s/g, "").slice(-4) } : {}),
+                }),
+            })
+            setPharmacyOrders((current) => current.map((item) => item.order_id === updated.order_id ? updated : item))
+            setSelectedPharmacyOrder(updated)
+            setPharmacyOrderMessage(updated.payment_status === "Paid" ? `${updated.order_id} is paid and ready for pickup.` : `${updated.order_id} is pending cash confirmation at the pharmacy.`)
+        } catch (error) {
+            setPharmacyPaymentError(error.message || "Unable to process pharmacy payment.")
+        } finally {
+            setPharmacyPaymentBusy(false)
+        }
     }
 
     const getPaymentValidationMessage = () => {
@@ -378,7 +471,7 @@ function PatientDashboard() {
             <div className="space-y-6">
                 <PageIntro
                     eyebrow="Patient Portal"
-                    title="My Health Portal"
+                    title={getPatientDashboardTitle(patient, user)}
                     description="Appointments, records, and care contacts are grouped into simple panels so patients always know what happens next."
                     actions={<Button variant="subtle" onClick={() => setShowBookingModal(true)}>Book Appointment</Button>}
                 />
@@ -453,20 +546,23 @@ function PatientDashboard() {
                     </Card>
 
                     <Card className="p-6">
-                        <h2 className="font-display text-3xl text-[var(--ink)]">Care Team</h2>
+                        <h2 className="font-display text-3xl text-[var(--ink)]">Assigned Doctor</h2>
                         <div className="mt-5 space-y-4">
-                            {careTeam.map((member, index) => (
-                                <div key={member.name} className="flex items-center gap-4 rounded-2xl bg-[var(--panel-muted)] px-4 py-4">
+                            {assignedDoctor ? (
+                                <div className="flex items-center gap-4 rounded-2xl bg-[var(--panel-muted)] px-4 py-4">
                                     <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[linear-gradient(135deg,#c7def5_0%,#d8efd5_100%)] text-lg font-semibold text-[var(--ink)]">
-                                        {member.name.split(" ").map((part) => part[0]).slice(0, 2).join("")}
+                                        {assignedDoctor.name.split(" ").map((part) => part[0]).slice(0, 2).join("")}
                                     </div>
                                     <div>
-                                        <p className="font-semibold text-[var(--ink)]">{member.name}</p>
-                                        <p className="text-sm text-[var(--muted)]">{member.role}</p>
+                                        <p className="font-semibold text-[var(--ink)]">{assignedDoctor.name}</p>
+                                        <p className="text-sm text-[var(--muted)]">{assignedDoctor.specialty}</p>
+                                        <p className="text-xs text-[var(--muted)]">{assignedDoctor.location}</p>
                                     </div>
-                                    {index === 0 ? <StatusPill tone="blue">Primary</StatusPill> : null}
+                                    <StatusPill tone="blue">Primary</StatusPill>
                                 </div>
-                            ))}
+                            ) : (
+                                <p className="rounded-2xl bg-[var(--panel-muted)] px-4 py-4 text-sm text-[var(--muted)]">No doctor assigned.</p>
+                            )}
                         </div>
                     </Card>
                 </div>
@@ -498,16 +594,53 @@ function PatientDashboard() {
                         </div>
                     </Card>
 
-                    {pharmacyOrderError ? <div className="rounded-2xl border border-[#f0c7c2] bg-[#fff4f2] px-4 py-3 text-sm text-[#9b5148]">{pharmacyOrderError}</div> : <PrescriptionOrdersPanel orders={pharmacyOrders.map((order) => ({
-                        token: order.order_id,
-                        patient: order.patient_id,
-                        patientId: order.patient_id,
-                        status: order.status,
-                        items: order.medicines.length,
-                        medicines: order.medicines.map((item) => ({ medicine: item.medicine_name, tablets: item.dosage, times: item.frequency })),
-                    }))} />}
+                    {pharmacyOrderError ? <div className="rounded-2xl border border-[#f0c7c2] bg-[#fff4f2] px-4 py-3 text-sm text-[#9b5148]">{pharmacyOrderError}</div> : <PrescriptionOrdersPanel orders={pharmacyOrders} onFulfillment={selectPharmacyFulfillment} onPayment={openPharmacyPayment} />}
                 </div>
             </div>
+
+            {pharmacyOrderMessage ? <div className="rounded-2xl border border-[#d4e7d9] bg-[#eef8f0] px-4 py-3 text-sm text-[#4c6a56]">{pharmacyOrderMessage}</div> : null}
+
+            <Modal
+                open={Boolean(selectedPharmacyOrder)}
+                onClose={() => setSelectedPharmacyOrder(null)}
+                title={selectedPharmacyOrder ? `Pharmacy payment · ${selectedPharmacyOrder.order_id}` : "Pharmacy payment"}
+                eyebrow="Medicine fulfillment"
+                maxWidthClass="max-w-2xl"
+            >
+                {selectedPharmacyOrder?.payment_status === "Paid" ? (
+                    <div className="space-y-4">
+                        <div className="rounded-2xl border border-[#d4e7d9] bg-[#eef8f0] p-5">
+                            <p className="font-semibold text-[#3e6b50]">Payment successful</p>
+                            <p className="mt-2 text-sm text-[var(--muted)]">Order {selectedPharmacyOrder.order_id} is ready for pickup.</p>
+                        </div>
+                        <div className="rounded-2xl border border-[var(--line)] bg-white p-5">
+                            <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Pickup token / QR payload</p>
+                            {pickupQrCode ? <img src={pickupQrCode} alt={`Secure pickup QR for ${selectedPharmacyOrder.order_id}`} className="mx-auto mt-4 h-52 w-52 rounded-xl border border-[var(--line)] bg-white p-2" /> : null}
+                            <p className="mt-3 break-all rounded-xl bg-[var(--panel-muted)] px-3 py-3 font-mono text-xs text-[var(--ink)]">{selectedPharmacyOrder.pickup_qr_payload}</p>
+                            <p className="mt-3 text-sm text-[var(--muted)]">Show this secure token at the pharmacy counter. The backend validates it and blocks reuse after collection.</p>
+                        </div>
+                        <Button variant="subtle" onClick={() => setSelectedPharmacyOrder(null)}>Close</Button>
+                    </div>
+                ) : (
+                    <form onSubmit={submitPharmacyPayment} className="space-y-5">
+                        <div className="rounded-2xl bg-[var(--panel-muted)] p-4 text-sm text-[var(--muted)]">
+                            <p className="font-semibold text-[var(--ink)]">Fulfillment: {selectedPharmacyOrder?.fulfillment_choice}</p>
+                            <p className="mt-1">Total quantity is calculated from the unchanged doctor prescription. No raw card or UPI credential is stored.</p>
+                        </div>
+                        <div className="grid gap-2 sm:grid-cols-3">
+                            {["UPI", "UPI ID", "Credit Card", "Debit Card", "Cash", "On-Counter"].map((method) => (
+                                <button key={method} type="button" onClick={() => setPharmacyPaymentForm((current) => ({ ...current, method }))} className={`rounded-2xl border px-3 py-3 text-sm font-semibold ${pharmacyPaymentForm.method === method ? "border-[var(--primary-blue)] bg-white text-[var(--primary-blue)]" : "border-[var(--line)] bg-white/70 text-[var(--ink)]"}`}>{method}</button>
+                            ))}
+                        </div>
+                        {pharmacyPaymentForm.method === "UPI" ? <div className="rounded-2xl bg-white p-4 text-sm text-[var(--muted)]">Use the existing UPI QR for this simulated payment, then choose Payment Done.</div> : null}
+                        {pharmacyPaymentForm.method === "UPI ID" ? <input className="form-input" value={pharmacyPaymentForm.upiId} onChange={(event) => setPharmacyPaymentForm((current) => ({ ...current, upiId: event.target.value }))} placeholder="name@bank" autoComplete="off" /> : null}
+                        {["Credit Card", "Debit Card"].includes(pharmacyPaymentForm.method) ? <div className="grid gap-3 sm:grid-cols-3"><input className="form-input sm:col-span-3" inputMode="numeric" maxLength={19} value={pharmacyPaymentForm.cardNumber} onChange={(event) => setPharmacyPaymentForm((current) => ({ ...current, cardNumber: formatCardNumber(event.target.value) }))} placeholder="1234 5678 9012 3456" autoComplete="off" /><input className="form-input" inputMode="numeric" maxLength={5} value={pharmacyPaymentForm.expiry} onChange={(event) => setPharmacyPaymentForm((current) => ({ ...current, expiry: formatCardExpiry(event.target.value) }))} placeholder="MM/YY" autoComplete="off" /><input className="form-input" inputMode="numeric" maxLength={3} value={pharmacyPaymentForm.cvv} onChange={(event) => setPharmacyPaymentForm((current) => ({ ...current, cvv: event.target.value.replace(/\D/g, "").slice(0, 3) }))} placeholder="CVV" autoComplete="off" /></div> : null}
+                        {pharmacyPaymentForm.method === "Cash" || pharmacyPaymentForm.method === "On-Counter" ? <p className="rounded-2xl bg-[#fff7e6] px-4 py-3 text-sm text-[#88651d]">Payment status remains Pending until pharmacy staff confirms receipt.</p> : null}
+                        {pharmacyPaymentError ? <p className="rounded-2xl bg-[#fff4f2] px-4 py-3 text-sm text-[#9b5148]">{pharmacyPaymentError}</p> : null}
+                        <div className="flex justify-end"><Button type="submit" disabled={pharmacyPaymentBusy}>{pharmacyPaymentBusy ? "Processing…" : "Payment Done"}</Button></div>
+                    </form>
+                )}
+            </Modal>
 
             <Modal
                 open={showBookingModal}

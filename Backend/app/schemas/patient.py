@@ -40,7 +40,10 @@ class PatientBase(BaseModel):
 
 
 class PatientCreate(PatientBase):
-    pass
+    # The receptionist UI normally requires an assignment. The API also keeps
+    # the single-clinician/unassigned fallback supported by the service and by
+    # existing integrations.
+    assigned_doctor_id: str | None = Field(default=None, max_length=30)
 
 
 class PatientSelfUpdate(BaseModel):

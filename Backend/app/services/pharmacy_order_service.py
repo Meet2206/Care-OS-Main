@@ -1,15 +1,29 @@
 from __future__ import annotations
 from datetime import datetime, timezone
+import math
+import secrets
 
 from fastapi import HTTPException, status
 from pymongo import ReturnDocument
 
 from app.database.mongodb import db
 from app.models.pharmacy_order import PHARMACY_ORDERS_COLLECTION
-from app.schemas.pharmacy_order import PharmacyOrderListResponse, PharmacyOrderResponse, PharmacyOrderStatus
+from app.schemas.pharmacy_order import (
+    FulfillmentChoice,
+    PharmacyFulfillmentRequest,
+    PharmacyOrderListResponse,
+    PharmacyOrderResponse,
+    PharmacyOrderStatus,
+    PharmacyPaymentMethod,
+    PharmacyPaymentRequest,
+)
 
 _TRANSITIONS = {
-    PharmacyOrderStatus.PENDING: {PharmacyOrderStatus.ACCEPTED, PharmacyOrderStatus.CANCELLED},
+    PharmacyOrderStatus.PENDING: {PharmacyOrderStatus.PENDING_PAYMENT, PharmacyOrderStatus.ACCEPTED, PharmacyOrderStatus.CANCELLED},
+    PharmacyOrderStatus.PENDING_PAYMENT: {PharmacyOrderStatus.PAID, PharmacyOrderStatus.CANCELLED},
+    PharmacyOrderStatus.PAID: {PharmacyOrderStatus.READY_FOR_PICKUP},
+    PharmacyOrderStatus.READY_FOR_PICKUP: {PharmacyOrderStatus.COLLECTED},
+    PharmacyOrderStatus.COLLECTED: set(),
     PharmacyOrderStatus.ACCEPTED: {PharmacyOrderStatus.PACKED, PharmacyOrderStatus.CANCELLED},
     PharmacyOrderStatus.PACKED: {PharmacyOrderStatus.DISPENSED},
     PharmacyOrderStatus.DISPENSED: set(),
@@ -26,6 +40,7 @@ def ensure_pharmacy_order_indexes() -> None:
     collection.create_index("status", name="pharmacy_order_status")
     collection.create_index("is_deleted", name="pharmacy_order_is_deleted")
     collection.create_index("created_at", name="pharmacy_order_created_at")
+    collection.create_index("pickup_token", unique=True, sparse=True, name="unique_pharmacy_pickup_token")
 
 
 def create_for_prescription(prescription: dict) -> PharmacyOrderResponse:
@@ -45,12 +60,110 @@ def create_for_prescription(prescription: dict) -> PharmacyOrderResponse:
         "pharmacy_id": None,
         "medicines": [item.model_dump() if hasattr(item, "model_dump") else item for item in prescription["medicines"]],
         "status": PharmacyOrderStatus.PENDING.value,
+        "fulfillment_choice": None,
+        "payment_status": "Pending",
+        "payment_method": None,
+        "total_amount": 0,
+        "paid_at": None,
+        "pickup_status": "NOT_READY",
+        "pickup_token": None,
+        "pickup_qr_payload": None,
         "created_at": now, "updated_at": now,
         "accepted_at": None, "packed_at": None, "dispensed_at": None,
         "is_deleted": False, "deleted_at": None,
     }
     db[PHARMACY_ORDERS_COLLECTION].insert_one(document)
     return PharmacyOrderResponse.model_validate(document)
+
+
+def select_fulfillment(order_id: str, request: PharmacyFulfillmentRequest) -> PharmacyOrderResponse:
+    """Snapshot the patient's full/half choice without mutating the prescription."""
+    order = get_order(order_id)
+    if order.status not in {PharmacyOrderStatus.PENDING, PharmacyOrderStatus.PENDING_PAYMENT}:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Fulfillment can no longer be changed for this order.")
+    choice = request.fulfillment_choice
+    update_items = []
+    for item in order.medicines:
+        quantity = item.prescribed_quantity if choice is FulfillmentChoice.FULL else math.ceil(item.prescribed_quantity / 2)
+        update_items.append({**item.model_dump(), "fulfillment_quantity": quantity})
+    now = datetime.now(timezone.utc)
+    row = db[PHARMACY_ORDERS_COLLECTION].find_one_and_update(
+        {"order_id": order_id, "status": {"$in": [PharmacyOrderStatus.PENDING.value, PharmacyOrderStatus.PENDING_PAYMENT.value]}, "is_deleted": {"$ne": True}},
+        {"$set": {"medicines": update_items, "fulfillment_choice": choice.value, "status": PharmacyOrderStatus.PENDING_PAYMENT.value, "updated_at": now}},
+        return_document=ReturnDocument.AFTER,
+    )
+    if row is None:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Fulfillment can no longer be changed for this order.")
+    return PharmacyOrderResponse.model_validate(row)
+
+
+def _paid_update(order: PharmacyOrderResponse, method: PharmacyPaymentMethod, card_last4: str | None = None) -> PharmacyOrderResponse:
+    if not order.fulfillment_choice:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Choose FULL or HALF fulfillment before payment.")
+    if order.payment_status == "Paid":
+        return order
+    now = datetime.now(timezone.utc)
+    token = secrets.token_urlsafe(32)
+    payload = f"CAREOS-PICKUP:{order.order_id}:{token}"
+    row = db[PHARMACY_ORDERS_COLLECTION].find_one_and_update(
+        {"order_id": order.order_id, "status": PharmacyOrderStatus.PENDING_PAYMENT.value, "payment_status": {"$ne": "Paid"}, "is_deleted": {"$ne": True}},
+        {"$set": {
+            "status": PharmacyOrderStatus.READY_FOR_PICKUP.value,
+            "payment_status": "Paid",
+            "payment_method": method.value,
+            "card_last4": card_last4,
+            "paid_at": now,
+            "pickup_status": "READY",
+            "pickup_token": token,
+            "pickup_qr_payload": payload,
+            "updated_at": now,
+        }},
+        return_document=ReturnDocument.AFTER,
+    )
+    if row is None:
+        latest = get_order(order.order_id)
+        if latest.payment_status == "Paid":
+            return latest
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Payment could not be recorded for this order.")
+    return PharmacyOrderResponse.model_validate(row)
+
+
+def pay_order(order_id: str, request: PharmacyPaymentRequest) -> PharmacyOrderResponse:
+    order = get_order(order_id)
+    if request.payment_method in {PharmacyPaymentMethod.CREDIT_CARD, PharmacyPaymentMethod.DEBIT_CARD} and not request.card_last4:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Only the last four card digits may be provided.")
+    # Cash and on-counter remain pending until pharmacy confirms receipt.
+    if request.payment_method in {PharmacyPaymentMethod.CASH, PharmacyPaymentMethod.ON_COUNTER}:
+        if not order.fulfillment_choice:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Choose FULL or HALF fulfillment before payment.")
+        db[PHARMACY_ORDERS_COLLECTION].update_one(
+            {"order_id": order_id, "status": PharmacyOrderStatus.PENDING_PAYMENT.value, "is_deleted": {"$ne": True}},
+            {"$set": {"payment_method": request.payment_method.value, "updated_at": datetime.now(timezone.utc)}},
+        )
+        return get_order(order_id)
+    return _paid_update(order, request.payment_method, request.card_last4)
+
+
+def confirm_cash_payment(order_id: str, pharmacy_id: str) -> PharmacyOrderResponse:
+    order = get_order(order_id)
+    if order.payment_method not in {PharmacyPaymentMethod.CASH, PharmacyPaymentMethod.ON_COUNTER}:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This order is not awaiting cash confirmation.")
+    return _paid_update(order, order.payment_method)
+
+
+def collect_order(order_id: str, pickup_token: str, pharmacy_id: str) -> PharmacyOrderResponse:
+    now = datetime.now(timezone.utc)
+    row = db[PHARMACY_ORDERS_COLLECTION].find_one_and_update(
+        {"order_id": order_id, "pickup_token": pickup_token, "payment_status": "Paid", "status": PharmacyOrderStatus.READY_FOR_PICKUP.value, "is_deleted": {"$ne": True}},
+        {"$set": {"status": PharmacyOrderStatus.COLLECTED.value, "pickup_status": "COLLECTED", "pharmacy_id": pharmacy_id, "dispensed_at": now, "updated_at": now}},
+        return_document=ReturnDocument.AFTER,
+    )
+    if row is not None:
+        return PharmacyOrderResponse.model_validate(row)
+    existing = get_order(order_id)
+    if existing.status is PharmacyOrderStatus.COLLECTED:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Order already collected.")
+    raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Pickup token is invalid or the order is not ready.")
 
 
 def list_orders(

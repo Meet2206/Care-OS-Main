@@ -19,18 +19,31 @@ CARE-OS is a role-based healthcare operations application with clinical records,
   11:00 AM to 2:00 PM.
 - Advance payments remain `Partially Paid` until the doctor successfully saves the consultation;
   that save settles the remaining balance and marks the appointment `Completed`.
+- Receptionist-selected doctors are persisted as `assigned_doctor_id` and displayed in the patient's
+  portal from the authenticated patient's record.
 - Consultation recording is available only for scheduled appointments; cancelled or completed
   appointments cannot start a new consultation.
 - Doctor dashboards mark patients as `Reviewed` once a medical record exists, preventing duplicate
   review actions for the same patient.
 - Medicine catalog search from `Dataset/Medicine_Details.csv`.
 - Doctor prescription creation using real clinical relationships.
-- Automatic pharmacy-order creation from prescriptions.
+- Automatic, idempotent pharmacy-order creation from prescriptions.
+- Prescriptions use a catalogue medicine, one or more frequency selections (`Morning`, `Afternoon`,
+  `Evening`), and a prescribed quantity (`5`, `10`, `15`, or `20`). Retired dosage, duration,
+  instructions, and number-of-doses inputs are not required for new prescriptions; historical values
+  remain readable when present.
+- Patient pharmacy fulfillment supports a full or half quantity choice, followed by payment. The
+  backend snapshots the fulfillment quantity without changing the doctor's prescription.
 - Pharmacy order lifecycle:
 
 ```text
-PENDING → ACCEPTED → PACKED → DISPENSED
+PENDING → PENDING_PAYMENT → READY_FOR_PICKUP → COLLECTED
 ```
+
+Cash or on-counter payments remain pending until pharmacy staff confirm receipt. A successful digital
+payment creates a one-time pickup token/QR payload; collection is authorized by an atomic backend
+token check. Legacy pharmacy processing states (`ACCEPTED → PACKED → DISPENSED`) remain supported for
+existing operational records.
 
 - Patient-owned appointment, record, prescription, and pharmacy-order access.
 - CareAI priority and wait-time predictions.
@@ -272,9 +285,15 @@ Creating a valid prescription automatically creates one pharmacy order.
 GET   /api/v1/pharmacy-orders
 GET   /api/v1/pharmacy-orders/{order_id}
 PATCH /api/v1/pharmacy-orders/{order_id}/status
+POST  /api/v1/pharmacy-orders/{order_id}/fulfillment
+POST  /api/v1/pharmacy-orders/{order_id}/payment
+POST  /api/v1/pharmacy-orders/{order_id}/confirm-cash
+POST  /api/v1/pharmacy-orders/{order_id}/collect
 ```
 
-Only pharmacy users can modify pharmacy-order status. Patients can read only their own orders.
+Patients can choose fulfillment and pay only for their own orders. Pharmacy users confirm cash,
+advance operational statuses, and collect orders using the secure pickup token. Patients can read only
+their own orders; the prescription itself remains immutable through this fulfillment flow.
 
 ### Medicine search
 

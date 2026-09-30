@@ -36,6 +36,10 @@ patients with the same name remain isolated. The temporary password is generated
 in the credential ticket, and stored only as a hash. Email is validated and stored for future
 notifications; CARE-OS does not send email yet.
 
+The receptionist's selected doctor is stored as `assigned_doctor_id` on the patient document. After
+patient login, the portal resolves that ID against the authenticated patient's profile and the doctor
+directory; it never uses a doctor name or a patient-controlled cross-account lookup.
+
 ## 2. Appointment and advance-payment flow
 
 ![Animated appointment and payment flow](docs/assets/workflow-booking.svg)
@@ -63,22 +67,36 @@ as clinical data.
 1. A doctor sees appointments scoped to their doctor account.
 2. Only a scheduled appointment without a medical record can show `Record consultation`.
 3. Cancelled or completed appointments cannot start a new consultation.
-4. The doctor records diagnosis, symptoms, vitals, treatment, notes, and follow-up information.
+4. The doctor records diagnosis, symptoms, vitals, treatment, notes, and follow-up information. If
+   the medical record already exists, the screen changes to `Add prescription` and reuses that record;
+   it does not attempt to create a duplicate consultation.
 5. The backend links the medical record to the same appointment, patient, and doctor, then rejects
    duplicate records for that appointment.
-6. The doctor can prescribe medicines from the expanded catalog. Disease choices are scoped to the
-   selected doctor's department/specialty.
-7. A valid prescription creates or reuses one pharmacy order.
-8. Pharmacy staff move the order through:
+6. The doctor can prescribe medicines from the expanded catalog. Each new medicine records its
+   catalogue ID, selected frequency values (`Morning`, `Afternoon`, or `Evening`), and quantity
+   (`5`, `10`, `15`, or `20`). Dosage, duration, instructions, and number of doses are not required
+   inputs in the current form. Disease choices are scoped to the selected doctor's department/specialty.
+7. A valid prescription creates or reuses one pharmacy order. The prescription is the clinical source;
+   the order stores a server-side snapshot for fulfillment.
+8. The patient may choose `FULL` or `HALF` fulfillment. The backend calculates and stores the
+   fulfillment quantity without changing the prescription, then moves the order to `PENDING_PAYMENT`.
+9. After payment, the order becomes `READY_FOR_PICKUP` and receives a one-time pickup token and QR
+   payload. Cash/on-counter payments wait for pharmacy confirmation.
+10. Pharmacy staff validate the token atomically and mark the order `COLLECTED`.
+11. Existing operational orders may still use the legacy pharmacy processing path:
 
    ```text
    PENDING → ACCEPTED → PACKED → DISPENSED
    ```
 
-9. The patient's dashboard receives the persisted medical record, prescription, and order status.
-10. Once a record exists, the doctor dashboard displays `Reviewed` and the record ID instead of
+12. The patient's dashboard receives the persisted medical record, prescription, fulfillment choice,
+    payment state, pickup token, and order status.
+13. The doctor dashboard only opens the review/prescribing form for a patient with a matching
+    appointment and medical record. Patients with a scheduled appointment are sent to
+    `Record consultation` first; patients without one cannot start prescribing.
+14. Once a record exists, the doctor dashboard displays `Reviewed` and the record ID instead of
     offering the same review action again.
-11. Saving the consultation settles the remaining 75%: payment status becomes `Paid`, total paid
+15. Saving the consultation settles the remaining 75%: payment status becomes `Paid`, total paid
     equals the consultation fee, and remaining amount becomes `₹0`.
 
 ## 4. CareAI advisory flow

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import Button from "../../components/common/Button"
 import Card from "../../components/common/Card"
 import Modal from "../../components/common/Modal"
@@ -28,10 +29,12 @@ function createMedicationRow() {
     return {
         medicine: "",
         medicineId: "",
-        tablets: "",
-        times: [],
+        frequency: [],
+        quantity: "",
     }
 }
+
+const MEDICINE_FREQUENCIES = ["Morning", "Afternoon", "Evening"]
 
 function formatDateDisplay(value) {
     if (!value) {
@@ -54,6 +57,7 @@ function createReviewForm() {
 
 function DoctorDashboard() {
     const { user } = useAuth()
+    const navigate = useNavigate()
     const appointmentsRef = useRef(null)
     const [query, setQuery] = useState("")
     const [selectedPatient, setSelectedPatient] = useState(null)
@@ -107,6 +111,18 @@ function DoctorDashboard() {
         const patientAppointments = appointments.filter((item) => item.patient_id === patient.patient_id)
         const appointment = patientAppointments.find((item) => records.some((record) => record.appointment_id === item.appointment_id)) || patientAppointments[0]
         const record = appointment ? records.find((item) => item.appointment_id === appointment.appointment_id) : null
+
+        if (!appointment) {
+            setSaveMessage(`No appointment is linked to ${patient.full_name}. Book an appointment before prescribing.`)
+            return
+        }
+
+        if (!record) {
+            setSaveMessage(`Record the consultation for ${patient.full_name} from the Appointments page before prescribing.`)
+            navigate("/appointments")
+            return
+        }
+
         setSelectedPatient(patient)
         setReviewForm({ ...createReviewForm(), appointment, record })
         setSaveMessage("")
@@ -127,7 +143,7 @@ function DoctorDashboard() {
         }))
     }
 
-    const toggleMedicineTime = (index, time) => {
+    const toggleMedicineFrequency = (index, frequency) => {
         setReviewForm((current) => ({
             ...current,
             medicines: current.medicines.map((medicine, currentIndex) => {
@@ -135,13 +151,13 @@ function DoctorDashboard() {
                     return medicine
                 }
 
-                const nextTimes = medicine.times.includes(time)
-                    ? medicine.times.filter((item) => item !== time)
-                    : [...medicine.times, time]
+                const nextFrequency = medicine.frequency.includes(frequency)
+                    ? medicine.frequency.filter((item) => item !== frequency)
+                    : [...medicine.frequency, frequency]
 
                 return {
                     ...medicine,
-                    times: nextTimes,
+                    frequency: nextFrequency,
                 }
             }),
         }))
@@ -198,10 +214,10 @@ function DoctorDashboard() {
             closeReview()
             return
         }
-        const incomplete = selectedMedicines.some((item) => !item.medicineId || !item.tablets || item.times.length === 0)
+        const incomplete = selectedMedicines.some((item) => !item.medicineId || !item.quantity || item.frequency.length === 0)
         if (incomplete) {
             setSavingReview(false)
-            setPrescriptionError("Each medicine needs a catalogue selection, a quantity, and at least one dose time.")
+            setPrescriptionError("Each medicine needs a catalogue selection, frequency, and quantity.")
             return
         }
         try {
@@ -215,10 +231,8 @@ function DoctorDashboard() {
                     medicines: selectedMedicines.map((item) => ({
                         medicine_id: item.medicineId,
                         medicine_name: item.medicine,
-                        dosage: `${item.tablets} tablets`,
-                        frequency: item.times.join(", "),
-                        duration: "As directed",
-                        instructions: reviewForm.improvement || null,
+                        frequency: item.frequency,
+                        prescribed_quantity: Number(item.quantity),
                     })),
                 }),
             })
@@ -338,7 +352,15 @@ function DoctorDashboard() {
                             </thead>
                             <tbody>
                                 {filteredPatients.map((patient) => {
-                                    const patientRecord = records.find((record) => record.patient_id === patient.patient_id)
+                                    const patientAppointments = appointments.filter((item) => item.patient_id === patient.patient_id)
+                                    const patientRecord = records.find((record) =>
+                                        record.patient_id === patient.patient_id
+                                        && patientAppointments.some((item) => item.appointment_id === record.appointment_id),
+                                    )
+                                    const hasRecordableAppointment = patientAppointments.some((item) =>
+                                        item.status === "Scheduled"
+                                        && !records.some((record) => record.appointment_id === item.appointment_id),
+                                    )
 
                                     return (
                                     <tr key={patient.patient_id} className="border-t border-[var(--line)] text-[var(--ink)]">
@@ -351,10 +373,12 @@ function DoctorDashboard() {
                                                     <StatusPill tone="green">Reviewed</StatusPill>
                                                     <span className="text-xs text-[var(--muted)]">{patientRecord.record_id}</span>
                                                 </div>
-                                            ) : (
+                                            ) : hasRecordableAppointment ? (
                                                 <Button variant="subtle" className="px-4 py-2" onClick={() => openReview(patient)}>
-                                                    Review
+                                                    Record consultation
                                                 </Button>
+                                            ) : (
+                                                <span className="text-sm text-[var(--muted)]">No recordable appointment</span>
                                             )}
                                         </td>
                                     </tr>
@@ -478,11 +502,33 @@ function DoctorDashboard() {
                                             />
                                         </label>
 
+                                    </div>
+
+                                    <div className="mt-4 grid gap-4 rounded-[18px] border border-[rgba(216,206,193,0.68)] bg-[rgba(247,242,235,0.82)] p-4 md:grid-cols-[minmax(0,1fr)_220px] md:items-end">
+                                        <div>
+                                            <p className="mb-3 text-sm font-semibold text-[var(--ink)]">Frequency *</p>
+                                            <div className="flex flex-wrap gap-3">
+                                                {MEDICINE_FREQUENCIES.map((frequency) => (
+                                                    <button
+                                                        key={frequency}
+                                                        type="button"
+                                                        onClick={() => toggleMedicineFrequency(index, frequency)}
+                                                        className={`rounded-full border px-4 py-2 text-sm ${
+                                                            medicine.frequency.includes(frequency)
+                                                                ? "border-[#9fcceb] bg-[#eaf4fb] text-[var(--ink)]"
+                                                                : "border-[var(--line)] bg-white text-[var(--muted)]"
+                                                        }`}
+                                                    >
+                                                        {frequency}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
                                         <label className="block">
-                                            <span className="mb-2 block text-sm font-semibold text-[var(--ink)]">No. of Tablets</span>
+                                            <span className="mb-2 block text-sm font-semibold text-[var(--ink)]">Quantity *</span>
                                             <select
-                                                value={medicine.tablets}
-                                                onChange={(event) => updateMedicine(index, "tablets", event.target.value)}
+                                                value={medicine.quantity}
+                                                onChange={(event) => updateMedicine(index, "quantity", event.target.value)}
                                                 className="w-full appearance-none rounded-[16px] border border-[rgba(181,198,214,0.92)] bg-[linear-gradient(180deg,rgba(248,251,253,0.98),rgba(236,244,249,0.94))] px-4 py-3 text-sm font-medium text-[var(--ink)] outline-none shadow-[inset_0_1px_0_rgba(255,255,255,0.65)]"
                                             >
                                                 <option value="">Select quantity</option>
@@ -491,31 +537,6 @@ function DoctorDashboard() {
                                                 ))}
                                             </select>
                                         </label>
-
-                                        <div className="rounded-[16px] border border-[rgba(216,206,193,0.72)] bg-[var(--panel-muted)] px-4 py-3">
-                                            <p className="text-xs uppercase tracking-[0.14em] text-[var(--muted)]">Timing Plan</p>
-                                            <p className="mt-2 text-sm text-[var(--ink)]">Use the time boxes below for once, twice, or thrice daily instructions.</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="mt-4 rounded-[18px] border border-[rgba(216,206,193,0.68)] bg-[rgba(247,242,235,0.82)] p-4">
-                                        <p className="mb-3 text-sm font-semibold text-[var(--ink)]">When to take</p>
-                                        <div className="flex flex-wrap gap-3">
-                                            {["Morning", "Afternoon", "Evening"].map((time) => (
-                                                <button
-                                                    key={time}
-                                                    type="button"
-                                                    onClick={() => toggleMedicineTime(index, time)}
-                                                    className={`rounded-full border px-4 py-2 text-sm ${
-                                                        medicine.times.includes(time)
-                                                            ? "border-[#9fcceb] bg-[#eaf4fb] text-[var(--ink)]"
-                                                            : "border-[var(--line)] bg-white text-[var(--muted)]"
-                                                    }`}
-                                                >
-                                                    {time}
-                                                </button>
-                                            ))}
-                                        </div>
                                     </div>
 
                                     {reviewForm.medicines.length > 1 ? (

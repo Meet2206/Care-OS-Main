@@ -5,12 +5,23 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 
 from app.schemas.auth import UserResponse, UserRole
 from app.schemas.pharmacy_order import (
+    PharmacyCollectRequest,
+    PharmacyFulfillmentRequest,
     PharmacyOrderListResponse,
     PharmacyOrderResponse,
     PharmacyOrderStatus,
+    PharmacyPaymentRequest,
     PharmacyOrderStatusUpdate,
 )
-from app.services.pharmacy_order_service import get_order, list_orders, update_status
+from app.services.pharmacy_order_service import (
+    collect_order,
+    confirm_cash_payment,
+    get_order,
+    list_orders,
+    pay_order,
+    select_fulfillment,
+    update_status,
+)
 from app.utils.security import require_patient_ownership, require_roles
 
 router = APIRouter(prefix="/pharmacy-orders", tags=["Pharmacy Orders"])
@@ -24,6 +35,7 @@ ReadUser = Annotated[
     ),
 ]
 PharmacyUser = Annotated[UserResponse, Depends(require_roles(UserRole.pharmacy))]
+PatientUser = Annotated[UserResponse, Depends(require_roles(UserRole.patient))]
 
 
 @router.get("", response_model=PharmacyOrderListResponse, summary="List pharmacy orders")
@@ -50,6 +62,30 @@ def list_pharmacy_orders(
         page=page,
         limit=limit,
     )
+
+
+@router.post("/{order_id}/fulfillment", response_model=PharmacyOrderResponse)
+def choose_fulfillment(order_id: str, request: PharmacyFulfillmentRequest, current_user: PatientUser) -> PharmacyOrderResponse:
+    order = get_order(order_id)
+    require_patient_ownership(current_user, order.patient_id)
+    return select_fulfillment(order_id, request)
+
+
+@router.post("/{order_id}/payment", response_model=PharmacyOrderResponse)
+def pay_pharmacy_order(order_id: str, request: PharmacyPaymentRequest, current_user: PatientUser) -> PharmacyOrderResponse:
+    order = get_order(order_id)
+    require_patient_ownership(current_user, order.patient_id)
+    return pay_order(order_id, request)
+
+
+@router.post("/{order_id}/confirm-cash", response_model=PharmacyOrderResponse)
+def confirm_order_cash(order_id: str, current_user: PharmacyUser) -> PharmacyOrderResponse:
+    return confirm_cash_payment(order_id, current_user.user_id)
+
+
+@router.post("/{order_id}/collect", response_model=PharmacyOrderResponse)
+def collect_pharmacy_order(order_id: str, request: PharmacyCollectRequest, current_user: PharmacyUser) -> PharmacyOrderResponse:
+    return collect_order(order_id, request.pickup_token, current_user.user_id)
 
 
 @router.get("/{order_id}", response_model=PharmacyOrderResponse, summary="Get one pharmacy order")

@@ -159,9 +159,30 @@ Each group should preserve the same order: authenticate, authorize, validate, ex
 
 ## 10. Prescription and pharmacy logic
 
-Doctors create prescriptions using the medicine catalog. Where the workflow requires it, prescription
-creation leads to a pharmacy order. Pharmacy users update the order through allowed statuses. Patients
-see the authorized result rather than gaining control over the pharmacy process.
+Doctors create prescriptions using the medicine catalog. A new medicine item contains its catalogue
+ID, name, selected frequency list, and prescribed quantity. The current quantity choices are `5`, `10`,
+`15`, and `20`; dosage, duration, instructions, and number of doses are not required for new requests.
+The optional legacy fields remain accepted only so historical records can still be read safely.
+
+Prescription creation is idempotent with respect to the prescription: it creates or reuses exactly one
+pharmacy order. Patients then choose `FULL` or `HALF` fulfillment. The service copies the selected
+quantity into the pharmacy-order snapshot and never mutates the prescription's prescribed quantity.
+
+The patient payment path is:
+
+```text
+PENDING → PENDING_PAYMENT → READY_FOR_PICKUP → COLLECTED
+```
+
+Digital payment generates a one-time secure pickup token and QR payload. Cash and on-counter payment
+remain pending until a pharmacy user confirms receipt. The collection endpoint performs an atomic
+match on order ID, token, paid state, and `READY_FOR_PICKUP` status, preventing token reuse or pickup
+of an unpaid/unrelated order. Legacy `ACCEPTED → PACKED → DISPENSED` transitions remain available for
+existing pharmacy operations.
+
+The relevant endpoints are `POST /pharmacy-orders/{id}/fulfillment`, `POST
+/pharmacy-orders/{id}/payment`, pharmacy-only `POST /pharmacy-orders/{id}/confirm-cash`, and
+pharmacy-only `POST /pharmacy-orders/{id}/collect`.
 
 The backend is responsible for preventing a client from changing unrelated ownership fields or bypassing
 the intended order lifecycle.

@@ -17,8 +17,12 @@ function mapOrder(order) {
         items: order.medicines.length,
         mode: "Prescription",
         status: order.status,
+        paymentStatus: order.payment_status,
+        paymentMethod: order.payment_method,
+        fulfillmentChoice: order.fulfillment_choice,
+        pickupToken: order.pickup_token,
         doctor: order.doctor_id,
-        medicines: order.medicines.map((item) => ({ medicine: item.medicine_name, tablets: item.dosage, times: item.frequency })),
+        medicines: order.medicines.map((item) => ({ medicine: item.medicine_name, tablets: item.dosage, times: Array.isArray(item.frequency) ? item.frequency.join(", ") : item.frequency, numberOfDoses: item.number_of_doses, prescribedQuantity: item.prescribed_quantity, fulfillmentQuantity: item.fulfillment_quantity })),
     }
 }
 
@@ -30,6 +34,7 @@ function PharmacyDashboard() {
     const [selectedOrder, setSelectedOrder] = useState(null)
     const [queueMessage, setQueueMessage] = useState("")
     const [loadError, setLoadError] = useState("")
+    const [pickupToken, setPickupToken] = useState("")
 
     const refreshOrders = async () => {
         try {
@@ -54,6 +59,27 @@ function PharmacyDashboard() {
     const handleAccept = (token) => changeStatus(token, "ACCEPTED")
     const handlePack = (token) => changeStatus(token, "PACKED")
     const handleDispense = (token) => changeStatus(token, "DISPENSED")
+
+    const confirmCash = async (token) => {
+        try {
+            const result = await apiRequest(`/pharmacy-orders/${token}/confirm-cash`, { method: "POST" })
+            const updated = mapOrder(result)
+            setOrders((current) => current.map((order) => order.token === token ? updated : order))
+            setSelectedOrder(updated)
+            setQueueMessage(`${token} payment confirmed and pickup is ready.`)
+        } catch (error) { setQueueMessage(error.message || "Unable to confirm cash payment.") }
+    }
+
+    const collectOrder = async (order) => {
+        try {
+            const result = await apiRequest(`/pharmacy-orders/${order.token}/collect`, { method: "POST", body: JSON.stringify({ pickup_token: pickupToken.trim() }) })
+            const updated = mapOrder(result)
+            setOrders((current) => current.map((item) => item.token === order.token ? updated : item))
+            setSelectedOrder(updated)
+            setQueueMessage(`${order.token} collected successfully.`)
+            setPickupToken("")
+        } catch (error) { setQueueMessage(error.message || "Unable to collect this order.") }
+    }
 
     const downloadReceipt = async (order) => {
         if (!order) {
@@ -120,7 +146,7 @@ function PharmacyDashboard() {
                     orders={orders}
                     onAccept={canDispense ? handleAccept : undefined}
                     onPack={canDispense ? handlePack : undefined}
-                    onDispense={canDispense ? handleDispense : undefined}
+            onDispense={canDispense ? handleDispense : undefined}
                     onView={setSelectedOrder}
                 />
 
@@ -153,6 +179,8 @@ function PharmacyDashboard() {
                         ["Status", selectedOrder?.status],
                         ["Items", selectedOrder?.items],
                         ["Doctor", selectedOrder?.doctor || "Counter order"],
+                        ["Payment", selectedOrder?.paymentStatus || "Pending"],
+                        ["Fulfillment", selectedOrder?.fulfillmentChoice || "Not selected"],
                     ].map(([label, value]) => (
                         <div key={label} className="rounded-2xl bg-[var(--panel-muted)] px-4 py-4">
                             <p className="text-xs uppercase tracking-[0.16em]">{label}</p>
@@ -168,7 +196,8 @@ function PharmacyDashboard() {
                             {selectedOrder.medicines.map((item) => (
                                 <div key={item.medicine} className="rounded-xl bg-white px-4 py-3">
                                     <p className="font-semibold text-[var(--ink)]">{item.medicine}</p>
-                                    <p>{item.tablets} tablets • {item.times}</p>
+                                    <p>{item.tablets} • {item.times}</p>
+                                    <p className="mt-1 text-xs text-[var(--muted)]">Prescribed: {item.prescribedQuantity} • Dispense: {item.fulfillmentQuantity || "—"}{item.numberOfDoses ? ` • ${item.numberOfDoses} doses` : ""}</p>
                                 </div>
                             ))}
                         </div>
@@ -176,12 +205,16 @@ function PharmacyDashboard() {
                 ) : null}
 
                 <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-                    {selectedOrder?.status === "PENDING" ? (
+                    {selectedOrder?.status === "PENDING_PAYMENT" && ["Cash", "On-Counter"].includes(selectedOrder?.paymentMethod) ? (
+                        <Button variant="subtle" onClick={() => confirmCash(selectedOrder.token)}>Confirm cash received</Button>
+                    ) : selectedOrder?.status === "PENDING" ? (
                         <Button variant="subtle" onClick={() => handleAccept(selectedOrder.token)}>Accept Order</Button>
                     ) : selectedOrder?.status === "ACCEPTED" ? (
                         <Button variant="subtle" onClick={() => handlePack(selectedOrder.token)}>Mark Packed</Button>
                     ) : selectedOrder?.status === "PACKED" ? (
                         <Button variant="subtle" onClick={() => handleDispense(selectedOrder.token)}>Mark Dispensed</Button>
+                    ) : selectedOrder?.status === "READY_FOR_PICKUP" ? (
+                        <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-end"><input className="form-input sm:max-w-sm" value={pickupToken} onChange={(event) => setPickupToken(event.target.value)} placeholder="Enter or scan pickup token" /><Button onClick={() => collectOrder(selectedOrder)}>Collect order</Button></div>
                     ) : null}
                     <Button onClick={() => downloadReceipt(selectedOrder)}>Download Receipt</Button>
                 </div>

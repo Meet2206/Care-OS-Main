@@ -189,6 +189,21 @@ function MedicalRecords() {
                                 </div>
                             </div>
                         ) : null}
+                        {prescriptionFor(selected.record_id)?.medicines?.length ? (
+                            <div className="rounded-2xl bg-[var(--panel-muted)] px-4 py-3">
+                                <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Doctor&apos;s prescription</p>
+                                <div className="mt-3 space-y-3">
+                                    {prescriptionFor(selected.record_id).medicines.map((medicine) => (
+                                        <div key={medicine.medicine_id} className="rounded-xl bg-white px-3 py-3 text-sm text-[var(--ink)]">
+                                            <p className="font-semibold">{medicine.medicine_name}</p>
+                                            <p className="mt-1 text-[var(--muted)]">Frequency: {Array.isArray(medicine.frequency) ? medicine.frequency.join(", ") : medicine.frequency}{medicine.number_of_doses ? ` • ${medicine.number_of_doses} doses` : ""}{medicine.dosage || medicine.duration ? ` • ${[medicine.dosage, medicine.duration].filter(Boolean).join(" • ")}` : ""}</p>
+                                            <p className="mt-1 text-[var(--muted)]">Quantity: {medicine.prescribed_quantity}</p>
+                                            {medicine.instructions ? <p className="mt-1 text-[var(--muted)]">{medicine.instructions}</p> : null}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ) : null}
                         <div className="grid gap-2 sm:grid-cols-2">
                             <p className="text-xs text-[var(--muted)]">Appointment: {selected.appointment_id}</p>
                             <p className="text-xs text-[var(--muted)]">Follow-up: {formatDate(selected.follow_up_date)}</p>

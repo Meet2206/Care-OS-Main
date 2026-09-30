@@ -2,16 +2,45 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+
+PRESCRIPTION_FREQUENCIES = {"Morning", "Afternoon", "Evening"}
+PRESCRIPTION_QUANTITIES = {5, 10, 15, 20}
+
+
+def validate_new_medicine_items(medicines: list["Medicine"] | None) -> None:
+    for medicine in medicines or []:
+        is_new_format = (
+            isinstance(medicine.frequency, list)
+            and medicine.dosage is None
+            and medicine.duration is None
+            and medicine.instructions is None
+        )
+        if is_new_format:
+            if medicine.prescribed_quantity not in PRESCRIPTION_QUANTITIES:
+                raise ValueError("Quantity must be one of 5, 10, 15, or 20.")
 
 
 class Medicine(BaseModel):
     medicine_id: str = Field(min_length=1, max_length=40)
     medicine_name: str = Field(min_length=1, max_length=150)
-    dosage: str = Field(min_length=1, max_length=100)
-    frequency: str = Field(min_length=1, max_length=100)
-    duration: str = Field(min_length=1, max_length=100)
+    frequency: str | list[str] = Field(min_length=1)
+    # Optional for new prescriptions; retained for reading historical records.
+    dosage: str | None = Field(default=None, max_length=100)
+    duration: str | None = Field(default=None, max_length=100)
     instructions: str | None = Field(default=None, max_length=500)
+    number_of_doses: int | None = Field(default=None, ge=1, le=100)
+    prescribed_quantity: int = Field(default=1, ge=1, le=10000)
+
+    @field_validator("frequency")
+    @classmethod
+    def validate_frequency(cls, value):
+        if isinstance(value, list):
+            if not value or len(value) != len(set(value)) or any(item not in PRESCRIPTION_FREQUENCIES for item in value):
+                raise ValueError("Frequency must contain unique Morning, Afternoon, or Evening values.")
+        elif not value.strip():
+            raise ValueError("Frequency is required.")
+        return value
 
 
 class PrescriptionBase(BaseModel):
@@ -23,6 +52,11 @@ class PrescriptionBase(BaseModel):
 
 
 class PrescriptionCreate(PrescriptionBase):
+    @model_validator(mode="after")
+    def validate_new_prescription_values(self):
+        validate_new_medicine_items(self.medicines)
+        return self
+
     model_config = ConfigDict(
         json_schema_extra={
             "examples": [
@@ -33,11 +67,10 @@ class PrescriptionCreate(PrescriptionBase):
                     "doctor_id": "DOC000001",
                     "medicines": [
                         {
+                            "medicine_id": "MED000001",
                             "medicine_name": "Paracetamol",
-                            "dosage": "650 mg",
-                            "frequency": "3 times daily",
-                            "duration": "5 days",
-                            "instructions": "After meals",
+                            "frequency": ["Morning", "Evening"],
+                            "prescribed_quantity": 10,
                         }
                     ],
                 }
@@ -53,6 +86,11 @@ class PrescriptionUpdate(BaseModel):
     doctor_id: str | None = Field(default=None, min_length=1, max_length=30)
     medicines: list[Medicine] | None = Field(default=None, min_length=1, max_length=25)
 
+    @model_validator(mode="after")
+    def validate_new_prescription_values(self):
+        validate_new_medicine_items(self.medicines)
+        return self
+
 
 class PrescriptionResponse(PrescriptionBase):
     model_config = ConfigDict(
@@ -66,11 +104,10 @@ class PrescriptionResponse(PrescriptionBase):
                     "doctor_id": "DOC000001",
                     "medicines": [
                         {
+                            "medicine_id": "MED000001",
                             "medicine_name": "Paracetamol",
-                            "dosage": "650 mg",
-                            "frequency": "3 times daily",
-                            "duration": "5 days",
-                            "instructions": "After meals",
+                            "frequency": ["Morning", "Evening"],
+                            "prescribed_quantity": 10,
                         }
                     ],
                     "created_at": "2026-08-05T10:30:00Z",

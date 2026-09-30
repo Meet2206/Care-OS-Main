@@ -57,6 +57,25 @@ role and ownership checks for every protected API request.
 The same overall visual language is shared across roles so users do not need to relearn the interface,
 while navigation and API permissions change according to the signed-in role.
 
+### Prescription and pharmacy screens
+
+The doctor prescription form searches the backend medicine catalogue and submits catalogue IDs rather
+than free-text medicine identities. A new medicine row contains frequency chips (`Morning`,
+`Afternoon`, and/or `Evening`) and a quantity selector (`5`, `10`, `15`, or `20`). The retired dosage,
+duration, instructions, and number-of-doses inputs are not rendered by the current form. Historical
+values may still be displayed when the backend returns them, but the new form does not require them.
+
+After the doctor saves a prescription, the patient sees the persisted pharmacy order. The patient can
+choose full or half fulfillment, then open the payment flow. A paid digital order displays the secure
+pickup QR/token returned by the backend. Pharmacy staff confirm cash when applicable and collect an
+order only after the backend validates the token. The UI refreshes from the API after each action, so
+payment, fulfillment, and pickup status are not treated as browser-only state.
+
+If a medical record already exists for an appointment but no prescription exists, the appointments
+screen opens `Add prescription` and reuses the existing record ID. It does not ask the doctor to create
+the consultation again or submit a duplicate medical record. If both record and prescription exist,
+the action is shown as `Prescription saved`.
+
 ## 6. Patient onboarding interface
 
 The receptionist flow is a guided multi-step form:

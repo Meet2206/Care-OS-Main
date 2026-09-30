@@ -115,7 +115,9 @@ function PatientOnboarding() {
             if (!validateMobile(formData.emergencyContactNumber).valid) errors.push("Valid emergency contact number is required")
         }
 
-        // Steps 1 and 2 have no hard-required fields
+        if (step === 1 && !formData.assignedDoctorId) errors.push("Please select a doctor")
+
+        // Step 2 has no hard-required fields
         // Step 3 is review — no validation needed
 
         return errors

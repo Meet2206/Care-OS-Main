@@ -158,13 +158,20 @@ Doctor reviews linked patient
         -> consultation / medical record is recorded
 Doctor creates prescription
         -> pharmacy order is created where the workflow requires it
-Pharmacy updates order status
+Patient selects full/half fulfillment and pays
+        -> backend snapshots quantity and creates pickup token
+Pharmacy validates pickup token and collects order
         -> patient sees the authorized status
 ```
 
 The exact available screens vary by role, but the backend owns the relationship checks and status
 transitions. A patient does not receive unrestricted access to another patient’s records, and a
 pharmacy account does not become a clinical author merely because it can see an order.
+
+Prescription data and fulfillment data are deliberately separate. The doctor's prescribed quantity is
+the clinical instruction and remains unchanged. The patient’s full/half selection is an operational
+fulfillment choice stored on the pharmacy order. Payment and pickup state are also order properties,
+so a pharmacy transaction cannot rewrite the medical record.
 
 ## 9. CareAI placement
 

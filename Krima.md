@@ -29,7 +29,7 @@
 Unlike fragmented legacy Hospital Information Systems (HIS) or Electronic Health Record (EHR) databases that serve merely as static data repositories, CARE-OS acts as an **active operational operating system**. It digitally unites five core stakeholders—**Hospital Administrators, Doctors, Receptionists, Pharmacists, and Patients**—under an enforced, tamper-resistant clinical state machine powered by modern Web technologies (React + FastAPI) and intelligent predictive algorithms (CareAI).
 
 ### 1.2 Formal Academic Abstract (For Research Paper / Project Report)
-> Modern healthcare facilities face severe operational friction characterized by non-standardized triage queuing, manual prescription transcription errors, fragmented patient data silos, and unpredictable patient waiting times. In this work, we present **CARE-OS**, a modular, full-stack clinical operating framework integrating role-based access management, a verified clinical entity lifecycle, a standardized 200,000+ medicine catalog, and an embedded machine learning engine named **CareAI**. 
+> Modern healthcare facilities face severe operational friction characterized by non-standardized triage queuing, manual prescription transcription errors, fragmented patient data silos, and unpredictable patient waiting times. In this work, we present **CARE-OS**, a modular, full-stack clinical operating framework integrating role-based access management, a verified clinical entity lifecycle, a searchable medicine catalogue, and an embedded machine learning engine named **CareAI**.
 > 
 > CareAI deploys twin serialized ensemble models: (1) a 5-tier Emergency Severity Index (ESI)-aligned Triage Classification model estimating clinical urgency, and (2) an Outpatient Queue Latency Regressor predicting patient waiting times based on symptom complexity and chronic history. To prevent silent classification degradation common in one-hot encoded clinical pipelines, CARE-OS introduces a dynamic schema introspection interface that restricts inputs strictly to the validated empirical distribution. 
 > 
@@ -59,7 +59,7 @@ Traditional healthcare administration in developing and transitional medical inf
 
 ### Key Pain Points Solved by CARE-OS:
 1. **Lack of Intelligent Triage:** Patients are typically seen in pure First-Come, First-Served (FCFS) order. Critical acute conditions (e.g. severe asthma flare-ups, early stroke symptoms) wait behind routine follow-ups. **CareAI Triage** solves this by predicting urgency scores (Levels 1–5).
-2. **Prescription Errors & Illegibility:** Handwriting errors on paper prescriptions cause adverse drug events (ADEs). CARE-OS integrates a digital prescription engine backed by a searchable database of **over 200,000 registered pharmaceuticals** (`Medicine_Details.csv`), ensuring accurate formulation, dosage, and direct transmission to the hospital pharmacy.
+2. **Prescription Errors & Illegibility:** Handwriting errors on paper prescriptions cause adverse drug events (ADEs). CARE-OS integrates a digital prescription engine backed by the searchable `Medicine_Details.csv` catalogue, ensuring stable medicine identity and direct transmission to the hospital pharmacy.
 3. **The "Broken Chain" Problem in EHRs:** In basic web portals, doctors or clerks can fabricate prescriptions or billing without an underlying clinical consultation. CARE-OS introduces an **immutable chained lifecycle** where a prescription *cannot* exist without a real medical record, which cannot exist without an appointment, which cannot exist without a registered patient.
 4. **Patient Disconnection & Anxiety:** Patients spend hours waiting without visibility into queue length or estimated consultation times. The **Patient Portal & CareAI Wait-Time Predictor** provide transparency and self-service appointment management.
 5. **Regulatory & Audit Non-Compliance:** Unaudited modifications to health records violate international healthcare data standards. CARE-OS features an automated **Audit Log Middleware** that logs every access and mutation event across the hospital.
@@ -174,8 +174,8 @@ CARE-OS provides specialized views tailored to the distinct operational duties o
     - Displays historical vitals: Blood Pressure, Pulse, SpO2, Temperature, Weight, Height.
     - Historical medical records and diagnoses.
   - **Digital Prescription Builder:**
-    - **Live Medicine Autocomplete:** Real-time search against the 200,000+ drug catalog (`Dataset/Medicine_Details.csv`).
-    - Dosage configuration: Quantity (tablets/syrup), frequency (Morning, Afternoon, Night), duration (e.g., 5 days), and clinical instructions (Before/After food).
+    - **Live Medicine Autocomplete:** Real-time search against the maintained drug catalog (`Dataset/Medicine_Details.csv`).
+    - Prescription configuration: quantity (`5`, `10`, `15`, or `20`) and one or more frequency choices (`Morning`, `Afternoon`, `Evening`). Dosage, duration, instructions, and number of doses are not required by the current form; historical values remain readable where present.
   - **Automated Pharmacy Order Trigger:** Submitting a signed prescription automatically publishes an order directly into the pharmacy queue.
   - **CareAI Triage Access:** One-click predictive triage priority and clinical assessment support.
 
@@ -417,17 +417,18 @@ Pharmacological orders authored by physicians.
 * `medicines`: Array of items:
   - `medicine_id`: String (e.g. `MED000124`)
   - `medicine_name`: String (e.g. "Amoxicillin 500mg")
-  - `dosage`: String (e.g. "1 Tablet")
-  - `frequency`: String (e.g. "1-0-1")
-  - `duration`: String (e.g. "5 Days")
-  - `instructions`: String (e.g. "Take after food")
+  - `frequency`: Array of allowed values (`Morning`, `Afternoon`, `Evening`)
+  - `prescribed_quantity`: Integer (`5`, `10`, `15`, or `20`)
+  - historical `dosage`, `duration`, and `instructions` values may be present but are not required for new records
 
 #### 7. `pharmacy_orders` Collection
 Order fulfillment lifecycle queue.
 * `order_id`: String (Unique, e.g. `ORD000001`)
 * `prescription_id`: Foreign key -> `prescriptions.prescription_id`
-* `status`: Enum (`PENDING`, `ACCEPTED`, `PACKED`, `DISPENSED`)
+* `status`: Enum (`PENDING`, `PENDING_PAYMENT`, `READY_FOR_PICKUP`, `COLLECTED`, plus legacy operational states)
 * `medicines`: Medication item snapshot
+* `fulfillment_choice`: `FULL` or `HALF`, with server-calculated `fulfillment_quantity`
+* payment state and method, plus a one-time pickup token/QR payload after successful payment
 * `dispensed_at`: Timestamp
 
 #### 8. `audit_logs` Collection
@@ -807,4 +808,3 @@ If you are submitting this work to an IEEE, Springer, or Elsevier journal or con
      1. *Pause and acknowledge:* "That is an insightful question, Professor."
      2. *Answer directly:* Give the core architectural reason.
      3. *Cite the implementation:* Mention the specific file or endpoint (e.g., "In `Backend/app/services/ai_service.py`, we explicitly mitigate this by...").
-

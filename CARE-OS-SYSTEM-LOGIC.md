@@ -316,7 +316,11 @@ prescription; medicine names are not used as AI model inputs.
 - `doctor_id`
 - medicines
 
-Each medicine contains `medicine_id`, name, dosage, frequency, duration, and instructions. One active prescription is allowed per medical record.
+Each new medicine contains `medicine_id`, name, a list of allowed frequency values, and
+`prescribed_quantity`. The current UI accepts `Morning`, `Afternoon`, and `Evening` frequency values
+and quantities `5`, `10`, `15`, or `20`. Dosage, duration, instructions, and number of doses are
+optional compatibility fields for historical records and are not required when creating a new
+prescription. One active prescription is allowed per medical record.
 
 ### Pharmacy orders
 
@@ -330,7 +334,9 @@ It stores:
 - `doctor_id`
 - optional `pharmacy_id`
 - medicine snapshots
-- status and lifecycle timestamps
+- prescribed and fulfillment quantities
+- fulfillment choice, payment state, payment method, and amount
+- pickup status, one-time pickup token/QR payload, and lifecycle timestamps
 
 The `prescription_id` is unique, preventing duplicate orders for one prescription.
 
@@ -367,12 +373,19 @@ React does not create pharmacy orders.
 Status values are controlled:
 
 ```text
-PENDING -> ACCEPTED -> PACKED -> DISPENSED
+PENDING -> PENDING_PAYMENT -> READY_FOR_PICKUP -> COLLECTED
+       \-> ACCEPTED -> PACKED -> DISPENSED
        \-> CANCELLED
+PENDING_PAYMENT -> CANCELLED
 ACCEPTED -> CANCELLED
 ```
 
-Terminal states are `DISPENSED` and `CANCELLED`. Invalid transitions return `409 Conflict`.
+Patients choose full or half fulfillment while the order is `PENDING` or `PENDING_PAYMENT`. The
+backend snapshots fulfillment quantities, then requires payment before `READY_FOR_PICKUP`. Digital
+payment creates a one-time pickup token and QR payload; cash/on-counter payment requires pharmacy
+confirmation. Collection uses an atomic order-and-token match, so an already-used or incorrect token
+cannot collect the order. Terminal states are `COLLECTED`, `DISPENSED`, and `CANCELLED`. Invalid
+transitions return `409 Conflict`.
 
 The pharmacy dashboard loads `/api/v1/pharmacy-orders`, maps backend records to the existing visual components, and sends PATCH requests for status actions. It does not persist orders to localStorage.
 

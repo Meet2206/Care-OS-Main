@@ -1,6 +1,5 @@
 from __future__ import annotations
 import logging
-import re
 from datetime import date, datetime, time, timezone
 
 from pymongo import ReturnDocument
@@ -45,9 +44,12 @@ def _patients_collection():
 def ensure_patient_indexes() -> None:
     """Create the indexes needed by patient lookups and soft deletion."""
     _patients_collection().create_index("patient_id", unique=True, name="unique_patient_id")
+    email_indexes = getattr(_patients_collection(), "index_information", lambda: {})()
+    for index_name, index in email_indexes.items():
+        if index_name != "_id_" and index.get("unique") and index.get("key") == [("email", 1)]:
+            _patients_collection().drop_index(index_name)
     _patients_collection().create_index(
         "email",
-        unique=True,
         partialFilterExpression={"email": {"$type": "string"}},
         name="unique_patient_email",
     )
@@ -85,20 +87,14 @@ def create_patient_account(patient: dict) -> tuple[str, str]:
     """
     ensure_user_indexes()
     now = datetime.now(timezone.utc)
-    name_token = re.sub(r"[^A-Za-z0-9]", "", patient["full_name"])
-    name_token = name_token or "Patient"
-    name_token = name_token[0].upper() + name_token[1:]
-    base_login = f"{name_token}@CareOS"
-    login_id = base_login
-    suffix = 2
-    while db.users.find_one({"login_id": login_id}):
-        login_id = f"{name_token}{suffix}@CareOS"
-        suffix += 1
+    # Patient IDs are stable and unique; names may be shared by many patients.
+    login_id = f"{patient['patient_id']}@CareOS"
     # Randomly generated, not derived from the patient's name or date of birth,
     # and flagged so the account must rotate it at first sign-in.
     temporary_password = generate_temporary_password()
     account = {
         "login_id": login_id,
+        "email": str(patient["email"]).strip().lower(),
         "full_name": patient["full_name"],
         "first_name": patient["full_name"].split(maxsplit=1)[0],
         "last_name": patient["full_name"].partition(" ")[2] or None,
@@ -223,6 +219,19 @@ def update_patient(patient_id: str, request: PatientUpdate) -> PatientResponse:
     )
     if patient is None:
         raise PatientNotFoundError
+
+    account_update = {}
+    if "email" in update_data:
+        account_update["email"] = str(update_data["email"]).strip().lower()
+    if "full_name" in update_data:
+        full_name = update_data["full_name"].strip()
+        account_update.update(
+            full_name=full_name,
+            first_name=full_name.split(maxsplit=1)[0],
+            last_name=full_name.partition(" ")[2] or None,
+        )
+    if account_update:
+        db.users.update_many({"patient_id": patient_id, "is_deleted": {"$ne": True}}, {"$set": account_update})
 
     logger.info("Patient updated", extra={"patient_id": patient_id})
     return patient_document_to_response(patient)

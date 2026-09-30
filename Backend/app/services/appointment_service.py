@@ -43,6 +43,14 @@ class DoctorScheduleConflictError(Exception):
     pass
 
 
+class AppointmentScheduleClosedError(Exception):
+    pass
+
+
+class AppointmentStatusTransitionError(Exception):
+    pass
+
+
 def _appointments_collection():
     return db[APPOINTMENTS_COLLECTION]
 
@@ -56,11 +64,16 @@ def ensure_appointment_indexes() -> None:
     collection.create_index("appointment_date", name="appointment_date")
     collection.create_index("status", name="appointment_status")
     collection.create_index("is_deleted", name="appointment_is_deleted")
+    index_name = "unique_active_doctor_appointment_slot"
+    expected_filter = {"is_deleted": False, "status": {"$in": ["Scheduled", "Completed"]}}
+    existing_slot_index = getattr(collection, "index_information", lambda: {})().get(index_name)
+    if existing_slot_index and existing_slot_index.get("partialFilterExpression") != expected_filter:
+        collection.drop_index(index_name)
     collection.create_index(
         [("doctor_id", 1), ("appointment_date", 1), ("appointment_time", 1)],
         unique=True,
-        partialFilterExpression={"is_deleted": False},
-        name="unique_active_doctor_appointment_slot",
+        partialFilterExpression=expected_filter,
+        name=index_name,
     )
 
 
@@ -85,6 +98,20 @@ def _serialize_schedule(appointment_data: dict) -> None:
     appointment_time = appointment_data.get("appointment_time")
     if isinstance(appointment_time, time):
         appointment_data["appointment_time"] = appointment_time.isoformat()
+
+
+def _validate_schedule_hours(appointment_data: dict) -> None:
+    appointment_date = appointment_data["appointment_date"]
+    if isinstance(appointment_date, datetime):
+        appointment_date = appointment_date.date()
+    if appointment_date.weekday() == 6:
+        raise AppointmentScheduleClosedError("Sundays are holidays. Choose another appointment date.")
+
+    appointment_time = appointment_data["appointment_time"]
+    if isinstance(appointment_time, str):
+        appointment_time = time.fromisoformat(appointment_time)
+    if appointment_date.weekday() == 5 and not (time(11, 0) <= appointment_time < time(14, 0)):
+        raise AppointmentScheduleClosedError("Saturday appointments are available only from 11:00 AM to 2:00 PM.")
 
 
 def _active_patient_exists(patient_id: str) -> bool:
@@ -115,7 +142,7 @@ def _ensure_doctor_slot_available(appointment_data: dict, exclude_appointment_id
     }
     if exclude_appointment_id:
         query["appointment_id"] = {"$ne": exclude_appointment_id}
-    if _appointments_collection().find_one(query) is not None:
+    if any(item.get("status") in {"Scheduled", "Completed"} for item in _appointments_collection().find(query)):
         raise DoctorScheduleConflictError
 
 
@@ -123,6 +150,7 @@ def create_appointment(request: AppointmentCreate) -> AppointmentResponse:
     ensure_appointment_indexes()
     appointment = request.model_dump(mode="python")
     _validate_relationships(appointment["patient_id"], appointment["doctor_id"])
+    _validate_schedule_hours(appointment)
     _serialize_schedule(appointment)
     _ensure_doctor_slot_available(appointment)
     now = datetime.now(timezone.utc)
@@ -197,6 +225,17 @@ def list_appointments(
     )
 
 
+def list_booked_times(doctor_id: str, appointment_date: date) -> list[str]:
+    day_start = datetime.combine(appointment_date, time.min, tzinfo=timezone.utc)
+    day_end = day_start + timedelta(days=1)
+    rows = _appointments_collection().find({
+        "doctor_id": doctor_id,
+        "appointment_date": {"$gte": day_start, "$lt": day_end},
+        "is_deleted": {"$ne": True},
+    })
+    return sorted({str(row["appointment_time"])[:5] for row in rows if row.get("status") in {"Scheduled", "Completed"}})
+
+
 def update_appointment(appointment_id: str, request: AppointmentUpdate) -> AppointmentResponse:
     existing = _appointments_collection().find_one(
         {"appointment_id": appointment_id, "is_deleted": {"$ne": True}}
@@ -207,9 +246,12 @@ def update_appointment(appointment_id: str, request: AppointmentUpdate) -> Appoi
     update_data = request.model_dump(exclude_unset=True, mode="python")
     if not update_data:
         return appointment_document_to_response(existing)
+    if update_data.get("status") == "Completed":
+        raise AppointmentStatusTransitionError("Appointments are completed when the doctor saves the consultation.")
     _serialize_schedule(update_data)
     candidate = {**existing, **update_data}
     _validate_relationships(candidate["patient_id"], candidate["doctor_id"])
+    _validate_schedule_hours(candidate)
     _ensure_doctor_slot_available(candidate, exclude_appointment_id=appointment_id)
     update_data["updated_at"] = datetime.now(timezone.utc)
     appointment = _appointments_collection().find_one_and_update(

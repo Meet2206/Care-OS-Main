@@ -28,6 +28,14 @@ React frontend ── HTTP + JWT ──► FastAPI routes/controllers
 The frontend collects input and displays state. The backend authorizes the user, validates the
 workflow, writes related documents, and returns the authoritative result.
 
+## 1.1 Patient identity and registration
+
+Reception creates a patient record with a stable unique Patient ID such as `PAT000001`. The linked
+login is derived from that Patient ID (`PAT000001@CareOS`), never from the patient's name, so two
+patients with the same name remain isolated. The temporary password is generated once, returned only
+in the credential ticket, and stored only as a hash. Email is validated and stored for future
+notifications; CARE-OS does not send email yet.
+
 ## 2. Appointment and advance-payment flow
 
 ![Animated appointment and payment flow](docs/assets/workflow-booking.svg)
@@ -39,8 +47,11 @@ workflow, writes related documents, and returns the authoritative result.
 5. The patient chooses UPI, UPI ID, credit card, or debit card and submits the simulated 25% advance.
 6. UPI displays the repository QR asset `UPI.svg`. Card numbers are formatted as four groups of four,
    expiry is `MM/YY`, expired cards are rejected, and CVV is limited to three digits.
-7. A successful payment updates the appointment into the scheduled/confirmed flow. Failed payment
-   leaves the appointment pending and displays a safe validation message.
+7. A successful advance updates the appointment into the scheduled/confirmed flow with payment
+   status `Partially Paid`; failed payment leaves the appointment pending.
+
+Scheduling calendar: every Sunday is a holiday. Saturday appointments are available only from
+11:00 AM through 2:00 PM; the backend rejects requests outside that window even if they bypass the UI.
 
 Important rule: payment details are validated at the boundary and sensitive card values are not used
 as clinical data.
@@ -67,6 +78,8 @@ as clinical data.
 9. The patient's dashboard receives the persisted medical record, prescription, and order status.
 10. Once a record exists, the doctor dashboard displays `Reviewed` and the record ID instead of
     offering the same review action again.
+11. Saving the consultation settles the remaining 75%: payment status becomes `Paid`, total paid
+    equals the consultation fee, and remaining amount becomes `₹0`.
 
 ## 4. CareAI advisory flow
 

@@ -267,6 +267,7 @@ function DoctorDashboard() {
                                         <th className="px-4 py-3 font-semibold">Patient</th>
                                         <th className="px-4 py-3 font-semibold">Reason</th>
                                         <th className="px-4 py-3 font-semibold">Status</th>
+                                        <th className="px-4 py-3 font-semibold">Payment</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -279,9 +280,13 @@ function DoctorDashboard() {
                                             <td data-label="Status" className="px-4 py-4">
                                                 <StatusPill tone={statusTone(row.status)}>{row.status}</StatusPill>
                                             </td>
+                                            <td data-label="Payment" className="px-4 py-4">
+                                                <p className="font-semibold">{row.payment_status || "Pending"}</p>
+                                                <p className="mt-1 text-xs text-[var(--muted)]">Remaining: ₹{Number(row.remaining_amount || 0).toLocaleString("en-IN")}</p>
+                                            </td>
                                         </tr>
                                     })}
-                                    {!loading && !appointments.length ? <tr><td colSpan="4" className="px-4 py-6 text-center text-[var(--muted)]">No appointments available.</td></tr> : null}
+                                    {!loading && !appointments.length ? <tr><td colSpan="5" className="px-4 py-6 text-center text-[var(--muted)]">No appointments available.</td></tr> : null}
                                 </tbody>
                             </table>
                         </div>

@@ -36,6 +36,8 @@ def create(request: AppointmentCreate) -> AppointmentResponse:
             status_code=status.HTTP_409_CONFLICT,
             detail="Doctor already has an appointment at this time.",
         ) from exc
+    except appointment_service.AppointmentScheduleClosedError as exc:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)) from exc
 
 
 def list_all(
@@ -50,6 +52,10 @@ def list_all(
     return appointment_service.list_appointments(
         page, limit, search, doctor_id, patient_id, appointment_status, appointment_date
     )
+
+
+def booked_times(doctor_id: str, appointment_date: date) -> list[str]:
+    return appointment_service.list_booked_times(doctor_id, appointment_date)
 
 
 def get_one(appointment_id: str) -> AppointmentResponse:
@@ -73,6 +79,10 @@ def update(appointment_id: str, request: AppointmentUpdate) -> AppointmentRespon
             status_code=status.HTTP_409_CONFLICT,
             detail="Doctor already has an appointment at this time.",
         ) from exc
+    except appointment_service.AppointmentScheduleClosedError as exc:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)) from exc
+    except appointment_service.AppointmentStatusTransitionError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
 
 
 def delete(appointment_id: str) -> None:

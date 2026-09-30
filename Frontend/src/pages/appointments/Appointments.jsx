@@ -8,6 +8,7 @@ import AsyncState from "../../components/common/AsyncState"
 import Field, { Select, TextArea, TextInput } from "../../components/common/Field"
 import { apiRequest } from "../../api/client"
 import { useAuth } from "../../context/AuthContext"
+import { getAppointmentScheduleError } from "../../utils/appointmentSchedule"
 
 const APPOINTMENT_TYPES = ["General Consultation", "Follow-up", "Emergency", "Routine Check-up"]
 const STATUS_TONES = { Scheduled: "blue", Completed: "green", Cancelled: "coral", "No Show": "amber" }
@@ -141,6 +142,11 @@ function Appointments() {
             setFormError("Patient, doctor, date, and time are all required.")
             return
         }
+        const scheduleError = getAppointmentScheduleError(form.appointment_date, form.appointment_time)
+        if (scheduleError) {
+            setFormError(scheduleError)
+            return
+        }
         setSaving(true)
         try {
             await apiRequest("/appointments", {
@@ -189,10 +195,6 @@ function Appointments() {
                     notes: recordForm.notes || null,
                     follow_up_date: recordForm.follow_up_date || null,
                 }),
-            })
-            await apiRequest(`/appointments/${consultFor.appointment_id}`, {
-                method: "PUT",
-                body: JSON.stringify({ status: "Completed" }),
             })
             setConsultFor(null)
             setToast("Consultation recorded. You can now prescribe from the doctor dashboard.")
@@ -349,6 +351,7 @@ function Appointments() {
                     </Field>
                     <Field label="Time" required>
                         <TextInput type="time" value={form.appointment_time} onChange={(event) => setForm({ ...form, appointment_time: event.target.value })} />
+                        <p className="mt-1 text-xs text-[var(--muted)]">Sundays are holidays. Saturday timings: 11:00 AM–2:00 PM.</p>
                     </Field>
                     <Field label="Visit type">
                         <Select value={form.appointment_type} onChange={(event) => setForm({ ...form, appointment_type: event.target.value })}>

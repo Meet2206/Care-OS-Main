@@ -33,6 +33,7 @@ class AdvancePaymentResponse(BaseModel):
     total_amount: float
     advance_amount: float
     remaining_amount: float
+    paid_amount: float = 0
     advance_percentage: int
     payment_method: AdvancePaymentMethod
     payment_status: str
@@ -40,3 +41,4 @@ class AdvancePaymentResponse(BaseModel):
     simulated: bool
     created_at: datetime
     updated_at: datetime
+    settled_at: datetime | None = None

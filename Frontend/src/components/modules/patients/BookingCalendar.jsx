@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { isSunday } from "../../../utils/appointmentSchedule"
 
 function buildCalendarDays(visibleMonth) {
     const year = visibleMonth.getFullYear()
@@ -97,7 +98,7 @@ function BookingCalendar({ value, onChange }) {
                     }
 
                     const dayFloor = new Date(day.getFullYear(), day.getMonth(), day.getDate())
-                    const disabled = dayFloor < todayFloor
+                    const disabled = dayFloor < todayFloor || isSunday(day)
                     const selected = isSameDate(day, selectedDate)
                     const isToday = !selectedDate && isSameDate(day, todayFloor)
 

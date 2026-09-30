@@ -48,7 +48,11 @@ def ensure_user_indexes() -> None:
                 {"_id": legacy_user["_id"]}, {"$set": {"login_id": str(legacy_login_id)}}
             )
     _users_collection().create_index("login_id", unique=True, name="unique_user_login_id")
-    _users_collection().create_index("email", unique=True, sparse=True, name="unique_user_email")
+    email_indexes = getattr(_users_collection(), "index_information", lambda: {})()
+    for index_name, index in email_indexes.items():
+        if index_name != "_id_" and index.get("unique") and index.get("key") == [("email", 1)]:
+            _users_collection().drop_index(index_name)
+    _users_collection().create_index("email", sparse=True, name="unique_user_email")
     _users_collection().create_index("user_id", unique=True, sparse=True, name="unique_user_id")
     _users_collection().create_index("is_deleted", name="user_is_deleted")
     _users_collection().create_index("patient_id", sparse=True, name="user_patient_id")

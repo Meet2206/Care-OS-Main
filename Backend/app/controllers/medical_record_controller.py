@@ -36,6 +36,8 @@ def create(request: MedicalRecordCreate) -> MedicalRecordResponse:
             status_code=status.HTTP_409_CONFLICT,
             detail="Medical record already exists for this appointment.",
         ) from exc
+    except medical_record_service.MedicalRecordCompletionError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
 
 
 def list_all(

@@ -12,9 +12,9 @@ import PrescriptionOrdersPanel from "../../components/modules/patients/Prescript
 import { apiRequest } from "../../api/client"
 import { useAuth } from "../../context/AuthContext"
 import upiQrCode from "../../../../UPI.svg"
+import { getAppointmentScheduleError, getAppointmentTimeSlots } from "../../utils/appointmentSchedule"
 import {
     appointmentUpdates,
-    appointmentTimeSlots,
     careTeam,
     patientProfile,
     patientSupportOptions,
@@ -63,6 +63,7 @@ function PatientDashboard() {
     const [booking, setBooking] = useState(false)
     const [paymentForm, setPaymentForm] = useState({ method: "", upiId: "", cardNumber: "", expiry: "", cvv: "" })
     const [doctorDirectory, setDoctorDirectory] = useState([])
+    const [bookedTimes, setBookedTimes] = useState([])
     const [selectedAppointment, setSelectedAppointment] = useState(null)
     const [bookingForm, setBookingForm] = useState({
         date: "",
@@ -117,6 +118,18 @@ function PatientDashboard() {
         })
     }, [user?.patient_id])
 
+    useEffect(() => {
+        if (!bookingForm.doctor_id || !bookingForm.date) {
+            setBookedTimes([])
+            return undefined
+        }
+        let active = true
+        apiRequest(`/appointments/availability?doctor_id=${encodeURIComponent(bookingForm.doctor_id)}&appointment_date=${bookingForm.date}`)
+            .then((times) => { if (active) setBookedTimes(times) })
+            .catch(() => { if (active) setBookedTimes([]) })
+        return () => { active = false }
+    }, [bookingForm.doctor_id, bookingForm.date])
+
     const patientProfileData = patient ? {
         id: patient.patient_id,
         insurance: patient.status || "Active",
@@ -145,6 +158,10 @@ function PatientDashboard() {
     }
 
     const selectedDoctor = doctorDirectory.find((doctor) => doctor.id === bookingForm.doctor_id)
+    const appointmentTimeSlots = getAppointmentTimeSlots(bookingForm.date).map((slot) => ({
+        ...slot,
+        status: bookedTimes.includes(slot.time) ? "booked" : "available",
+    }))
     const totalAmount = selectedDoctor?.consultationFee || 0
     const advanceAmount = Math.round(totalAmount * 25) / 100
     const remainingAmount = Math.round((totalAmount - advanceAmount) * 100) / 100
@@ -175,9 +192,11 @@ function PatientDashboard() {
     const handleBookingSubmit = async (event) => {
         event.preventDefault()
         const validationMessage = getBookingValidationMessage(bookingForm)
+        const scheduleMessage = getAppointmentScheduleError(bookingForm.date, bookingForm.time)
+        const bookedMessage = bookedTimes.includes(bookingForm.time) ? "That time slot is already booked. Choose another slot." : ""
         const paymentValidationMessage = getPaymentValidationMessage()
-        if (validationMessage || paymentValidationMessage) {
-            setBookingError(validationMessage || paymentValidationMessage)
+        if (validationMessage || scheduleMessage || bookedMessage || paymentValidationMessage) {
+            setBookingError(validationMessage || scheduleMessage || bookedMessage || paymentValidationMessage)
             return
         }
 
@@ -247,7 +266,10 @@ function PatientDashboard() {
     }
 
     const bookingValidationMessage = getBookingValidationMessage(bookingForm)
+    const bookingScheduleMessage = getAppointmentScheduleError(bookingForm.date, bookingForm.time)
+    const bookingSlotMessage = bookedTimes.includes(bookingForm.time) ? "That time slot is already booked. Choose another slot." : ""
     const paymentValidationMessage = getPaymentValidationMessage()
+    const displayAmount = (value) => value === null || value === undefined ? "—" : `₹${Number(value).toLocaleString("en-IN")}`
 
     const downloadTicket = async () => {
         if (!bookingTicket) {
@@ -575,7 +597,7 @@ function PatientDashboard() {
                             <div className="rounded-[26px] border border-[rgba(216,206,193,0.8)] bg-[rgba(247,242,235,0.92)] p-5">
                                 <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Step 2</p>
                                 <h3 className="mt-2 font-display text-2xl text-[var(--ink)]">Choose a time slot</h3>
-                                <p className="mt-2 text-xs text-[var(--muted)]">Select an available 30-minute consultation slot. The selected time is sent to the hospital in 24-hour format.</p>
+                                <p className="mt-2 text-xs text-[var(--muted)]">Select an available 30-minute consultation slot. Sundays are holidays; Saturday timings are 11:00 AM–2:00 PM.</p>
                                 <div className="mt-5 grid gap-3 sm:grid-cols-3 md:grid-cols-4">
                                     {appointmentTimeSlots.map((slot) => {
                                         const selected = bookingForm.time === slot.time
@@ -697,7 +719,7 @@ function PatientDashboard() {
                             <Button
                                 type="submit"
                                 className="px-6"
-                                disabled={booking || Boolean(bookingValidationMessage || paymentValidationMessage)}
+                                disabled={booking || Boolean(bookingValidationMessage || bookingScheduleMessage || bookingSlotMessage || paymentValidationMessage)}
                             >
                                 {booking ? "Processing payment…" : "Payment Done"}
                             </Button>
@@ -723,9 +745,10 @@ function PatientDashboard() {
                             ["Status", selectedAppointment?.status],
                             ["Payment Status", selectedAppointment?.payment_status || "Pending"],
                             ["Payment Method", selectedAppointment?.payment_method || "—"],
-                            ["Total Amount", selectedAppointment?.total_amount ? `₹${Number(selectedAppointment.total_amount).toLocaleString("en-IN")}` : "—"],
-                            ["Advance Paid", selectedAppointment?.advance_amount ? `₹${Number(selectedAppointment.advance_amount).toLocaleString("en-IN")}` : "—"],
-                            ["Remaining Amount", selectedAppointment?.remaining_amount ? `₹${Number(selectedAppointment.remaining_amount).toLocaleString("en-IN")}` : "—"],
+                            ["Total Amount", displayAmount(selectedAppointment?.total_amount)],
+                            ["Advance Paid", displayAmount(selectedAppointment?.advance_amount)],
+                            ["Total Paid", displayAmount(selectedAppointment?.paid_amount)],
+                            ["Remaining Amount", displayAmount(selectedAppointment?.remaining_amount)],
                         ].map(([label, value]) => (
                             <div key={label} className="rounded-2xl bg-[var(--panel-muted)] px-4 py-4">
                                 <p className="text-xs uppercase tracking-[0.16em]">{label}</p>

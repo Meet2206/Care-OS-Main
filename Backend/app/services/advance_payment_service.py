@@ -63,7 +63,7 @@ def pay_advance(appointment_id: str, request: AdvancePaymentCreate) -> AdvancePa
     if appointment.get("status") == "Cancelled":
         raise AdvancePaymentInvalidError("Cancelled appointments cannot be paid.")
 
-    existing = _payments().find_one({"appointment_id": appointment_id, "payment_status": "Paid"})
+    existing = _payments().find_one({"appointment_id": appointment_id})
     if existing:
         return advance_payment_document_to_response(existing)
 
@@ -76,6 +76,16 @@ def pay_advance(appointment_id: str, request: AdvancePaymentCreate) -> AdvancePa
     total_amount = round(float(doctor.get("consultation_fee") or 0), 2)
     if total_amount <= 0:
         raise AdvancePaymentInvalidError("This doctor does not have a valid consultation fee.")
+    conflicting_slot = db[APPOINTMENTS_COLLECTION].find_one({
+        "appointment_id": {"$ne": appointment_id},
+        "doctor_id": appointment["doctor_id"],
+        "appointment_date": appointment["appointment_date"],
+        "appointment_time": appointment["appointment_time"],
+        "status": {"$in": ["Scheduled", "Completed"]},
+        "is_deleted": {"$ne": True},
+    })
+    if conflicting_slot:
+        raise AdvancePaymentInvalidError("This appointment slot is no longer available.")
 
     advance_amount = round(total_amount * 25 / 100, 2)
     remaining_amount = round(total_amount - advance_amount, 2)
@@ -90,7 +100,8 @@ def pay_advance(appointment_id: str, request: AdvancePaymentCreate) -> AdvancePa
         "remaining_amount": remaining_amount,
         "advance_percentage": 25,
         "payment_method": request.payment_method.value,
-        "payment_status": "Paid",
+        "payment_status": "Partially Paid",
+        "paid_amount": advance_amount,
         "transaction_reference": f"SIM-{secrets.token_hex(6).upper()}",
         "simulated": True,
         "created_at": now,
@@ -107,11 +118,12 @@ def pay_advance(appointment_id: str, request: AdvancePaymentCreate) -> AdvancePa
             {"appointment_id": appointment_id, "is_deleted": {"$ne": True}},
             {"$set": {
                 "status": "Scheduled",
-                "payment_status": "Paid",
+                "payment_status": "Partially Paid",
                 "payment_id": payment["payment_id"],
                 "total_amount": total_amount,
                 "advance_amount": advance_amount,
                 "remaining_amount": remaining_amount,
+                "paid_amount": advance_amount,
                 "payment_method": payment["payment_method"],
                 "transaction_reference": payment["transaction_reference"],
                 "updated_at": now,
@@ -120,3 +132,53 @@ def pay_advance(appointment_id: str, request: AdvancePaymentCreate) -> AdvancePa
     except DuplicateKeyError as exc:
         raise AdvancePaymentConflictError from exc
     return advance_payment_document_to_response(payment)
+
+
+def settle_consultation_payment(appointment_id: str) -> None:
+    """Settle the remaining fee only after a consultation record is saved."""
+    payment = _payments().find_one({"appointment_id": appointment_id})
+    appointment = db[APPOINTMENTS_COLLECTION].find_one({"appointment_id": appointment_id, "is_deleted": {"$ne": True}})
+    if appointment is None:
+        raise AdvancePaymentInvalidError("Appointment not found while completing consultation.")
+
+    now = datetime.now(timezone.utc)
+    if payment is None:
+        db[APPOINTMENTS_COLLECTION].update_one(
+            {"appointment_id": appointment_id, "is_deleted": {"$ne": True}},
+            {"$set": {"status": "Completed", "updated_at": now}},
+        )
+        return
+    if payment.get("payment_status") == "Paid" and payment.get("remaining_amount", 0) == 0:
+        db[APPOINTMENTS_COLLECTION].update_one(
+            {"appointment_id": appointment_id, "is_deleted": {"$ne": True}},
+            {"$set": {"status": "Completed", "payment_status": "Paid", "paid_amount": payment["total_amount"], "updated_at": now}},
+        )
+        return
+
+    previous_payment = {
+        key: payment.get(key)
+        for key in ("payment_status", "paid_amount", "remaining_amount", "settled_at", "updated_at")
+    }
+    payment_update = {
+        "payment_status": "Paid",
+        "paid_amount": payment["total_amount"],
+        "remaining_amount": 0,
+        "settled_at": now,
+        "updated_at": now,
+    }
+    _payments().update_one({"payment_id": payment["payment_id"]}, {"$set": payment_update})
+    appointment_update = {
+        "status": "Completed",
+        "payment_status": "Paid",
+        "paid_amount": payment["total_amount"],
+        "remaining_amount": 0,
+        "settled_at": now,
+        "updated_at": now,
+    }
+    result = db[APPOINTMENTS_COLLECTION].update_one(
+        {"appointment_id": appointment_id, "is_deleted": {"$ne": True}},
+        {"$set": appointment_update},
+    )
+    if result.matched_count != 1:
+        _payments().update_one({"payment_id": payment["payment_id"]}, {"$set": previous_payment})
+        raise AdvancePaymentInvalidError("Consultation payment settlement could not be completed.")

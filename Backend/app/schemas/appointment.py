@@ -92,8 +92,10 @@ class AppointmentResponse(AppointmentBase):
     total_amount: float = 0
     advance_amount: float = 0
     remaining_amount: float = 0
+    paid_amount: float = 0
     payment_method: str | None = None
     transaction_reference: str | None = None
+    settled_at: datetime | None = None
 
 
 class AppointmentListResponse(BaseModel):

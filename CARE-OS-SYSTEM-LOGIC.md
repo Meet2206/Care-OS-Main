@@ -260,6 +260,15 @@ Stores:
 
 Appointment authorization is scoped by authenticated patient or doctor where applicable.
 
+Scheduling hours are enforced in both the booking UI and appointment service: Sundays are holidays,
+and Saturday appointment start times must fall between 11:00 AM and 2:00 PM, with the 2:00 PM boundary
+treated as closing time.
+
+The 25% advance is represented as `Partially Paid`. A successful doctor-created medical record is
+the completion event: it changes the appointment to `Completed`, sets paid amount to the full fee,
+sets remaining amount to zero, and marks the payment `Paid`. Opening a consultation or beginning data
+entry does not settle the balance.
+
 Only scheduled appointments may start a new consultation. Cancelled and completed appointments do
 not expose the consultation-recording action. A completed appointment with an existing medical
 record displays that record instead of offering another consultation.

@@ -96,6 +96,19 @@ def list_appointments(
 
 
 @router.get(
+    "/availability",
+    response_model=list[str],
+    summary="List booked times for a doctor and date",
+)
+def appointment_availability(
+    doctor_id: str,
+    appointment_date: date,
+    current_user: CurrentUser,
+) -> list[str]:
+    return appointment_controller.booked_times(doctor_id, appointment_date)
+
+
+@router.get(
     "/{appointment_id}",
     response_model=AppointmentResponse,
     responses=APPOINTMENT_ERROR_RESPONSES,

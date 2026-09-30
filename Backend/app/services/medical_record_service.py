@@ -17,6 +17,7 @@ from app.models.medical_record import (
     medical_record_document_to_response,
 )
 from app.models.patient import PATIENTS_COLLECTION
+from app.services import advance_payment_service
 from app.schemas.medical_record import (
     MedicalRecordCreate,
     MedicalRecordListResponse,
@@ -44,6 +45,10 @@ class MedicalRecordDoctorNotFoundError(Exception):
 
 
 class MedicalRecordAppointmentConflictError(Exception):
+    pass
+
+
+class MedicalRecordCompletionError(Exception):
     pass
 
 
@@ -105,6 +110,9 @@ def create_medical_record(request: MedicalRecordCreate) -> MedicalRecordResponse
     ensure_medical_record_indexes()
     record = request.model_dump(mode="python")
     _validate_relationships(record["appointment_id"], record["patient_id"], record["doctor_id"])
+    appointment = db[APPOINTMENTS_COLLECTION].find_one({"appointment_id": record["appointment_id"], "is_deleted": {"$ne": True}})
+    if appointment.get("status") in {"Cancelled", "No Show", "Payment Pending"}:
+        raise MedicalRecordCompletionError("Only confirmed appointments can be completed.")
     _ensure_appointment_has_no_record(record["appointment_id"])
     _serialize_follow_up_date(record)
     now = datetime.now(timezone.utc)
@@ -119,6 +127,11 @@ def create_medical_record(request: MedicalRecordCreate) -> MedicalRecordResponse
         _records_collection().insert_one(record)
     except DuplicateKeyError as exc:
         raise MedicalRecordAppointmentConflictError from exc
+    try:
+        advance_payment_service.settle_consultation_payment(record["appointment_id"])
+    except Exception as exc:
+        _records_collection().delete_one({"record_id": record["record_id"]})
+        raise MedicalRecordCompletionError from exc
     logger.info("Medical record created", extra={"record_id": record["record_id"]})
     return medical_record_document_to_response(record)
 

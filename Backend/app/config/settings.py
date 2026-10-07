@@ -48,6 +48,17 @@ class Settings(BaseSettings):
     # Interactive API documentation is disabled outside development by default.
     ENABLE_API_DOCS: bool | None = None
 
+    # Optional SMTP delivery for one-time patient credentials. When omitted,
+    # registration remains successful but explicitly reports that delivery is
+    # not configured; the API never pretends an email was sent.
+    SMTP_HOST: str | None = None
+    SMTP_PORT: int = 587
+    SMTP_USERNAME: str | None = None
+    SMTP_PASSWORD: str | None = None
+    SMTP_FROM: str | None = None
+    SMTP_USE_TLS: bool = True
+    FRONTEND_URL: str = "http://localhost:5173"
+
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     @field_validator("CORS_ORIGINS")

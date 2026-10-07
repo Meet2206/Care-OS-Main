@@ -2,6 +2,7 @@ import logging
 import secrets
 import string
 from datetime import datetime, timedelta, timezone
+import calendar
 
 from bson import ObjectId
 from jose import jwt
@@ -153,6 +154,9 @@ def login_user(request: LoginRequest) -> TokenResponse:
     user = _users_collection().find_one({"login_id": request.login_id.strip()})
     if user is None and request.email:
         user = _users_collection().find_one({"email": _normalise_email(str(request.email))})
+    if user and user.get("role") == "patient" and _patient_login_expired(user):
+        _disable_patient_for_inactivity(user)
+        user = None
     if (
         user is None
         or user.get("is_deleted", False)
@@ -162,6 +166,11 @@ def login_user(request: LoginRequest) -> TokenResponse:
         logger.warning("Login rejected because credentials are invalid")
         raise InvalidCredentialsError
 
+    now = datetime.now(timezone.utc)
+    _users_collection().update_one({"_id": user["_id"]}, {"$set": {"last_login_at": now, "updated_at": now}})
+    if user.get("role") == "patient" and user.get("patient_id"):
+        db.patients.update_one({"patient_id": user["patient_id"]}, {"$set": {"last_login_at": now, "updated_at": now}})
+    user["last_login_at"] = now
     user_response = user_document_to_response(user)
     logger.info("User logged in successfully", extra={"user_id": user_response.id})
     return TokenResponse(
@@ -169,6 +178,32 @@ def login_user(request: LoginRequest) -> TokenResponse:
         user=user_response,
         must_change_password=bool(user.get("must_change_password", False)),
     )
+
+
+def _subtract_months(value: datetime, months: int) -> datetime:
+    month = value.month - months
+    year = value.year + (month - 1) // 12
+    month = (month - 1) % 12 + 1
+    return value.replace(year=year, month=month, day=min(value.day, calendar.monthrange(year, month)[1]))
+
+
+def _patient_login_expired(user: dict) -> bool:
+    last_login = user.get("last_login_at")
+    if not last_login and user.get("patient_id"):
+        patient = db.patients.find_one({"patient_id": user["patient_id"]}, {"last_login_at": 1})
+        last_login = patient.get("last_login_at") if patient else None
+    if not last_login:
+        return False
+    if last_login.tzinfo is None:
+        last_login = last_login.replace(tzinfo=timezone.utc)
+    return last_login < _subtract_months(datetime.now(timezone.utc), 2)
+
+
+def _disable_patient_for_inactivity(user: dict) -> None:
+    now = datetime.now(timezone.utc)
+    _users_collection().update_one({"_id": user["_id"]}, {"$set": {"status": "Disabled", "updated_at": now}})
+    if user.get("patient_id"):
+        db.patients.update_one({"patient_id": user["patient_id"]}, {"$set": {"status": "Disabled", "updated_at": now}})
 
 
 def change_password(user_id: str, current_password: str, new_password: str) -> None:

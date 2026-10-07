@@ -80,29 +80,9 @@ function StepReview({ formData }) {
                                 </div>
                             </div>
                         )}
-                        {formData.chronicDiseases.length > 0 && (
-                            <div className="mt-3">
-                                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">Chronic Diseases</p>
-                                <div className="mt-1.5 flex flex-wrap gap-1.5">
-                                    {formData.chronicDiseases.map((d) => (
-                                        <span key={d} className="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">{d}</span>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                        {formData.medications.length > 0 && (
-                            <div className="mt-3">
-                                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">Current Medications</p>
-                                <div className="mt-1.5 flex flex-wrap gap-1.5">
-                                    {formData.medications.map((m) => (
-                                        <span key={m} className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">{m}</span>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
                         {formData.medicalNotes && (
                             <div className="mt-3">
-                                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">Notes</p>
+                                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">Symptoms</p>
                                 <p className="mt-1 text-sm text-[var(--ink)]">{formData.medicalNotes}</p>
                             </div>
                         )}
@@ -135,13 +115,10 @@ function StepReview({ formData }) {
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">After Registration</p>
                 <div className="mt-2 grid gap-1.5 text-sm text-[var(--muted)] sm:grid-cols-2">
                     <span>✦ Patient profile created</span>
-                    <span>✦ UUID & Patient ID generated</span>
-                    <span>✦ Doctor assigned & notified</span>
-                    <span>✦ Medical record initialized</span>
+                    <span>✦ Patient ID generated</span>
+                    <span>✦ Doctor assignment saved</span>
                     <span>✦ Login credentials generated</span>
-                    <span>✦ QR code created</span>
-                    <span>✦ SMS & WhatsApp sent</span>
-                    <span>✦ Email confirmation sent</span>
+                    <span>✦ Email delivery is reported after registration</span>
                 </div>
             </div>
         </div>

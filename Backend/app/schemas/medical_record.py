@@ -2,17 +2,32 @@ from __future__ import annotations
 from datetime import date, datetime
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field
+import re
+
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, field_validator
 
 
 class VitalSigns(BaseModel):
     blood_pressure: str | None = Field(default=None, max_length=20)
-    heart_rate: int | None = Field(default=None, ge=0)
-    temperature: float | None = Field(default=None, ge=0)
+    heart_rate: int | None = Field(default=None, ge=20, le=250)
+    pulse: StrictInt | None = Field(default=None, ge=20, le=250)
+    temperature: float | None = Field(default=None, ge=25, le=45)
     respiratory_rate: int | None = Field(default=None, ge=0)
     oxygen_saturation: float | None = Field(default=None, ge=0, le=100)
     weight: float | None = Field(default=None, ge=0)
     height: float | None = Field(default=None, ge=0)
+
+    @field_validator("blood_pressure")
+    @classmethod
+    def validate_blood_pressure(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        if not re.fullmatch(r"\d+/\d+", value):
+            raise ValueError("Please enter blood pressure in the format 120/80.")
+        systolic, diastolic = (int(part) for part in value.split("/"))
+        if not (50 <= systolic <= 300 and 30 <= diastolic <= 200 and systolic > diastolic):
+            raise ValueError("Please enter a valid blood pressure in the format 120/80.")
+        return value
 
 
 class MedicalRecordBase(BaseModel):
@@ -39,8 +54,8 @@ class MedicalRecordCreate(MedicalRecordBase):
                     "symptoms": "Occasional headaches and dizziness",
                     "vital_signs": {
                         "blood_pressure": "140/90",
-                        "heart_rate": 78,
-                        "temperature": 98.6,
+                        "pulse": 78,
+                        "temperature": 37.0,
                         "respiratory_rate": 18,
                         "oxygen_saturation": 99,
                         "weight": 70,
@@ -78,7 +93,7 @@ class MedicalRecordResponse(MedicalRecordBase):
                     "doctor_id": "DOC000001",
                     "diagnosis": "Mild hypertension",
                     "symptoms": "Occasional headaches and dizziness",
-                    "vital_signs": {"blood_pressure": "140/90", "heart_rate": 78},
+                    "vital_signs": {"blood_pressure": "140/90", "pulse": 78, "temperature": 37.0},
                     "treatment": "Lifestyle changes and medication",
                     "notes": "Review blood pressure log at next visit.",
                     "follow_up_date": "2026-08-19",

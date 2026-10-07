@@ -10,6 +10,7 @@ class NotificationType(str, Enum):
     follow_up_reminder = "Follow-up Reminder"
     payment_reminder = "Payment Reminder"
     general = "General"
+    pharmacy_receipt = "Pharmacy Receipt"
 
 
 class NotificationStatus(str, Enum):

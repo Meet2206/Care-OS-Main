@@ -31,6 +31,7 @@ class DoctorBase(BaseModel):
     email: EmailStr
     phone: str = Field(min_length=1, max_length=20, pattern=r"^\d+$")
     address: str = Field(min_length=1, max_length=300)
+    cabin: str | None = Field(default=None, max_length=80)
     department: str = Field(min_length=1, max_length=100)
     specialization: str = Field(min_length=1, max_length=120)
     qualification: str = Field(min_length=1, max_length=150)

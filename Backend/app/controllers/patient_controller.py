@@ -30,8 +30,8 @@ def create(request: PatientCreate) -> PatientCreatedResponse:
         ) from exc
 
 
-def list_all(page: int, limit: int, search: str | None, allowed_patient_ids: set[str] | None = None) -> PatientListResponse:
-    return patient_service.list_patients(page=page, limit=limit, search=search, allowed_patient_ids=allowed_patient_ids)
+def list_all(page: int, limit: int, search: str | None, status: str = "Active", allowed_patient_ids: set[str] | None = None) -> PatientListResponse:
+    return patient_service.list_patients(page=page, limit=limit, search=search, status=status, allowed_patient_ids=allowed_patient_ids)
 
 
 def get_one(patient_id: str) -> PatientResponse:
@@ -44,6 +44,8 @@ def get_one(patient_id: str) -> PatientResponse:
 def update(patient_id: str, request: PatientUpdate) -> PatientResponse:
     try:
         return patient_service.update_patient(patient_id, request)
+    except patient_service.PatientDoctorNotFoundError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="The selected doctor was not found.") from exc
     except patient_service.PatientNotFoundError as exc:
         raise _not_found_error(exc) from exc
 
@@ -51,5 +53,12 @@ def update(patient_id: str, request: PatientUpdate) -> PatientResponse:
 def delete(patient_id: str) -> None:
     try:
         patient_service.delete_patient(patient_id)
+    except patient_service.PatientNotFoundError as exc:
+        raise _not_found_error(exc) from exc
+
+
+def set_status(patient_id: str, status: str) -> PatientResponse:
+    try:
+        return patient_service.set_patient_status(patient_id, status)
     except patient_service.PatientNotFoundError as exc:
         raise _not_found_error(exc) from exc

@@ -81,46 +81,17 @@ function PharmacyDashboard() {
         } catch (error) { setQueueMessage(error.message || "Unable to collect this order.") }
     }
 
-    const downloadReceipt = async (order) => {
+    const sendReceipt = async (order) => {
         if (!order) {
             return
         }
 
-        const { jsPDF } = await import("jspdf")
-
-        const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" })
-        pdf.setFillColor(246, 241, 232)
-        pdf.rect(0, 0, 595, 842, "F")
-        pdf.setFillColor(255, 250, 244)
-        pdf.setDrawColor(216, 206, 193)
-        pdf.roundedRect(36, 36, 523, 420, 18, 18, "FD")
-        pdf.setFont("helvetica", "bold")
-        pdf.setFontSize(10)
-        pdf.setTextColor(110, 116, 111)
-        pdf.text("CAREOS PHARMACY RECEIPT", 60, 68)
-        pdf.setFont("times", "bold")
-        pdf.setFontSize(26)
-        pdf.setTextColor(45, 50, 56)
-        pdf.text(order.token, 60, 106)
-        pdf.setFont("helvetica", "normal")
-        pdf.setFontSize(12)
-        pdf.text(`Patient: ${order.patient}`, 60, 148)
-        pdf.text(`Patient ID: ${order.patientId}`, 60, 174)
-        pdf.text(`Mode: ${order.mode}`, 60, 200)
-        pdf.text(`Status: ${order.status}`, 60, 226)
-        pdf.text(`Items: ${order.items}`, 60, 252)
-        if (order.doctor) {
-            pdf.text(`Prescribed by: ${order.doctor}`, 60, 278)
+        try {
+            await apiRequest(`/pharmacy-orders/${order.token}/receipt`, { method: "POST" })
+            setQueueMessage(`Receipt sent to the patient for ${order.token}.`)
+        } catch (error) {
+            setQueueMessage(error.message || "Unable to send the receipt.")
         }
-        if (order.medicines?.length) {
-            pdf.setFont("helvetica", "bold")
-            pdf.text("Medicines", 60, 318)
-            pdf.setFont("helvetica", "normal")
-            order.medicines.forEach((item, index) => {
-                pdf.text(`${index + 1}. ${item.medicine} - ${item.tablets} tablets - ${item.times}`, 60, 344 + index * 22)
-            })
-        }
-        pdf.save(`${order.token}-pharmacy-receipt.pdf`)
     }
 
     return (
@@ -216,7 +187,7 @@ function PharmacyDashboard() {
                     ) : selectedOrder?.status === "READY_FOR_PICKUP" ? (
                         <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-end"><input className="form-input sm:max-w-sm" value={pickupToken} onChange={(event) => setPickupToken(event.target.value)} placeholder="Enter or scan pickup token" /><Button onClick={() => collectOrder(selectedOrder)}>Collect order</Button></div>
                     ) : null}
-                    <Button onClick={() => downloadReceipt(selectedOrder)}>Download Receipt</Button>
+                    {canDispense ? <Button onClick={() => sendReceipt(selectedOrder)}>Send Receipt</Button> : null}
                 </div>
             </div>
         </Modal>

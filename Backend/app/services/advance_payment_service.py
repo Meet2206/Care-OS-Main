@@ -15,6 +15,8 @@ from app.models.advance_payment import (
 )
 from app.models.appointment import APPOINTMENTS_COLLECTION
 from app.models.doctor import DOCTORS_COLLECTION
+from app.models.patient import PATIENTS_COLLECTION
+from app.services.email_service import send_booking_receipt
 from app.schemas.advance_payment import AdvancePaymentCreate, AdvancePaymentResponse
 
 
@@ -131,6 +133,16 @@ def pay_advance(appointment_id: str, request: AdvancePaymentCreate) -> AdvancePa
         )
     except DuplicateKeyError as exc:
         raise AdvancePaymentConflictError from exc
+    patient = db[PATIENTS_COLLECTION].find_one({
+        "patient_id": appointment["patient_id"],
+        "is_deleted": {"$ne": True},
+    })
+    if patient and patient.get("email"):
+        receipt_status = send_booking_receipt(appointment, payment, patient, doctor)
+        db[ADVANCE_PAYMENTS_COLLECTION].update_one(
+            {"payment_id": payment["payment_id"]},
+            {"$set": {"receipt_email_status": receipt_status}},
+        )
     return advance_payment_document_to_response(payment)
 
 

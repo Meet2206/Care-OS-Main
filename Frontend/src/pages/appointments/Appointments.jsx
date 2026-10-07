@@ -12,7 +12,8 @@ import { useAuth } from "../../context/AuthContext"
 import { getAppointmentScheduleError } from "../../utils/appointmentSchedule"
 
 const APPOINTMENT_TYPES = ["General Consultation", "Follow-up", "Emergency", "Routine Check-up"]
-const STATUS_TONES = { Scheduled: "blue", Completed: "green", Cancelled: "coral", "No Show": "amber" }
+const STATUS_TONES = { Scheduled: "blue", "Payment Pending": "amber", "ON GOING": "blue", Completed: "green", Cancelled: "coral", "No Show": "amber" }
+const TREATMENT_DURATIONS = { "5 Days": 5, "10 Days": 10, "15 Days": 15, "20 Days": 20 }
 
 function emptyAppointment() {
     return {
@@ -32,7 +33,7 @@ function emptyRecord() {
         symptoms: "",
         treatment: "",
         notes: "",
-        follow_up_date: "",
+        treatment_duration: "",
         bp: "",
         pulse: "",
         temperature: "",
@@ -45,11 +46,27 @@ function emptyMedicine() {
         medicine: "",
         medicineId: "",
         frequency: [],
-        quantity: "",
     }
 }
 
-const MEDICINE_FREQUENCIES = ["Morning", "Afternoon", "Evening"]
+const MEDICINE_FREQUENCIES = ["Morning", "Afternoon", "Evening", "Night"]
+
+function getVitalsError({ bp, pulse, temperature }) {
+    if (bp && !/^\d+\/\d+$/.test(bp)) return "Blood pressure must use the format 120/80, without spaces or units."
+    if (bp) {
+        const [systolic, diastolic] = bp.split("/").map(Number)
+        if (systolic < 50 || systolic > 300 || diastolic < 30 || diastolic > 200 || systolic <= diastolic) {
+            return "Enter a valid blood pressure: systolic 50–300, diastolic 30–200, with systolic higher than diastolic."
+        }
+    }
+    if (pulse && (!/^\d+$/.test(pulse) || Number(pulse) < 20 || Number(pulse) > 250)) {
+        return "Pulse must be a whole number between 20 and 250 bpm."
+    }
+    if (temperature && (!/^\d+(\.\d+)?$/.test(temperature) || Number(temperature) < 25 || Number(temperature) > 45)) {
+        return "Temperature must be in Celsius, between 25 and 45°C."
+    }
+    return ""
+}
 
 function formatDate(value) {
     if (!value) return "—"
@@ -70,6 +87,7 @@ function Appointments() {
     const { user } = useAuth()
     const isDoctor = user?.role === "doctor"
     const isPatient = user?.role === "patient"
+    const isReception = user?.role === "receptionist" || user?.role === "admin"
 
     const [appointments, setAppointments] = useState([])
     const [patients, setPatients] = useState([])
@@ -83,6 +101,7 @@ function Appointments() {
     const [query, setQuery] = useState("")
 
     const [showBooking, setShowBooking] = useState(false)
+    const [editingAppointment, setEditingAppointment] = useState(null)
     const [form, setForm] = useState(emptyAppointment)
     const [formError, setFormError] = useState("")
     const [saving, setSaving] = useState(false)
@@ -151,10 +170,27 @@ function Appointments() {
     }, [appointments, statusFilter, query, patientName])
 
     const openBooking = () => {
+        setEditingAppointment(null)
         setForm({
             ...emptyAppointment(),
             patient_id: isPatient ? user.patient_id || "" : "",
             doctor_id: isDoctor ? user.doctor_id || "" : "",
+        })
+        setFormError("")
+        setShowBooking(true)
+    }
+
+    const openEdit = (appointment) => {
+        setEditingAppointment(appointment)
+        setForm({
+            ...emptyAppointment(),
+            patient_id: appointment.patient_id,
+            doctor_id: appointment.doctor_id,
+            appointment_date: String(appointment.appointment_date).slice(0, 10),
+            appointment_time: String(appointment.appointment_time).slice(0, 5),
+            appointment_type: appointment.appointment_type,
+            reason: appointment.reason,
+            notes: appointment.notes || "",
         })
         setFormError("")
         setShowBooking(true)
@@ -174,8 +210,8 @@ function Appointments() {
         }
         setSaving(true)
         try {
-            await apiRequest("/appointments", {
-                method: "POST",
+            await apiRequest(editingAppointment ? `/appointments/${editingAppointment.appointment_id}` : "/appointments", {
+                method: editingAppointment ? "PUT" : "POST",
                 body: JSON.stringify({
                     ...form,
                     appointment_time: form.appointment_time.length === 5
@@ -185,7 +221,8 @@ function Appointments() {
                 }),
             })
             setShowBooking(false)
-            setToast("Appointment booked.")
+            setToast(editingAppointment ? "Appointment updated." : "Appointment booked.")
+            setEditingAppointment(null)
             await load()
         } catch (error) {
             setFormError(error.message || "Unable to book this appointment.")
@@ -203,7 +240,6 @@ function Appointments() {
             symptoms: record?.symptoms || "",
             treatment: record?.treatment || "",
             notes: record?.notes || "",
-            follow_up_date: record?.follow_up_date ? String(record.follow_up_date).slice(0, 10) : "",
             bp: vitalSigns.blood_pressure || "",
             pulse: vitalSigns.pulse || "",
             temperature: vitalSigns.temperature || "",
@@ -228,20 +264,28 @@ function Appointments() {
             setRecordError("This consultation is already recorded. Add at least one medicine to create its prescription.")
             return
         }
+        const vitalsError = getVitalsError(recordForm)
+        if (vitalsError) {
+            setRecordError(vitalsError)
+            return
+        }
         const incompleteMedicine = selectedMedicines.some((item) => (
             !item.medicineId
             || item.frequency.length === 0
-            || !item.quantity
         ))
         if (incompleteMedicine) {
             setRecordError("Complete every medicine field or remove the empty medicine entry.")
+            return
+        }
+        if (selectedMedicines.length && !recordForm.treatment_duration) {
+            setRecordError("Please select a treatment duration.")
             return
         }
         setSaving(true)
         try {
             const vitals = {}
             if (recordForm.bp) vitals.blood_pressure = recordForm.bp
-            if (recordForm.pulse) vitals.pulse = recordForm.pulse
+            if (recordForm.pulse) vitals.pulse = Number(recordForm.pulse)
             if (recordForm.temperature) vitals.temperature = recordForm.temperature
             const createdRecord = existingRecord || await apiRequest("/medical-records", {
                 method: "POST",
@@ -254,7 +298,6 @@ function Appointments() {
                     vital_signs: vitals,
                     treatment: recordForm.treatment || null,
                     notes: recordForm.notes || null,
-                    follow_up_date: recordForm.follow_up_date || null,
                 }),
             })
             if (selectedMedicines.length) {
@@ -269,7 +312,9 @@ function Appointments() {
                             medicine_id: item.medicineId,
                             medicine_name: item.medicine.trim(),
                             frequency: item.frequency,
-                            prescribed_quantity: Number(item.quantity),
+                            duration: recordForm.treatment_duration,
+                            number_of_doses: item.frequency.length,
+                            prescribed_quantity: TREATMENT_DURATIONS[recordForm.treatment_duration] * item.frequency.length,
                         })),
                     }),
                 })
@@ -331,6 +376,16 @@ function Appointments() {
             await load()
         } catch (error) {
             setToast(error.message || "Unable to cancel this appointment.")
+        }
+    }
+
+    const markOngoing = async (appointment) => {
+        try {
+            await apiRequest(`/appointments/${appointment.appointment_id}`, { method: "PUT", body: JSON.stringify({ status: "ON GOING" }) })
+            setToast(`${appointment.appointment_id} marked ON GOING.`)
+            await load()
+        } catch (error) {
+            setToast(error.message || "Unable to update appointment status.")
         }
     }
 
@@ -403,7 +458,17 @@ function Appointments() {
                                             </td>
                                             <td className="py-3" data-label="Actions">
                                                 <div className="flex flex-wrap gap-2">
-                                                    {isDoctor && !record && appointment.status === "Scheduled" ? (
+                                                    {isReception && appointment.status === "Scheduled" ? (
+                                                        <Button variant="subtle" className="px-4 py-1.5 text-xs" onClick={() => markOngoing(appointment)}>
+                                                            Mark ON GOING
+                                                        </Button>
+                                                    ) : null}
+                                                    {isReception && ["Scheduled", "Payment Pending", "ON GOING"].includes(appointment.status) ? (
+                                                        <Button variant="subtle" className="px-4 py-1.5 text-xs" onClick={() => openEdit(appointment)}>
+                                                            Change date/time
+                                                        </Button>
+                                                    ) : null}
+                                                    {isDoctor && !record && ["Scheduled", "ON GOING"].includes(appointment.status) ? (
                                                         <Button
                                                             className="px-4 py-1.5 text-xs"
                                                             onClick={() => openConsultation(appointment)}
@@ -437,7 +502,7 @@ function Appointments() {
                 </Card>
             </AsyncState>
 
-            <Modal open={showBooking} onClose={() => setShowBooking(false)} title="Book an appointment" eyebrow="Scheduling">
+            <Modal open={showBooking} onClose={() => { setShowBooking(false); setEditingAppointment(null) }} title={editingAppointment ? "Change appointment" : "Book an appointment"} eyebrow="Scheduling">
                 <form onSubmit={submitBooking} className="grid gap-4 md:grid-cols-2">
                     {isPatient ? (
                         <Field label="Patient" className="md:col-span-2">
@@ -491,8 +556,8 @@ function Appointments() {
                         <p className="md:col-span-2 rounded-2xl bg-[#fff4f2] px-4 py-3 text-sm text-[#9b5148]">{formError}</p>
                     ) : null}
                     <div className="md:col-span-2 flex justify-end gap-3">
-                        <Button type="button" variant="subtle" onClick={() => setShowBooking(false)}>Cancel</Button>
-                        <Button type="submit" disabled={saving}>{saving ? "Booking…" : "Confirm booking"}</Button>
+                        <Button type="button" variant="subtle" onClick={() => { setShowBooking(false); setEditingAppointment(null) }}>Cancel</Button>
+                        <Button type="submit" disabled={saving}>{saving ? "Saving…" : editingAppointment ? "Save date/time" : "Confirm booking"}</Button>
                     </div>
                 </form>
             </Modal>
@@ -506,15 +571,14 @@ function Appointments() {
             >
                 <form onSubmit={submitRecord} className="grid gap-4 md:grid-cols-2">
                     <Field label="Diagnosis" required className="md:col-span-2">
-                        <TextInput readOnly={Boolean(consultFor && recordByAppointment.has(consultFor.appointment_id))} value={recordForm.diagnosis} onChange={(event) => setRecordForm({ ...recordForm, diagnosis: event.target.value })} placeholder="Acute bronchitis" />
+                        <TextInput readOnly={Boolean(consultFor && recordByAppointment.has(consultFor.appointment_id))} value={recordForm.diagnosis} onChange={(event) => setRecordForm({ ...recordForm, diagnosis: event.target.value })} />
                     </Field>
                     <Field label="Symptoms" required className="md:col-span-2">
-                        <TextInput readOnly={Boolean(consultFor && recordByAppointment.has(consultFor.appointment_id))} value={recordForm.symptoms} onChange={(event) => setRecordForm({ ...recordForm, symptoms: event.target.value })} placeholder="Cough, fever, chest tightness" />
+                        <TextInput readOnly={Boolean(consultFor && recordByAppointment.has(consultFor.appointment_id))} value={recordForm.symptoms} onChange={(event) => setRecordForm({ ...recordForm, symptoms: event.target.value })} />
                     </Field>
-                    <Field label="Blood pressure"><TextInput readOnly={Boolean(consultFor && recordByAppointment.has(consultFor.appointment_id))} value={recordForm.bp} onChange={(event) => setRecordForm({ ...recordForm, bp: event.target.value })} placeholder="118/76" /></Field>
-                    <Field label="Pulse"><TextInput readOnly={Boolean(consultFor && recordByAppointment.has(consultFor.appointment_id))} value={recordForm.pulse} onChange={(event) => setRecordForm({ ...recordForm, pulse: event.target.value })} placeholder="92" /></Field>
-                    <Field label="Temperature"><TextInput readOnly={Boolean(consultFor && recordByAppointment.has(consultFor.appointment_id))} value={recordForm.temperature} onChange={(event) => setRecordForm({ ...recordForm, temperature: event.target.value })} placeholder="38.4" /></Field>
-                    <Field label="Follow-up date"><TextInput readOnly={Boolean(consultFor && recordByAppointment.has(consultFor.appointment_id))} type="date" value={recordForm.follow_up_date} onChange={(event) => setRecordForm({ ...recordForm, follow_up_date: event.target.value })} /></Field>
+                    <Field label="Blood pressure (mmHg)"><TextInput readOnly={Boolean(consultFor && recordByAppointment.has(consultFor.appointment_id))} value={recordForm.bp} onChange={(event) => setRecordForm({ ...recordForm, bp: event.target.value.replace(/[^\d/]/g, "") })} placeholder="120/80" inputMode="numeric" /></Field>
+                    <Field label="Pulse (bpm)"><TextInput readOnly={Boolean(consultFor && recordByAppointment.has(consultFor.appointment_id))} value={recordForm.pulse} onChange={(event) => setRecordForm({ ...recordForm, pulse: event.target.value.replace(/\D/g, "") })} placeholder="72" inputMode="numeric" /></Field>
+                    <Field label="Temperature (°C)"><TextInput readOnly={Boolean(consultFor && recordByAppointment.has(consultFor.appointment_id))} type="number" min="25" max="45" step="0.1" value={recordForm.temperature} onChange={(event) => setRecordForm({ ...recordForm, temperature: event.target.value })} placeholder="37.0" /></Field>
                     <Field label="Treatment" className="md:col-span-2">
                         <TextArea readOnly={Boolean(consultFor && recordByAppointment.has(consultFor.appointment_id))} value={recordForm.treatment} onChange={(event) => setRecordForm({ ...recordForm, treatment: event.target.value })} />
                     </Field>
@@ -530,8 +594,17 @@ function Appointments() {
                             <Button type="button" variant="subtle" onClick={addMedicine}>+ Add Medicine</Button>
                         </div>
 
+                        <div className="mt-5 max-w-sm">
+                            <Field label="Treatment duration" required>
+                                <Select value={recordForm.treatment_duration} onChange={(event) => setRecordForm((current) => ({ ...current, treatment_duration: event.target.value }))}>
+                                    <option value="">Select duration</option>
+                                    {Object.keys(TREATMENT_DURATIONS).map((duration) => <option key={duration} value={duration}>{duration}</option>)}
+                                </Select>
+                            </Field>
+                        </div>
+
                         <div className="mt-5 space-y-4">
-                            {recordForm.medicines.map((medicine, index) => (
+                        {recordForm.medicines.map((medicine, index) => (
                                 <div key={`${index}-${medicine.medicine}`} className="rounded-[22px] border border-[rgba(216,206,193,0.7)] bg-white p-4">
                                     <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                                         <Field label="Medicine" className="md:col-span-2 xl:col-span-3">
@@ -557,11 +630,13 @@ function Appointments() {
                                                 ))}
                                             </div>
                                         </Field>
-                                        <Field label="Quantity" required className="md:col-span-1 xl:col-span-1">
-                                            <Select value={medicine.quantity} onChange={(event) => updateMedicine(index, "quantity", event.target.value)}>
-                                                <option value="">Select quantity</option>
-                                                {[5, 10, 15, 20].map((quantity) => <option key={quantity} value={quantity}>{quantity}</option>)}
-                                            </Select>
+                                        <Field label="Doses per day" required className="md:col-span-1 xl:col-span-1">
+                                            <TextInput readOnly value={medicine.frequency.length ? String(medicine.frequency.length) : ""} placeholder="Select dosing times" />
+                                        </Field>
+                                    </div>
+                                    <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                                        <Field label="Calculated quantity">
+                                            <TextInput readOnly value={recordForm.treatment_duration && medicine.frequency.length ? String(TREATMENT_DURATIONS[recordForm.treatment_duration] * medicine.frequency.length) : ""} placeholder="Calculated automatically" />
                                         </Field>
                                     </div>
                                     {recordForm.medicines.length > 1 ? (

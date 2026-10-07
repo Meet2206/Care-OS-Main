@@ -15,17 +15,18 @@ const statusTones = {
 function PatientList() {
     const navigate = useNavigate()
     const [search, setSearch] = useState("")
-    const [statusFilter, setStatusFilter] = useState("all")
+    const [statusFilter, setStatusFilter] = useState("Active")
     const [patients, setPatients] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState("")
 
     useEffect(() => {
-        apiRequest("/patients?limit=100")
+        const status = statusFilter === "Disabled" ? "Disabled" : "Active"
+        apiRequest(`/patients?limit=100&status=${status}`)
             .then((result) => setPatients(result.data))
             .catch((requestError) => setError(requestError.message || "Unable to load patients."))
             .finally(() => setLoading(false))
-    }, [])
+    }, [statusFilter])
 
     const filtered = patients.filter((p) => {
         const matchesSearch =
@@ -93,7 +94,7 @@ function PatientList() {
                     />
                 </div>
                 <div className="flex flex-wrap gap-2">
-                    {["all", "Active", "Follow-up", "Discharged"].map((status) => (
+                    {["Active", "Disabled"].map((status) => (
                         <button
                             key={status}
                             type="button"
@@ -104,7 +105,7 @@ function PatientList() {
                                     : "bg-white/70 text-[var(--muted)] hover:bg-white hover:text-[var(--ink)]"
                             }`}
                         >
-                            {status === "all" ? "All" : status}
+                            {status}
                         </button>
                     ))}
                 </div>
@@ -148,6 +149,7 @@ function PatientList() {
                             </button>
                             <div className="flex items-center gap-3">
                                 <StatusPill tone={statusTones[patient.status] || "neutral"}>{patient.status}</StatusPill>
+                                <button type="button" className="text-xs font-semibold text-[var(--primary-blue)]" onClick={async (event) => { event.stopPropagation(); const nextStatus = patient.status === "Disabled" ? "Active" : "Disabled"; const updated = await apiRequest(`/patients/${patient.patient_id}/status`, { method: "PATCH", body: JSON.stringify({ status: nextStatus }) }); setPatients((current) => current.map((item) => item.patient_id === updated.patient_id ? updated : item)) }}>{patient.status === "Disabled" ? "Enable" : "Disable"}</button>
                                 <span className="text-xs text-[var(--muted)]">{patient.doctor}</span>
                             </div>
                         </Card>

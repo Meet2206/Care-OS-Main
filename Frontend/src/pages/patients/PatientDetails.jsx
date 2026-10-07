@@ -48,7 +48,7 @@ function PatientDetails() {
         bloodGroup: patient.blood_group,
         assignedDoctor: "Clinical team",
         patientId: patient.patient_id,
-        verificationCode: "Backend record",
+        verificationCode: "Record created",
         profilePhotoPreview: null,
     }
 
@@ -79,6 +79,9 @@ function PatientDetails() {
                             <path d="M12 5v14M5 12h14" strokeLinecap="round" />
                         </svg>
                         Register New
+                    </Button>
+                    <Button variant="subtle" onClick={async () => { const nextStatus = patient.status === "Disabled" ? "Active" : "Disabled"; const updated = await apiRequest(`/patients/${patient.patient_id}/status`, { method: "PATCH", body: JSON.stringify({ status: nextStatus }) }); setPatient(updated) }}>
+                        {patient.status === "Disabled" ? "Enable Patient" : "Disable Patient"}
                     </Button>
                 </div>
             </div>

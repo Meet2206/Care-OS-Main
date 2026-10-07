@@ -165,14 +165,16 @@ function PatientOnboarding() {
                     emergency_contact_name: formData.emergencyContactName.trim(),
                     emergency_contact_phone: formData.emergencyContactNumber.replace(/\D/g, ""),
                     allergies: formData.allergies,
-                    medical_history: [...formData.chronicDiseases, ...formData.medications, ...(formData.medicalNotes ? [formData.medicalNotes] : [])],
+                    // Reception records symptoms only; diagnosis and medicines
+                    // are entered later by the doctor.
+                    medical_history: formData.medicalNotes ? [formData.medicalNotes] : [],
                     // The doctor chosen in the assignment step is persisted, so the
                     // patient appears on that clinician's list straight away.
                     ...(formData.assignedDoctorId ? { assigned_doctor_id: formData.assignedDoctorId } : {}),
                 }),
             })
             setPatientId(created.patient_id)
-            setVerificationCode("Backend record created")
+            setVerificationCode("Record created")
             setAccountLoginId(created.account_login_id || "")
             setTemporaryPassword(created.temporary_password || "")
             setSubmitted(true)
@@ -351,7 +353,7 @@ function PatientOnboarding() {
                     </p>
                     <p className="text-xs text-[var(--muted)]">
                         This action will trigger: profile creation, ID generation, doctor assignment, medical record setup,
-                        credential generation, QR code, and notifications (SMS, WhatsApp, Email).
+                        credential generation and email delivery status.
                     </p>
                     <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                         <Button variant="subtle" onClick={() => setShowConfirmModal(false)}>Cancel</Button>

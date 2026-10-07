@@ -30,11 +30,11 @@ function createMedicationRow() {
         medicine: "",
         medicineId: "",
         frequency: [],
-        quantity: "",
     }
 }
 
-const MEDICINE_FREQUENCIES = ["Morning", "Afternoon", "Evening"]
+const MEDICINE_FREQUENCIES = ["Morning", "Afternoon", "Evening", "Night"]
+const TREATMENT_DURATIONS = { "5 Days": 5, "10 Days": 10, "15 Days": 15, "20 Days": 20 }
 
 function formatDateDisplay(value) {
     if (!value) {
@@ -47,10 +47,11 @@ function formatDateDisplay(value) {
 
 function createReviewForm() {
     return {
-        improvementStatus: "Stable",
+        improvementStatus: "",
         improvement: "",
         nextVisit: "",
         report: "No report required",
+        treatmentDuration: "",
         medicines: [createMedicationRow()],
     }
 }
@@ -214,10 +215,15 @@ function DoctorDashboard() {
             closeReview()
             return
         }
-        const incomplete = selectedMedicines.some((item) => !item.medicineId || !item.quantity || item.frequency.length === 0)
+        if (!reviewForm.treatmentDuration) {
+            setSavingReview(false)
+            setPrescriptionError("Select a treatment duration before prescribing.")
+            return
+        }
+        const incomplete = selectedMedicines.some((item) => !item.medicineId || item.frequency.length === 0)
         if (incomplete) {
             setSavingReview(false)
-            setPrescriptionError("Each medicine needs a catalogue selection, frequency, and quantity.")
+            setPrescriptionError("Each medicine needs a catalogue selection and at least one dosing time.")
             return
         }
         try {
@@ -232,7 +238,9 @@ function DoctorDashboard() {
                         medicine_id: item.medicineId,
                         medicine_name: item.medicine,
                         frequency: item.frequency,
-                        prescribed_quantity: Number(item.quantity),
+                        duration: reviewForm.treatmentDuration,
+                        number_of_doses: item.frequency.length,
+                        prescribed_quantity: TREATMENT_DURATIONS[reviewForm.treatmentDuration] * item.frequency.length,
                     })),
                 }),
             })
@@ -272,7 +280,7 @@ function DoctorDashboard() {
 
                 <div ref={appointmentsRef} className="grid gap-4 xl:grid-cols-[1.45fr_0.95fr]">
                     <Card className="p-6">
-                        <h2 className="font-display text-3xl text-[var(--ink)]">Today&apos;s Appointments</h2>
+                        <h2 className="font-display text-3xl text-[var(--ink)]">Appointments</h2>
                         <div className="responsive-table scroll-table mt-5 rounded-[24px] border border-[var(--line)]">
                             <table className="w-full text-left text-sm">
                                 <thead className="bg-[var(--panel-muted)] text-[var(--muted)]">
@@ -358,7 +366,7 @@ function DoctorDashboard() {
                                         && patientAppointments.some((item) => item.appointment_id === record.appointment_id),
                                     )
                                     const hasRecordableAppointment = patientAppointments.some((item) =>
-                                        item.status === "Scheduled"
+                                        ["Scheduled", "ON GOING"].includes(item.status)
                                         && !records.some((record) => record.appointment_id === item.appointment_id),
                                     )
 
@@ -487,6 +495,20 @@ function DoctorDashboard() {
                             <Button type="button" variant="subtle" onClick={addMedicine}>Add Medicine</Button>
                         </div>
 
+                        <div className="mt-5 max-w-sm">
+                            <label className="block">
+                                <span className="mb-2 block text-sm font-semibold text-[var(--ink)]">Treatment duration *</span>
+                                <select
+                                    value={reviewForm.treatmentDuration}
+                                    onChange={(event) => setReviewForm((current) => ({ ...current, treatmentDuration: event.target.value }))}
+                                    className="w-full appearance-none rounded-[16px] border border-[rgba(181,198,214,0.92)] bg-[linear-gradient(180deg,rgba(248,251,253,0.98),rgba(236,244,249,0.94))] px-4 py-3 text-sm font-medium text-[var(--ink)] outline-none shadow-[inset_0_1px_0_rgba(255,255,255,0.65)]"
+                                >
+                                    <option value="">Select duration</option>
+                                    {Object.keys(TREATMENT_DURATIONS).map((duration) => <option key={duration} value={duration}>{duration}</option>)}
+                                </select>
+                            </label>
+                        </div>
+
                         <div className="mt-5 space-y-4">
                             {reviewForm.medicines.map((medicine, index) => (
                                 <div key={`${index}-${medicine.medicine}`} className="rounded-[22px] border border-[rgba(216,206,193,0.7)] bg-white p-4">
@@ -525,17 +547,13 @@ function DoctorDashboard() {
                                             </div>
                                         </div>
                                         <label className="block">
-                                            <span className="mb-2 block text-sm font-semibold text-[var(--ink)]">Quantity *</span>
-                                            <select
-                                                value={medicine.quantity}
-                                                onChange={(event) => updateMedicine(index, "quantity", event.target.value)}
-                                                className="w-full appearance-none rounded-[16px] border border-[rgba(181,198,214,0.92)] bg-[linear-gradient(180deg,rgba(248,251,253,0.98),rgba(236,244,249,0.94))] px-4 py-3 text-sm font-medium text-[var(--ink)] outline-none shadow-[inset_0_1px_0_rgba(255,255,255,0.65)]"
-                                            >
-                                                <option value="">Select quantity</option>
-                                                {["5", "10", "15", "20"].map((count) => (
-                                                    <option key={count} value={count}>{count}</option>
-                                                ))}
-                                            </select>
+                                            <span className="mb-2 block text-sm font-semibold text-[var(--ink)]">Calculated quantity</span>
+                                            <input
+                                                readOnly
+                                                value={reviewForm.treatmentDuration && medicine.frequency.length ? TREATMENT_DURATIONS[reviewForm.treatmentDuration] * medicine.frequency.length : ""}
+                                                placeholder="Calculated automatically"
+                                                className="w-full rounded-[16px] border border-[rgba(181,198,214,0.92)] bg-[var(--panel-muted)] px-4 py-3 text-sm font-medium text-[var(--ink)] outline-none"
+                                            />
                                         </label>
                                     </div>
 

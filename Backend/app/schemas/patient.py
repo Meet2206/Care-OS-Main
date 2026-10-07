@@ -76,7 +76,12 @@ class PatientUpdate(BaseModel):
     )
     allergies: list[str] | None = None
     medical_history: list[str] | None = None
+    assigned_doctor_id: str | None = Field(default=None, max_length=30)
     status: str | None = Field(default=None, min_length=1, max_length=30)
+
+
+class PatientStatusUpdate(BaseModel):
+    status: str = Field(pattern=r"^(Active|Disabled)$")
 
 
 class PatientResponse(PatientBase):
@@ -96,6 +101,7 @@ class PatientCreatedResponse(PatientResponse):
 
     account_login_id: str | None = None
     temporary_password: str | None = None
+    credential_delivery: str = "not_configured"
 
 
 class PatientListResponse(BaseModel):

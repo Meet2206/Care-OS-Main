@@ -11,6 +11,16 @@ from app.database.mongodb import db
 from app.services.auth_service import ensure_user_indexes, hash_password
 from app.services.auth_service import _next_user_id
 
+HOSPITAL_ADDRESS = "6th Floor, New Building, Near L Block, Care HOS"
+DOCTOR_CABINS = {
+    "DOC000101": "Cabin 1",
+    "DOC000102": "Cabin 2",
+    "DOC000103": "Cabin 3",
+    "DOC000104": "Cabin 4",
+    "DOC000105": "Cabin 5",
+    "DOC000106": "Cabin 6",
+    "DOC000107": "Cabin 7",
+}
 
 _HOSPITAL_DOCTORS = [
     ("DOC000101", "Aditi", "Menon", "Female", "1981-06-18", "aditi.menon@carecentral.example", "9000001101", "Cardiology", "Interventional Cardiology", "MBBS, MD, DM", 16, 1200, "CARE-CARD-101"),
@@ -44,7 +54,11 @@ def ensure_hospital_doctors() -> None:
     for doctor_id, first_name, last_name, gender, dob, email, phone, department, specialization, qualification, experience, fee, license_number in _HOSPITAL_DOCTORS:
         db.doctors.update_one(
             {"doctor_id": doctor_id},
-            {"$setOnInsert": {
+            {"$set": {
+                "address": HOSPITAL_ADDRESS,
+                "cabin": DOCTOR_CABINS[doctor_id],
+                "updated_at": now,
+            }, "$setOnInsert": {
                 "doctor_id": doctor_id,
                 "first_name": first_name,
                 "last_name": last_name,
@@ -52,7 +66,6 @@ def ensure_hospital_doctors() -> None:
                 "date_of_birth": datetime.fromisoformat(dob).replace(tzinfo=timezone.utc),
                 "email": email,
                 "phone": phone,
-                "address": "CARE Central Multispeciality Hospital",
                 "department": department,
                 "specialization": specialization,
                 "qualification": qualification,
@@ -64,7 +77,6 @@ def ensure_hospital_doctors() -> None:
                 "is_deleted": False,
                 "deleted_at": None,
                 "created_at": now,
-                "updated_at": now,
             }},
             upsert=True,
         )

@@ -20,6 +20,7 @@ class AppointmentStatus(str, Enum):
     completed = "Completed"
     cancelled = "Cancelled"
     no_show = "No Show"
+    ongoing = "ON GOING"
 
 
 class AppointmentBase(BaseModel):
@@ -96,6 +97,8 @@ class AppointmentResponse(AppointmentBase):
     payment_method: str | None = None
     transaction_reference: str | None = None
     settled_at: datetime | None = None
+    slot_capacity: int = 3
+    slot_booked: int = 1
 
 
 class AppointmentListResponse(BaseModel):
@@ -121,6 +124,6 @@ APPOINTMENT_ERROR_RESPONSES = {
     401: {"model": AppointmentErrorResponse, "description": "Authentication is required."},
     403: {"model": AppointmentErrorResponse, "description": "The authenticated user lacks permission."},
     404: {"model": AppointmentErrorResponse, "description": "Appointment, patient, or doctor not found."},
-    409: {"model": AppointmentErrorResponse, "description": "Doctor is already booked for the requested time."},
+    409: {"model": AppointmentErrorResponse, "description": "The requested doctor slot has reached its capacity of three appointments."},
     422: {"model": AppointmentValidationErrorResponse, "description": "Request validation failed."},
 }

@@ -15,7 +15,6 @@ import { useAuth } from "../../context/AuthContext"
 import upiQrCode from "../../../../UPI.svg"
 import { getAppointmentScheduleError, getAppointmentTimeSlots } from "../../utils/appointmentSchedule"
 import {
-    appointmentUpdates,
     patientProfile,
     patientSupportOptions,
 } from "../../data/mockData"
@@ -113,7 +112,7 @@ function PatientDashboard() {
                 time: item.appointment_time,
                 doctor: item.doctor_id,
                 specialty: item.appointment_type,
-                location: "Care-OS Clinic",
+                location: "6th Floor, New Building, Near L Block, Care HOS",
             })))
             setRecords(recordResult.data.map((item) => ({
                 ...item,
@@ -128,7 +127,8 @@ function PatientDashboard() {
                 id: item.doctor_id,
                 name: `${item.first_name} ${item.last_name}`,
                 specialty: item.specialization,
-                location: item.department,
+                location: item.address || "6th Floor, New Building, Near L Block, Care HOS",
+                cabin: item.cabin || "Cabin not assigned",
                 availability: item.availability,
                 consultationFee: Number(item.consultation_fee || 0),
             })))
@@ -173,6 +173,15 @@ function PatientDashboard() {
     } : patientProfile
 
     const assignedDoctor = doctorDirectory.find((doctor) => doctor.id === patient?.assigned_doctor_id)
+    const liveAppointmentUpdates = appointments.slice(0, 3).map((appointment) => {
+        const tone = appointment.status === "Scheduled" ? "green" : appointment.status === "Cancelled" ? "coral" : appointment.status === "Payment Pending" ? "amber" : "blue"
+        return {
+            title: `${appointment.appointment_id} · ${appointment.doctor}`,
+            detail: `${appointment.status} · ${formatDateDisplay(appointment.date)} at ${appointment.time}. ${appointment.specialty}.`,
+            tone,
+            status: appointment.status,
+        }
+    })
 
     const handleBookingChange = (key, value) => {
         setBookingForm((current) => ({
@@ -188,7 +197,7 @@ function PatientDashboard() {
             doctor_id: doctor.id,
             doctor: doctor.name,
             specialty: doctor.specialty,
-            location: doctor.location,
+            location: `${doctor.location} · ${doctor.cabin}`,
         }))
         setPaymentForm({ method: "", upiId: "", cardNumber: "", expiry: "", cvv: "" })
     }
@@ -196,7 +205,7 @@ function PatientDashboard() {
     const selectedDoctor = doctorDirectory.find((doctor) => doctor.id === bookingForm.doctor_id)
     const appointmentTimeSlots = getAppointmentTimeSlots(bookingForm.date).map((slot) => ({
         ...slot,
-        status: bookedTimes.includes(slot.time) ? "booked" : "available",
+        status: bookedTimes.find((entry) => entry.time === slot.time)?.available === false ? "booked" : "available",
     }))
     const totalAmount = selectedDoctor?.consultationFee || 0
     const advanceAmount = Math.round(totalAmount * 25) / 100
@@ -286,7 +295,7 @@ function PatientDashboard() {
         event.preventDefault()
         const validationMessage = getBookingValidationMessage(bookingForm)
         const scheduleMessage = getAppointmentScheduleError(bookingForm.date, bookingForm.time)
-        const bookedMessage = bookedTimes.includes(bookingForm.time) ? "That time slot is already booked. Choose another slot." : ""
+        const bookedMessage = bookedTimes.find((entry) => entry.time === bookingForm.time)?.available === false ? "That time slot is full. Choose another slot." : ""
         const paymentValidationMessage = getPaymentValidationMessage()
         if (validationMessage || scheduleMessage || bookedMessage || paymentValidationMessage) {
             setBookingError(validationMessage || scheduleMessage || bookedMessage || paymentValidationMessage)
@@ -333,6 +342,7 @@ function PatientDashboard() {
             ])
             setBookingTicket({
                 bookingId: created.appointment_id,
+                patientId: patient?.patient_id || user.patient_id,
                 date: formatDateDisplay(bookingForm.date),
                 time: bookingForm.time,
                 doctor: bookingForm.doctor,
@@ -360,7 +370,7 @@ function PatientDashboard() {
 
     const bookingValidationMessage = getBookingValidationMessage(bookingForm)
     const bookingScheduleMessage = getAppointmentScheduleError(bookingForm.date, bookingForm.time)
-    const bookingSlotMessage = bookedTimes.includes(bookingForm.time) ? "That time slot is already booked. Choose another slot." : ""
+    const bookingSlotMessage = bookedTimes.find((entry) => entry.time === bookingForm.time)?.available === false ? "That time slot is full. Choose another slot." : ""
     const paymentValidationMessage = getPaymentValidationMessage()
     const displayAmount = (value) => value === null || value === undefined ? "—" : `₹${Number(value).toLocaleString("en-IN")}`
 
@@ -381,19 +391,49 @@ function PatientDashboard() {
         const margin = 36
         const cardWidth = pageWidth - margin * 2
         const halfWidth = (cardWidth - 12) / 2
+        const innerWidth = halfWidth - 32
+        const wrap = (value, font, size) => {
+            pdf.setFont(font, "normal")
+            pdf.setFontSize(size)
+            return pdf.splitTextToSize(String(value || "—"), innerWidth)
+        }
+        const currency = (value) => `₹${Number(value || 0).toLocaleString("en-IN")}`
+        const infoCards = [
+            { label: "DATE", value: bookingTicket.date },
+            { label: "TIME", value: bookingTicket.time },
+            { label: "DOCTOR", value: bookingTicket.doctor, subtext: bookingTicket.specialty },
+            { label: "LOCATION", value: bookingTicket.location },
+        ]
+        const rows = [infoCards.slice(0, 2), infoCards.slice(2)]
+        const rowHeights = rows.map((row) => Math.max(...row.map((card) => {
+            const valueLines = wrap(card.value, "helvetica", 13)
+            const subtextLines = card.subtext ? wrap(card.subtext, "helvetica", 11) : []
+            return Math.max(68, 30 + valueLines.length * 16 + subtextLines.length * 14)
+        })))
+        const paymentRows = [
+            ["Payment Method", bookingTicket.paymentMethod],
+            ["Advance Paid", currency(bookingTicket.advanceAmount)],
+            ["Total Amount", currency(bookingTicket.totalAmount)],
+            ["Balance Due", currency(bookingTicket.remainingAmount)],
+            ["Transaction ID", bookingTicket.transactionReference],
+        ]
+        const paymentHeight = 48 + paymentRows.length * 17
+        const infoStartY = 236
+        const paymentY = infoStartY + rowHeights.reduce((sum, height) => sum + height, 0) + 18
+        const cardBottom = paymentY + paymentHeight
+        const pageHeight = cardBottom + 36
+        pdf.internal.pageSize.setHeight(pageHeight)
 
         pdf.setFillColor(244, 239, 231)
-        pdf.rect(0, 0, pageWidth, pdf.internal.pageSize.getHeight(), "F")
-
+        pdf.rect(0, 0, pageWidth, pageHeight, "F")
         pdf.setFillColor(252, 246, 238)
         pdf.setDrawColor(216, 206, 193)
-        pdf.roundedRect(margin, 36, cardWidth, 500, 22, 22, "FD")
+        pdf.roundedRect(margin, 36, cardWidth, cardBottom - 20, 22, 22, "FD")
 
         pdf.setFont("helvetica", "bold")
         pdf.setFontSize(10)
         pdf.setTextColor(110, 116, 111)
         pdf.text("BOOKING TICKET", margin + 24, 62)
-
         pdf.setFont("times", "bold")
         pdf.setFontSize(24)
         pdf.setTextColor(45, 50, 56)
@@ -401,67 +441,60 @@ function PatientDashboard() {
 
         pdf.setFillColor(247, 242, 235)
         pdf.roundedRect(margin + 20, 118, cardWidth - 40, 96, 18, 18, "F")
-
         pdf.setFont("helvetica", "bold")
         pdf.setFontSize(9)
         pdf.setTextColor(110, 116, 111)
         pdf.text("BOOKING ID", margin + 40, 142)
-
         pdf.setFont("times", "bold")
         pdf.setFontSize(22)
         pdf.setTextColor(45, 50, 56)
         pdf.text(bookingTicket.bookingId, margin + 40, 172)
-
         pdf.setFont("helvetica", "normal")
         pdf.setFontSize(11)
         pdf.setTextColor(110, 116, 111)
         pdf.text("Your appointment request is confirmed and the advance payment has been recorded successfully.", margin + 40, 196)
 
-        const infoCards = [
-            ["DATE", bookingTicket.date, ""],
-            ["TIME", bookingTicket.time, ""],
-            ["DOCTOR", bookingTicket.doctor, bookingTicket.specialty],
-            ["LOCATION", bookingTicket.location, ""],
-        ]
-
-        infoCards.forEach((card, index) => {
-            const col = index % 2
-            const row = Math.floor(index / 2)
-            const x = margin + 20 + col * (halfWidth + 12)
-            const y = 236 + row * 92
-
-            pdf.setFillColor(245, 241, 235)
-            pdf.roundedRect(x, y, halfWidth, 78, 16, 16, "F")
-            pdf.setFont("helvetica", "bold")
-            pdf.setFontSize(9)
-            pdf.setTextColor(110, 116, 111)
-            pdf.text(card[0], x + 16, y + 18)
-
-            pdf.setFont("helvetica", "bold")
-            pdf.setFontSize(13)
-            pdf.setTextColor(45, 50, 56)
-            pdf.text(card[1], x + 16, y + 40)
-
-            if (card[2]) {
-                pdf.setFont("helvetica", "normal")
-                pdf.setFontSize(11)
+        let rowY = infoStartY
+        rows.forEach((row, rowIndex) => {
+            row.forEach((card, col) => {
+                const x = margin + 20 + col * (halfWidth + 12)
+                const height = rowHeights[rowIndex]
+                const valueLines = wrap(card.value, "helvetica", 13)
+                const subtextLines = card.subtext ? wrap(card.subtext, "helvetica", 11) : []
+                pdf.setFillColor(245, 241, 235)
+                pdf.roundedRect(x, rowY, halfWidth, height, 16, 16, "F")
+                pdf.setFont("helvetica", "bold")
+                pdf.setFontSize(9)
                 pdf.setTextColor(110, 116, 111)
-                pdf.text(card[2], x + 16, y + 58)
-            }
+                pdf.text(card.label, x + 16, rowY + 18)
+                pdf.setFont("helvetica", "bold")
+                pdf.setFontSize(13)
+                pdf.setTextColor(45, 50, 56)
+                pdf.text(valueLines, x + 16, rowY + 40, { lineHeightFactor: 1.2 })
+                if (subtextLines.length) {
+                    pdf.setFont("helvetica", "normal")
+                    pdf.setFontSize(11)
+                    pdf.setTextColor(110, 116, 111)
+                    pdf.text(subtextLines, x + 16, rowY + 40 + valueLines.length * 16 + 2, { lineHeightFactor: 1.2 })
+                }
+            })
+            rowY += rowHeights[rowIndex]
         })
 
         pdf.setFillColor(255, 255, 255)
         pdf.setDrawColor(216, 206, 193)
-        pdf.roundedRect(margin + 20, 426, cardWidth - 40, 82, 18, 18, "FD")
+        pdf.roundedRect(margin + 20, paymentY, cardWidth - 40, paymentHeight, 18, 18, "FD")
         pdf.setFont("helvetica", "bold")
         pdf.setFontSize(12)
         pdf.setTextColor(45, 50, 56)
-        pdf.text("Payment Receipt", margin + 38, 452)
+        pdf.text("Payment Receipt", margin + 38, paymentY + 26)
         pdf.setFont("helvetica", "normal")
         pdf.setFontSize(11)
-        pdf.setTextColor(110, 116, 111)
-        pdf.text(`Method: ${bookingTicket.paymentMethod}`, margin + 38, 476)
-        pdf.text(`Advance Paid: ${bookingTicket.amount}`, margin + 38, 496)
+        paymentRows.forEach(([label, value], index) => {
+            const y = paymentY + 48 + index * 17
+            pdf.text(`${label}:`, margin + 38, y)
+            pdf.text(String(value || "—"), margin + 210, y)
+        })
 
         pdf.save(`${bookingTicket.bookingId}.pdf`)
     }
@@ -483,7 +516,7 @@ function PatientDashboard() {
                             <path d="M12 7v5l3 2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </div>
-                        <div>
+                    <div>
                         <p className="font-semibold text-[var(--ink)]">Account Inactivity Notice</p>
                         <p className="mt-1 text-sm leading-6 text-[var(--muted)]">Your CARE-OS account may be deleted if there is no account activity for 2 months or more. Please sign in regularly or contact reception if you need help keeping your account active.</p>
                     </div>
@@ -492,8 +525,8 @@ function PatientDashboard() {
                 {patientLoadError ? <div className="rounded-2xl border border-[#f0c7c2] bg-[#fff4f2] px-4 py-3 text-sm text-[#9b5148]">{patientLoadError}</div> : null}
                 <PatientIdCard profile={patientProfileData} />
 
-                <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
-                    <AppointmentStatusPanel updates={appointmentUpdates} />
+                <div className="grid min-w-0 items-start gap-4 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
+                    <AppointmentStatusPanel updates={liveAppointmentUpdates} />
                     <AssistancePanel
                         options={patientSupportOptions}
                         selectedOption={selectedSupport}
@@ -501,64 +534,64 @@ function PatientDashboard() {
                     />
                 </div>
 
-                <div className="grid gap-4 xl:grid-cols-[1.4fr_0.8fr]">
-                    <Card className="p-6">
+                <div className="grid min-w-0 items-start gap-4 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,0.8fr)]">
+                    <Card className="min-w-0 p-6">
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                             <h2 className="font-display text-3xl text-[var(--ink)]">My Upcoming Appointments</h2>
                             <Button variant="subtle" onClick={() => setShowBookingModal(true)}>New Booking</Button>
                         </div>
-                        <div className="responsive-table scroll-table mt-5 rounded-[24px] border border-[var(--line)]">
-                            <table className="w-full text-left text-sm">
-                                <thead className="bg-[var(--panel-muted)] text-[var(--muted)]">
-                                    <tr>
-                                        <th className="px-4 py-3 font-semibold">Date</th>
-                                        <th className="px-4 py-3 font-semibold">Time</th>
-                                        <th className="px-4 py-3 font-semibold">Doctor</th>
-                                        <th className="px-4 py-3 font-semibold">Specialty</th>
-                                        <th className="px-4 py-3 font-semibold">Location</th>
-                                        <th className="px-4 py-3 font-semibold">Status</th>
-                                        <th className="px-4 py-3 font-semibold">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {appointments.map((appointment) => (
-                                        <tr key={`${appointment.date}-${appointment.time}-${appointment.doctor}`} className="border-t border-[var(--line)] text-[var(--ink)]">
-                                            <td data-label="Date" className="px-4 py-4">{appointment.date}</td>
-                                            <td data-label="Time" className="px-4 py-4">{appointment.time}</td>
-                                            <td data-label="Doctor" className="px-4 py-4">{appointment.doctor}</td>
-                                            <td data-label="Specialty" className="px-4 py-4 text-[var(--muted)]">{appointment.specialty}</td>
-                                            <td data-label="Location" className="px-4 py-4 text-[var(--muted)]">{appointment.location}</td>
-                                            <td data-label="Status" className="px-4 py-4">
-                                                <StatusPill tone={appointment.status === "Scheduled" ? "green" : appointment.status === "Requested" ? "blue" : "amber"}>
-                                                    {appointment.status}
-                                                </StatusPill>
-                                            </td>
-                                            <td data-label="Action" className="px-4 py-4">
-                                                <Button variant="subtle" className="px-4 py-2" onClick={() => setSelectedAppointment(appointment)}>
-                                                    View
-                                                </Button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                        <div className="mt-5 grid gap-3">
+                            {appointments.length ? appointments.map((appointment) => (
+                                <article key={`${appointment.date}-${appointment.time}-${appointment.doctor}`} className="min-w-0 rounded-[22px] border border-[var(--line)] bg-[var(--panel-muted)]/55 p-4 sm:p-5">
+                                    <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                                        <div className="min-w-0">
+                                            <p className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)]">{appointment.appointment_id}</p>
+                                            <h3 className="mt-1 break-words text-lg font-semibold text-[var(--ink)]">{appointment.doctor}</h3>
+                                            <p className="mt-1 break-words text-sm text-[var(--muted)]">{appointment.specialty}</p>
+                                        </div>
+                                        <StatusPill tone={appointment.status === "Scheduled" ? "green" : appointment.status === "Requested" ? "blue" : "amber"}>
+                                            {appointment.status}
+                                        </StatusPill>
+                                    </div>
+                                    <div className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                                        <div className="min-w-0 rounded-2xl bg-white/75 px-3 py-3">
+                                            <p className="text-xs uppercase tracking-[0.14em] text-[var(--muted)]">Date &amp; Time</p>
+                                            <p className="mt-1 font-semibold text-[var(--ink)]">{formatDateDisplay(appointment.date)}</p>
+                                            <p className="text-sm text-[var(--muted)]">{appointment.time}</p>
+                                        </div>
+                                        <div className="min-w-0 rounded-2xl bg-white/75 px-3 py-3 sm:col-span-1 lg:col-span-2">
+                                            <p className="text-xs uppercase tracking-[0.14em] text-[var(--muted)]">Location</p>
+                                            <p className="mt-1 break-words text-sm leading-6 text-[var(--ink)]">{appointment.location}</p>
+                                        </div>
+                                    </div>
+                                    <div className="mt-4 flex justify-end">
+                                        <Button variant="subtle" className="px-4 py-2" onClick={() => setSelectedAppointment(appointment)}>
+                                            View Details
+                                        </Button>
+                                    </div>
+                                </article>
+                            )) : (
+                                <div className="rounded-[22px] border border-dashed border-[var(--line)] bg-[var(--panel-muted)]/45 px-5 py-8 text-center text-sm text-[var(--muted)]">
+                                    No upcoming appointments.
+                                </div>
+                            )}
                         </div>
                     </Card>
 
-                    <Card className="p-6">
+                    <Card className="min-w-0 p-6">
                         <h2 className="font-display text-3xl text-[var(--ink)]">Assigned Doctor</h2>
                         <div className="mt-5 space-y-4">
                             {assignedDoctor ? (
-                                <div className="flex items-center gap-4 rounded-2xl bg-[var(--panel-muted)] px-4 py-4">
-                                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[linear-gradient(135deg,#c7def5_0%,#d8efd5_100%)] text-lg font-semibold text-[var(--ink)]">
+                                <div className="flex min-w-0 flex-wrap items-start gap-4 rounded-2xl bg-[var(--panel-muted)] px-4 py-4">
+                                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,#c7def5_0%,#d8efd5_100%)] text-lg font-semibold text-[var(--ink)]">
                                         {assignedDoctor.name.split(" ").map((part) => part[0]).slice(0, 2).join("")}
                                     </div>
-                                    <div>
+                                    <div className="min-w-0 flex-1 break-words">
                                         <p className="font-semibold text-[var(--ink)]">{assignedDoctor.name}</p>
-                                        <p className="text-sm text-[var(--muted)]">{assignedDoctor.specialty}</p>
-                                        <p className="text-xs text-[var(--muted)]">{assignedDoctor.location}</p>
+                                        <p className="break-words text-sm text-[var(--muted)]">{assignedDoctor.specialty}</p>
+                                        <p className="break-words text-xs text-[var(--muted)]">{assignedDoctor.location}</p>
                                     </div>
-                                    <StatusPill tone="blue">Primary</StatusPill>
+                                    <div className="shrink-0"><StatusPill tone="blue">Primary</StatusPill></div>
                                 </div>
                             ) : (
                                 <p className="rounded-2xl bg-[var(--panel-muted)] px-4 py-4 text-sm text-[var(--muted)]">No doctor assigned.</p>
@@ -567,8 +600,8 @@ function PatientDashboard() {
                     </Card>
                 </div>
 
-                <div className="grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
-                    <Card className="p-6">
+                <div className="grid min-w-0 items-start gap-4 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+                    <Card className="min-w-0 p-6">
                         <h2 className="font-display text-3xl text-[var(--ink)]">Recent Medical Records</h2>
                         <div className="responsive-table scroll-table mt-5 rounded-[24px] border border-[var(--line)]">
                             <table className="w-full text-left text-sm">
@@ -594,7 +627,7 @@ function PatientDashboard() {
                         </div>
                     </Card>
 
-                    {pharmacyOrderError ? <div className="rounded-2xl border border-[#f0c7c2] bg-[#fff4f2] px-4 py-3 text-sm text-[#9b5148]">{pharmacyOrderError}</div> : <PrescriptionOrdersPanel orders={pharmacyOrders} onFulfillment={selectPharmacyFulfillment} onPayment={openPharmacyPayment} />}
+                    {pharmacyOrderError ? <div className="min-w-0 rounded-2xl border border-[#f0c7c2] bg-[#fff4f2] px-4 py-3 text-sm text-[#9b5148]">{pharmacyOrderError}</div> : <div className="min-w-0"><PrescriptionOrdersPanel orders={pharmacyOrders} onFulfillment={selectPharmacyFulfillment} onPayment={openPharmacyPayment} /></div>}
                 </div>
             </div>
 
@@ -665,7 +698,13 @@ function PatientDashboard() {
                         </div>
                     </div>
 
-                    <form onSubmit={handleBookingSubmit} className="grid gap-5">
+                    <form onSubmit={handleBookingSubmit} className="grid min-w-0 items-start gap-5 lg:grid-cols-[minmax(0,1fr)_280px]">
+                        <aside className="min-w-0 self-start rounded-[26px] border border-[#cfe3f2] bg-[#f3f9fc] p-5 lg:col-start-2 lg:row-start-1 lg:row-span-2">
+                            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--primary-blue)]">Need help?</p>
+                            <h3 className="mt-2 font-display text-2xl text-[var(--ink)]">Call Reception</h3>
+                            <a href="tel:9878798789" className="mt-4 block text-2xl font-semibold text-[var(--primary-blue)]">9878798789</a>
+                            <p className="mt-3 text-sm leading-6 text-[var(--muted)]">Call to book an appointment or ask about available times.</p>
+                        </aside>
                         <div className="rounded-[26px] border border-[rgba(216,206,193,0.8)] bg-[rgba(247,242,235,0.92)] p-5">
                             <div className="flex items-center justify-between gap-4">
                                 <div>
@@ -700,17 +739,16 @@ function PatientDashboard() {
                                                     key={doctor.name}
                                                     type="button"
                                                     onClick={() => handleDoctorCardSelect(doctor)}
-                                                    className={`rounded-[20px] border px-4 py-3 text-left ${
-                                                        selected
+                                                    className={`rounded-[20px] border px-4 py-3 text-left ${selected
                                                             ? "border-[#9fcceb] bg-[#eaf4fb]"
                                                             : "border-[var(--line)] bg-white"
-                                                    }`}
+                                                        }`}
                                                 >
                                                     <div className="flex items-start justify-between gap-3">
                                                         <div>
                                                             <p className="font-semibold text-[var(--ink)]">{doctor.name}</p>
                                                             <p className="mt-1 text-sm text-[var(--muted)]">{doctor.specialty}</p>
-                                                            <p className="mt-1 text-xs uppercase tracking-[0.16em] text-[var(--muted)]">{doctor.location}</p>
+                                                            <p className="mt-1 text-xs uppercase tracking-[0.16em] text-[var(--muted)]">{doctor.cabin} · {doctor.location}</p>
                                                         </div>
                                                         {selected ? (
                                                             <span className="rounded-full bg-[#cfe6f7] px-3 py-1 text-xs font-semibold text-[var(--ink)]">
@@ -730,7 +768,7 @@ function PatientDashboard() {
                             <div className="rounded-[26px] border border-[rgba(216,206,193,0.8)] bg-[rgba(247,242,235,0.92)] p-5">
                                 <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Step 2</p>
                                 <h3 className="mt-2 font-display text-2xl text-[var(--ink)]">Choose a time slot</h3>
-                                <p className="mt-2 text-xs text-[var(--muted)]">Select an available 30-minute consultation slot. Sundays are holidays; Saturday timings are 11:00 AM–2:00 PM.</p>
+                                <p className="mt-2 text-xs text-[var(--muted)]">Select an available 30-minute consultation slot. Each doctor/time slot supports up to 3 patients. Sundays are holidays; Saturday timings are 11:00 AM–2:00 PM.</p>
                                 <div className="mt-5 grid gap-3 sm:grid-cols-3 md:grid-cols-4">
                                     {appointmentTimeSlots.map((slot) => {
                                         const selected = bookingForm.time === slot.time
@@ -742,17 +780,16 @@ function PatientDashboard() {
                                                 type="button"
                                                 disabled={booked}
                                                 onClick={() => handleBookingChange("time", slot.time)}
-                                                className={`rounded-[18px] border px-4 py-3 text-left ${
-                                                    booked
+                                                className={`rounded-[18px] border px-4 py-3 text-left ${booked
                                                         ? "cursor-not-allowed border-[#efb4b4] bg-[#fff1f1] text-[#a45858]"
                                                         : selected
                                                             ? "border-[#7fc18f] bg-[#eef9f1] text-[var(--ink)]"
                                                             : "border-[#b8dfc1] bg-white text-[var(--ink)]"
-                                                }`}
+                                                    }`}
                                             >
                                                 <p className="font-semibold">{slot.time}</p>
                                                 <p className="mt-1 text-xs">
-                                                    {booked ? "Booked" : selected ? "Selected" : "Available"}
+                                                    {booked ? "FULL" : `${bookedTimes.find((entry) => entry.time === slot.time)?.booked || 0} / 3 booked`}
                                                 </p>
                                             </button>
                                         )
@@ -761,15 +798,15 @@ function PatientDashboard() {
                             </div>
                         ) : null}
 
-                        <div className="grid gap-4 md:grid-cols-2">
-                            <div className="rounded-[24px] border border-[rgba(216,206,193,0.8)] bg-[rgba(247,242,235,0.92)] px-4 py-4">
+                        <div className="grid items-start gap-4 md:grid-cols-2">
+                            <div className="min-w-0 self-start rounded-[24px] border border-[rgba(216,206,193,0.8)] bg-[rgba(247,242,235,0.92)] px-4 py-4">
                                 <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Selected Doctor</p>
                                 <p className="mt-2 font-semibold text-[var(--ink)]">{bookingForm.doctor || "Choose doctor from the list above"}</p>
                                 <p className="mt-1 text-sm text-[var(--muted)]">{bookingForm.specialty || "Specialty will appear here"}</p>
                                 <p className="mt-2 text-sm text-[var(--muted)]">{bookingForm.location || "Clinic location will appear here"}</p>
                             </div>
 
-                            <div className="rounded-[24px] border border-[rgba(216,206,193,0.8)] bg-[rgba(247,242,235,0.92)] px-4 py-4">
+                            <div className="min-w-0 self-start rounded-[24px] border border-[rgba(216,206,193,0.8)] bg-[rgba(247,242,235,0.92)] px-4 py-4">
                                 <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Booking amount</p>
                                 <p className="mt-2 font-semibold text-[var(--ink)]">{totalAmount ? `₹${totalAmount.toLocaleString("en-IN")}` : "Select a doctor"}</p>
                                 <p className="mt-1 text-sm leading-6 text-[var(--muted)]">The doctor’s consultation fee is used to calculate the advance.</p>
@@ -777,7 +814,7 @@ function PatientDashboard() {
                         </div>
 
                         {bookingForm.doctor_id && bookingForm.date && bookingForm.time ? (
-                            <div className="rounded-[26px] border border-[#b9d9eb] bg-[#f0f8fc] p-5">
+                            <div className="min-w-0 self-start rounded-[26px] border border-[#b9d9eb] bg-[#f0f8fc] p-5">
                                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                                     <div>
                                         <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Step 3 · Payment</p>
@@ -915,6 +952,7 @@ function PatientDashboard() {
                         <div className="rounded-2xl bg-[var(--panel-muted)] px-4 py-4">
                             <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Patient</p>
                             <p className="mt-2 font-semibold text-[var(--ink)]">{bookingTicket?.patientName || patient?.full_name}</p>
+                            <p className="mt-1 text-sm text-[var(--muted)]">{bookingTicket?.patientId || patient?.patient_id}</p>
                         </div>
                         <div className="rounded-2xl bg-[var(--panel-muted)] px-4 py-4">
                             <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Date</p>
@@ -938,14 +976,14 @@ function PatientDashboard() {
                     <div className="rounded-[24px] border border-[rgba(216,206,193,0.8)] bg-white px-4 py-4">
                         <p className="text-sm font-semibold text-[var(--ink)]">Payment Receipt</p>
                         <p className="mt-2 text-sm text-[var(--muted)]">Method: {bookingTicket?.paymentMethod}</p>
-                            <p className="mt-1 text-sm text-[var(--muted)]">Advance Paid: {bookingTicket?.amount}</p>
+                        <p className="mt-1 text-sm text-[var(--muted)]">Advance Paid: {bookingTicket?.amount}</p>
                         <p className="mt-1 text-sm text-[var(--muted)]">Total Amount: ₹{Number(bookingTicket?.totalAmount || 0).toLocaleString("en-IN")}</p>
                         <p className="mt-1 text-sm text-[var(--muted)]">Remaining Amount: ₹{Number(bookingTicket?.remainingAmount || 0).toLocaleString("en-IN")}</p>
                         <p className="mt-1 text-sm text-[var(--muted)]">Status: {bookingTicket?.paymentStatus}</p>
                     </div>
 
                     <div className="flex justify-end">
-                        <Button variant="subtle" onClick={downloadTicket} className="px-6">Download Ticket</Button>
+                        <Button variant="subtle" onClick={downloadTicket} className="px-6">Download Receipt</Button>
                     </div>
                 </div>
             </Modal>

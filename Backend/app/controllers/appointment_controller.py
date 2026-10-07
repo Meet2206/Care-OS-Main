@@ -34,7 +34,7 @@ def create(request: AppointmentCreate) -> AppointmentResponse:
     except appointment_service.DoctorScheduleConflictError as exc:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="Doctor already has an appointment at this time.",
+            detail="This doctor/time slot is full (maximum 3 appointments).",
         ) from exc
     except appointment_service.AppointmentScheduleClosedError as exc:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)) from exc
@@ -54,7 +54,7 @@ def list_all(
     )
 
 
-def booked_times(doctor_id: str, appointment_date: date) -> list[str]:
+def booked_times(doctor_id: str, appointment_date: date) -> list[dict]:
     return appointment_service.list_booked_times(doctor_id, appointment_date)
 
 
@@ -77,7 +77,7 @@ def update(appointment_id: str, request: AppointmentUpdate) -> AppointmentRespon
     except appointment_service.DoctorScheduleConflictError as exc:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="Doctor already has an appointment at this time.",
+            detail="This doctor/time slot is full (maximum 3 appointments).",
         ) from exc
     except appointment_service.AppointmentScheduleClosedError as exc:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)) from exc

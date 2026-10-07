@@ -17,6 +17,8 @@ from app.schemas.pharmacy_order import (
     PharmacyPaymentMethod,
     PharmacyPaymentRequest,
 )
+from app.schemas.notification_schema import NotificationCreate, NotificationType, NotificationStatus
+from app.services.notification_service import create_notification
 
 _TRANSITIONS = {
     PharmacyOrderStatus.PENDING: {PharmacyOrderStatus.PENDING_PAYMENT, PharmacyOrderStatus.ACCEPTED, PharmacyOrderStatus.CANCELLED},
@@ -142,6 +144,22 @@ def pay_order(order_id: str, request: PharmacyPaymentRequest) -> PharmacyOrderRe
         )
         return get_order(order_id)
     return _paid_update(order, request.payment_method, request.card_last4)
+
+
+def send_receipt_notification(order_id: str, pharmacy_user_id: str) -> None:
+    order = get_order(order_id)
+    patient_user = db.users.find_one({"patient_id": order.patient_id, "role": "patient", "is_deleted": {"$ne": True}}, {"user_id": 1})
+    if not patient_user or not patient_user.get("user_id"):
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Patient account is not available for receipt delivery.")
+    create_notification(NotificationCreate(
+        user_id=patient_user["user_id"],
+        patient_id=order.patient_id,
+        title="Pharmacy Receipt",
+        message=f"Your pharmacy receipt for order {order.order_id} is available.",
+        type=NotificationType.pharmacy_receipt,
+        status=NotificationStatus.sent,
+        sent_at=datetime.now(timezone.utc),
+    ))
 
 
 def confirm_cash_payment(order_id: str, pharmacy_id: str) -> PharmacyOrderResponse:

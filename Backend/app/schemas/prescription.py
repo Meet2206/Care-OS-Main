@@ -4,21 +4,22 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-PRESCRIPTION_FREQUENCIES = {"Morning", "Afternoon", "Evening"}
-PRESCRIPTION_QUANTITIES = {5, 10, 15, 20}
+PRESCRIPTION_FREQUENCIES = {"Morning", "Afternoon", "Evening", "Night"}
+PRESCRIPTION_DURATIONS = {"5 Days": 5, "10 Days": 10, "15 Days": 15, "20 Days": 20}
 
 
 def validate_new_medicine_items(medicines: list["Medicine"] | None) -> None:
     for medicine in medicines or []:
-        is_new_format = (
-            isinstance(medicine.frequency, list)
-            and medicine.dosage is None
-            and medicine.duration is None
-            and medicine.instructions is None
-        )
-        if is_new_format:
-            if medicine.prescribed_quantity not in PRESCRIPTION_QUANTITIES:
-                raise ValueError("Quantity must be one of 5, 10, 15, or 20.")
+        if not isinstance(medicine.frequency, list):
+            continue
+        if medicine.duration not in PRESCRIPTION_DURATIONS:
+            raise ValueError("Please select a treatment duration.")
+        doses_per_day = len(medicine.frequency)
+        expected_quantity = PRESCRIPTION_DURATIONS[medicine.duration] * doses_per_day
+        if medicine.number_of_doses != doses_per_day:
+            raise ValueError("Number of doses must match the selected dosing times.")
+        if medicine.prescribed_quantity != expected_quantity:
+            raise ValueError("Quantity must equal treatment duration multiplied by doses per day.")
 
 
 class Medicine(BaseModel):
@@ -27,7 +28,7 @@ class Medicine(BaseModel):
     frequency: str | list[str] = Field(min_length=1)
     # Optional for new prescriptions; retained for reading historical records.
     dosage: str | None = Field(default=None, max_length=100)
-    duration: str | None = Field(default=None, max_length=100)
+    duration: str | None = Field(default=None, max_length=20)
     instructions: str | None = Field(default=None, max_length=500)
     number_of_doses: int | None = Field(default=None, ge=1, le=100)
     prescribed_quantity: int = Field(default=1, ge=1, le=10000)
@@ -37,7 +38,7 @@ class Medicine(BaseModel):
     def validate_frequency(cls, value):
         if isinstance(value, list):
             if not value or len(value) != len(set(value)) or any(item not in PRESCRIPTION_FREQUENCIES for item in value):
-                raise ValueError("Frequency must contain unique Morning, Afternoon, or Evening values.")
+                raise ValueError("Frequency must contain unique Morning, Afternoon, Evening, or Night values.")
         elif not value.strip():
             raise ValueError("Frequency is required.")
         return value
@@ -70,6 +71,8 @@ class PrescriptionCreate(PrescriptionBase):
                             "medicine_id": "MED000001",
                             "medicine_name": "Paracetamol",
                             "frequency": ["Morning", "Evening"],
+                            "duration": "5 Days",
+                            "number_of_doses": 2,
                             "prescribed_quantity": 10,
                         }
                     ],
@@ -107,6 +110,8 @@ class PrescriptionResponse(PrescriptionBase):
                             "medicine_id": "MED000001",
                             "medicine_name": "Paracetamol",
                             "frequency": ["Morning", "Evening"],
+                            "duration": "5 Days",
+                            "number_of_doses": 2,
                             "prescribed_quantity": 10,
                         }
                     ],

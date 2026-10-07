@@ -81,10 +81,10 @@
         overflow-wrap: anywhere;
     }
 
-    /* Below this width a row is rendered as a stacked card. The breakpoint used
-       to be 640px, which left tables between 641px and ~1280px too wide for
-       their container. */
-    @media (max-width: 1023px) {
+    /* Below this width a row is rendered as a stacked card. This prevents the
+       appointment table's status/action columns from being clipped at tablet
+       and intermediate desktop widths. */
+    @media (max-width: 1279px) {
         .responsive-table {
             overflow: visible;
         }

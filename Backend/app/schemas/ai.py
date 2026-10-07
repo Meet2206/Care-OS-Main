@@ -37,7 +37,7 @@ class WaitTimeRequest(BaseModel):
     Age: int = Field(ge=0, le=130)
     Number_of_Visits: int = Field(ge=0)
     Abnormal_Result: str = Field(min_length=1, max_length=80)
-    Symptom_Count: int = Field(ge=0)
+    Symptom_Count: int = Field(ge=0, le=20)
     Chronic_Condition: str = Field(min_length=1, max_length=30)
     Severity_Score: int = Field(ge=SEVERITY_MIN, le=SEVERITY_MAX)
 

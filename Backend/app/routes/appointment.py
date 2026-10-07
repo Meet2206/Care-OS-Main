@@ -97,14 +97,14 @@ def list_appointments(
 
 @router.get(
     "/availability",
-    response_model=list[str],
+    response_model=list[dict],
     summary="List booked times for a doctor and date",
 )
 def appointment_availability(
     doctor_id: str,
     appointment_date: date,
     current_user: CurrentUser,
-) -> list[str]:
+) -> list[dict]:
     return appointment_controller.booked_times(doctor_id, appointment_date)
 
 

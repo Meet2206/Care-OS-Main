@@ -22,6 +22,7 @@ from app.schemas.patient import (
     PatientUpdate,
 )
 from app.services.auth_service import ensure_user_indexes, generate_temporary_password, hash_password
+from app.services.email_service import send_patient_credentials
 
 logger = logging.getLogger(__name__)
 
@@ -56,7 +57,14 @@ def ensure_patient_indexes() -> None:
     )
     _patients_collection().create_index("phone", name="patient_phone")
     _patients_collection().create_index([("full_name", "text")], name="patient_full_name_text")
+    _patients_collection().create_index("status", name="patient_status")
     _patients_collection().create_index("is_deleted", name="patient_is_deleted")
+    # Older registrations predate the status field. Treat them as active so
+    # introducing the status filter never makes existing patients disappear.
+    _patients_collection().update_many(
+        {"status": {"$exists": False}},
+        {"$set": {"status": "Active"}},
+    )
 
 
 def _next_patient_id() -> str:
@@ -113,10 +121,14 @@ def create_patient_account(patient: dict) -> tuple[str, str]:
     try:
         db.users.insert_one(account)
     except DuplicateKeyError as exc:
-        # Compensate for the patient row already written; there is no multi-document
-        # transaction here because the deployment target is a standalone mongod.
-        _patients_collection().delete_one({"patient_id": patient["patient_id"]})
-        raise PatientConflictError from exc
+        # Never remove the patient record after it has been saved. A duplicate
+        # user email/login means account provisioning needs attention, but the
+        # clinical registration must remain recoverable.
+        logger.exception(
+            "Patient account provisioning failed; patient record was retained",
+            extra={"patient_id": patient["patient_id"]},
+        )
+        return "", ""
     logger.info(
         "Patient created",
         extra={"patient_id": patient["patient_id"], "account_login_id": login_id},
@@ -162,6 +174,11 @@ def create_patient(request: PatientCreate) -> PatientResponse:
     response = patient_document_to_response(patient).model_dump()
     response["account_login_id"] = login_id
     response["temporary_password"] = temporary_password
+    response["credential_delivery"] = (
+        send_patient_credentials(patient, login_id, temporary_password)
+        if login_id and temporary_password
+        else "account_not_created"
+    )
     return PatientCreatedResponse.model_validate(response)
 
 
@@ -174,8 +191,8 @@ def get_patient(patient_id: str) -> PatientResponse:
     return patient_document_to_response(patient)
 
 
-def list_patients(page: int, limit: int, search: str | None, allowed_patient_ids: set[str] | None = None) -> PatientListResponse:
-    query: dict = {"is_deleted": {"$ne": True}}
+def list_patients(page: int, limit: int, search: str | None, status: str = "Active", allowed_patient_ids: set[str] | None = None) -> PatientListResponse:
+    query: dict = {"is_deleted": {"$ne": True}, "status": status}
     if allowed_patient_ids is not None:
         query["patient_id"] = {"$in": list(allowed_patient_ids)}
     if search:
@@ -212,6 +229,12 @@ def update_patient(patient_id: str, request: PatientUpdate) -> PatientResponse:
         return get_patient(patient_id)
 
     _serialize_date_of_birth(update_data)
+    if update_data.get("assigned_doctor_id"):
+        assigned = db.doctors.find_one(
+            {"doctor_id": update_data["assigned_doctor_id"], "is_deleted": {"$ne": True}}
+        )
+        if assigned is None:
+            raise PatientDoctorNotFoundError(update_data["assigned_doctor_id"])
     update_data["updated_at"] = datetime.now(timezone.utc)
     patient = _patients_collection().find_one_and_update(
         {"patient_id": patient_id, "is_deleted": {"$ne": True}},
@@ -253,3 +276,25 @@ def delete_patient(patient_id: str) -> None:
     if patient is None:
         raise PatientNotFoundError
     logger.info("Patient soft deleted", extra={"patient_id": patient_id})
+
+
+def set_patient_status(patient_id: str, status: str) -> PatientResponse:
+    now = datetime.now(timezone.utc)
+    changes = {"status": status, "updated_at": now}
+    if status == "Active":
+        # Re-enabling is an explicit account activity reset. Without this,
+        # the just-enabled patient would be disabled again on their first
+        # login because the old inactivity timestamp is still stale.
+        changes["last_login_at"] = now
+    patient = _patients_collection().find_one_and_update(
+        {"patient_id": patient_id, "is_deleted": {"$ne": True}},
+        {"$set": changes},
+        return_document=ReturnDocument.AFTER,
+    )
+    if patient is None:
+        raise PatientNotFoundError
+    db.users.update_many(
+        {"patient_id": patient_id, "is_deleted": {"$ne": True}},
+        {"$set": changes},
+    )
+    return patient_document_to_response(patient)

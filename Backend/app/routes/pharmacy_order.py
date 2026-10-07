@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 
 from app.schemas.auth import UserResponse, UserRole
 from app.schemas.pharmacy_order import (
@@ -21,6 +21,7 @@ from app.services.pharmacy_order_service import (
     pay_order,
     select_fulfillment,
     update_status,
+    send_receipt_notification,
 )
 from app.utils.security import require_patient_ownership, require_roles
 
@@ -81,6 +82,12 @@ def pay_pharmacy_order(order_id: str, request: PharmacyPaymentRequest, current_u
 @router.post("/{order_id}/confirm-cash", response_model=PharmacyOrderResponse)
 def confirm_order_cash(order_id: str, current_user: PharmacyUser) -> PharmacyOrderResponse:
     return confirm_cash_payment(order_id, current_user.user_id)
+
+
+@router.post("/{order_id}/receipt", status_code=status.HTTP_204_NO_CONTENT)
+def send_receipt(order_id: str, current_user: PharmacyUser):
+    send_receipt_notification(order_id, current_user.user_id)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 @router.post("/{order_id}/collect", response_model=PharmacyOrderResponse)

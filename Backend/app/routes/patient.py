@@ -13,6 +13,7 @@ from app.schemas.patient import (
     PatientResponse,
     PatientSelfUpdate,
     PatientUpdate,
+    PatientStatusUpdate,
 )
 from app.utils.security import (
     doctor_patient_ids,
@@ -55,22 +56,23 @@ def list_patients(
     page: int = Query(default=1, ge=1),
     limit: int = Query(default=10, ge=1, le=100),
     search: str | None = Query(default=None, min_length=1, max_length=120),
+    status: str = Query(default="Active", pattern="^(Active|Disabled)$"),
 ) -> PatientListResponse:
     if current_user.role == UserRole.patient:
         # A patient's "list" is their own record. Scoping here keeps the patient
         # portal working without exposing the staff-wide directory.
         allowed = {current_user.patient_id} if current_user.patient_id else set()
         return patient_controller.list_all(
-            page=page, limit=limit, search=search, allowed_patient_ids=allowed
+            page=page, limit=limit, search=search, status=status, allowed_patient_ids=allowed
         )
     if current_user.role == UserRole.doctor:
         return patient_controller.list_all(
             page=page,
             limit=limit,
             search=search,
-            allowed_patient_ids=doctor_patient_ids(current_user.doctor_id),
+            status=status, allowed_patient_ids=doctor_patient_ids(current_user.doctor_id),
         )
-    return patient_controller.list_all(page=page, limit=limit, search=search)
+    return patient_controller.list_all(page=page, limit=limit, search=search, status=status)
 
 
 @router.get(
@@ -123,3 +125,14 @@ def update_patient(
 def delete_patient(patient_id: str, _: Annotated[UserResponse, Depends(require_admin)]) -> Response:
     patient_controller.delete(patient_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.patch(
+    "/{patient_id}/status",
+    response_model=PatientResponse,
+    summary="Enable or disable a patient without deleting their history",
+)
+def set_patient_status(
+    patient_id: str, request: PatientStatusUpdate, _: PatientStaff
+) -> PatientResponse:
+    return patient_controller.set_status(patient_id, request.status)

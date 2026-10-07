@@ -304,7 +304,10 @@ function CareAI() {
                                         <TextInput
                                             type="number" min="0" max="20"
                                             value={inputs.Symptom_Count}
-                                            onChange={(event) => setInput("Symptom_Count", event.target.value)}
+                                            onChange={(event) => {
+                                                const value = event.target.value
+                                                setInput("Symptom_Count", value === "" ? "" : String(Math.min(20, Math.max(0, Number(value)))))
+                                            }}
                                         />
                                     </Field>
                                 </div>

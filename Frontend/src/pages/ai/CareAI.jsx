@@ -64,6 +64,14 @@ function daysSince(dateValue) {
     return Math.max(0, Math.floor((Date.now() - parsed.getTime()) / 86400000))
 }
 
+function formatClinicalDate(value) {
+    if (!value) return "Date unavailable"
+    const parsed = new Date(value)
+    return Number.isNaN(parsed.getTime())
+        ? String(value).slice(0, 10)
+        : parsed.toLocaleDateString(undefined, { day: "2-digit", month: "short", year: "numeric" })
+}
+
 /**
  * CareAI decision support.
  *
@@ -86,6 +94,7 @@ function CareAI() {
     const [patients, setPatients] = useState([])
     const [appointments, setAppointments] = useState([])
     const [records, setRecords] = useState([])
+    const [prescriptions, setPrescriptions] = useState([])
     const [contextError, setContextError] = useState("")
 
     const [patientId, setPatientId] = useState("")
@@ -111,16 +120,21 @@ function CareAI() {
             const recordRequest = isDoctor || isPatient
                 ? apiRequest("/medical-records?limit=100")
                 : Promise.resolve({ data: [] })
-            const [schemaResult, patientResult, appointmentResult, recordResult] = await Promise.all([
+            const prescriptionRequest = isDoctor || isPatient
+                ? apiRequest("/prescriptions?limit=100")
+                : Promise.resolve({ data: [] })
+            const [schemaResult, patientResult, appointmentResult, recordResult, prescriptionResult] = await Promise.all([
                 apiRequest("/ai/schema"),
                 patientRequest,
                 apiRequest("/appointments?limit=100"),
                 recordRequest,
+                prescriptionRequest,
             ])
             setSchema(schemaResult)
             setPatients(patientResult.data)
             setAppointments(appointmentResult.data)
             setRecords(recordResult.data)
+            setPrescriptions(prescriptionResult.data)
             if (isPatient && user.patient_id) setPatientId(user.patient_id)
         } catch (error) {
             if (error.status === 503) setSchemaError("CareAI is temporarily unavailable. The prediction models could not be loaded.")
@@ -133,6 +147,16 @@ function CareAI() {
     useEffect(() => { load() }, [load])
 
     const selectedPatient = patients.find((item) => item.patient_id === patientId)
+    const selectedPatientRecords = useMemo(
+        () => records
+            .filter((record) => record.patient_id === patientId)
+            .sort((a, b) => String(b.created_at).localeCompare(String(a.created_at))),
+        [records, patientId],
+    )
+    const prescriptionsByRecord = useMemo(
+        () => new Map(prescriptions.map((prescription) => [prescription.medical_record_id, prescription])),
+        [prescriptions],
+    )
     const patientAppointments = useMemo(
         () => appointments.filter((item) => item.patient_id === patientId),
         [appointments, patientId],
@@ -149,6 +173,12 @@ function CareAI() {
     const severityBounds = schema?.patient_priority?.numeric?.Severity || { minimum: 1, maximum: 5 }
 
     const setInput = (key, value) => setInputs((current) => ({ ...current, [key]: value }))
+
+    const selectPatient = (nextPatientId) => {
+        setPatientId(nextPatientId)
+        setResult(null)
+        setPredictError("")
+    }
 
     const runPrediction = async (kind) => {
         setPredicting(true)
@@ -228,7 +258,7 @@ function CareAI() {
                                 {isPatient ? (
                                     <TextInput readOnly value={selectedPatient ? `${selectedPatient.full_name} (${selectedPatient.patient_id})` : "Loading…"} />
                                 ) : (
-                                    <Select value={patientId} onChange={(event) => setPatientId(event.target.value)}>
+                                    <Select value={patientId} onChange={(event) => selectPatient(event.target.value)}>
                                         <option value="">Select a patient</option>
                                         {patients.map((patient) => (
                                             <option key={patient.patient_id} value={patient.patient_id}>
@@ -330,6 +360,61 @@ function CareAI() {
 
                         {predictError ? (
                             <p className="text-wrap-anywhere mt-4 rounded-2xl bg-[#fff4f2] px-4 py-3 text-sm text-[#9b5148]">{predictError}</p>
+                        ) : null}
+
+                        {isDoctor && selectedPatient ? (
+                            <div className="mt-6 rounded-2xl border border-[rgba(216,206,193,0.8)] bg-[rgba(247,242,235,0.92)] p-4">
+                                <div className="flex flex-wrap items-start justify-between gap-3">
+                                    <div>
+                                        <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Patient context</p>
+                                        <h3 className="mt-2 font-display text-2xl text-[var(--ink)]">Previous consultations</h3>
+                                    </div>
+                                    <StatusPill tone="blue">Read-only history</StatusPill>
+                                </div>
+                                {selectedPatientRecords.length ? (
+                                    <div className="mt-4 space-y-4">
+                                        {selectedPatientRecords.map((record) => {
+                                            const prescription = prescriptionsByRecord.get(record.record_id)
+                                            return (
+                                                <article key={record.record_id} className="rounded-2xl border border-[var(--line)] bg-white p-4">
+                                                    <div className="flex flex-wrap items-start justify-between gap-3">
+                                                        <div>
+                                                            <p className="text-xs uppercase tracking-[0.14em] text-[var(--muted)]">{record.record_id} · {formatClinicalDate(record.created_at)}</p>
+                                                            <h4 className="mt-2 text-base font-semibold text-[var(--ink)]">{record.diagnosis}</h4>
+                                                        </div>
+                                                        <span className="text-xs text-[var(--muted)]">Appointment {record.appointment_id}</span>
+                                                    </div>
+                                                    <div className="mt-3 grid gap-3 text-sm md:grid-cols-2">
+                                                        <div><span className="font-semibold text-[var(--ink)]">Symptoms:</span> {record.symptoms || "—"}</div>
+                                                        <div><span className="font-semibold text-[var(--ink)]">Treatment:</span> {record.treatment || "—"}</div>
+                                                        <div><span className="font-semibold text-[var(--ink)]">Notes:</span> {record.notes || "—"}</div>
+                                                        <div><span className="font-semibold text-[var(--ink)]">Vitals:</span> {record.vital_signs?.blood_pressure || "—"} BP · {record.vital_signs?.pulse ?? "—"} bpm{record.vital_signs?.temperature != null ? ` · ${record.vital_signs.temperature}°C` : ""}</div>
+                                                    </div>
+                                                    {prescription?.medicines?.length ? (
+                                                        <div className="mt-4 rounded-xl bg-[var(--panel-muted)] p-3">
+                                                            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">Prescription</p>
+                                                            <div className="mt-2 space-y-2 text-sm text-[var(--ink)]">
+                                                                {prescription.medicines.map((medicine) => (
+                                                                    <div key={`${prescription.prescription_id}-${medicine.medicine_id}`}>
+                                                                        <span className="font-semibold">{medicine.medicine_name}</span>
+                                                                        {Array.isArray(medicine.frequency) ? ` · ${medicine.frequency.join(", ")}` : ` · ${medicine.frequency}`}
+                                                                        {medicine.duration ? ` · ${medicine.duration}` : ""}
+                                                                        {medicine.prescribed_quantity ? ` · Qty ${medicine.prescribed_quantity}` : ""}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    ) : (
+                                                        <p className="mt-3 text-sm text-[var(--muted)]">No prescription recorded for this consultation.</p>
+                                                    )}
+                                                </article>
+                                            )
+                                        })}
+                                    </div>
+                                ) : (
+                                    <p className="mt-4 rounded-xl bg-white px-4 py-3 text-sm text-[var(--muted)]">No previous consultation records found for this patient.</p>
+                                )}
+                            </div>
                         ) : null}
 
                         {result ? (

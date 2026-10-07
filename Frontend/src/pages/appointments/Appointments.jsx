@@ -51,17 +51,30 @@ function emptyMedicine() {
 
 const MEDICINE_FREQUENCIES = ["Morning", "Afternoon", "Evening", "Night"]
 
-function getVitalsError({ bp, pulse, temperature }) {
-    if (bp && !/^\d+\/\d+$/.test(bp)) return "Blood pressure must use the format 120/80, without spaces or units."
-    if (bp) {
+function getBloodPressureError(bp) {
+    if (!bp) return ""
+    if (!/^\d+\/\d+$/.test(bp)) return "Use systolic/diastolic format, for example 120/80."
+    {
         const [systolic, diastolic] = bp.split("/").map(Number)
         if (systolic < 50 || systolic > 300 || diastolic < 30 || diastolic > 200 || systolic <= diastolic) {
-            return "Enter a valid blood pressure: systolic 50–300, diastolic 30–200, with systolic higher than diastolic."
+            return "Systolic must be 50–300, diastolic 30–200, and systolic must be greater."
         }
     }
+    return ""
+}
+
+function getPulseError(pulse) {
     if (pulse && (!/^\d+$/.test(pulse) || Number(pulse) < 20 || Number(pulse) > 250)) {
         return "Pulse must be a whole number between 20 and 250 bpm."
     }
+    return ""
+}
+
+function getVitalsError({ bp, pulse, temperature }) {
+    const bloodPressureError = getBloodPressureError(bp)
+    if (bloodPressureError) return bloodPressureError
+    const pulseError = getPulseError(pulse)
+    if (pulseError) return pulseError
     if (temperature && (!/^\d+(\.\d+)?$/.test(temperature) || Number(temperature) < 25 || Number(temperature) > 45)) {
         return "Temperature must be in Celsius, between 25 and 45°C."
     }
@@ -110,6 +123,9 @@ function Appointments() {
     const [recordForm, setRecordForm] = useState(emptyRecord)
     const [recordError, setRecordError] = useState("")
     const [toast, setToast] = useState("")
+
+    const bloodPressureError = getBloodPressureError(recordForm.bp)
+    const pulseError = getPulseError(recordForm.pulse)
 
     const load = useCallback(async () => {
         setLoading(true)
@@ -576,8 +592,12 @@ function Appointments() {
                     <Field label="Symptoms" required className="md:col-span-2">
                         <TextInput readOnly={Boolean(consultFor && recordByAppointment.has(consultFor.appointment_id))} value={recordForm.symptoms} onChange={(event) => setRecordForm({ ...recordForm, symptoms: event.target.value })} />
                     </Field>
-                    <Field label="Blood pressure (mmHg)"><TextInput readOnly={Boolean(consultFor && recordByAppointment.has(consultFor.appointment_id))} value={recordForm.bp} onChange={(event) => setRecordForm({ ...recordForm, bp: event.target.value.replace(/[^\d/]/g, "") })} placeholder="120/80" inputMode="numeric" /></Field>
-                    <Field label="Pulse (bpm)"><TextInput readOnly={Boolean(consultFor && recordByAppointment.has(consultFor.appointment_id))} value={recordForm.pulse} onChange={(event) => setRecordForm({ ...recordForm, pulse: event.target.value.replace(/\D/g, "") })} placeholder="72" inputMode="numeric" /></Field>
+                    <Field label="Blood pressure (mmHg)" hint="Systolic 50–300 / diastolic 30–200; systolic must be greater." error={bloodPressureError}>
+                        <TextInput readOnly={Boolean(consultFor && recordByAppointment.has(consultFor.appointment_id))} value={recordForm.bp} onChange={(event) => setRecordForm({ ...recordForm, bp: event.target.value.replace(/[^\d/]/g, "") })} placeholder="120/80" inputMode="numeric" maxLength={7} pattern="\d{1,3}/\d{1,3}" aria-invalid={Boolean(bloodPressureError)} />
+                    </Field>
+                    <Field label="Pulse (bpm)" hint="Integer only, from 20 to 250 bpm." error={pulseError}>
+                        <TextInput readOnly={Boolean(consultFor && recordByAppointment.has(consultFor.appointment_id))} value={recordForm.pulse} onChange={(event) => setRecordForm({ ...recordForm, pulse: event.target.value.replace(/\D/g, "") })} placeholder="72" inputMode="numeric" maxLength={3} pattern="\d{1,3}" aria-invalid={Boolean(pulseError)} />
+                    </Field>
                     <Field label="Temperature (°C)"><TextInput readOnly={Boolean(consultFor && recordByAppointment.has(consultFor.appointment_id))} type="number" min="25" max="45" step="0.1" value={recordForm.temperature} onChange={(event) => setRecordForm({ ...recordForm, temperature: event.target.value })} placeholder="37.0" /></Field>
                     <Field label="Treatment" className="md:col-span-2">
                         <TextArea readOnly={Boolean(consultFor && recordByAppointment.has(consultFor.appointment_id))} value={recordForm.treatment} onChange={(event) => setRecordForm({ ...recordForm, treatment: event.target.value })} />

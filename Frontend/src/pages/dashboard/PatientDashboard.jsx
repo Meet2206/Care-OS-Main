@@ -719,14 +719,14 @@ function PatientDashboard() {
                             </div>
 
                             <div className="mt-5 grid gap-5">
-                                <label className="space-y-2 block">
+                                <div className="space-y-2 block">
                                     <span className="block text-sm font-semibold text-[var(--ink)]">Preferred date</span>
                                     <span className="block text-xs text-[var(--muted)]">Choose your desired visit day</span>
                                     <div className="rounded-[20px] border border-[rgba(216,206,193,0.8)] bg-white px-4 py-3 text-sm text-[var(--ink)]">
                                         {formatDateDisplay(bookingForm.date)}
                                     </div>
                                     <BookingCalendar value={bookingForm.date} onChange={(nextDate) => handleBookingChange("date", nextDate)} />
-                                </label>
+                                </div>
 
                                 <div className="space-y-2">
                                     <span className="block text-sm font-semibold text-[var(--ink)]">Choose Doctor</span>
